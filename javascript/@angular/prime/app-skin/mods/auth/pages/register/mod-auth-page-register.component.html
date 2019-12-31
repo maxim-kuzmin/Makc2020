@@ -1,0 +1,9 @@
+<h2>{{ myPresenter.resources.title }}</h2>
+
+<form #ctrlForm="ngForm"
+      #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+      appSkinCoreProgressSpinner
+      [formGroup]="myView.formGroup"
+      novalidate
+      (ngSubmit)="myPresenter.onSubmit()">
+</form>

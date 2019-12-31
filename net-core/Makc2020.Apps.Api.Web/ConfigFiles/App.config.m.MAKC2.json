@@ -1,0 +1,13 @@
+﻿{
+  "ConnectionStrings": {
+    "DbContext": "Data Source=.\\SQLEXPRESS;Initial Catalog=Makc2020;Integrated Security=True"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
+}

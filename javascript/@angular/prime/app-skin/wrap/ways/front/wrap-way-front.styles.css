@@ -1,0 +1,8 @@
+.skin--css--way--front .skin--css--host--layout--footer,
+.skin--css--way--front .skin--css--host--layout--header {
+  background-color: #366821;
+}
+
+.skin--css--way--front .skin--css--host--layout--header--logo {
+  background-image: url(img/logo.png);
+}

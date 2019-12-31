@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Host.Web\Makc2020.Host.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.Auth.Base\Makc2020.Mods.Auth.Base.csproj" />
+  </ItemGroup>
+
+</Project>

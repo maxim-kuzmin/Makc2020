@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Core.Web.DiAutofac\Makc2020.Core.Web.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Host.Web\Makc2020.Host.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Root.Base.DiAutofac\Makc2020.Root.Base.DiAutofac.csproj" />
+  </ItemGroup>
+
+</Project>

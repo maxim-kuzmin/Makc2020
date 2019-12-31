@@ -1,0 +1,17 @@
+﻿{
+  "Type": "Oidc",
+  "Types": {
+    "Jwt": {
+      "Issuer": "Makc2020",
+      "Audience": "Makc2020WebApi",
+      "SecretKey": "mysupersecret_secretkey!123",
+      "TimeToLiveInMinutesOfAccessToken": "5",
+      "TimeToLiveInDaysOfRefreshToken": "7"
+    },
+    "Oidc": {
+      "Audience": "Makc2020WebApi",
+      "Authority": "http://localhost:6003",
+      "RequireHttpsMetadata": false
+    }
+  }
+}

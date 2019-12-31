@@ -1,0 +1,16 @@
+.skin--css--core--common--bold {
+  font-weight: bold;
+}
+
+.skin--css--core--common--center {
+  text-align: center;
+}
+
+.skin--css--core--common--progress--spinner--container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+  min-width: 100px;
+}

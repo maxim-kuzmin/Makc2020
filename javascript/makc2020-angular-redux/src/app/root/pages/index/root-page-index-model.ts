@@ -1,0 +1,126 @@
+// //Author Maxim Kuzmin//makc//
+
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
+import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
+import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreTitleService} from '@app/core/title/core-title.service';
+import {AppHostMenuService} from '@app/host/menu/host-menu.service';
+import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppRootPageAdministrationService} from '../administration/root-page-administration.service';
+import {AppRootPageSiteService} from '../site/root-page-site.service';
+import {AppRootPageIndexResources} from './root-page-index-resources';
+import {AppRootPageIndexService} from './root-page-index.service';
+import {AppRootPageIndexState} from './root-page-index-state';
+import {AppRootPageIndexStore} from './root-page-index-store';
+
+/** Корень. Страницы. Начало. Модель. */
+export class AppRootPageIndexModel extends AppCoreCommonPageModel {
+
+  /**
+   * Ресурсы.
+   * @type {AppRootPageIndexResources}
+   */
+  resources: AppRootPageIndexResources;
+
+  /**
+   * Конструктор.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
+   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppRootPageAdministrationService} appRootPageAdministration
+   * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
+   * @param {AppRootPageSiteService} appRootPageSite
+   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppRootPageIndexStore} appStore Хранилище состояния.
+   * @param {AppCoreTitleService} appTitle Заголовок.
+   * @param {ActivatedRoute} extRoute Маршрут.
+   */
+  constructor(
+    appLocalizer: AppCoreLocalizationService,
+    appLoggerStore: AppCoreLoggingStore,
+    private appMenu: AppHostMenuService,
+    private appRootPageAdministration: AppRootPageAdministrationService,
+    private appRootPageIndex: AppRootPageIndexService,
+    private appRootPageSite: AppRootPageSiteService,
+    appRoute: AppHostRouteService,
+    private appStore: AppRootPageIndexStore,
+    appTitle: AppCoreTitleService,
+    extRoute: ActivatedRoute
+  ) {
+    super(
+      appLoggerStore,
+      appRoute,
+      appTitle,
+      extRoute
+    );
+
+    this.resources = new AppRootPageIndexResources(
+      appLocalizer,
+      this.appRootPageIndex.settings,
+      this.unsubscribe$
+    );
+  }
+
+  /**
+   * Создать ссылку маршрутизатора на страницу "RootPageAdministration".
+   * @returns {any[]} Ссылка маршрутизатора.
+   */
+  createRouterLinkToRootPageAdministration(): any[] {
+    return [this.appRootPageAdministration.settings.path];
+  }
+
+  /**
+   * Создать ссылку маршрутизатора на страницу "RootPageSite".
+   * @returns {any[]} Ссылка маршрутизатора.
+   */
+  createRouterLinkToRootPageSite(): any[] {
+    return [this.appRootPageSite.settings.path];
+  }
+
+  /**
+   * Получить состояние.
+   * @returns {AppRootPageIndexState} Состояние.
+   */
+  getState(): AppRootPageIndexState {
+    return this.appStore.getState();
+  }
+
+  /**
+   * Получить поток состояния.
+   * @returns {Observable<AppRootPageIndexState>} Поток состояния.
+   */
+  getState$(): Observable<AppRootPageIndexState> {
+    return this.appStore.getState$(this.unsubscribe$);
+  }
+
+  /** @inheritDoc */
+  onDestroy() {
+    super.onDestroy();
+
+    this.appStore.runActionClear();
+  }
+
+  /**
+   * @inheritDoc
+   * @param {string} pageKey
+   */
+  protected onGetPageKeyOverAfterViewInit(pageKey: string) {
+    super.onGetPageKeyOverAfterViewInit(pageKey);
+
+    this.appMenu.executeActionSet(this.pageKey);
+
+    this.executeTitleActionItemAdd();
+  }
+
+  private executeTitleActionItemAdd() {
+    this.appTitle.executeActionItemAdd(
+      this.appRootPageIndex.settings.titleResourceKey,
+      this.resources.titleTranslated$,
+      this.unsubscribe$
+    );
+
+    this.titleItemsCount = 1;
+  }
+}

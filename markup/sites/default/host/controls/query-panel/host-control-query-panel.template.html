@@ -1,0 +1,33 @@
+<!--host--control--query-panel/-->
+<div class="skin--css--host--control--query-panel">
+    <div>
+        <a href="javascript:void(0)" id="app--id--host--control--query-panel--switch--show">
+            Показать панель фильтрации и сортировки
+        </a>
+        <a href="javascript:void(0)" id="app--id--host--control--query-panel--switch--hide">
+            Скрыть панель фильтрации и сортировки
+        </a>
+    </div>
+    <form onsubmit="void(0)" id="app--id--host--control--query-panel--form">
+        <div class="skin--css--host--control--query-panel--filter">
+            <label id="app--id--host--control--query-panel--filter--label">Фильтрация</label>
+            <div id="app--id--host--control--query-panel--filter--fields">
+            </div>
+        </div>
+        <div class="skin--css--host--control--query-panel--sorter">
+            <label id="app--id--host--control--query-panel--sorter--label">Сортировка</label>
+            <div>
+                <select name="sf" id="app--id--host--control--query-panel--sorter--fields">
+                </select>
+                <select name="sd">
+                    <option value="0">по-возрастанию</option>
+                    <option value="1" selected="">по-убыванию</option>
+                </select>
+            </div>
+        </div>
+        <div class="skin--css--host--control--query-panel--actions">
+            <button>Обновить</button>
+        </div>
+    </form>
+</div>
+<!--/host--control--query-panel-->

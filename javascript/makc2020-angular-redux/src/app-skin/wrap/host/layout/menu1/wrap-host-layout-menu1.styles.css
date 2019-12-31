@@ -1,0 +1,10 @@
+.skin--css--host--layout--part.skin--css--host--layout--menu1 {
+  background-color: #7e0001;
+  color: #ffffff;
+}
+
+.skin--css--host--layout--menu1 a,
+.skin--css--host--layout--menu1 a:active,
+.skin--css--host--layout--menu1 a:hover {
+  color: #ffffff;
+}

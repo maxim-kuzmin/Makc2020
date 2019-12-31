@@ -1,0 +1,67 @@
+<!--mod--auth--page--logon/-->
+<div class="skin--css--host--layout--body--part skin--css--core--form">
+  <form #ctrlForm="ngForm"
+        novalidate
+        (ngSubmit)="myPresenter.onSubmit()"
+        class="skin--css--core--form--part"
+        autocomplete="off">
+
+    <div #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+         appSkinCoreProgressSpinner
+         class="skin--css--core--common--progress--spinner">
+
+      <div *ngIf="myView.isLoggedIn" class="skin--css--core--common--center">
+        {{myPresenter.resources.messages.loggedIn}} <span
+        class="skin--css--core--common--bold">{{myView.userName}}</span>
+      </div>
+      <div *ngIf="!myView.isLoggedIn" class="skin--css--core--form--fields">
+        <div>
+          <div>
+            <label for="skin--id--mod--auth--page--logon--userName">
+              {{myPresenter.resources.fields.fieldUserName.label}}
+            </label>
+            <span *ngIf="myView.fieldUserNameErrorRequiredVisible"
+                  class="skin--css--core--form--error--message">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+          </div>
+          <input pInputText
+                 required
+                 type="text"
+                 id="skin--id--mod--auth--page--logon--userName"
+                 [placeholder]="myPresenter.resources.fields.fieldUserName.placeholder"
+                 [formControl]="myView.fieldUserName">
+        </div>
+        <div>
+          <div>
+            <label for="skin--id--mod--auth--page--logon--password">
+              {{myPresenter.resources.fields.fieldPassword.label}}
+            </label>
+            <span class="skin--css--core--content--asterisk"></span>
+            <span *ngIf="myView.fieldPasswordErrorRequiredVisible"
+                  class="skin--css--core--form--error--message">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+          </div>
+          <input pInputText
+                 required
+                 id="skin--id--mod--auth--page--logon--password"
+                 [type]="myView.fieldPasswordType"
+                 [placeholder]="myPresenter.resources.fields.fieldPassword.placeholder"
+                 [formControl]="myView.fieldPassword">
+        </div>
+      </div>
+      <div class="skin--css--core--form--actions">
+        <button pButton
+                type="submit"
+                label="{{myView.buttonSubmitTitle}}"
+                class="btn btn_green btn_big btn_uppercase"
+                [disabled]="myView.buttonSubmitDisabled"></button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="!myView.isLoggedIn" class="skin--css--core--form--part">
+    * {{myPresenter.resources.messages.passwordInfo}}
+  </div>
+</div>
+<!--/mod--auth--page--logon-->

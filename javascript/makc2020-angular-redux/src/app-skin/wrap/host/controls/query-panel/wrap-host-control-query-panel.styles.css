@@ -1,0 +1,9 @@
+.skin--css--host--control--query-panel > div {
+  text-align: center;
+}
+
+.skin--css--host--control--query-panel > form {
+  border: 0.05em solid gray;
+  margin-top: 1.5em;
+  padding: 1.5em;
+}

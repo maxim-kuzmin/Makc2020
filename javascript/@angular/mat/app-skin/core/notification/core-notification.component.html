@@ -1,0 +1,12 @@
+<div class="css-title">
+  <h4 [ngClass]="myView.cssClass">{{myPresenter.resources.title}}</h4>
+  <button mat-button (click)="close()">{{myPresenter.resources.buttonClose.title}}</button>
+</div>
+<div class="css-messages">
+  <ul *ngIf="myView.messages.length > 1; else message">
+    <li *ngFor="let message of myView.messages">
+      {{message}}
+    </li>
+  </ul>
+  <ng-template #message>{{myView.messages[0]}}</ng-template>
+</div>

@@ -1,0 +1,12 @@
+.skin--css--host--control--summary-errors {
+  color: #ff0000;
+  margin-top: 1.5em;
+}
+
+.skin--css--host--control--summary-errors span {
+  font-weight: bold;
+}
+
+.skin--css--host--control--summary-errors ul {
+  margin-top: 1em;
+}

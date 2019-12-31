@@ -1,0 +1,8 @@
+.skin--css--core--form .skin--css--core--form--part {
+  margin-bottom: 1.5em;
+}
+
+.skin--css--core--form .skin--css--core--form--part:last-child,
+.skin--css--core--form .skin--css--core--form--part_last-child {
+  margin-bottom: 0;
+}

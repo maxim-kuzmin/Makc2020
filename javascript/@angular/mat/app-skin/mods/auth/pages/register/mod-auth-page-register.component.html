@@ -1,0 +1,79 @@
+<h2 class="mat-h2">{{ myPresenter.resources.title }}</h2>
+
+<form #ctrlForm="ngForm"
+      #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+      appSkinCoreProgressSpinner
+      [formGroup]="myView.formGroup"
+      novalidate
+      (ngSubmit)="myPresenter.onSubmit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldUserName.label}}</mat-label>
+        <input matInput
+               [placeholder]="myPresenter.resources.fields.fieldUserName.placeholder"
+               [formControl]="myView.fieldUserName">
+        <mat-error *ngIf="myView.fieldUserNameErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldEmail.label}}</mat-label>
+        <input matInput
+               [placeholder]="myPresenter.resources.fields.fieldEmail.placeholder"
+               [formControl]="myView.fieldEmail">
+        <mat-error *ngIf="myView.fieldEmailErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+        <mat-error *ngIf="myView.fieldEmailErrorEmailVisible">
+          {{myPresenter.resources.errors.errorEmail.message}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldFullName.label}}</mat-label>
+        <input matInput
+               [placeholder]="myPresenter.resources.fields.fieldFullName.placeholder"
+               [formControl]="myView.fieldFullName">
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldPassword.label}}</mat-label>
+        <input matInput
+               [type]="myView.fieldPasswordType"
+               [placeholder]="myPresenter.resources.fields.fieldPassword.placeholder"
+               [formControl]="myView.fieldPassword">
+        <mat-icon matSuffix
+                  (click)="myView.fieldPasswordIconOnClick()">
+          {{myView.fieldPasswordIcon}}
+        </mat-icon>
+        <mat-error *ngIf="myView.fieldPasswordErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldPasswordConfirm.label}}</mat-label>
+        <input matInput
+               [type]="myView.fieldPasswordConfirmType"
+               [placeholder]="myPresenter.resources.fields.fieldPasswordConfirm.placeholder"
+               [formControl]="myView.fieldPasswordConfirm">
+        <mat-icon matSuffix
+                  (click)="myView.fieldPasswordConfirmIconOnClick()">
+          {{myView.fieldPasswordConfirmIcon}}
+        </mat-icon>
+        <mat-error *ngIf="myView.fieldPasswordConfirmErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button
+              color="primary"
+              [disabled]="myView.buttonSubmitDisabled"
+              type="submit">
+        {{myPresenter.resources.buttons.buttonSubmit.title}}
+      </button>
+    </mat-card-actions>
+    <mat-card-content>
+      <mat-error *ngFor="let errorMessage of myView.requestErrorMessages">{{errorMessage}}</mat-error>
+    </mat-card-content>
+  </mat-card>
+</form>

@@ -1,0 +1,9 @@
+.skin--css--host--control--notification--success {
+  background-color: #008000;
+  color: #ffffff;
+  font-weight: bold;
+  margin-top: 1.5em;
+  padding: 0.5em;
+  text-align: center;
+  vertical-align: middle;
+}

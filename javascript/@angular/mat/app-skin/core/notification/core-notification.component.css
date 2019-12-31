@@ -1,0 +1,27 @@
+.css-title {
+  display: flex;
+}
+
+.css-title button {
+  margin-left: auto;
+}
+
+.css-title h4 {
+  margin: 0;
+  padding: 0.5em
+}
+
+.css-messages {
+  padding: 0.5em;
+}
+
+.css-error {
+  color: #F44336;
+}
+.css-info {
+  color: #2196F3;
+}
+
+.css-success {
+  color: #4CAF50;
+}

@@ -1,0 +1,15 @@
+@import "wrap-begin.styles.css";
+@import "~@angular/cdk/overlay-prebuilt.css";
+@import "~primeflex/primeflex.css";
+@import "~primeng/resources/primeng.min.css";
+@import "~primeicons/primeicons.css";
+@import "~primeng/resources/themes/luna-green/theme.css";
+@import "wrap-end.styles.css";
+
+.skin--css--host--control--grid--filter {
+  width: 100%;
+}
+
+.skin--css--host--layout--header--logo {
+  margin-right: 115px;
+}

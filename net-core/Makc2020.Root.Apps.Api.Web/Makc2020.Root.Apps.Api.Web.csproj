@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Core.Caching.DiAutofac\Makc2020.Core.Caching.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Data.Caching\Makc2020.Data.Caching.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.Auth.Web\Makc2020.Mods.Auth.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyMain.Caching.DiAutofac\Makc2020.Mods.DummyMain.Caching.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyMain.Web\Makc2020.Mods.DummyMain.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Root.Apps.Api.Base\Makc2020.Root.Apps.Api.Base.csproj" />
+    <ProjectReference Include="..\Makc2020.Root.Web.DiAutofac\Makc2020.Root.Web.DiAutofac.csproj" />
+  </ItemGroup>
+
+</Project>

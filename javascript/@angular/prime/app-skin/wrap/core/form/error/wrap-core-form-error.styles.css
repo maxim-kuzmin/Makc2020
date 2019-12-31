@@ -1,0 +1,8 @@
+.skin--css--core--form--error--message {
+  color: #ff0000;
+}
+
+.skin--css--core--form--error--control {
+  border-color: #ff0000;
+  background-color: #ffeeee;
+}

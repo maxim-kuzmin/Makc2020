@@ -1,0 +1,7 @@
+.skin--css--host--control--query-panel--actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.2em;
+}

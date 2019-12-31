@@ -1,0 +1,13 @@
+.skin--css--core--list--vertical--left {
+  text-align: left;
+}
+
+.skin--css--core--list--vertical--left li {
+  margin-bottom: 1em;
+}
+
+.skin--css--core--list--vertical--left li:last-child,
+li.skin--css--core--list--vertical--left__last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}

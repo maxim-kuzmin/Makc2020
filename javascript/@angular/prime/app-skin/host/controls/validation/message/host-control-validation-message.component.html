@@ -1,0 +1,35 @@
+<div class="validation-message">
+
+  <div class="validation-message__box validation-message__box_error"
+       [ngClass]="myView.cssClass">
+
+    <div *ngIf="myPresenter.messageRequiredIsVisible"
+         class="validation-message__text"
+         [innerHTML]="myPresenter.messageRequiredText">
+    </div>
+
+    <div *ngIf="myPresenter.messageMinLengthIsVisible"
+         class="validation-message__text"
+         [innerHTML]="myPresenter.messageMinLengthText">
+    </div>
+
+    <div *ngIf="myPresenter.messageEmailIsVisible"
+         class="validation-message__text"
+         [innerHTML]="myPresenter.messageEmailText">
+    </div>
+
+    <div *ngIf="myPresenter.messageCheckBoxIsVisible"
+         class="validation-message__text p-1"
+         [innerHTML]="myPresenter.messageCheckBoxText">
+    </div>
+
+    <div *ngIf="myPresenter.messagePatternIsVisible"
+         class="validation-message__text"
+         [innerHTML]="myPresenter.messagePatternText">
+    </div>
+
+  </div>
+
+</div>
+
+

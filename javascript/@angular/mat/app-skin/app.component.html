@@ -1,0 +1,36 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #ctrlDrawer class="sidenav" fixedInViewport="true"
+               [attr.role]="(myView.isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(myView.isHandset$ | async) ? 'over' : 'side'"
+               [opened]="!(myView.isHandset$ | async)">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['/mods/dummy-main/list']">/mods/dummy-main/list</a>
+      <a mat-list-item [routerLink]="['/mods/dummy-main/list', { ps: 20 }]">/mods/dummy-main/list;ps=20</a>
+      <a mat-list-item [routerLink]="[myView.url.register]">Register</a>
+      <a mat-list-item [routerLink]="[myView.url.logon]">Logon</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button"
+              aria-label="Toggle sidenav"
+              mat-icon-button
+              (click)="ctrlDrawer.toggle()"
+              *ngIf="myView.isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <a mat-button [routerLink]="['/']">
+        <span class="mat-button-wrapper">
+          <span>{{ myPresenter.resources.title }}</span>
+        </span>
+      </a>
+      <mat-select [formControl]="myView.fieldLanguage" >
+        <mat-option *ngFor="let language of myView.languages" [value]="language.key">
+          {{ language.name }}
+        </mat-option>
+      </mat-select>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

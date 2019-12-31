@@ -1,0 +1,18 @@
+.skin--css--core--view > * {
+  margin-bottom: 1.5em;
+}
+
+.skin--css--core--view > *:last-child,
+.skin--css--core--view__last-child {
+  margin-bottom: 0;
+}
+
+.skin--css--core--view > div > label {
+  color: #696969;
+}
+
+.skin--css--core--view > div > label::after {
+  content: ":";
+}
+
+

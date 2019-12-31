@@ -1,0 +1,26 @@
+﻿{
+  "PartAuth": {
+    "Users": [
+      {
+        "Email": "admin@email.com",
+        "FullName": "Администратор",
+        "Password": "Admin(2019)",
+        "UserName": "admin"
+      }
+    ],
+    "Groups": {
+      "Administrators": [
+        "admin"
+      ]
+    }
+  },
+  "PartLdap": {
+    "Domain": "localhost",
+    "IsSecureSocketLayerEnabled": false,
+    "Port": 389,
+    "Hosts": [
+      "001.localhost",
+      "002.localhost"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+<div [ngClass]="myView.cssClass" *ngIf="myView.isVisible">
+  <ul class="skin--css--core--list--horizontal--center">
+    <li *ngFor="let item of myView.data">
+      <div *ngIf="item.isSelected; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <h2 *ngIf="item.isSelected">
+          <a [href]="item.data.url">
+            {{item.data.title}}
+          </a>
+        </h2>
+      </ng-template>
+      <ng-template #elseBlock>
+        <a [href]="item.data.url">
+          {{item.data.title}}
+        </a>
+      </ng-template>
+    </li>
+  </ul>
+</div>

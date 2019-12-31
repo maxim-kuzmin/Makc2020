@@ -1,0 +1,19 @@
+.skin--css--host--control--grid--row--actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+
+.skin--css--host--control--grid--row--actions a {
+  display: inline-block;
+  margin: 0.5em;
+}
+
+.skin--css--host--control--grid--row--actions button {
+  display: inline-block;
+  margin: 0.5em;
+}
+

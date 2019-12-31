@@ -1,0 +1,23 @@
+.skin--css--host--control--query-panel--sorter {
+  margin-top: 1em;
+}
+
+.skin--css--host--control--query-panel--sorter > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.skin--css--host--control--query-panel--sorter > div > select {
+  margin: 0.5em;
+}
+
+.skin--css--host--control--query-panel--sorter > label {
+  color: #696969;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 1em;
+  text-align: center;
+}

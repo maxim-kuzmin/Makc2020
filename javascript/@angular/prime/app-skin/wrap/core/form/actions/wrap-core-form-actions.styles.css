@@ -1,0 +1,8 @@
+.skin--css--core--form--actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.2em;
+}
+

@@ -1,0 +1,20 @@
+<!--host--layout--menu/-->
+<ul class="skin--css--core--list--horizontal--center">
+  <li *ngFor="let item of myView.data">
+    <div *ngIf="item.isSelected; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <h2 *ngIf="item.isSelected">
+        <a [routerLink]="item.data.routerLink">
+          {{item.data.title}}
+        </a>
+      </h2>
+    </ng-template>
+    <ng-template #elseBlock>
+      <a [routerLink]="item.data.routerLink">
+        {{item.data.title}}
+      </a>
+    </ng-template>
+  </li>
+</ul>
+<!--/host--layout--menu-->
+

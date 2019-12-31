@@ -1,0 +1,21 @@
+.skin--css--host--control--pager {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.skin--css--host--control--pager > * {
+  display: inline-block;
+  margin: 0.5em;
+}
+
+.skin--css--host--control--pager--bottom {
+  border-top: 0.05em solid gray;
+  padding-top: 1.5em;
+}
+
+.skin--css--host--control--pager--top {
+  border-bottom: 0.05em solid gray;
+  padding-bottom: 1.5em;
+}

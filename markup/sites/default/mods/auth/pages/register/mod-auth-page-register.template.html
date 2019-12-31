@@ -1,0 +1,48 @@
+<!--mod--auth--page--register/-->
+<div class="skin--css--host--layout--body--part skin--css--core--form">
+  <form class="skin--css--core--form--part skin--css--core--common--progress--spinner--container"
+        onsubmit="return app['/mods/auth/pages/register/'].view.form.submit()"
+        id="app--id--mod--auth--page--register--form">
+    <div class="skin--css--core--form--fields">
+      <div>
+        <div>
+          <label for="app--id--mod--auth--page--register--form--name">Имя</label>
+          <span class="skin--css--core--form--error--message"
+                id="app--id--mod--auth--page--register--form--name--error">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+        </div>
+        <input name="name" type="text" id="app--id--mod--auth--page--register--form--name"/>
+      </div>
+      <div>
+        <div>
+          <label for="app--id--mod--auth--page--register--form--password">Пароль</label>
+          <span class="skin--css--core--content--asterisk"></span>
+          <span class="skin--css--core--form--error--message"
+                id="app--id--mod--auth--page--register--form--password--error">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+        </div>
+        <input name="password" type="password" id="app--id--mod--auth--page--register--form--password"/>
+      </div>
+      <div class="skin--css--core--form--fields__last-child">
+        <div>
+          <label for="app--id--mod--auth--page--register--form--password-confirm">Подтверждение пароля</label>
+          <span class="skin--css--core--form--error--message"
+                id="app--id--mod--auth--page--register--form--password-confirm--error">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+        </div>
+        <input name="password-confirm" type="password" id="app--id--mod--auth--page--register--form--password-confirm"/>
+      </div>
+    </div>
+    <div class="skin--css--core--form--actions">
+      <button>Зарегистрировать</button>
+    </div>
+  </form>
+  <div class="skin--css--core--form--part skin--css--core--form--part_last-child">
+    * Пароль должен содержать не менее 12 символов, среди которых должно быть не
+    менее 2-х цифр и не менее одного символа, не являющегося цифрой или буквой
+  </div>
+  <!--/mod--auth--page--register-->
+</div>

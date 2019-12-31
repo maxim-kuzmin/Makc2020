@@ -1,0 +1,8 @@
+<div class="text-center">
+  <p class="font-weight-medium mb-4">{{ myView.message }}</p>
+  <button pButton
+          type="button"
+          [label]="myPresenter.resources.buttons.buttonAccept.title"
+          class="btn"
+          (click)="myView.onButtonAcceptClick()"></button>
+</div>

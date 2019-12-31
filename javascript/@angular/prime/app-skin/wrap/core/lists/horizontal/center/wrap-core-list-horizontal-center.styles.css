@@ -1,0 +1,29 @@
+.skin--css--core--list--horizontal--center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.skin--css--core--list--horizontal--center li {
+  display: inline-block;
+  margin: 0.5em;
+}
+
+.skin--css--core--list--horizontal--center li a {
+  white-space: nowrap;
+}
+
+.skin--css--core--list--horizontal--center li button {
+  line-height: 1.5;
+}
+
+.skin--css--core--list--horizontal--center li form {
+  display: inline;
+}
+
+.skin--css--core--list--horizontal--center li h2 {
+  font-size: 1.3em;
+}
+

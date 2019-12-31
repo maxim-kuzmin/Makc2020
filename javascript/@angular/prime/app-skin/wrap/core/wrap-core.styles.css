@@ -1,0 +1,53 @@
+body {
+  font-family: Arial;
+  font-size: 1.2em;
+  background-color: #f6f6f6;
+}
+
+button {
+  font-size: 1em;
+  padding: 0.2em 0.3em;
+}
+
+body a,
+body a:active,
+body a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+body h1 a,
+body h1 a:active,
+body h1 a:hover {
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 1.4em;
+  text-align: center;
+  font-weight: bold;
+}
+
+body h2 a,
+body h2 a:active,
+body h2 a:hover {
+  text-decoration: none;
+}
+
+h3 {
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+}
+
+input, select, textarea {
+  font-family: Arial;
+  font-size: 1em;
+  border: 0.05em solid #b7b7b7;
+  padding: 0.2em;
+}

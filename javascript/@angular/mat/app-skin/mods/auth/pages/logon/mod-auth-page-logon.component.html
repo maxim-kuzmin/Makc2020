@@ -1,0 +1,51 @@
+<h2 class="mat-h2">{{ myPresenter.resources.title }}</h2>
+
+<app-skin-core-progress-spinner #ctrlLoading
+                                    *ngIf="!myView.isDataLoaded"></app-skin-core-progress-spinner>
+
+<form #ctrlForm="ngForm"
+      #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+      appSkinCoreProgressSpinner
+      [hidden]="!myView.isDataLoaded"
+      [formGroup]="myView.formGroup"
+      novalidate
+      (ngSubmit)="myPresenter.onSubmit()">
+  <mat-card>
+    <h3 class="mat-h3" *ngIf="myView.isLoggedIn">
+      {{myPresenter.resources.messages.loggedIn}} <strong>{{myView.userName}}</strong>
+    </h3>
+    <mat-card-content *ngIf="!myView.isLoggedIn">
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldUserName.label}}</mat-label>
+        <input matInput
+               [placeholder]="myPresenter.resources.fields.fieldUserName.placeholder"
+               [formControl]="myView.fieldUserName">
+        <mat-error *ngIf="myView.fieldUserNameErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldPassword.label}}</mat-label>
+        <input matInput
+               [type]="myView.fieldPasswordType"
+               [placeholder]="myPresenter.resources.fields.fieldPassword.placeholder"
+               [formControl]="myView.fieldPassword">
+        <mat-icon matSuffix
+                  (click)="myView.fieldPasswordIconOnClick()">
+          {{myView.fieldPasswordIcon}}
+        </mat-icon>
+        <mat-error *ngIf="myView.fieldPasswordErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button
+              color="primary"
+              [disabled]="myView.buttonSubmitDisabled"
+              type="submit">
+        {{myView.buttonSubmitTitle}}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>

@@ -1,0 +1,82 @@
+<!--mod--auth--page--register/-->
+<div class="skin--css--host--layout--body--part skin--css--core--form">
+  <form #ctrlForm="ngForm"
+        novalidate
+        (ngSubmit)="myPresenter.onSubmit()"
+        class="skin--css--core--form--part"
+        autocomplete="off">
+
+    <div #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+         appSkinCoreProgressSpinner
+         class="skin--css--core--common--progress--spinner">
+
+      <div class="skin--css--core--form--fields">
+        <div>
+          <div>
+            <label for="skin--id--mod--auth--page--register--userName">
+              {{myPresenter.resources.fields.fieldUserName.label}}
+            </label>
+            <span *ngIf="myView.fieldUserNameErrorRequiredVisible"
+                  class="skin--css--core--form--error--message">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+          </div>
+          <input pInputText
+                 required
+                 type="text"
+                 id="skin--id--mod--auth--page--register--userName"
+                 [placeholder]="myPresenter.resources.fields.fieldUserName.placeholder"
+                 [formControl]="myView.fieldUserName">
+        </div>
+        <div>
+          <div>
+            <label for="skin--id--mod--auth--page--register--password">
+              {{myPresenter.resources.fields.fieldPassword.label}}
+            </label>
+            <span class="skin--css--core--content--asterisk"></span>
+            <span *ngIf="myView.fieldPasswordErrorRequiredVisible"
+                  class="skin--css--core--form--error--message">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+          </div>
+          <input pInputText
+                 required
+                 id="skin--id--mod--auth--page--register--password"
+                 [type]="myView.fieldPasswordType"
+                 [placeholder]="myPresenter.resources.fields.fieldPassword.placeholder"
+                 [formControl]="myView.fieldPassword">
+        </div>
+        <div>
+          <div>
+            <label for="skin--id--mod--auth--page--register--password-confirm">
+              {{myPresenter.resources.fields.fieldPasswordConfirm.label}}
+            </label>
+            <span class="skin--css--core--content--asterisk"></span>
+            <span *ngIf="myView.fieldPasswordConfirmErrorRequiredVisible"
+                  class="skin--css--core--form--error--message">
+                    <span class="skin--css--core--content--asterisk"></span>
+                </span>
+          </div>
+          <input pInputText
+                 required
+                 id="skin--id--mod--auth--page--register--password-confirm"
+                 [type]="myView.fieldPasswordConfirmType"
+                 [placeholder]="myPresenter.resources.fields.fieldPasswordConfirm.placeholder"
+                 [formControl]="myView.fieldPasswordConfirm"
+                 style="width:100%">
+        </div>
+      </div>
+      <div class="skin--css--core--form--actions">
+        <button pButton
+                type="submit"
+                label="{{myPresenter.resources.buttons.buttonSubmit.title}}"
+                class="btn btn_green btn_big btn_uppercase"
+                [disabled]="myView.buttonSubmitDisabled"></button>
+      </div>
+    </div>
+  </form>
+  <div class="skin--css--core--form--part">
+    * {{myPresenter.resources.messages.passwordInfo}}
+  </div>
+</div>
+<!--/mod--auth--page--register-->

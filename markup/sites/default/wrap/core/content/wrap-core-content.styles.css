@@ -1,0 +1,9 @@
+.skin--css--core--content--asterisk::after {
+  content: "*";
+}
+
+.skin--css--core--content--comma::after {
+  content: ",";
+}
+
+

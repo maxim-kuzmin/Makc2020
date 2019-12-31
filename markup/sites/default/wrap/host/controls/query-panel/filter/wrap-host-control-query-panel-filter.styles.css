@@ -1,0 +1,24 @@
+.skin--css--host--control--query-panel--filter > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.skin--css--host--control--query-panel--filter > div > div {
+  margin: 0.5em;
+  white-space: nowrap;
+}
+
+.skin--css--host--control--query-panel--filter > div > div > label {
+  color: #696969;
+}
+
+.skin--css--host--control--query-panel--filter > label {
+  color: #696969;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 1em;
+  text-align: center;
+}

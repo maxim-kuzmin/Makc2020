@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Mods.Auth.Base.DiAutofac\Makc2020.Mods.Auth.Base.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyMain.Base.DiAutofac\Makc2020.Mods.DummyMain.Base.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Root.Base.DiAutofac\Makc2020.Root.Base.DiAutofac.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+<h2 class="mat-h2">{{ myPresenter.resources.title }}</h2>
+
+<app-skin-core-progress-spinner #ctrlLoading
+                                    *ngIf="!myView.isDataLoaded"></app-skin-core-progress-spinner>
+
+<form #ctrlForm="ngForm"
+      #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+      appSkinCoreProgressSpinner
+      [hidden]="!myView.isDataLoaded"
+      [formGroup]="myView.formGroup"
+      novalidate
+      (ngSubmit)="myPresenter.onSubmit()">
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldName.label}}</mat-label>
+        <input matInput
+               [placeholder]="myPresenter.resources.fields.fieldName.placeholder"
+               [formControl]="myView.fieldName">
+        <mat-error *ngIf="myView.fieldNameErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>{{myPresenter.resources.fields.fieldObjectDummyOneToMany.label}}</mat-label>
+        <mat-select [placeholder]="myPresenter.resources.fields.fieldObjectDummyOneToMany.placeholder"
+                    [formControl]="myView.fieldObjectDummyOneToMany">
+          <mat-option *ngFor="let option of myView.optionsDummyManyToMany.items" [value]="option.value">
+            {{ option.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="myView.fieldObjectDummyOneToManyErrorRequiredVisible">
+          {{myPresenter.resources.errors.errorRequired.message}}
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button
+              color="primary"
+              [disabled]="myView.buttonSubmitDisabled"
+              type="submit">
+        {{myPresenter.resources.buttons.buttonSubmit.title}}
+      </button>
+    </mat-card-actions>
+    <mat-card-content>
+      <mat-error *ngFor="let errorMessage of myView.responseErrorMessages">{{errorMessage}}</mat-error>
+    </mat-card-content>
+  </mat-card>
+</form>

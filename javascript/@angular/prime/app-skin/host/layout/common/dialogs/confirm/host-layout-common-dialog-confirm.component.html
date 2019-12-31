@@ -1,0 +1,15 @@
+<div class="text-center">
+  <p class="font-weight-medium mb-4">{{myPresenter.resources.title}} {{myView.message}}?</p>
+
+  <button
+    pButton
+    type="button"
+    [label]="myPresenter.resources.buttons.buttonYes.title"
+    class="btn btn_wide btn_green mr-5"
+    (click)="myView.onButtonYesClick()"></button>
+  <button pButton
+          type="button"
+          [label]="myPresenter.resources.buttons.buttonNo.title"
+          class="btn btn_wide btn_red"
+          (click)="myView.onButtonNoClick()"></button>
+</div>

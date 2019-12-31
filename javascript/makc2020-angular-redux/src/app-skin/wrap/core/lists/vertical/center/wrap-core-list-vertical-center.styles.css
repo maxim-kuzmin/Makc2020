@@ -1,0 +1,12 @@
+.skin--css--core--list--vertical--center {
+  text-align: center;
+}
+
+.skin--css--core--list--vertical--center li {
+  margin-bottom: 1em;
+}
+
+.skin--css--core--list--vertical--center li:last-child,
+li.skin--css--core--list--vertical--center__last-child {
+  margin-bottom: 0;
+}

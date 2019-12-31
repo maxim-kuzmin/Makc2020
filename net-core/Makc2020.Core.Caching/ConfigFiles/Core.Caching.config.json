@@ -1,0 +1,12 @@
+﻿{
+  "ConnectTimeout": 5000,
+  "DbIndex": 0,
+  "ExpiryInSeconds": 3600,
+  "Host": "localhost",
+  "Hosts": null,
+  "IsCachingEnabled": true,
+  "IsGlobalStorageEnabled": false,
+  "KeyPrefix": "Makc2020",
+  "Password": null,
+  "Port": 6379
+}

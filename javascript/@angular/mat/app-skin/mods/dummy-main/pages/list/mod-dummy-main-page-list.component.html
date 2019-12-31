@@ -1,0 +1,68 @@
+<h2 class="mat-h2">{{ myPresenter.resources.title }}</h2>
+
+<app-skin-core-progress-spinner #ctrlLoading
+                                    *ngIf="!myView.isDataLoaded"></app-skin-core-progress-spinner>
+
+<div [hidden]="!myView.isDataLoaded">
+  <mat-form-field appearance="standard">
+    <mat-label>{{myPresenter.resources.columns.columnName.label}}</mat-label>
+    <input matInput
+           [placeholder]="myPresenter.resources.columns.columnName.placeholder"
+           [formControl]="myView.fieldName">
+  </mat-form-field>
+
+  <div #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+       appSkinCoreProgressSpinner
+       class="mat-elevation-z8">
+    <table mat-table
+           matSort
+           class="css-table"
+           [dataSource]="myView.dataSource"
+           aria-label="Elements">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{myPresenter.resources.columns.columnId.label}}</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{myPresenter.resources.columns.columnName.label}}</th>
+        <td mat-cell *matCellDef="let row">{{row.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>
+          <button mat-icon-button
+                  [title]="myPresenter.resources.actions.actionAdd.title"
+                  (click)="myPresenter.onItemInsert()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button
+                  [title]="myPresenter.resources.actions.actionEdit.title"
+                  (click)="myPresenter.onItemEdit(row.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button
+                  [title]="myPresenter.resources.actions.actionDelete.title"
+                  [disabled]="myView.isItemDeleteStarted"
+                  (click)="myPresenter.onItemDelete(row.id)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="myView.displayedColumns"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: myView.displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #ctrlPaginator
+                   [length]="myView.totalCount"
+                   [pageIndex]="0"
+                   [pageSize]="myView.pageSize"
+                   [pageSizeOptions]="myView.pageSizeOptions">
+    </mat-paginator>
+  </div>
+</div>

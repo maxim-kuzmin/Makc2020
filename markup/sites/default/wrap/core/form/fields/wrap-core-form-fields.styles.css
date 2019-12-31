@@ -1,0 +1,41 @@
+.skin--css--core--form--fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.skin--css--core--form--fields > div {
+  margin-bottom: 1em;
+  /*width: 100%;*/
+}
+
+.skin--css--core--form--fields > div > label {
+  color: #696969;
+}
+
+.skin--css--core--form--fields > div > label::after {
+  content: ":";
+}
+
+.skin--css--core--form--fields > div > input {
+  /*width: 100%;*/
+}
+
+.skin--css--core--form--fields > div > select {
+  /*width: 100%;*/
+}
+
+.skin--css--core--form--fields > div:last-child,
+div.skin--css--core--form--fields__last-child {
+  margin-bottom: 0;
+}
+
+.skin--css--core--form--fields > div > div {
+  color: #696969;
+  margin-bottom: 0.4em;
+}
+
+.skin--css--core--form--fields > div > div > label {
+  color: #696969;
+}

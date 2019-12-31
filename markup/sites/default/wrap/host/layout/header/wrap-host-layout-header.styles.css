@@ -1,0 +1,23 @@
+.skin--css--host--layout--part.skin--css--host--layout--header {
+  color: #ffffff;
+  padding: 1em;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.skin--css--host--layout--header a,
+.skin--css--host--layout--header a:active,
+.skin--css--host--layout--header a:hover {
+  color: #ffffff;
+}
+
+.skin--css--host--layout--header--logo {
+  border: 0.05em solid white;
+  background-repeat: no-repeat;
+  float: left;
+  margin-right: 40px;
+  min-width: 60px;
+  min-height: 60px;
+  width: 60px;
+  height: 60px;
+}

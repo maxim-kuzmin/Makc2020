@@ -1,0 +1,16 @@
+.skin--css--host--control--grid {
+  text-align: left;
+}
+
+.skin--css--host--control--grid li {
+  border-top: 0.05em solid gray;
+  margin-top: 1em;
+  padding-top: 1.5em;
+}
+
+.skin--css--host--control--grid li:first-child,
+li.skin--css--host--control--grid__first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}

@@ -1,0 +1,31 @@
+<div class="skin--css--host--layout" [ngClass]="myView.cssClass">
+  <!--host--layout/-->
+  <div app-skin-host-layout-header
+       class="skin--css--host--layout--part skin--css--host--layout--header"></div>
+  <div #ctrlMenu1
+       app-skin-host-layout-menu
+       [menuLevel]="1"
+       [ngStyle]="myView.getMenuCssStyle(ctrlMenu1)"
+       class="skin--css--host--layout--part skin--css--host--layout--menu1"></div>
+  <div #ctrlMenu2
+       app-skin-host-layout-menu
+       [menuLevel]="2"
+       [ngStyle]="myView.getMenuCssStyle(ctrlMenu2)"
+       class="skin--css--host--layout--part skin--css--host--layout--menu2"></div>
+  <div #ctrlMenu3
+       app-skin-host-layout-menu
+       [menuLevel]="3"
+       [ngStyle]="myView.getMenuCssStyle(ctrlMenu3)"
+       class="skin--css--host--layout--part skin--css--host--layout--menu2"></div>
+  <div #ctrlMenu4
+       app-skin-host-layout-menu
+       [menuLevel]="4"
+       [ngStyle]="myView.getMenuCssStyle(ctrlMenu4)"
+       class="skin--css--host--layout--part skin--css--host--layout--menu2"></div>
+  <div class="skin--css--host--layout--part skin--css--host--layout--body">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="skin--css--host--layout--part skin--css--host--layout--footer"></div>
+  <!--/host--layout-->
+</div>
+<app-skin-host-layout-common-message></app-skin-host-layout-common-message>

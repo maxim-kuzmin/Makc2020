@@ -1,0 +1,10 @@
+.skin--css--host--layout .skin--css--host--layout--part {
+  border-left: 0.05em solid gray;
+  border-right: 0.05em solid gray;
+  border-top: 0.05em solid gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+

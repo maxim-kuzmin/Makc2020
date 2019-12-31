@@ -1,0 +1,25 @@
+<div class="ui-dialog-titlebar">
+  <div class="ui-dialog-title">
+    {{myPresenter.resources.title}}
+  </div>
+</div>
+
+<div class="ui-dialog-content">
+  {{myView.message}}
+</div>
+
+<div class="ui-dialog-footer">
+  <button
+    pButton
+    type="button"
+    [label]="myPresenter.resources.buttons.buttonYes.title"
+    class="ui-button-success"
+    (click)="myView.onButtonYesClick()"></button>
+
+  <button pButton
+          type="button"
+          [label]="myPresenter.resources.buttons.buttonNo.title"
+          class="ui-button-danger"
+          (click)="myView.onButtonNoClick()"></button>
+</div>
+
