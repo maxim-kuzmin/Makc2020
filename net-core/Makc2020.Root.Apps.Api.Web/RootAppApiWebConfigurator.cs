@@ -43,7 +43,6 @@ namespace Makc2020.Root.Apps.Api.Web
             base.ConfigureServices(services);
 
             services.AddTransient(x => GetContext(x).CoreCaching);
-            services.AddTransient(x => GetContext(x).CoreWeb);
             services.AddTransient(x => GetContext(x).ModDummyMainCaching);
 
             if (ModAuthWebAuthenticationIsEnabled)
@@ -60,7 +59,6 @@ namespace Makc2020.Root.Apps.Api.Web
             var features = new ICoreBaseCommonFeature[]
             {
                 new CoreCachingFeature(),
-                new CoreWebFeature(),
                 new ModDummyMainCachingFeature()
             };
 

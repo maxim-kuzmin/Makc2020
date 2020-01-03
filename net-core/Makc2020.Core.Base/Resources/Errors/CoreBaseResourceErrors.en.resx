@@ -123,7 +123,13 @@
   <data name="Ввод содержит недопустимые значения в свойствах: {0}" xml:space="preserve">
     <value>Input data has invalid values in properties: {0}</value>
   </data>
+  <data name="Доступ запрещён" xml:space="preserve">
+    <value>Forbidden</value>
+  </data>
   <data name="Неизвестная ошибка" xml:space="preserve">
     <value>Unknown error</value>
+  </data>
+  <data name="Страница не найдена" xml:space="preserve">
+    <value>Not found</value>
   </data>
 </root>

@@ -4,8 +4,6 @@ using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Caching;
 using Makc2020.Core.Caching.Resources.Errors;
-using Makc2020.Core.Web;
-using Makc2020.Core.Web.Resources.Errors;
 using Makc2020.Data.Caching;
 using Makc2020.Mods.DummyMain.Caching;
 using Makc2020.Root.Apps.Api.Base;
@@ -27,11 +25,6 @@ namespace Makc2020.Root.Apps.Api.Web
         /// Ядро. Кэширование.
         /// </summary>
         public CoreCachingFeature CoreCaching { get; set; }
-
-        /// <summary>
-        /// Ядро. Веб.
-        /// </summary>
-        public CoreWebFeature CoreWeb { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Кэширование.
@@ -61,7 +54,6 @@ namespace Makc2020.Root.Apps.Api.Web
             base.ConfigureServices(services);
 
             CoreCaching?.ConfigureServices(services);
-            CoreWeb?.ConfigureServices(services);
             ModDummyMainCaching?.ConfigureServices(services);
         }
 
@@ -83,11 +75,6 @@ namespace Makc2020.Root.Apps.Api.Web
             {
                 MemoryCacheOptions = new MemoryCacheOptions(),
                 ResourceErrorsLocalizer = GetLocalizer<CoreCachingResourceErrors>(serviceProvider)
-            });
-
-            CoreWeb?.InitContext(new CoreWebExternals
-            {
-                ResourceErrorsLocalizer = GetLocalizer<CoreWebResourceErrors>(serviceProvider)
             });
 
             ModDummyMainCaching?.InitContext(new ModDummyMainCachingExternals
@@ -119,7 +106,6 @@ namespace Makc2020.Root.Apps.Api.Web
             if (base.TrySetFeature(feature)) return true;
 
             if (TrySet<CoreCachingFeature>(x => CoreCaching = x, feature)) return true;
-            if (TrySet<CoreWebFeature>(x => CoreWeb = x, feature)) return true;
             if (TrySet<ModDummyMainCachingFeature>(x => ModDummyMainCaching = x, feature)) return true;
 
             return false;

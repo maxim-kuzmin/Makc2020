@@ -49,6 +49,24 @@ namespace Makc2020.Core.Base.Resources.Errors
         }
 
         /// <summary>
+        /// Получить строку "Доступ запрещён".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringHttp403()
+        {
+            return Localizer["Доступ запрещён"];
+        }
+
+        /// <summary>
+        /// Получить строку "Страница не найдена".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringHttp404()
+        {
+            return Localizer["Страница не найдена"];
+        }
+
+        /// <summary>
         /// Получить строку "Неизвестная ошибка".
         /// </summary>
         /// <returns>Строка.</returns>

@@ -23,11 +23,6 @@ namespace Makc2020.Root.Apps.Api.Web
         public CoreCachingContext CoreCaching => Features.CoreCaching.Context;
 
         /// <summary>
-        /// Ядро. Веб.
-        /// </summary>
-        public CoreWebContext CoreWeb => Features.CoreWeb.Context;
-
-        /// <summary>
         /// Мод "DummyMain". Кэширование.
         /// </summary>
         public ModDummyMainCachingContext ModDummyMainCaching => Features.ModDummyMainCaching.Context;
