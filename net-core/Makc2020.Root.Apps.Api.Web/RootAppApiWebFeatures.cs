@@ -5,7 +5,10 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Core.Caching;
 using Makc2020.Core.Caching.Resources.Errors;
 using Makc2020.Data.Caching;
+using Makc2020.Host.Web.Api.Parts.Auth;
+using Makc2020.Mods.Auth.Web.Api;
 using Makc2020.Mods.DummyMain.Caching;
+using Makc2020.Mods.DummyMain.Web.Api;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,9 +30,24 @@ namespace Makc2020.Root.Apps.Api.Web
         public CoreCachingFeature CoreCaching { get; set; }
 
         /// <summary>
+        /// Хост. Beб. API. Часть "Auth". API.
+        /// </summary>
+        public HostWebApiPartAuthFeature HostWebApiPartAuth { get; set; }
+
+        /// <summary>
+        /// Мод "Auth". Веб. API.
+        /// </summary>
+        public ModAuthWebApiFeature ModAuthWebApi { get; set; }
+
+        /// <summary>
         /// Мод "DummyMain". Кэширование.
         /// </summary>
         public ModDummyMainCachingFeature ModDummyMainCaching { get; set; }
+
+        /// <summary>
+        /// Мод "DummyMain". Веб. API.
+        /// </summary>
+        public ModDummyMainWebApiFeature ModDummyMainWebApi { get; set; }
 
         #endregion Properties
 
@@ -54,7 +72,10 @@ namespace Makc2020.Root.Apps.Api.Web
             base.ConfigureServices(services);
 
             CoreCaching?.ConfigureServices(services);
+            HostWebApiPartAuth?.ConfigureServices(services);
+            ModAuthWebApi?.ConfigureServices(services);
             ModDummyMainCaching?.ConfigureServices(services);
+            ModDummyMainWebApi?.ConfigureServices(services);
         }
 
         /// <inheritdoc/>
@@ -106,7 +127,10 @@ namespace Makc2020.Root.Apps.Api.Web
             if (base.TrySetFeature(feature)) return true;
 
             if (TrySet<CoreCachingFeature>(x => CoreCaching = x, feature)) return true;
+            if (TrySet<HostWebApiPartAuthFeature>(x => HostWebApiPartAuth = x, feature)) return true;
+            if (TrySet<ModAuthWebApiFeature>(x => ModAuthWebApi = x, feature)) return true;
             if (TrySet<ModDummyMainCachingFeature>(x => ModDummyMainCaching = x, feature)) return true;
+            if (TrySet<ModDummyMainWebApiFeature>(x => ModDummyMainWebApi = x, feature)) return true;
 
             return false;
         }

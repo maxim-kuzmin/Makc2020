@@ -2,19 +2,10 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
-using Makc2020.Core.Web.Api;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Delete;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Get;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Insert;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Update;
-using Makc2020.Mods.DummyMain.Caching.Jobs.List.Get;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get;
-using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -24,23 +15,11 @@ namespace Makc2020.Mods.DummyMain.Web.Api
     /// Мод "DummyMain". Веб. API. Контроллер.
     /// </summary>
     [Route("api/dummy-main")]
-    public class ModDummyMainWebApiController : CoreWebApiController
+    public class ModDummyMainWebApiController : ControllerBase
     {
         #region Properties
 
-        private ModDummyMainCachingJobItemDeleteService JobItemDelete { get; set; }
-
-        private ModDummyMainCachingJobItemGetService JobItemGet { get; set; }
-
-        private ModDummyMainCachingJobItemInsertService JobItemInsert { get; set; }
-
-        private ModDummyMainCachingJobItemUpdateService JobItemUpdate { get; set; }
-
-        private ModDummyMainCachingJobListGetService JobListGet { get; set; }
-
-        private ModDummyMainCachingJobOptionsDummyManyToManyGetService JobOptionDummyManyToManyListGet { get; set; }
-
-        private ModDummyMainCachingJobOptionsDummyOneToManyGetService JobOptionDummyOneToManyListGet { get; set; }
+        private ModDummyMainWebApiModel MyModel { get; set; }
 
         #endregion Properties
 
@@ -49,37 +28,10 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="logger">Регистратор.</param>
-        /// <param name="jobItemDelete">Задание на удаление элемента.</param>
-        /// <param name="jobItemGet">Задание на получение элемента.</param>
-        /// <param name="jobItemInsert">Задание на вставку элемента.</param>
-        /// <param name="jobItemUpdate">Задание на обновление элемента.</param>
-        /// <param name="jobListGet">Задание на получение списка.</param>
-        /// <param name="jobOptionDummyManyToManyListGet">
-        /// Задание на получение вариантов выбора сущности "DummyManyToMany".
-        /// </param>
-        /// <param name="jobOptionDummyOneToManyListGet">
-        /// Задание на получение вариантов выбора сущности "DummyOneToMany".
-        /// </param>
-        public ModDummyMainWebApiController(
-            ILogger<ModDummyMainWebApiController> logger,
-            ModDummyMainCachingJobItemDeleteService jobItemDelete,
-            ModDummyMainCachingJobItemGetService jobItemGet,
-            ModDummyMainCachingJobItemInsertService jobItemInsert,
-            ModDummyMainCachingJobItemUpdateService jobItemUpdate,
-            ModDummyMainCachingJobListGetService jobListGet,
-            ModDummyMainCachingJobOptionsDummyManyToManyGetService jobOptionDummyManyToManyListGet,
-            ModDummyMainCachingJobOptionsDummyOneToManyGetService jobOptionDummyOneToManyListGet
-            )
-            : base(logger)
+        /// <param name="model">Модель.</param>
+        public ModDummyMainWebApiController(ModDummyMainWebApiModel model)
         {
-            JobItemDelete = jobItemDelete;
-            JobItemGet = jobItemGet;
-            JobItemInsert = jobItemInsert;
-            JobItemUpdate = jobItemUpdate;
-            JobListGet = jobListGet;
-            JobOptionDummyManyToManyListGet = jobOptionDummyManyToManyListGet;
-            JobOptionDummyOneToManyListGet = jobOptionDummyOneToManyListGet;
+            MyModel = model;
         }
 
         #endregion Constructors
@@ -94,19 +46,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("list"), HttpGet]
         public async Task<IActionResult> Get(ModDummyMainBaseJobListGetInput input)
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseJobListGetOutput>();
+            var result = new ModDummyMainBaseJobListGetResult();
 
-            var job = JobListGet;
+            var (execute, onSuccess, onError) = MyModel.BuildActionListGet(input);
 
             try
             {
-                result.Data = await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result, input);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -120,19 +72,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpGet]
         public async Task<IActionResult> Get(ModDummyMainBaseJobItemGetInput input)
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseJobItemGetOutput>();
+            var result = new ModDummyMainBaseJobItemGetResult();
 
-            var job = JobItemGet;
+            var (execute, onSuccess, onError) = MyModel.BuildActionItemGet(input);
 
             try
             {
-                result.Data = await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result, input);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -145,19 +97,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-many-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyManyToMany()
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionListGetOutput>();
+            var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
-            var job = JobOptionDummyManyToManyListGet;
+            var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyManyToManyListGet();
 
             try
             {
-                result.Data = await job.Execute().CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -170,19 +122,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-one-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyOneToMany()
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionListGetOutput>();
+            var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
-            var job = JobOptionDummyOneToManyListGet;
+            var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyOneToManyListGet();
 
             try
             {
-                result.Data = await job.Execute().CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -196,19 +148,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpPost]
         public async Task<IActionResult> Post([FromBody] ModDummyMainBaseJobItemGetOutput input)
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseJobItemGetOutput>();
+            var result = new ModDummyMainBaseJobItemGetResult();
 
-            var job = JobItemInsert;
+            var (execute, onSuccess, onError) = MyModel.BuildActionItemInsert(input);
 
             try
             {
-                result.Data = await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result, input);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -222,19 +174,19 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpPut]
         public async Task<IActionResult> Put([FromBody] ModDummyMainBaseJobItemGetOutput input)
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseJobItemGetOutput>();
+            var result = new ModDummyMainBaseJobItemGetResult();
 
-            var job = JobItemUpdate;
+            var (execute, onSuccess, onError) = MyModel.BuildActionItemUpdate(input);
 
             try
             {
-                result.Data = await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result, input);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);
@@ -250,17 +202,17 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         {
             var result = new CoreBaseExecutionResult();
 
-            var job = JobItemDelete;
+            var (execute, onSuccess, onError) = MyModel.BuildActionItemDelete(input);
 
             try
             {
-                await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
+                await execute().CoreBaseExtTaskWithCurrentCulture(false);
 
-                job.OnSuccess(Logger, result, input);
+                onSuccess(result);
             }
             catch (Exception ex)
             {
-                job.OnError(ex, Logger, result);
+                onError(ex, result);
             }
 
             return Ok(result);

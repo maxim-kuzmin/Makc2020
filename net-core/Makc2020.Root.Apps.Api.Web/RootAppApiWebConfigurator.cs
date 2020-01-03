@@ -2,10 +2,12 @@
 
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Caching;
-using Makc2020.Core.Web;
+using Makc2020.Host.Web.Api.Parts.Auth;
 using Makc2020.Mods.Auth.Base.Config;
+using Makc2020.Mods.Auth.Web.Api;
 using Makc2020.Mods.Auth.Web.Ext;
 using Makc2020.Mods.DummyMain.Caching;
+using Makc2020.Mods.DummyMain.Web.Api;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -18,8 +20,8 @@ namespace Makc2020.Root.Apps.Api.Web
     ///<typeparam name="TContext">Тип контекста.</typeparam>
     ///<typeparam name="TFeatures">Тип функциональностей.</typeparam>
     public abstract class RootAppApiWebConfigurator<TContext, TFeatures> : RootAppApiBaseConfigurator<TContext, TFeatures>
-        where TContext: RootAppApiWebContext<TFeatures>
-        where TFeatures: RootAppApiWebFeatures
+        where TContext : RootAppApiWebContext<TFeatures>
+        where TFeatures : RootAppApiWebFeatures
     {
         #region Properties
 
@@ -59,7 +61,10 @@ namespace Makc2020.Root.Apps.Api.Web
             var features = new ICoreBaseCommonFeature[]
             {
                 new CoreCachingFeature(),
-                new ModDummyMainCachingFeature()
+                new HostWebApiPartAuthFeature(),
+                new ModAuthWebApiFeature(),
+                new ModDummyMainCachingFeature(),
+                new ModDummyMainWebApiFeature()
             };
 
             result.AddRange(features);
