@@ -7,8 +7,8 @@ using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Update;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
-using Makc2020.Mods.DummyMain.Base.Jobs.Options.DummyManyToMany.Get;
-using Makc2020.Mods.DummyMain.Base.Jobs.Options.DummyOneToMany.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyManyToMany.List.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyOneToMany.List.Get;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
 
@@ -49,12 +49,12 @@ namespace Makc2020.Mods.DummyMain.Base
         /// <summary>
         /// Задание на получение вариантов выбора сущности "DummyManyToMany".
         /// </summary>
-        public ModDummyMainBaseJobOptionsDummyManyToManyGetService JobOptionsDummyManyToManyGet { get; private set; }
+        public ModDummyMainBaseJobOptionDummyManyToManyGetListService JobOptionsDummyManyToManyGet { get; private set; }
 
         /// <summary>
         /// Задание на получение вариантов выбора сущности "DummyOneToMany".
         /// </summary>
-        public ModDummyMainBaseJobOptionsDummyOneToManyGetService JobOptionsDummyOneToManyGet { get; private set; }
+        public ModDummyMainBaseJobOptionDummyOneToManyListGetService JobOptionsDummyOneToManyGet { get; private set; }
 
         #endregion Properties
 
@@ -108,12 +108,12 @@ namespace Makc2020.Mods.DummyMain.Base
                 coreBaseResourceErrors
                 );
 
-            JobOptionsDummyManyToManyGet = new ModDummyMainBaseJobOptionsDummyManyToManyGetService(
+            JobOptionsDummyManyToManyGet = new ModDummyMainBaseJobOptionDummyManyToManyGetListService(
                 service.GetOptionsDummyManyToMany,
                 coreBaseResourceErrors
                 );
 
-            JobOptionsDummyOneToManyGet = new ModDummyMainBaseJobOptionsDummyOneToManyGetService(
+            JobOptionsDummyOneToManyGet = new ModDummyMainBaseJobOptionDummyOneToManyListGetService(
                 service.GetOptionsDummyOneToMany,
                 coreBaseResourceErrors
                 );

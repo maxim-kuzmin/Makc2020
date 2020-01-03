@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
-using Makc2020.Core.Base.Common.Mod.Jobs.List.Get;
+using Makc2020.Core.Base.Common.Jobs.List.Get;
 using System.Linq;
 
 namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
@@ -9,7 +9,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
     /// <summary>
     /// Мод "DummyMain". Задания. Список. Получение. Ввод.
     /// </summary>
-    public class ModDummyMainBaseJobListGetInput : CoreBaseCommonModJobListGetInput
+    public class ModDummyMainBaseJobListGetInput : CoreBaseCommonJobListGetInput
     {
         #region Properties
 

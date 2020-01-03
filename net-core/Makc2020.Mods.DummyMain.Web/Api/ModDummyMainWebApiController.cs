@@ -3,7 +3,7 @@
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Web.Api;
-using Makc2020.Mods.DummyMain.Base.Common.Jobs.Options.Get.Output;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Delete;
@@ -38,9 +38,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
         private ModDummyMainCachingJobListGetService JobListGet { get; set; }
 
-        private ModDummyMainCachingJobOptionsDummyManyToManyGetService JobOptionsDummyManyToManyGet { get; set; }
+        private ModDummyMainCachingJobOptionsDummyManyToManyGetService JobOptionDummyManyToManyListGet { get; set; }
 
-        private ModDummyMainCachingJobOptionsDummyOneToManyGetService JobOptionsDummyOneToManyGet { get; set; }
+        private ModDummyMainCachingJobOptionsDummyOneToManyGetService JobOptionDummyOneToManyListGet { get; set; }
 
         #endregion Properties
 
@@ -55,10 +55,10 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="jobItemInsert">Задание на вставку элемента.</param>
         /// <param name="jobItemUpdate">Задание на обновление элемента.</param>
         /// <param name="jobListGet">Задание на получение списка.</param>
-        /// <param name="jobOptionsDummyManyToManyGet">
+        /// <param name="jobOptionDummyManyToManyListGet">
         /// Задание на получение вариантов выбора сущности "DummyManyToMany".
         /// </param>
-        /// <param name="jobOptionsDummyOneToManyGet">
+        /// <param name="jobOptionDummyOneToManyListGet">
         /// Задание на получение вариантов выбора сущности "DummyOneToMany".
         /// </param>
         public ModDummyMainWebApiController(
@@ -68,8 +68,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             ModDummyMainCachingJobItemInsertService jobItemInsert,
             ModDummyMainCachingJobItemUpdateService jobItemUpdate,
             ModDummyMainCachingJobListGetService jobListGet,
-            ModDummyMainCachingJobOptionsDummyManyToManyGetService jobOptionsDummyManyToManyGet,
-            ModDummyMainCachingJobOptionsDummyOneToManyGetService jobOptionsDummyOneToManyGet
+            ModDummyMainCachingJobOptionsDummyManyToManyGetService jobOptionDummyManyToManyListGet,
+            ModDummyMainCachingJobOptionsDummyOneToManyGetService jobOptionDummyOneToManyListGet
             )
             : base(logger)
         {
@@ -78,8 +78,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             JobItemInsert = jobItemInsert;
             JobItemUpdate = jobItemUpdate;
             JobListGet = jobListGet;
-            JobOptionsDummyManyToManyGet = jobOptionsDummyManyToManyGet;
-            JobOptionsDummyOneToManyGet = jobOptionsDummyOneToManyGet;
+            JobOptionDummyManyToManyListGet = jobOptionDummyManyToManyListGet;
+            JobOptionDummyOneToManyListGet = jobOptionDummyOneToManyListGet;
         }
 
         #endregion Constructors
@@ -145,9 +145,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-many-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyManyToMany()
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionsGetOutputList>();
+            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionListGetOutput>();
 
-            var job = JobOptionsDummyManyToManyGet;
+            var job = JobOptionDummyManyToManyListGet;
 
             try
             {
@@ -170,9 +170,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-one-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyOneToMany()
         {
-            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionsGetOutputList>();
+            var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseCommonJobOptionListGetOutput>();
 
-            var job = JobOptionsDummyOneToManyGet;
+            var job = JobOptionDummyOneToManyListGet;
 
             try
             {

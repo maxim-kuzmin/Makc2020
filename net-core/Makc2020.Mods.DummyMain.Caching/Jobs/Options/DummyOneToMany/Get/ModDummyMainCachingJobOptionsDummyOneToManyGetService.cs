@@ -6,8 +6,8 @@ using Makc2020.Core.Caching.Clients;
 using Makc2020.Core.Caching.Common.Client.Config;
 using Makc2020.Core.Caching.Resources.Errors;
 using Makc2020.Data.Base;
-using Makc2020.Mods.DummyMain.Base.Common.Jobs.Options.Get.Output;
-using Makc2020.Mods.DummyMain.Base.Jobs.Options.DummyOneToMany.Get;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyOneToMany.List.Get;
 using System;
 using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get
     /// Мод "DummyMain". Задания. Варианты выбора. Сущность "DummyOneToMany". Получение. Сервис.
     /// </summary>
     public class ModDummyMainCachingJobOptionsDummyOneToManyGetService :
-        ModDummyMainBaseJobOptionsDummyOneToManyGetService
+        ModDummyMainBaseJobOptionDummyOneToManyListGetService
     {
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get
         /// <param name="cache">Кэш.</param>      
         /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
         public ModDummyMainCachingJobOptionsDummyOneToManyGetService(
-            Func<Task<ModDummyMainBaseCommonJobOptionsGetOutputList>> executable,
+            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             DataBaseSettings dataBaseSettings,
             ICoreCachingCommonClientConfigSettings cacheSettings,
@@ -41,7 +41,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get
         {
             if (cacheSettings.IsCachingEnabled)
             {
-                var client = new CoreCachingClientWithChangeAndRead<ModDummyMainBaseCommonJobOptionsGetOutputList>(
+                var client = new CoreCachingClientWithChangeAndRead<ModDummyMainBaseCommonJobOptionListGetOutput>(
                     "Options.DummyOneToMany.Get",
                     cacheSettings,
                     cache,

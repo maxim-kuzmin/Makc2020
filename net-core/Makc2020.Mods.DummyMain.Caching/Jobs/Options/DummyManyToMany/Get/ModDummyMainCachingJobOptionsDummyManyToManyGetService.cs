@@ -6,8 +6,8 @@ using Makc2020.Core.Caching.Clients;
 using Makc2020.Core.Caching.Common.Client.Config;
 using Makc2020.Core.Caching.Resources.Errors;
 using Makc2020.Data.Base;
-using Makc2020.Mods.DummyMain.Base.Common.Jobs.Options.Get.Output;
-using Makc2020.Mods.DummyMain.Base.Jobs.Options.DummyManyToMany.Get;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyManyToMany.List.Get;
 using System;
 using System.Threading.Tasks;
 
@@ -17,7 +17,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get
     /// Мод "DummyMain". Задания. Варианты выбора. Сущность "DummyManyToMany". Получение. Сервис.
     /// </summary>
     public class ModDummyMainCachingJobOptionsDummyManyToManyGetService :
-        ModDummyMainBaseJobOptionsDummyManyToManyGetService
+        ModDummyMainBaseJobOptionDummyManyToManyGetListService
     {
         #region Constructors
 
@@ -31,7 +31,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get
         /// <param name="cache">Кэш.</param>      
         /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
         public ModDummyMainCachingJobOptionsDummyManyToManyGetService(
-            Func<Task<ModDummyMainBaseCommonJobOptionsGetOutputList>> executable,
+            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             DataBaseSettings dataBaseSettings,
             ICoreCachingCommonClientConfigSettings cacheSettings,
@@ -41,7 +41,7 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get
         {
             if (cacheSettings.IsCachingEnabled)
             {
-                var client = new CoreCachingClientWithChangeAndRead<ModDummyMainBaseCommonJobOptionsGetOutputList>(
+                var client = new CoreCachingClientWithChangeAndRead<ModDummyMainBaseCommonJobOptionListGetOutput>(
                     "Options.DummyManyToMany.Get",
                     cacheSettings,
                     cache,

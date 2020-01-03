@@ -1,13 +1,14 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Common.Mod.Ext;
+using Makc2020.Core.Base.Common.Ext;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Data.Base.Loaders;
 using Makc2020.Data.Base.Objects;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
-using Makc2020.Mods.DummyMain.Base.Common.Jobs.Options.Get.Output;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.Item.Get;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Config;
 using Makc2020.Mods.DummyMain.Base.Ext;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
@@ -175,9 +176,9 @@ namespace Makc2020.Mods.DummyMain.Base
         /// Получить варианты выбора сущности "DummyManyToMany".
         /// </summary>
         /// <returns>Задача с полученными данными.</returns>
-        public async Task<ModDummyMainBaseCommonJobOptionsGetOutputList> GetOptionsDummyManyToMany()
+        public async Task<ModDummyMainBaseCommonJobOptionListGetOutput> GetOptionsDummyManyToMany()
         {
-            var result = new ModDummyMainBaseCommonJobOptionsGetOutputList();
+            var result = new ModDummyMainBaseCommonJobOptionListGetOutput();
 
             using (var source = CreateDbContext())
             {
@@ -193,9 +194,9 @@ namespace Makc2020.Mods.DummyMain.Base
         /// Получить варианты выбора сущности "DummyOneToMany".
         /// </summary>
         /// <returns>Задача с полученными данными.</returns>
-        public async Task<ModDummyMainBaseCommonJobOptionsGetOutputList> GetOptionsDummyOneToMany()
+        public async Task<ModDummyMainBaseCommonJobOptionListGetOutput> GetOptionsDummyOneToMany()
         {
-            var result = new ModDummyMainBaseCommonJobOptionsGetOutputList();
+            var result = new ModDummyMainBaseCommonJobOptionListGetOutput();
 
             using (var source = CreateDbContext())
             {
@@ -287,22 +288,22 @@ namespace Makc2020.Mods.DummyMain.Base
             return result;
         }
 
-        private ModDummyMainBaseCommonJobOptionsGetOutputItem CreateOptionDummyManyToMany(
+        private ModDummyMainBaseCommonJobOptionItemGetOutput  CreateOptionDummyManyToMany(
             DataEntityObjectDummyManyToMany entity
             )
         {
-            return new ModDummyMainBaseCommonJobOptionsGetOutputItem
+            return new ModDummyMainBaseCommonJobOptionItemGetOutput 
             {
                 Name = entity.Name,
                 Value = entity.Id
             };
         }
 
-        private ModDummyMainBaseCommonJobOptionsGetOutputItem CreateOptionDummyOneToMany(
+        private ModDummyMainBaseCommonJobOptionItemGetOutput  CreateOptionDummyOneToMany(
             DataEntityObjectDummyOneToMany entity
             )
         {
-            return new ModDummyMainBaseCommonJobOptionsGetOutputItem
+            return new ModDummyMainBaseCommonJobOptionItemGetOutput 
             {
                 Name = entity.Name,
                 Value = entity.Id

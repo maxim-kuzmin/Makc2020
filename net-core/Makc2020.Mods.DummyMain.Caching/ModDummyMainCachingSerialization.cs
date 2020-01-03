@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Mods.DummyMain.Base.Common.Jobs.Options.Get.Output;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.Item.Get;
+using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
 
@@ -20,8 +21,8 @@ namespace Makc2020.Mods.DummyMain.Caching
         {
             var model = ProtoBuf.Meta.RuntimeTypeModel.Default;
 
-            InitCommonJobOptionsGetOutputItem(model);
-            InitCommonJobOptionsGetOutputList(model);
+            InitCommonJobOptionItemGetOutput(model);
+            InitCommonJobOptionListGetOutput(model);
 
             InitJobItemGetOutput(model);
             InitJobListGetOutput(model);
@@ -53,21 +54,21 @@ namespace Makc2020.Mods.DummyMain.Caching
                 );
         }
 
-        private static void InitCommonJobOptionsGetOutputItem(ProtoBuf.Meta.RuntimeTypeModel model)
+        private static void InitCommonJobOptionItemGetOutput(ProtoBuf.Meta.RuntimeTypeModel model)
         {
-            ModDummyMainBaseCommonJobOptionsGetOutputItem obj;
+            ModDummyMainBaseCommonJobOptionItemGetOutput  obj;
 
-            model.Add(typeof(ModDummyMainBaseCommonJobOptionsGetOutputItem), false).Add(
+            model.Add(typeof(ModDummyMainBaseCommonJobOptionItemGetOutput ), false).Add(
                 nameof(obj.Name),
                 nameof(obj.Value)
                 );
         }
 
-        private static void InitCommonJobOptionsGetOutputList(ProtoBuf.Meta.RuntimeTypeModel model)
+        private static void InitCommonJobOptionListGetOutput(ProtoBuf.Meta.RuntimeTypeModel model)
         {
-            ModDummyMainBaseCommonJobOptionsGetOutputList obj;
+            ModDummyMainBaseCommonJobOptionListGetOutput obj;
 
-            model.Add(typeof(ModDummyMainBaseCommonJobOptionsGetOutputList), false).Add(
+            model.Add(typeof(ModDummyMainBaseCommonJobOptionListGetOutput), false).Add(
                 nameof(obj.Items)
                 );
         }
