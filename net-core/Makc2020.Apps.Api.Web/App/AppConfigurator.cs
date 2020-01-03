@@ -9,7 +9,7 @@ namespace Makc2020.Apps.Api.Web.App
     /// <summary>
     /// Приложение. Конфигуратор.
     /// </summary>
-    public class AppConfigurator : RootAppApiWebConfigurator<AppContext, RootAppApiWebFeatures>
+    public class AppConfigurator : RootAppApiWebConfigurator<AppContext, RootAppApiWebModules>
     {
         #region Constants
 

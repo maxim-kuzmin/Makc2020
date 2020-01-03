@@ -3,12 +3,12 @@
 using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Makc2020.Host.Web.Api.Parts.Auth
+namespace Makc2020.Mods.DummyMain.Web.Api
 {
     /// <summary>
-    /// Хост. Beб. API. Часть "Auth". API. Функциональность.
+    /// Мод "DummyMain". Веб. API. Модуль.
     /// </summary>
-    public class HostWebApiPartAuthFeature : ICoreBaseCommonFeature
+    public class ModDummyMainWebApiModule : ICoreBaseCommonModule
     {
         #region Public methods
 
@@ -18,7 +18,7 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<HostWebApiPartAuthModel>();
+            services.AddTransient<ModDummyMainWebApiModel>();
         }
 
         #endregion Public methods

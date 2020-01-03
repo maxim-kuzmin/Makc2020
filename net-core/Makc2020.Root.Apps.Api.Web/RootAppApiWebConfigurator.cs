@@ -18,10 +18,10 @@ namespace Makc2020.Root.Apps.Api.Web
     /// Корень. Приложение "API". Веб. Конфигуратор.
     /// </summary>
     ///<typeparam name="TContext">Тип контекста.</typeparam>
-    ///<typeparam name="TFeatures">Тип функциональностей.</typeparam>
-    public abstract class RootAppApiWebConfigurator<TContext, TFeatures> : RootAppApiBaseConfigurator<TContext, TFeatures>
-        where TContext : RootAppApiWebContext<TFeatures>
-        where TFeatures : RootAppApiWebFeatures
+    ///<typeparam name="TModules">Тип модулей.</typeparam>
+    public abstract class RootAppApiWebConfigurator<TContext, TModules> : RootAppApiBaseConfigurator<TContext, TModules>
+        where TContext : RootAppApiWebContext<TModules>
+        where TModules : RootAppApiWebModules
     {
         #region Properties
 
@@ -54,20 +54,20 @@ namespace Makc2020.Root.Apps.Api.Web
         }
 
         /// <inheritdoc/>
-        public sealed override List<ICoreBaseCommonFeature> CreateCommonFeatureList()
+        public sealed override List<ICoreBaseCommonModule> CreateCommonModuleList()
         {
-            var result = base.CreateCommonFeatureList();
+            var result = base.CreateCommonModuleList();
 
-            var features = new ICoreBaseCommonFeature[]
+            var modules = new ICoreBaseCommonModule[]
             {
-                new CoreCachingFeature(),
-                new HostWebApiPartAuthFeature(),
-                new ModAuthWebApiFeature(),
-                new ModDummyMainCachingFeature(),
-                new ModDummyMainWebApiFeature()
+                new CoreCachingModule(),
+                new HostWebApiPartAuthModule(),
+                new ModAuthWebApiModule(),
+                new ModDummyMainCachingModule(),
+                new ModDummyMainWebApiModule()
             };
 
-            result.AddRange(features);
+            result.AddRange(modules);
 
             return result;
         }

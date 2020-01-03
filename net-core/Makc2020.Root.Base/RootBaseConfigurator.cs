@@ -18,9 +18,9 @@ namespace Makc2020.Root.Base
     /// <summary>
     /// Корень. Основа. Конфигуратор.
     /// </summary>
-    public abstract class RootBaseConfigurator<TContext, TFeatures>
-        where TContext : RootBaseContext<TFeatures>
-        where TFeatures : RootBaseFeatures
+    public abstract class RootBaseConfigurator<TContext, TModules>
+        where TContext : RootBaseContext<TModules>
+        where TModules : RootBaseModules
     {
         #region Properties
 
@@ -71,24 +71,24 @@ namespace Makc2020.Root.Base
         }
 
         /// <summary>
-        /// Создать список обобщённых функциональностей.
+        /// Создать список обобщённых модулей.
         /// </summary>
-        /// <returns>Список обобщённых функциональностей.</returns>
-        public virtual List<ICoreBaseCommonFeature> CreateCommonFeatureList()
+        /// <returns>Список обобщённых модулей.</returns>
+        public virtual List<ICoreBaseCommonModule> CreateCommonModuleList()
         {
-            var result = new List<ICoreBaseCommonFeature>();
+            var result = new List<ICoreBaseCommonModule>();
 
-            var features = new ICoreBaseCommonFeature[]
+            var modules = new ICoreBaseCommonModule[]
             {
-                new CoreBaseFeature(),
-                new CoreDataSqlServerFeature(),
-                new DataBaseFeature(),
-                new DataEntityFeature(),
-                new DataEntitySqlServerFeature(),
-                new HostBaseFeature()
+                new CoreBaseModule(),
+                new CoreDataSqlServerModule(),
+                new DataBaseModule(),
+                new DataEntityModule(),
+                new DataEntitySqlServerModule(),
+                new HostBaseModule()
             };
 
-            result.AddRange(features);
+            result.AddRange(modules);
 
             return result;
         }

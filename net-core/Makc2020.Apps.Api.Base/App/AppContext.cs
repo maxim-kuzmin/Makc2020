@@ -8,17 +8,17 @@ namespace Makc2020.Apps.Api.Base.App
     /// <summary>
     /// Приложение. Контекст.
     /// </summary>    
-    public class AppContext : RootAppApiBaseContext<RootAppApiBaseFeatures>
+    public class AppContext : RootAppApiBaseContext<RootAppApiBaseModules>
     {
         #region Constructors
 
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="features">Функциональности.</param>
+        /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public AppContext(RootAppApiBaseFeatures features, ILogger logger)
-            : base(features, logger)
+        public AppContext(RootAppApiBaseModules modules, ILogger logger)
+            : base(modules, logger)
         {
         }
 

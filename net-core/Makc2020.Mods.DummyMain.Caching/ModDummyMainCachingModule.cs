@@ -5,24 +5,24 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Mods.Auth.Base
+namespace Makc2020.Mods.DummyMain.Caching
 {
     /// <summary>
-    /// Мод "Auth". Основа. Функциональность.
+    /// Мод "DummyMain". Кэширование. Модуль.
     /// </summary>
-    public class ModAuthBaseFeature : ICoreBaseCommonFeature
+    public class ModDummyMainCachingModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Конфигурация.
         /// </summary>
-        public ModAuthBaseConfig Config { get; private set; }
+        public ModDummyMainCachingConfig Config { get; private set; }
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public ModAuthBaseContext Context { get; private set; }
+        public ModDummyMainCachingContext Context { get; private set; }
 
         #endregion Properties
 
@@ -36,12 +36,13 @@ namespace Makc2020.Mods.Auth.Base
         {
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
-            services.AddTransient(x => GetContext(x).Jobs.JobLoginJwt);
-            services.AddTransient(x => GetContext(x).Jobs.JobRefreshJwt);
-            services.AddTransient(x => GetContext(x).Jobs.JobRegister);
-            services.AddTransient(x => GetContext(x).Resources.Errors);
-            services.AddTransient(x => GetContext(x).Resources.Successes);
-            services.AddTransient(x => GetContext(x).Service);
+            services.AddTransient(x => GetContext(x).Jobs.JobItemDelete);
+            services.AddTransient(x => GetContext(x).Jobs.JobItemGet);
+            services.AddTransient(x => GetContext(x).Jobs.JobItemInsert);
+            services.AddTransient(x => GetContext(x).Jobs.JobItemUpdate);
+            services.AddTransient(x => GetContext(x).Jobs.JobListGet);
+            services.AddTransient(x => GetContext(x).Jobs.JobOptionsDummyManyToManyGet);
+            services.AddTransient(x => GetContext(x).Jobs.JobOptionsDummyOneToManyGet);
         }
 
         /// <summary>
@@ -50,25 +51,25 @@ namespace Makc2020.Mods.Auth.Base
         /// <param name="environment">Окружение.</param>
         public void InitConfig(CoreBaseEnvironment environment)
         {
-            Config = new ModAuthBaseConfig(environment);
+            Config = new ModDummyMainCachingConfig(environment);
         }
 
         /// <summary>
         /// Инициализировать контекст.
         /// </summary>
         /// <param name="externals">Внешнее.</param>
-        public void InitContext(ModAuthBaseExternals externals)
+        public void InitContext(ModDummyMainCachingExternals externals)
         {
-            Context = new ModAuthBaseContext(Config, externals);
+            Context = new ModDummyMainCachingContext(Config, externals);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private ModAuthBaseContext GetContext(IServiceProvider serviceProvider)
+        private ModDummyMainCachingContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<ModAuthBaseContext>();
+            return serviceProvider.GetService<ModDummyMainCachingContext>();
         }
 
         #endregion Private methods

@@ -8,13 +8,13 @@ namespace Makc2020.Root.Apps.Api.Web
     /// Корень. Приложение "API". Веб. Сервер.
     /// </summary>
     /// <typeparam name="TContext">Тип контекста.</typeparam>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
-    public abstract class RootAppApiWebServer<TContext, TFeatures, TConfigurator> :
-        RootWebServer<TContext, TFeatures, TConfigurator>
-        where TContext: RootAppApiWebContext<TFeatures>
-        where TFeatures: RootAppApiWebFeatures
-        where TConfigurator : RootAppApiWebConfigurator<TContext, TFeatures>
+    public abstract class RootAppApiWebServer<TContext, TModules, TConfigurator> :
+        RootWebServer<TContext, TModules, TConfigurator>
+        where TContext: RootAppApiWebContext<TModules>
+        where TModules: RootAppApiWebModules
+        where TConfigurator : RootAppApiWebConfigurator<TContext, TModules>
     {
         #region Protected methods
 
@@ -23,7 +23,7 @@ namespace Makc2020.Root.Apps.Api.Web
         {
             base.InitConfigurator(configurator);
 
-            configurator.HostWebPartAuthenticationEnable(Features.ModAuthBase?.Config?.Settings);
+            configurator.HostWebPartAuthenticationEnable(Modules.ModAuthBase?.Config?.Settings);
         }
 
         #endregion Protected methods

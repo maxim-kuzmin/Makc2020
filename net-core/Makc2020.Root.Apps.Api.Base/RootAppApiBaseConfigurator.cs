@@ -13,10 +13,10 @@ namespace Makc2020.Root.Apps.Api.Base
     /// Корень. Приложение "API". Основа. Конфигуратор.
     /// </summary>
     ///<typeparam name="TContext">Тип контекста.</typeparam>
-    ///<typeparam name="TFeatures">Тип функциональностей.</typeparam>
-    public abstract class RootAppApiBaseConfigurator<TContext, TFeatures> : RootBaseConfigurator<TContext, TFeatures>
-        where TContext: RootAppApiBaseContext<TFeatures>
-        where TFeatures: RootAppApiBaseFeatures
+    ///<typeparam name="TModules">Тип модулей.</typeparam>
+    public abstract class RootAppApiBaseConfigurator<TContext, TModules> : RootBaseConfigurator<TContext, TModules>
+        where TContext: RootAppApiBaseContext<TModules>
+        where TModules: RootAppApiBaseModules
     {
         #region Public methods
 
@@ -30,17 +30,17 @@ namespace Makc2020.Root.Apps.Api.Base
         }
 
         /// <inheritdoc/>
-        public override List<ICoreBaseCommonFeature> CreateCommonFeatureList()
+        public override List<ICoreBaseCommonModule> CreateCommonModuleList()
         {
-            var result = base.CreateCommonFeatureList();
+            var result = base.CreateCommonModuleList();
 
-            var features = new ICoreBaseCommonFeature[]
+            var modules = new ICoreBaseCommonModule[]
             {
-                new ModAuthBaseFeature(),
-                new ModDummyMainBaseFeature()
+                new ModAuthBaseModule(),
+                new ModDummyMainBaseModule()
             };
 
-            result.AddRange(features);
+            result.AddRange(modules);
 
             return result;
         }

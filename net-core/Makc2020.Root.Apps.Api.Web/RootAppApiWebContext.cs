@@ -11,21 +11,21 @@ namespace Makc2020.Root.Apps.Api.Web
     /// <summary>
     /// Корень. Приложение "API". Веб. Контекст.
     /// </summary>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
-    public class RootAppApiWebContext<TFeatures> : RootAppApiBaseContext<TFeatures>
-        where TFeatures: RootAppApiWebFeatures
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
+    public class RootAppApiWebContext<TModules> : RootAppApiBaseContext<TModules>
+        where TModules: RootAppApiWebModules
     {
         #region Properties
 
         /// <summary>
         /// Ядро. Кэширование.
         /// </summary>
-        public CoreCachingContext CoreCaching => Features.CoreCaching.Context;
+        public CoreCachingContext CoreCaching => Modules.CoreCaching.Context;
 
         /// <summary>
         /// Мод "DummyMain". Кэширование.
         /// </summary>
-        public ModDummyMainCachingContext ModDummyMainCaching => Features.ModDummyMainCaching.Context;
+        public ModDummyMainCachingContext ModDummyMainCaching => Modules.ModDummyMainCaching.Context;
 
         #endregion Properties
 
@@ -34,10 +34,10 @@ namespace Makc2020.Root.Apps.Api.Web
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="features">Функциональности.</param>
+        /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public RootAppApiWebContext(TFeatures features, ILogger logger)
-            : base(features, logger)
+        public RootAppApiWebContext(TModules modules, ILogger logger)
+            : base(modules, logger)
         {
         }
 

@@ -5,24 +5,24 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Mods.DummyMain.Caching
+namespace Makc2020.Mods.DummyMain.Base
 {
     /// <summary>
-    /// Мод "DummyMain". Кэширование. Функциональность.
+    /// Мод "DummyMain". Основа. Модуль.
     /// </summary>
-    public class ModDummyMainCachingFeature : ICoreBaseCommonFeature
+    public class ModDummyMainBaseModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Конфигурация.
         /// </summary>
-        public ModDummyMainCachingConfig Config { get; private set; }
+        public ModDummyMainBaseConfig Config { get; private set; }
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public ModDummyMainCachingContext Context { get; private set; }
+        public ModDummyMainBaseContext Context { get; private set; }
 
         #endregion Properties
 
@@ -43,6 +43,9 @@ namespace Makc2020.Mods.DummyMain.Caching
             services.AddTransient(x => GetContext(x).Jobs.JobListGet);
             services.AddTransient(x => GetContext(x).Jobs.JobOptionsDummyManyToManyGet);
             services.AddTransient(x => GetContext(x).Jobs.JobOptionsDummyOneToManyGet);
+            services.AddTransient(x => GetContext(x).Resources.Errors);
+            services.AddTransient(x => GetContext(x).Resources.Successes);
+            services.AddTransient(x => GetContext(x).Service);
         }
 
         /// <summary>
@@ -51,25 +54,25 @@ namespace Makc2020.Mods.DummyMain.Caching
         /// <param name="environment">Окружение.</param>
         public void InitConfig(CoreBaseEnvironment environment)
         {
-            Config = new ModDummyMainCachingConfig(environment);
+            Config = new ModDummyMainBaseConfig(environment);
         }
 
         /// <summary>
         /// Инициализировать контекст.
         /// </summary>
         /// <param name="externals">Внешнее.</param>
-        public void InitContext(ModDummyMainCachingExternals externals)
+        public void InitContext(ModDummyMainBaseExternals externals)
         {
-            Context = new ModDummyMainCachingContext(Config, externals);
+            Context = new ModDummyMainBaseContext(Config, externals);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private ModDummyMainCachingContext GetContext(IServiceProvider serviceProvider)
+        private ModDummyMainBaseContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<ModDummyMainCachingContext>();
+            return serviceProvider.GetService<ModDummyMainBaseContext>();
         }
 
         #endregion Private methods

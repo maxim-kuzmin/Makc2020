@@ -11,7 +11,7 @@ namespace Makc2020.Apps.Api.Base.App
     /// <summary>
     /// Приложение. Сервер.
     /// </summary>
-    public class AppServer : RootAppApiBaseServer<AppContext, RootAppApiBaseFeatures, AppConfigurator>
+    public class AppServer : RootAppApiBaseServer<AppContext, RootAppApiBaseModules, AppConfigurator>
     {
         #region Fields
 
@@ -66,15 +66,15 @@ namespace Makc2020.Apps.Api.Base.App
         /// <inheritdoc/>
         protected sealed override AppContext CreateContext()
         {
-            return new AppContext(Features, GetService<ILogger<AppContext>>());
+            return new AppContext(Modules, GetService<ILogger<AppContext>>());
         }
 
         /// <inheritdoc/>
-        protected sealed override RootAppApiBaseFeatures CreateFeatures(
-            IEnumerable<ICoreBaseCommonFeature> commonFeatures
+        protected sealed override RootAppApiBaseModules CreateModules(
+            IEnumerable<ICoreBaseCommonModule> commonModules
             )
         {
-            return new RootAppApiBaseFeatures(commonFeatures);
+            return new RootAppApiBaseModules(commonModules);
         }
 
         /// <inheritdoc/>

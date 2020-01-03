@@ -14,9 +14,9 @@ namespace Makc2020.Root.Base
     /// <summary>
     /// Корень. Основа. Контекст.
     /// </summary>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
-    public abstract class RootBaseContext<TFeatures>
-        where TFeatures : RootBaseFeatures
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
+    public abstract class RootBaseContext<TModules>
+        where TModules : RootBaseModules
     {
         #region Properties
 
@@ -25,9 +25,9 @@ namespace Makc2020.Root.Base
         private CultureInfo CurrentCulture { get; set; }
 
         /// <summary>
-        /// Функциональности.
+        /// Модули.
         /// </summary>
-        protected TFeatures Features { get; private set; }
+        protected TModules Modules { get; private set; }
 
         /// <summary>
         /// Регистратор.
@@ -37,27 +37,27 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Ядро. Основа.
         /// </summary>
-        public CoreBaseContext CoreBase => Features.CoreBase.Context;
+        public CoreBaseContext CoreBase => Modules.CoreBase.Context;
 
         /// <summary>
         /// Данные. Основа.
         /// </summary>
-        public DataBaseContext DataBase => Features.DataBase.Context;
+        public DataBaseContext DataBase => Modules.DataBase.Context;
 
         /// <summary>
         /// Данные. Entity Framework.
         /// </summary>
-        public DataEntityContext DataEntity => Features.DataEntity.Context;
+        public DataEntityContext DataEntity => Modules.DataEntity.Context;
 
         /// <summary>
         /// Данные. Entity Framework. SQL Server.
         /// </summary>
-        public DataEntitySqlServerContext DataEntitySqlServer => Features.DataEntitySqlServer.Context;
+        public DataEntitySqlServerContext DataEntitySqlServer => Modules.DataEntitySqlServer.Context;
 
         /// <summary>
         /// Хост. Основа.
         /// </summary>
-        public HostBaseContext HostBase => Features.HostBase.Context;
+        public HostBaseContext HostBase => Modules.HostBase.Context;
 
         #endregion Properties
 
@@ -66,11 +66,11 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="features">Функциональности.</param>
+        /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public RootBaseContext(TFeatures features, ILogger logger)
+        public RootBaseContext(TModules modules, ILogger logger)
         {
-            Features = features;
+            Modules = modules;
             Logger = logger;
 
             UnhandledExceptionHandler = (s, e) => GetLoggedErrorWithCurrentCulture(e.ExceptionObject);

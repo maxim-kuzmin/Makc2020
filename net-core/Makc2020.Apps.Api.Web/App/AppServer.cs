@@ -17,7 +17,7 @@ namespace Makc2020.Apps.Api.Web.App
     /// <summary>
     /// Приложение. Сервер.
     /// </summary>
-    public class AppServer : RootAppApiWebServer<AppContext, RootAppApiWebFeatures, AppConfigurator>
+    public class AppServer : RootAppApiWebServer<AppContext, RootAppApiWebModules, AppConfigurator>
     {
         #region Fields
 
@@ -115,15 +115,15 @@ namespace Makc2020.Apps.Api.Web.App
         /// <inheritdoc/>
         protected sealed override AppContext CreateContext()
         {
-            return new AppContext(Features, GetService<ILogger<AppContext>>());
+            return new AppContext(Modules, GetService<ILogger<AppContext>>());
         }
 
         /// <inheritdoc/>
-        protected sealed override RootAppApiWebFeatures CreateFeatures(
-            IEnumerable<ICoreBaseCommonFeature> commonFeatures
+        protected sealed override RootAppApiWebModules CreateModules(
+            IEnumerable<ICoreBaseCommonModule> commonModules
             )
         {
-            return new RootAppApiWebFeatures(commonFeatures);
+            return new RootAppApiWebModules(commonModules);
         }
 
         /// <inheritdoc/>

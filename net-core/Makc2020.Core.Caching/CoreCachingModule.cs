@@ -8,9 +8,9 @@ using System;
 namespace Makc2020.Core.Caching
 {
     /// <summary>
-    /// Ядро. Кэширование. Функциональность.
+    /// Ядро. Кэширование. Модуль.
     /// </summary>
-    public class CoreCachingFeature : ICoreBaseCommonFeature
+    public class CoreCachingModule : ICoreBaseCommonModule
     {
         #region Properties
 

@@ -10,13 +10,13 @@ namespace Makc2020.Root.Web
     /// Корень. Веб. Внедрение зависимостей. Autofac. Сервер.
     /// </summary>
     /// <typeparam name="TContext">Тип контекста.</typeparam>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
-    public abstract class RootWebServer<TContext, TFeatures, TConfigurator> :
-        RootBaseServer<TContext, TFeatures, TConfigurator>
-        where TContext : RootBaseContext<TFeatures>
-        where TFeatures : RootBaseFeatures
-        where TConfigurator : RootBaseConfigurator<TContext, TFeatures>
+    public abstract class RootWebServer<TContext, TModules, TConfigurator> :
+        RootBaseServer<TContext, TModules, TConfigurator>
+        where TContext : RootBaseContext<TModules>
+        where TModules : RootBaseModules
+        where TConfigurator : RootBaseConfigurator<TContext, TModules>
     {
         #region Constants
 

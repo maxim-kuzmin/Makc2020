@@ -10,7 +10,7 @@ namespace Makc2020.Apps.Api.Base.App
     /// <summary>
     /// Приложение. Конфигуратор.
     /// </summary>
-    public class AppConfigurator : RootAppApiBaseConfigurator<AppContext, RootAppApiBaseFeatures>
+    public class AppConfigurator : RootAppApiBaseConfigurator<AppContext, RootAppApiBaseModules>
     {
         #region Public methods
 

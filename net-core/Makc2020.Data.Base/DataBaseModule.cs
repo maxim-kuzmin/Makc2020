@@ -4,19 +4,19 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Core.Data.SqlServer
+namespace Makc2020.Data.Base
 {
     /// <summary>
-    /// Ядро. Данные. SQL Server. Функциональность.
+    /// Данные. Основа. Модуль.
     /// </summary>
-    public class CoreDataSqlServerFeature : ICoreBaseCommonFeature
+    public class DataBaseModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public CoreDataSqlServerContext Context { get; private set; } = new CoreDataSqlServerContext();
+        public DataBaseContext Context { get; private set; } = new DataBaseContext();
 
         #endregion Properties
 
@@ -28,16 +28,16 @@ namespace Makc2020.Core.Data.SqlServer
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(x => GetContext(x).Provider);
+            services.AddTransient(x => GetContext(x).Settings);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private CoreDataSqlServerContext GetContext(IServiceProvider serviceProvider)
+        private DataBaseContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<CoreDataSqlServerContext>();
+            return serviceProvider.GetService<DataBaseContext>();
         }
 
         #endregion Private methods

@@ -16,21 +16,21 @@ using System.Collections.Generic;
 namespace Makc2020.Root.Apps.Api.Base
 {
     /// <summary>
-    /// Корень. Приложение "API". Основа. Функциональности.
+    /// Корень. Приложение "API". Основа. Модули.
     /// </summary>
-    public class RootAppApiBaseFeatures : RootBaseFeatures
+    public class RootAppApiBaseModules : RootBaseModules
     {
         #region Properties
 
         /// <summary>
         /// Мод "Auth". Основа.
         /// </summary>
-        public ModAuthBaseFeature ModAuthBase { get; set; }
+        public ModAuthBaseModule ModAuthBase { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Основа.
         /// </summary>
-        public ModDummyMainBaseFeature ModDummyMainBase { get; set; }
+        public ModDummyMainBaseModule ModDummyMainBase { get; set; }
 
         #endregion Properties
 
@@ -39,9 +39,9 @@ namespace Makc2020.Root.Apps.Api.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="commonFeatures">Обобщённые функциональности.</param>
-        public RootAppApiBaseFeatures(IEnumerable<ICoreBaseCommonFeature> commonFeatures)
-            : base(commonFeatures)
+        /// <param name="commonModules">Обобщённые модули.</param>
+        public RootAppApiBaseModules(IEnumerable<ICoreBaseCommonModule> commonModules)
+            : base(commonModules)
         {
         }
 
@@ -95,12 +95,12 @@ namespace Makc2020.Root.Apps.Api.Base
         #region Protected methods
 
         /// <inheritdoc/>
-        protected override bool TrySetFeature(ICoreBaseCommonFeature commonFeature)
+        protected override bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
-            base.TrySetFeature(commonFeature);
+            base.TrySetModule(commonModule);
 
-            if (TrySet<ModDummyMainBaseFeature>(x => ModDummyMainBase = x, commonFeature)) return true;
-            if (TrySet<ModAuthBaseFeature>(x => ModAuthBase = x, commonFeature)) return true;
+            if (TrySet<ModDummyMainBaseModule>(x => ModDummyMainBase = x, commonModule)) return true;
+            if (TrySet<ModAuthBaseModule>(x => ModAuthBase = x, commonModule)) return true;
 
             return false;
         }

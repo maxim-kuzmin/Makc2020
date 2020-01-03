@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Makc2020.Mods.Auth.Web.Api
 {
     /// <summary>
-    /// Мод "Auth". Веб. API. Функциональность.
+    /// Мод "Auth". Веб. API. Модуль.
     /// </summary>
-    public class ModAuthWebApiFeature : ICoreBaseCommonFeature
+    public class ModAuthWebApiModule : ICoreBaseCommonModule
     {
         #region Public methods
 

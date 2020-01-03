@@ -18,36 +18,36 @@ using System.Collections.Generic;
 namespace Makc2020.Root.Apps.Api.Web
 {
     /// <summary>
-    /// Корень. Приложение "API". Веб. Функциональности.
+    /// Корень. Приложение "API". Веб. Модули.
     /// </summary>
-    public class RootAppApiWebFeatures : RootAppApiBaseFeatures
+    public class RootAppApiWebModules : RootAppApiBaseModules
     {
         #region Properties
 
         /// <summary>
         /// Ядро. Кэширование.
         /// </summary>
-        public CoreCachingFeature CoreCaching { get; set; }
+        public CoreCachingModule CoreCaching { get; set; }
 
         /// <summary>
         /// Хост. Beб. API. Часть "Auth". API.
         /// </summary>
-        public HostWebApiPartAuthFeature HostWebApiPartAuth { get; set; }
+        public HostWebApiPartAuthModule HostWebApiPartAuth { get; set; }
 
         /// <summary>
         /// Мод "Auth". Веб. API.
         /// </summary>
-        public ModAuthWebApiFeature ModAuthWebApi { get; set; }
+        public ModAuthWebApiModule ModAuthWebApi { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Кэширование.
         /// </summary>
-        public ModDummyMainCachingFeature ModDummyMainCaching { get; set; }
+        public ModDummyMainCachingModule ModDummyMainCaching { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Веб. API.
         /// </summary>
-        public ModDummyMainWebApiFeature ModDummyMainWebApi { get; set; }
+        public ModDummyMainWebApiModule ModDummyMainWebApi { get; set; }
 
         #endregion Properties
 
@@ -56,9 +56,9 @@ namespace Makc2020.Root.Apps.Api.Web
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="commonFeatures">Обобщённые функциональности.</param>
-        public RootAppApiWebFeatures(IEnumerable<ICoreBaseCommonFeature> commonFeatures)
-            : base(commonFeatures)
+        /// <param name="commonModules">Обобщённые модули.</param>
+        public RootAppApiWebModules(IEnumerable<ICoreBaseCommonModule> commonModules)
+            : base(commonModules)
         {
         }
 
@@ -122,15 +122,15 @@ namespace Makc2020.Root.Apps.Api.Web
         #region Protected methods
 
         /// <inheritdoc/>
-        protected sealed override bool TrySetFeature(ICoreBaseCommonFeature feature)
+        protected sealed override bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
-            if (base.TrySetFeature(feature)) return true;
+            if (base.TrySetModule(commonModule)) return true;
 
-            if (TrySet<CoreCachingFeature>(x => CoreCaching = x, feature)) return true;
-            if (TrySet<HostWebApiPartAuthFeature>(x => HostWebApiPartAuth = x, feature)) return true;
-            if (TrySet<ModAuthWebApiFeature>(x => ModAuthWebApi = x, feature)) return true;
-            if (TrySet<ModDummyMainCachingFeature>(x => ModDummyMainCaching = x, feature)) return true;
-            if (TrySet<ModDummyMainWebApiFeature>(x => ModDummyMainWebApi = x, feature)) return true;
+            if (TrySet<CoreCachingModule>(x => CoreCaching = x, commonModule)) return true;
+            if (TrySet<HostWebApiPartAuthModule>(x => HostWebApiPartAuth = x, commonModule)) return true;
+            if (TrySet<ModAuthWebApiModule>(x => ModAuthWebApi = x, commonModule)) return true;
+            if (TrySet<ModDummyMainCachingModule>(x => ModDummyMainCaching = x, commonModule)) return true;
+            if (TrySet<ModDummyMainWebApiModule>(x => ModDummyMainWebApi = x, commonModule)) return true;
 
             return false;
         }

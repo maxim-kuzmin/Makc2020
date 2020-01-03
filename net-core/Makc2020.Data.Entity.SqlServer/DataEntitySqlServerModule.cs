@@ -5,24 +5,24 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Host.Base
+namespace Makc2020.Data.Entity.SqlServer
 {
     /// <summary>
-    /// Хост. Основа. Функциональность.
+    /// Данные. Entity Framework. SQL Server. Модуль.
     /// </summary>
-    public class HostBaseFeature : ICoreBaseCommonFeature
+    public class DataEntitySqlServerModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Конфигурация.
         /// </summary>
-        public HostBaseConfig Config { get; private set; }
+        public DataEntitySqlServerConfig Config { get; private set; }
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public HostBaseContext Context { get; private set; }
+        public DataEntitySqlServerContext Context { get; private set; }
 
         #endregion Properties
 
@@ -36,16 +36,7 @@ namespace Makc2020.Host.Base
         {
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
-            services.AddTransient(x => GetContext(x).PartAuth.Jobs.JobCurrentUserGet);
-            services.AddTransient(x => GetContext(x).PartAuth.Jobs.JobSeed);
-            services.AddTransient(x => GetContext(x).PartAuth.Jobs.JobUserEntityCreate);
-            services.AddTransient(x => GetContext(x).PartAuth.Resources.Errors);
-            services.AddTransient(x => GetContext(x).PartAuth.Resources.Successes);
-            services.AddTransient(x => GetContext(x).PartAuth.Service);
-            services.AddTransient(x => GetContext(x).PartLdap.Jobs.JobLogin);
-            services.AddTransient(x => GetContext(x).PartLdap.Resources.Errors);
-            services.AddTransient(x => GetContext(x).PartLdap.Resources.Successes);
-            services.AddTransient(x => GetContext(x).PartLdap.Service);
+            services.AddTransient(x => GetContext(x).DbFactory);
         }
 
         /// <summary>
@@ -54,25 +45,25 @@ namespace Makc2020.Host.Base
         /// <param name="environment">Окружение.</param>
         public void InitConfig(CoreBaseEnvironment environment)
         {
-            Config = new HostBaseConfig(environment);
+            Config = new DataEntitySqlServerConfig(environment);
         }
 
         /// <summary>
         /// Инициализировать контекст.
         /// </summary>
         /// <param name="externals">Внешнее.</param>
-        public void InitContext(HostBaseExternals externals)
+        public void InitContext(DataEntitySqlServerExternals externals)
         {
-            Context = new HostBaseContext(Config, externals);
+            Context = new DataEntitySqlServerContext(Config, externals);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private HostBaseContext GetContext(IServiceProvider serviceProvider)
+        private DataEntitySqlServerContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<HostBaseContext>();
+            return serviceProvider.GetService<DataEntitySqlServerContext>();
         }
 
         #endregion Private methods

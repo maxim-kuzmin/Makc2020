@@ -4,19 +4,19 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Data.Entity
+namespace Makc2020.Core.Base
 {
     /// <summary>
-    /// Данные. Entity Framework. Функциональность.
+    /// Ядро. Основа. Модуль.
     /// </summary>
-    public class DataEntityFeature : ICoreBaseCommonFeature
+    public class CoreBaseModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public DataEntityContext Context { get; private set; }
+        public CoreBaseContext Context { get; private set; }
 
         #endregion Properties
 
@@ -28,26 +28,26 @@ namespace Makc2020.Data.Entity
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(x => GetContext(x).Jobs.JobDatabaseMigrate);
-            services.AddTransient(x => GetContext(x).Service);
+            services.AddTransient(x => GetContext(x).Resources.Converting);
+            services.AddTransient(x => GetContext(x).Resources.Errors);
         }
 
         /// <summary>
         /// Инициализировать контекст.
         /// </summary>
         /// <param name="externals">Внешнее.</param>
-        public void InitContext(DataEntityExternals externals)
+        public void InitContext(CoreBaseExternals externals)
         {
-            Context = new DataEntityContext(externals);
+            Context = new CoreBaseContext(externals);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private DataEntityContext GetContext(IServiceProvider serviceProvider)
+        private CoreBaseContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<DataEntityContext>();
+            return serviceProvider.GetService<CoreBaseContext>();
         }
 
         #endregion Private methods

@@ -23,41 +23,41 @@ using System.Linq;
 namespace Makc2020.Root.Base
 {
     /// <summary>
-    /// Корень. Основа. Функциональности.
+    /// Корень. Основа. Модули.
     /// </summary>
-    public abstract class RootBaseFeatures
+    public abstract class RootBaseModules
     {
         #region Properties
 
         /// <summary>
         /// Ядро. Основа.
         /// </summary>
-        public CoreBaseFeature CoreBase { get; set; }
+        public CoreBaseModule CoreBase { get; set; }
 
         /// <summary>
         /// Ядро. Данные. SQL Server.
         /// </summary>
-        public CoreDataSqlServerFeature CoreDataSqlServer { get; set; }
+        public CoreDataSqlServerModule CoreDataSqlServer { get; set; }
 
         /// <summary>
         /// Данные. Основа.
         /// </summary>
-        public DataBaseFeature DataBase { get; set; }
+        public DataBaseModule DataBase { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework.
         /// </summary>
-        public DataEntityFeature DataEntity { get; set; }
+        public DataEntityModule DataEntity { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework. SQL Server.
         /// </summary>
-        public DataEntitySqlServerFeature DataEntitySqlServer { get; set; }
+        public DataEntitySqlServerModule DataEntitySqlServer { get; set; }
 
         /// <summary>
         /// Хост. Основа.
         /// </summary>
-        public HostBaseFeature HostBase { get; set; }
+        public HostBaseModule HostBase { get; set; }
 
         #endregion Properties
 
@@ -66,14 +66,14 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="commonFeatures">Обобщённые функциональности.</param>
-        public RootBaseFeatures(IEnumerable<ICoreBaseCommonFeature> commonFeatures)
+        /// <param name="commonModules">Обобщённые модули.</param>
+        public RootBaseModules(IEnumerable<ICoreBaseCommonModule> commonModules)
         {
-            if (commonFeatures != null && commonFeatures.Any())
+            if (commonModules != null && commonModules.Any())
             {
-                foreach (var commonFeature in commonFeatures)
+                foreach (var commonModule in commonModules)
                 {
-                    TrySetFeature(commonFeature);
+                    TrySetModule(commonModule);
                 }
             }
         }
@@ -171,18 +171,18 @@ namespace Makc2020.Root.Base
         }
 
         /// <summary>
-        /// Попробовать установить функциональность.
+        /// Попробовать установить модуль.
         /// </summary>
-        /// <param name="commonFeature">Обобщённая функциональность.</param>
+        /// <param name="commonModule">Обобщённый модуль.</param>
         /// <returns>Результат установки.</returns>
-        protected virtual bool TrySetFeature(ICoreBaseCommonFeature commonFeature)
+        protected virtual bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
-            if (TrySet<CoreBaseFeature>(x => CoreBase = x, commonFeature)) return true;
-            if (TrySet<CoreDataSqlServerFeature>(x => CoreDataSqlServer = x, commonFeature)) return true;
-            if (TrySet<DataBaseFeature>(x => DataBase = x, commonFeature)) return true;
-            if (TrySet<DataEntityFeature>(x => DataEntity = x, commonFeature)) return true;
-            if (TrySet<DataEntitySqlServerFeature>(x => DataEntitySqlServer = x, commonFeature)) return true;
-            if (TrySet<HostBaseFeature>(x => HostBase = x, commonFeature)) return true;
+            if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
+            if (TrySet<CoreDataSqlServerModule>(x => CoreDataSqlServer = x, commonModule)) return true;
+            if (TrySet<DataBaseModule>(x => DataBase = x, commonModule)) return true;
+            if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
+            if (TrySet<DataEntitySqlServerModule>(x => DataEntitySqlServer = x, commonModule)) return true;
+            if (TrySet<HostBaseModule>(x => HostBase = x, commonModule)) return true;
 
             return false;
         }
@@ -190,15 +190,15 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Попробовать установить.
         /// </summary>
-        /// <typeparam name="TFeature">Тип функциональности.</typeparam>        
-        /// <param name="actionSet">Действие по установке функциональности.</param>
-        /// <param name="commonFeature">Обобщённая функциональность.</param>        
+        /// <typeparam name="TModule">Тип модуля.</typeparam>        
+        /// <param name="actionSet">Действие по установке модуля.</param>
+        /// <param name="commonModule">Обобщённый модуль.</param>        
         /// <returns>Результат установки.</returns>
-        protected bool TrySet<TFeature>(Action<TFeature> actionSet, ICoreBaseCommonFeature commonFeature)
+        protected bool TrySet<TModule>(Action<TModule> actionSet, ICoreBaseCommonModule commonModule)
         {
-            if (commonFeature is TFeature)
+            if (commonModule is TModule)
             {
-                actionSet.Invoke((TFeature)commonFeature);
+                actionSet.Invoke((TModule)commonModule);
 
                 return true;
             }

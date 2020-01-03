@@ -8,13 +8,13 @@ namespace Makc2020.Root.Apps.Api.Base
     /// Корень. Приложение "API". Основа. Сервер.
     /// </summary>
     /// <typeparam name="TContext">Тип контекста.</typeparam>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
-    public abstract class RootAppApiBaseServer<TContext, TFeatures, TConfigurator> :
-        RootBaseServer<TContext, TFeatures, TConfigurator>
-        where TContext: RootAppApiBaseContext<TFeatures>
-        where TFeatures: RootAppApiBaseFeatures
-        where TConfigurator : RootAppApiBaseConfigurator<TContext, TFeatures>
+    public abstract class RootAppApiBaseServer<TContext, TModules, TConfigurator> :
+        RootBaseServer<TContext, TModules, TConfigurator>
+        where TContext: RootAppApiBaseContext<TModules>
+        where TModules: RootAppApiBaseModules
+        where TConfigurator : RootAppApiBaseConfigurator<TContext, TModules>
     {
     }
 }

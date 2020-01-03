@@ -23,12 +23,12 @@ namespace Makc2020.Root.Base
     /// Корень. Основа. Сервер.
     /// </summary>
     /// <typeparam name="TContext">Тип контекста.</typeparam>
-    /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
+    /// <typeparam name="TModules">Тип модулей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
-    public abstract class RootBaseServer<TContext, TFeatures, TConfigurator> : ICoreBaseCommonServer
-        where TContext : RootBaseContext<TFeatures>
-        where TFeatures : RootBaseFeatures
-        where TConfigurator : RootBaseConfigurator<TContext, TFeatures>
+    public abstract class RootBaseServer<TContext, TModules, TConfigurator> : ICoreBaseCommonServer
+        where TContext : RootBaseContext<TModules>
+        where TModules : RootBaseModules
+        where TConfigurator : RootBaseConfigurator<TContext, TModules>
     {
         #region Constants
 
@@ -61,9 +61,9 @@ namespace Makc2020.Root.Base
         private IServiceScope ServiceScope { get; set; }
 
         /// <summary>
-        /// Функциональности.
+        /// Модули.
         /// </summary>
-        protected TFeatures Features { get; private set; }
+        protected TModules Modules { get; private set; }
 
         /// <summary>
         /// Регистратор.
@@ -153,11 +153,11 @@ namespace Makc2020.Root.Base
         {
             var configurator = CreateConfigurator();
 
-            Features = CreateFeatures(configurator.CreateCommonFeatureList());
+            Modules = CreateModules(configurator.CreateCommonModuleList());
 
-            Features?.InitConfig(Environment);
+            Modules?.InitConfig(Environment);
 
-            Features?.ConfigureServices(services);
+            Modules?.ConfigureServices(services);
 
             InitConfigurator(configurator);
 
@@ -171,7 +171,7 @@ namespace Makc2020.Root.Base
         {
             Logger.LogDebug("RootBaseServer.OnStarted begin");
 
-            Features?.OnAppStarted();
+            Modules?.OnAppStarted();
 
             InitContext();
 
@@ -224,10 +224,10 @@ namespace Makc2020.Root.Base
         protected abstract TContext CreateContext();
 
         /// <summary>
-        /// Создать функциональности.
+        /// Создать модули.
         /// </summary>
-        /// <param name="commonFeatures">Обобщённые функциональности.</param>
-        protected abstract TFeatures CreateFeatures(IEnumerable<ICoreBaseCommonFeature> commonFeatures);
+        /// <param name="commonModules">Обобщённые модули.</param>
+        protected abstract TModules CreateModules(IEnumerable<ICoreBaseCommonModule> commonModules);
 
         /// <summary>
         /// Получить регистратор.
@@ -289,7 +289,7 @@ namespace Makc2020.Root.Base
         {
             Context = CreateContext();
 
-            Features?.InitContext(ServiceProvider, Environment);
+            Modules?.InitContext(ServiceProvider, Environment);
         }
 
         private void MigrateDatabase()
