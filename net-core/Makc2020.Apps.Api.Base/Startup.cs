@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Makc2020.Apps.Api.Base.App;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -43,7 +41,6 @@ namespace Makc2020.Apps.Api.Base
                 logger.Debug("init main");
 
                 await Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                     .ConfigureHostConfiguration(configurationBuilder =>
                     {
                         configurationBuilder.AddEnvironmentVariables();
@@ -63,7 +60,6 @@ namespace Makc2020.Apps.Api.Base
                     })
                     .UseNLog()
                     .ConfigureServices(services => Server.ConfigureServices(services))
-                    .ConfigureContainer<ContainerBuilder>(builder => Server.ConfigureContainer(builder))
                     .RunConsoleAsync();
             }
             catch (Exception ex)

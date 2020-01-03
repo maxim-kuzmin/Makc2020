@@ -2,13 +2,15 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Makc2020.Core.Caching
 {
     /// <summary>
     /// Ядро. Кэширование. Функциональность.
     /// </summary>
-    public abstract class CoreCachingFeature : ICoreBaseCommonFeature
+    public class CoreCachingFeature : ICoreBaseCommonFeature
     {
         #region Properties
 
@@ -25,6 +27,18 @@ namespace Makc2020.Core.Caching
         #endregion Properties
 
         #region Public methods
+
+        /// <summary>
+        /// Настроить сервисы.
+        /// </summary>
+        /// <param name="services">Сервисы.</param>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient(x => GetContext(x).Cache);
+            services.AddTransient(x => GetContext(x).Config);
+            services.AddTransient(x => GetContext(x).Config.Settings);
+            services.AddTransient(x => GetContext(x).Resources.Errors);
+        }
 
         /// <summary>
         /// Инициализировать конфигурацию.
@@ -45,5 +59,14 @@ namespace Makc2020.Core.Caching
         }
 
         #endregion Public methods
+
+        #region Private methods
+
+        private CoreCachingContext GetContext(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetService<CoreCachingContext>();
+        }
+
+        #endregion Private methods
     }
 }

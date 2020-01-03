@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Root.Web.DiAutofac;
+using Makc2020.Root.Web;
 
 namespace Makc2020.Root.Apps.Api.Web
 {
@@ -11,15 +11,15 @@ namespace Makc2020.Root.Apps.Api.Web
     /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
     public abstract class RootAppApiWebServer<TContext, TFeatures, TConfigurator> :
-        RootWebDiAutofacServer<TContext, TFeatures, TConfigurator>
-        where TContext : RootAppApiWebContext<TFeatures>
-        where TFeatures : RootAppApiWebFeatures
-        where TConfigurator : RootAppApiWebConfigurator
+        RootWebServer<TContext, TFeatures, TConfigurator>
+        where TContext: RootAppApiWebContext<TFeatures>
+        where TFeatures: RootAppApiWebFeatures
+        where TConfigurator : RootAppApiWebConfigurator<TContext, TFeatures>
     {
         #region Protected methods
 
         /// <inheritdoc/>
-        protected override void InitConfigurator(TConfigurator configurator)
+        protected sealed override void InitConfigurator(TConfigurator configurator)
         {
             base.InitConfigurator(configurator);
 

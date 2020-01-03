@@ -1,11 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Common;
-using Makc2020.Core.Caching.DiAutofac;
-using Makc2020.Core.Web.DiAutofac;
+using Makc2020.Core.Caching;
+using Makc2020.Core.Web;
 using Makc2020.Mods.Auth.Base.Config;
 using Makc2020.Mods.Auth.Web.Ext;
-using Makc2020.Mods.DummyMain.Caching.DiAutofac;
+using Makc2020.Mods.DummyMain.Caching;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -15,7 +15,11 @@ namespace Makc2020.Root.Apps.Api.Web
     /// <summary>
     /// Корень. Приложение "API". Веб. Конфигуратор.
     /// </summary>
-    public abstract class RootAppApiWebConfigurator : RootAppApiBaseConfigurator
+    ///<typeparam name="TContext">Тип контекста.</typeparam>
+    ///<typeparam name="TFeatures">Тип функциональностей.</typeparam>
+    public abstract class RootAppApiWebConfigurator<TContext, TFeatures> : RootAppApiBaseConfigurator<TContext, TFeatures>
+        where TContext: RootAppApiWebContext<TFeatures>
+        where TFeatures: RootAppApiWebFeatures
     {
         #region Properties
 
@@ -38,6 +42,10 @@ namespace Makc2020.Root.Apps.Api.Web
         {
             base.ConfigureServices(services);
 
+            services.AddTransient(x => GetContext(x).CoreCaching);
+            services.AddTransient(x => GetContext(x).CoreWeb);
+            services.AddTransient(x => GetContext(x).ModDummyMainCaching);
+
             if (ModAuthWebAuthenticationIsEnabled)
             {
                 services.ModAuthWebExtConfigureAuthentication(ModAuthBaseConfigSettings);
@@ -51,9 +59,9 @@ namespace Makc2020.Root.Apps.Api.Web
 
             var features = new ICoreBaseCommonFeature[]
             {
-                new CoreCachingDiAutofacFeature(),
-                new CoreWebDiAutofacFeature(),
-                new ModDummyMainCachingDiAutofacFeature()
+                new CoreCachingFeature(),
+                new CoreWebFeature(),
+                new ModDummyMainCachingFeature()
             };
 
             result.AddRange(features);

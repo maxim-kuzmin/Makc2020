@@ -9,7 +9,7 @@ namespace Makc2020.Apps.Api.Web.App
     /// <summary>
     /// Приложение. Конфигуратор.
     /// </summary>
-    public class AppConfigurator : RootAppApiWebConfigurator
+    public class AppConfigurator : RootAppApiWebConfigurator<AppContext, RootAppApiWebFeatures>
     {
         #region Constants
 
@@ -23,6 +23,8 @@ namespace Makc2020.Apps.Api.Web.App
         public sealed override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+
+            services.AddTransient(x => AppServer.Instance.GetContext());
 
             services.AddControllers();//makc//???//.AddControllersAsServices();
 

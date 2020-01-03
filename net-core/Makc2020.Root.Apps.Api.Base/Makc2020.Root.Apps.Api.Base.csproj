@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Makc2020.Mods.Auth.Base.DiAutofac\Makc2020.Mods.Auth.Base.DiAutofac.csproj" />
-    <ProjectReference Include="..\Makc2020.Mods.DummyMain.Base.DiAutofac\Makc2020.Mods.DummyMain.Base.DiAutofac.csproj" />
-    <ProjectReference Include="..\Makc2020.Root.Base.DiAutofac\Makc2020.Root.Base.DiAutofac.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.Auth.Base\Makc2020.Mods.Auth.Base.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyMain.Base\Makc2020.Mods.DummyMain.Base.csproj" />
+    <ProjectReference Include="..\Makc2020.Root.Base\Makc2020.Root.Base.csproj" />
   </ItemGroup>
 
 </Project>

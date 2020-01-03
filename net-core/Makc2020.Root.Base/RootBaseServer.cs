@@ -4,6 +4,7 @@ using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Jobs.Database.Migrate;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.Seed;
@@ -27,7 +28,7 @@ namespace Makc2020.Root.Base
     public abstract class RootBaseServer<TContext, TFeatures, TConfigurator> : ICoreBaseCommonServer
         where TContext : RootBaseContext<TFeatures>
         where TFeatures : RootBaseFeatures
-        where TConfigurator : RootBaseConfigurator
+        where TConfigurator : RootBaseConfigurator<TContext, TFeatures>
     {
         #region Constants
 
@@ -156,6 +157,8 @@ namespace Makc2020.Root.Base
 
             Features?.InitConfig(Environment);
 
+            Features?.ConfigureServices(services);
+
             InitConfigurator(configurator);
 
             configurator.ConfigureServices(services);
@@ -260,6 +263,9 @@ namespace Makc2020.Root.Base
         protected virtual void InitConfigurator(TConfigurator configurator)
         {
             configurator.LocalizationEnable();
+
+            configurator.DataEntityDbContextEnable(GetService<DataEntityDbFactory>);
+            configurator.IdentityEnable();
         }
 
         /// <summary>

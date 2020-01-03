@@ -2,7 +2,7 @@
 
 using Makc2020.Mods.Auth.Base;
 using Makc2020.Mods.DummyMain.Base;
-using Makc2020.Root.Base.DiAutofac;
+using Makc2020.Root.Base;
 using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Root.Apps.Api.Base
@@ -11,7 +11,7 @@ namespace Makc2020.Root.Apps.Api.Base
     /// Корень. Приложение "API". Основа. Контекст.
     /// </summary>
     /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
-    public abstract class RootAppApiBaseContext<TFeatures> : RootBaseDiAutofacContext<TFeatures>
+    public class RootAppApiBaseContext<TFeatures> : RootBaseContext<TFeatures>
         where TFeatures: RootAppApiBaseFeatures
     {
         #region Properties

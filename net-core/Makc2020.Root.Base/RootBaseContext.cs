@@ -1,6 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
+using Makc2020.Data.Base;
+using Makc2020.Data.Entity;
+using Makc2020.Data.Entity.SqlServer;
+using Makc2020.Host.Base;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
@@ -29,6 +33,31 @@ namespace Makc2020.Root.Base
         /// Регистратор.
         /// </summary>
         protected ILogger Logger { get; private set; }
+
+        /// <summary>
+        /// Ядро. Основа.
+        /// </summary>
+        public CoreBaseContext CoreBase => Features.CoreBase.Context;
+
+        /// <summary>
+        /// Данные. Основа.
+        /// </summary>
+        public DataBaseContext DataBase => Features.DataBase.Context;
+
+        /// <summary>
+        /// Данные. Entity Framework.
+        /// </summary>
+        public DataEntityContext DataEntity => Features.DataEntity.Context;
+
+        /// <summary>
+        /// Данные. Entity Framework. SQL Server.
+        /// </summary>
+        public DataEntitySqlServerContext DataEntitySqlServer => Features.DataEntitySqlServer.Context;
+
+        /// <summary>
+        /// Хост. Основа.
+        /// </summary>
+        public HostBaseContext HostBase => Features.HostBase.Context;
 
         #endregion Properties
 
@@ -132,7 +161,10 @@ namespace Makc2020.Root.Base
         /// </summary>
         /// <param name="exception">Исключение, приведшее к возникновению ошибки.</param>
         /// <returns>Ошибка.</returns>
-        protected abstract CoreBaseError CreateError(Exception exception);
+        protected virtual CoreBaseError CreateError(Exception exception)
+        {
+            return new CoreBaseError(exception, CoreBase.Resources.Errors);
+        }
 
         /// <summary>
         /// Зарегистрировать ошибку.

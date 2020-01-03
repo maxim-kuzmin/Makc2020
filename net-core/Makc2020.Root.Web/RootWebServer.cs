@@ -1,11 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Root.Base;
-using Makc2020.Root.Base.DiAutofac;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Makc2020.Root.Web.DiAutofac
+namespace Makc2020.Root.Web
 {
     /// <summary>
     /// Корень. Веб. Внедрение зависимостей. Autofac. Сервер.
@@ -13,11 +12,11 @@ namespace Makc2020.Root.Web.DiAutofac
     /// <typeparam name="TContext">Тип контекста.</typeparam>
     /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
     /// <typeparam name="TConfigurator">Тип конфигуратора.</typeparam>
-    public abstract class RootWebDiAutofacServer<TContext, TFeatures, TConfigurator> :
-        RootBaseDiAutofacServer<TContext, TFeatures, TConfigurator>
+    public abstract class RootWebServer<TContext, TFeatures, TConfigurator> :
+        RootBaseServer<TContext, TFeatures, TConfigurator>
         where TContext : RootBaseContext<TFeatures>
-        where TFeatures : RootBaseDiAutofacFeatures
-        where TConfigurator : RootBaseDiAutofacConfigurator
+        where TFeatures : RootBaseFeatures
+        where TConfigurator : RootBaseConfigurator<TContext, TFeatures>
     {
         #region Constants
 

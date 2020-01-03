@@ -2,6 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Makc2020.Data.Entity.SqlServer
 {
@@ -27,6 +29,17 @@ namespace Makc2020.Data.Entity.SqlServer
         #region Public methods
 
         /// <summary>
+        /// Настроить сервисы.
+        /// </summary>
+        /// <param name="services">Сервисы.</param>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient(x => GetContext(x).Config);
+            services.AddTransient(x => GetContext(x).Config.Settings);
+            services.AddTransient(x => GetContext(x).DbFactory);
+        }
+
+        /// <summary>
         /// Инициализировать конфигурацию.
         /// </summary>
         /// <param name="environment">Окружение.</param>
@@ -45,5 +58,14 @@ namespace Makc2020.Data.Entity.SqlServer
         }
 
         #endregion Public methods
+
+        #region Private methods
+
+        private DataEntitySqlServerContext GetContext(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetService<DataEntitySqlServerContext>();
+        }
+
+        #endregion Private methods
     }
 }

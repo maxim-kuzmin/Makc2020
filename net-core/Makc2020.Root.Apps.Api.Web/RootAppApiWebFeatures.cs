@@ -1,19 +1,16 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Autofac;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Caching;
-using Makc2020.Core.Caching.DiAutofac;
 using Makc2020.Core.Caching.Resources.Errors;
 using Makc2020.Core.Web;
-using Makc2020.Core.Web.DiAutofac;
 using Makc2020.Core.Web.Resources.Errors;
 using Makc2020.Data.Caching;
 using Makc2020.Mods.DummyMain.Caching;
-using Makc2020.Mods.DummyMain.Caching.DiAutofac;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -29,17 +26,17 @@ namespace Makc2020.Root.Apps.Api.Web
         /// <summary>
         /// Ядро. Кэширование.
         /// </summary>
-        public CoreCachingDiAutofacFeature CoreCaching { get; set; }
+        public CoreCachingFeature CoreCaching { get; set; }
 
         /// <summary>
         /// Ядро. Веб.
         /// </summary>
-        public CoreWebDiAutofacFeature CoreWeb { get; set; }
+        public CoreWebFeature CoreWeb { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Кэширование.
         /// </summary>
-        public ModDummyMainCachingDiAutofacFeature ModDummyMainCaching { get; set; }
+        public ModDummyMainCachingFeature ModDummyMainCaching { get; set; }
 
         #endregion Properties
 
@@ -57,6 +54,16 @@ namespace Makc2020.Root.Apps.Api.Web
         #endregion Constructors
 
         #region Public methods
+
+        /// <inheritdoc/>
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+
+            CoreCaching?.ConfigureServices(services);
+            CoreWeb?.ConfigureServices(services);
+            ModDummyMainCaching?.ConfigureServices(services);
+        }
 
         /// <inheritdoc/>
         public sealed override void InitConfig(CoreBaseEnvironment environment)
@@ -96,16 +103,6 @@ namespace Makc2020.Root.Apps.Api.Web
         }
 
         /// <inheritdoc/>
-        public sealed override void RegisterModule(ContainerBuilder builder)
-        {
-            base.RegisterModule(builder);
-
-            CoreCaching?.Register(builder);
-            CoreWeb?.Register(builder);
-            ModDummyMainCaching?.Register(builder);
-        }
-
-        /// <inheritdoc/>
         public sealed override void OnAppStarted()
         {
             DataCachingSerialization.Init();
@@ -121,9 +118,9 @@ namespace Makc2020.Root.Apps.Api.Web
         {
             if (base.TrySetFeature(feature)) return true;
 
-            if (TrySet<CoreCachingDiAutofacFeature>(x => CoreCaching = x, feature)) return true;
-            if (TrySet<CoreWebDiAutofacFeature>(x => CoreWeb = x, feature)) return true;
-            if (TrySet<ModDummyMainCachingDiAutofacFeature>(x => ModDummyMainCaching = x, feature)) return true;
+            if (TrySet<CoreCachingFeature>(x => CoreCaching = x, feature)) return true;
+            if (TrySet<CoreWebFeature>(x => CoreWeb = x, feature)) return true;
+            if (TrySet<ModDummyMainCachingFeature>(x => ModDummyMainCaching = x, feature)) return true;
 
             return false;
         }

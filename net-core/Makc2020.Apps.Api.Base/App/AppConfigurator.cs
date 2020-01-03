@@ -10,7 +10,7 @@ namespace Makc2020.Apps.Api.Base.App
     /// <summary>
     /// Приложение. Конфигуратор.
     /// </summary>
-    public class AppConfigurator : RootAppApiBaseConfigurator
+    public class AppConfigurator : RootAppApiBaseConfigurator<AppContext, RootAppApiBaseFeatures>
     {
         #region Public methods
 
@@ -18,6 +18,8 @@ namespace Makc2020.Apps.Api.Base.App
         public sealed override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+
+            services.AddTransient(x => AppServer.Instance.GetContext());
 
             services.AddTransient<AppSampleCoreBaseResourceErrors>();
             services.AddTransient<AppSampleModDummyMainBaseJobItemGet>();

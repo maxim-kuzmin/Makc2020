@@ -1,6 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Autofac;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Root.Apps.Api.Web;
@@ -18,7 +17,7 @@ namespace Makc2020.Apps.Api.Web.App
     /// <summary>
     /// Приложение. Сервер.
     /// </summary>
-    public class AppServer : RootAppApiWebServer<AppContext, AppFeatures, AppConfigurator>
+    public class AppServer : RootAppApiWebServer<AppContext, RootAppApiWebFeatures, AppConfigurator>
     {
         #region Fields
 
@@ -120,23 +119,17 @@ namespace Makc2020.Apps.Api.Web.App
         }
 
         /// <inheritdoc/>
-        protected sealed override AppFeatures CreateFeatures(
+        protected sealed override RootAppApiWebFeatures CreateFeatures(
             IEnumerable<ICoreBaseCommonFeature> commonFeatures
             )
         {
-            return new AppFeatures(commonFeatures);
+            return new RootAppApiWebFeatures(commonFeatures);
         }
 
         /// <inheritdoc/>
         protected sealed override ILogger GetLogger()
         {
             return GetService<ILogger<AppServer>>();
-        }
-
-        /// <inheritdoc/>
-        protected sealed override void RegisterModule(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new AppModule());
         }
 
         #endregion Protected methods

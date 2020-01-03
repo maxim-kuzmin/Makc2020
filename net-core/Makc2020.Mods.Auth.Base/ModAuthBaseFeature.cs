@@ -2,6 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Makc2020.Mods.Auth.Base
 {
@@ -27,6 +29,22 @@ namespace Makc2020.Mods.Auth.Base
         #region Public methods
 
         /// <summary>
+        /// Настроить сервисы.
+        /// </summary>
+        /// <param name="services">Сервисы.</param>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddTransient(x => GetContext(x).Config);
+            services.AddTransient(x => GetContext(x).Config.Settings);
+            services.AddTransient(x => GetContext(x).Jobs.JobLoginJwt);
+            services.AddTransient(x => GetContext(x).Jobs.JobRefreshJwt);
+            services.AddTransient(x => GetContext(x).Jobs.JobRegister);
+            services.AddTransient(x => GetContext(x).Resources.Errors);
+            services.AddTransient(x => GetContext(x).Resources.Successes);
+            services.AddTransient(x => GetContext(x).Service);
+        }
+
+        /// <summary>
         /// Инициализировать конфигурацию.
         /// </summary>
         /// <param name="environment">Окружение.</param>
@@ -45,5 +63,14 @@ namespace Makc2020.Mods.Auth.Base
         }
 
         #endregion Public methods
+
+        #region Private methods
+
+        private ModAuthBaseContext GetContext(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetService<ModAuthBaseContext>();
+        }
+
+        #endregion Private methods
     }
 }

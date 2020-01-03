@@ -13,7 +13,7 @@ namespace Makc2020.Root.Apps.Api.Web
     /// </summary>
     /// <typeparam name="TFeatures">Тип функциональностей.</typeparam>
     public class RootAppApiWebContext<TFeatures> : RootAppApiBaseContext<TFeatures>
-        where TFeatures : RootAppApiWebFeatures
+        where TFeatures: RootAppApiWebFeatures
     {
         #region Properties
 

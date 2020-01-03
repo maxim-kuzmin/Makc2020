@@ -1,17 +1,15 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Autofac;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.Auth.Base;
-using Makc2020.Mods.Auth.Base.DiAutofac;
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.Auth.Base.Resources.Successes;
 using Makc2020.Mods.DummyMain.Base;
-using Makc2020.Mods.DummyMain.Base.DiAutofac;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
-using Makc2020.Root.Base.DiAutofac;
+using Makc2020.Root.Base;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -20,19 +18,19 @@ namespace Makc2020.Root.Apps.Api.Base
     /// <summary>
     /// Корень. Приложение "API". Основа. Функциональности.
     /// </summary>
-    public class RootAppApiBaseFeatures : RootBaseDiAutofacFeatures
+    public class RootAppApiBaseFeatures : RootBaseFeatures
     {
         #region Properties
 
         /// <summary>
         /// Мод "Auth". Основа.
         /// </summary>
-        public ModAuthBaseDiAutofacFeature ModAuthBase { get; set; }
+        public ModAuthBaseFeature ModAuthBase { get; set; }
 
         /// <summary>
         /// Мод "DummyMain". Основа.
         /// </summary>
-        public ModDummyMainBaseDiAutofacFeature ModDummyMainBase { get; set; }
+        public ModDummyMainBaseFeature ModDummyMainBase { get; set; }
 
         #endregion Properties
 
@@ -50,6 +48,15 @@ namespace Makc2020.Root.Apps.Api.Base
         #endregion Constructors
 
         #region Public methods
+
+        /// <inheritdoc/>
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+
+            ModAuthBase?.ConfigureServices(services);
+            ModDummyMainBase?.ConfigureServices(services);
+        }
 
         /// <inheritdoc/>
         public override void InitConfig(CoreBaseEnvironment environment)
@@ -83,18 +90,6 @@ namespace Makc2020.Root.Apps.Api.Base
             });
         }
 
-        /// <summary>
-        /// Зарегистрировать модуль.
-        /// </summary>
-        /// <param name="builder">Построитель.</param>
-        public override void RegisterModule(ContainerBuilder builder)
-        {
-            base.RegisterModule(builder);
-
-            ModAuthBase?.Register(builder);
-            ModDummyMainBase?.Register(builder);
-        }
-
         #endregion Public methods
 
         #region Protected methods
@@ -104,8 +99,8 @@ namespace Makc2020.Root.Apps.Api.Base
         {
             base.TrySetFeature(commonFeature);
 
-            if (TrySet<ModDummyMainBaseDiAutofacFeature>(x => ModDummyMainBase = x, commonFeature)) return true;
-            if (TrySet<ModAuthBaseDiAutofacFeature>(x => ModAuthBase = x, commonFeature)) return true;
+            if (TrySet<ModDummyMainBaseFeature>(x => ModDummyMainBase = x, commonFeature)) return true;
+            if (TrySet<ModAuthBaseFeature>(x => ModAuthBase = x, commonFeature)) return true;
 
             return false;
         }
