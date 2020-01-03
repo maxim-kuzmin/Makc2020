@@ -1,14 +1,13 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Auth;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Data.Entity.Objects;
+using Makc2020.Host.Base.Common.Identity;
 using Makc2020.Host.Base.Parts.Auth.Config;
 using Makc2020.Host.Base.Parts.Auth.Ext;
 using Makc2020.Host.Base.Parts.Auth.Jobs.CurrentUser.Get;
 using Makc2020.Host.Base.Parts.Auth.Jobs.Seed;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
-using Makc2020.Host.Base.Common.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -74,7 +73,7 @@ namespace Makc2020.Host.Base.Parts.Auth
 
             var principal = input.Principal;
 
-            if (principal == null || principal is CoreBaseAuthNullPrincipal || !principal.Identity.IsAuthenticated)
+            if (principal == null || !principal.Identity.IsAuthenticated)
             {
                 result = new HostBasePartAuthUser()
                 {

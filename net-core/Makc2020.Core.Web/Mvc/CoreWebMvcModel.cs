@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using System.IO;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Makc2020.Core.Web.Mvc
@@ -30,14 +29,8 @@ namespace Makc2020.Core.Web.Mvc
         /// <param name="extLogger">Регистратор.</param>
         /// <param name="extPrincipal">Принципал.</param>
         /// <param name="extViewEngine">Средство создания представлений.</param>
-        public CoreWebMvcModel(
-            ILogger extLogger,
-            IPrincipal extPrincipal,
-            ICompositeViewEngine extViewEngine
-            ) : base(
-                extLogger,
-                extPrincipal
-                )
+        public CoreWebMvcModel(ILogger extLogger, ICompositeViewEngine extViewEngine)
+            : base(extLogger)
         {
             ExtViewEngine = extViewEngine;
         }

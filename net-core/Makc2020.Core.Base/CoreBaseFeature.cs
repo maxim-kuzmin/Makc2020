@@ -1,10 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Auth;
 using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Security.Principal;
 
 namespace Makc2020.Core.Base
 {
@@ -30,8 +28,6 @@ namespace Makc2020.Core.Base
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPrincipal>(x => new CoreBaseAuthNullPrincipal());
-
             services.AddTransient(x => GetContext(x).Resources.Converting);
             services.AddTransient(x => GetContext(x).Resources.Errors);
         }
