@@ -9,10 +9,10 @@ import {AppCoreLocalizationService} from './core/localization/core-localization.
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppCoreTitleService} from './core/title/core-title.service';
-import {AppHostAuthStore} from '@app/host/auth/host-auth-store';
-import {AppHostMenuDataService} from './host/menu/data/host-menu-data.service';
-import {AppHostRouteData} from '@app/host/route/host-route-data';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
+import {AppHostPartMenuDataService} from './host/parts/menu/data/host-part-menu-data.service';
+import {AppHostPartRouteData} from '@app/host/parts/route/host-part-route-data';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModDummyMainPageIndexService} from '@app/mods/dummy-main/pages/index/mod-dummy-main-page-index.service';
 import {AppModDummyMainPageItemService} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item.service';
 import {AppModDummyMainPageListService} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list.service';
@@ -42,17 +42,17 @@ export class AppModel extends AppCoreCommonTitlable {
    * @param {AppCoreAuthTypeOidcService} appAuthTypeOidc Аутентификация типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации типа OIDC.
    * @param {AppCoreAuthTypeOidcJobStartService} appAuthTypeOidcJobStart Задание на запуск аутентификации типа OIDC.
-   * @param {AppHostAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingService} appLogger Регистратор.
-   * @param {AppHostMenuDataService} appMenuData Данные меню.
+   * @param {AppHostPartMenuDataService} appMenuData Данные меню.
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param appRootPageAdministration {AppRootPageAdministrationService} Страница "RootPageAdministration".
    * @param {AppCoreTitleService} appTitle Заголовок.
    */
@@ -61,17 +61,17 @@ export class AppModel extends AppCoreCommonTitlable {
     private appAuthTypeOidc: AppCoreAuthTypeOidcService,
     private appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
     private appAuthTypeOidcJobStart: AppCoreAuthTypeOidcJobStartService,
-    private appAuthStore: AppHostAuthStore,
+    private appAuthStore: AppHostPartAuthStore,
     private appLocalizer: AppCoreLocalizationService,
     private appLogger: AppCoreLoggingService,
-    private appMenuData: AppHostMenuDataService,
+    private appMenuData: AppHostPartMenuDataService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
     private appNavigation: AppCoreNavigationService,
     private appRootPageIndex: AppRootPageIndexService,
-    private appRoute: AppHostRouteService,
+    private appRoute: AppHostPartRouteService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     appTitle: AppCoreTitleService
   ) {
@@ -140,7 +140,7 @@ export class AppModel extends AppCoreCommonTitlable {
     this.appAuthTypeOidcStore.runActionIsInitializedSet(result.isOk);
   }
 
-  private onGetRouteData(routeData: AppHostRouteData) {
+  private onGetRouteData(routeData: AppHostPartRouteData) {
     const {
       page
     } = routeData;

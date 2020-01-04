@@ -2,8 +2,8 @@
 
 import {AppCoreCommonState} from '@app/core/common/core-common-state';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
-import {AppHostAuthUser} from '@app/host/auth/host-auth-user';
-import {AppHostAuthCommonJobLoginInput} from '@app/host/auth/common/jobs/login/host-auth-common-job-login-input';
+import {AppHostPartAuthUser} from '@app/host/parts/auth/host-part-auth-user';
+import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
 import {AppModAuthPageLogonEnumActions} from './enums/mod-auth-page-logon-enum-actions';
 
 /** Мод "Auth". Страницы. Вход в систему. Состояние. */
@@ -11,9 +11,9 @@ export class AppModAuthPageLogonState extends AppCoreCommonState<AppModAuthPageL
 
   /**
    * Текущий пользователь.
-   * @type {AppHostAuthUser}
+   * @type {AppHostPartAuthUser}
    */
-  currentUser: AppHostAuthUser;
+  currentUser: AppHostPartAuthUser;
 
   /**
    * Признак успешного входа в систему.
@@ -23,9 +23,9 @@ export class AppModAuthPageLogonState extends AppCoreCommonState<AppModAuthPageL
 
   /**
    * Ввод для задания на вход в систему.
-   * @type {AppHostAuthCommonJobLoginInput}
+   * @type {AppHostPartAuthCommonJobLoginInput}
    */
-  jobLoginInput: AppHostAuthCommonJobLoginInput;
+  jobLoginInput: AppHostPartAuthCommonJobLoginInput;
 
   /**
    * Результат выполнения задания на вход в систему.

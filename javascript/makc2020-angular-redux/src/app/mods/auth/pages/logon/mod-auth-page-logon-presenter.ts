@@ -3,9 +3,9 @@
 import {isDevMode} from '@angular/core';
 import {Validators} from '@angular/forms';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
-import {AppHostAuthCommonJobLoginInput} from '@app/host/auth/common/jobs/login/host-auth-common-job-login-input';
-import {AppHostAuthState} from '@app/host/auth/host-auth-state';
-import {AppHostAuthEnumActions} from '@app/host/auth/enums/host-auth-enum-actions';
+import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
+import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
+import {AppHostPartAuthEnumActions} from '@app/host/parts/auth/enums/host-part-auth-enum-actions';
 import {AppModAuthPageLogonEnumActions} from './enums/mod-auth-page-logon-enum-actions';
 import {AppModAuthPageLogonView} from './mod-auth-page-logon-view';
 import {AppModAuthPageLogonResources} from './mod-auth-page-logon-resources';
@@ -81,7 +81,7 @@ export class AppModAuthPageLogonPresenter {
     if (this.view.isLoggedIn) {
       this.model.executeActionLogout();
     } else if (formGroup.valid) {
-      const input = new AppHostAuthCommonJobLoginInput();
+      const input = new AppHostPartAuthCommonJobLoginInput();
 
       const {
         fieldUserName,
@@ -192,13 +192,13 @@ export class AppModAuthPageLogonPresenter {
     }
   }
 
-  /** @param {AppHostAuthState} state  */
-  private onGetAuthState(state: AppHostAuthState) {
+  /** @param {AppHostPartAuthState} state  */
+  private onGetAuthState(state: AppHostPartAuthState) {
     const {
       action
     } = state;
 
-    if (action === AppHostAuthEnumActions.CurrentUserSet) {
+    if (action === AppHostPartAuthEnumActions.CurrentUserSet) {
       this.onActionAuthCurrentUserSet();
     }
   }

@@ -6,8 +6,8 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModAuthPageIndexService} from '@app/mods/auth/pages/index/mod-auth-page-index.service';
 import {AppRootPageContactsService} from '@app/root/pages/contacts/root-page-contacts.service';
 import {AppRootPageSiteResources} from './root-page-site-resources';
@@ -28,11 +28,11 @@ export class AppRootPageSiteModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageIndexService} appModAuthPageIndex Страница "ModAuthPageIndex".
    * @param {AppRootPageContactsService} appRootPageContacts Страница "RootPageContacts".
    * @param {AppRootPageSiteService} appRootPageSite Страница "RootPageSite".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageSiteStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
@@ -40,11 +40,11 @@ export class AppRootPageSiteModel extends AppCoreCommonPageModel {
   constructor(
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appModAuthPageIndex: AppModAuthPageIndexService,
     private appRootPageContacts: AppRootPageContactsService,
     private appRootPageSite: AppRootPageSiteService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppRootPageSiteStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute

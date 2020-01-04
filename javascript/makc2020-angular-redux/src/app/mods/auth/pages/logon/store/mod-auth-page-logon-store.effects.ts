@@ -6,8 +6,8 @@ import {Action} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
-import {AppHostAuthService} from '@app/host/auth/host-auth.service';
-import {AppHostAuthStore} from '@app/host/auth/host-auth-store';
+import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppModAuthPageLogonEnumActions} from '../enums/mod-auth-page-logon-enum-actions';
 import {AppModAuthPageLogonStoreActionLoginSuccess} from './actions/mod-auth-page-logon-store-action-login-success';
 import {AppModAuthPageLogonStoreActions} from './mod-auth-page-logon-store.actions';
@@ -51,14 +51,14 @@ export class AppModAuthPageLogonStoreEffects {
 
   /**
    * Конструктор.
-   * @param {AppHostAuthService} appAuth Аутентификация.
-   * @param {AppHostAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppHostPartAuthService} appAuth Аутентификация.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {Actions<AppModAuthPageLogonStoreActions>} extActions$ Поток действий.
    */
   constructor(
-    private appAuth: AppHostAuthService,
-    private appAuthStore: AppHostAuthStore,
+    private appAuth: AppHostPartAuthService,
+    private appAuthStore: AppHostPartAuthStore,
     private appLogger: AppCoreLoggingService,
     private extActions$: Actions<AppModAuthPageLogonStoreActions>
   ) {

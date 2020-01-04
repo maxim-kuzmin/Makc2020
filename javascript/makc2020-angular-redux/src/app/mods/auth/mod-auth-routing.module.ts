@@ -3,7 +3,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AppCoreDeactivatingGuard} from '@app/core/deactivating/core-deactivating.guard';
-import {AppHostAuthGuard} from '@app/host/auth/host-auth.guard';
+import {AppHostPartAuthGuard} from '@app/host/parts/auth/host-part-auth.guard';
 import {AppSkinModAuthComponent} from '@app-skin/mods/auth/mod-auth.component';
 import {AppSkinModAuthPageIndexComponent} from '@app-skin/mods/auth/pages/index/mod-auth-page-index.component';
 import {AppSkinModAuthPageLogonComponent} from '@app-skin/mods/auth/pages/logon/mod-auth-page-logon.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         children: [
           {
-            canActivateChild: [AppHostAuthGuard],
+            canActivateChild: [AppHostPartAuthGuard],
             children: [
               {
                 canDeactivate: [AppCoreDeactivatingGuard],

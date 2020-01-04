@@ -6,11 +6,11 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {appCoreLoggingDiTokenLoggerName} from '@app/core/logging/core-logging-di';
-import {AppHostAuthService} from '@app/host/auth/host-auth.service';
-import {AppHostMenuDataService} from '@app/host/menu/data/host-menu-data.service';
+import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
+import {AppHostPartMenuDataService} from '@app/host/parts/menu/data/host-part-menu-data.service';
 import {AppSkinRootModule} from '@app-skin/root/root.module';
-import {AppRootMenuDataService} from './menu/data/root-menu-data.service';
-import {AppRootAuthService} from './auth/root-auth.service';
+import {AppRootPartMenuDataService} from './parts/menu/data/root-part-menu-data.service';
+import {AppRootPartAuthService} from './parts/auth/root-part-auth.service';
 import {AppRootRoutingModule} from './root-routing.module';
 import {AppRootPageAdministrationStoreEffects} from './pages/administration/store/root-page-administration-store.effects';
 import {AppRootPageContactsStoreEffects} from './pages/contacts/store/root-page-contacts-store.effects';
@@ -63,8 +63,8 @@ export class AppRootModule {
     return {
       ngModule: AppRootModule,
       providers: [
-        {provide: AppHostAuthService, useClass: AppRootAuthService},
-        {provide: AppHostMenuDataService, useClass: AppRootMenuDataService}
+        {provide: AppHostPartAuthService, useClass: AppRootPartAuthService},
+        {provide: AppHostPartMenuDataService, useClass: AppRootPartMenuDataService}
       ]
     };
   }

@@ -7,7 +7,7 @@ import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
 import {AppCoreLoggingState} from '@app/core/logging/core-logging-state';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 
 /** Ядро. Общее. Страница. Модель. */
 export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
@@ -26,13 +26,13 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
   /**
    * Конструктор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   protected constructor(
     private appLoggerStore: AppCoreLoggingStore,
-    protected appRoute: AppHostRouteService,
+    protected appRoute: AppHostPartRouteService,
     appTitle: AppCoreTitleService,
     protected extRoute: ActivatedRoute
   ) {

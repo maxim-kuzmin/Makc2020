@@ -6,8 +6,8 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppRootPageAdministrationService} from '../administration/root-page-administration.service';
 import {AppRootPageSiteService} from '../site/root-page-site.service';
 import {AppRootPageIndexResources} from './root-page-index-resources';
@@ -28,11 +28,11 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppRootPageAdministrationService} appRootPageAdministration
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppRootPageSiteService} appRootPageSite
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageIndexStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
@@ -40,11 +40,11 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
   constructor(
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     private appRootPageIndex: AppRootPageIndexService,
     private appRootPageSite: AppRootPageSiteService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppRootPageIndexStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute

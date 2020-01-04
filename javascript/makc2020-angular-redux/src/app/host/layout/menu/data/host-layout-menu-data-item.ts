@@ -1,15 +1,15 @@
 // //Author Maxim Kuzmin//makc//
 
-import {AppHostMenuDataItem} from '@app/host/menu/data/host-menu-data-item';
+import {AppHostPartMenuDataItem} from '@app/host/parts/menu/data/host-part-menu-data-item';
 
 /** Хост. Разметка. Меню. Данные. Элемент. */
 export interface AppHostLayoutMenuDataItem {
 
   /**
    * Данные.
-   * @type {AppHostMenuDataItem}
+   * @type {AppHostPartMenuDataItem}
    */
-  data: AppHostMenuDataItem;
+  data: AppHostPartMenuDataItem;
 
   /**
    * Признак выбранности.
@@ -20,12 +20,12 @@ export interface AppHostLayoutMenuDataItem {
 
 /**
  * Хост. Разметка. Меню. Данные. Элемент. Создать.
- * @param {AppHostMenuDataItem} data Данные.
+ * @param {AppHostPartMenuDataItem} data Данные.
  * @param {boolean} isSelected Признак выбранности.
  * @returns {AppHostLayoutMenuDataItem} Элемент.
  */
 export function appHostLayoutMenuDataItemCreate(
-  data: AppHostMenuDataItem,
+  data: AppHostPartMenuDataItem,
   isSelected: boolean = null
 ): AppHostLayoutMenuDataItem {
   return {

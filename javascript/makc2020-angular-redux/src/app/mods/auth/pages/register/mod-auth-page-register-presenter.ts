@@ -2,7 +2,7 @@
 
 import {Validators} from '@angular/forms';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
 import {AppModAuthPageRegisterEnumActions} from './enums/mod-auth-page-register-enum-actions';
 import {AppModAuthPageRegisterView} from './mod-auth-page-register-view';
 import {AppModAuthPageRegisterResources} from './mod-auth-page-register-resources';

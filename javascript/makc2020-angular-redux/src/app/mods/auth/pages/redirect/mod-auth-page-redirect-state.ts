@@ -2,7 +2,7 @@
 
 import {AppCoreCommonState} from '@app/core/common/core-common-state';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
-import {AppHostAuthUser} from '@app/host/auth/host-auth-user';
+import {AppHostPartAuthUser} from '@app/host/parts/auth/host-part-auth-user';
 import {AppModAuthPageRedirectEnumActions} from './enums/mod-auth-page-redirect-enum-actions';
 
 /** Мод "Auth". Страницы. Перенаправление. Состояние. */
@@ -10,9 +10,9 @@ export class AppModAuthPageRedirectState extends AppCoreCommonState<AppModAuthPa
 
   /**
    * Текущий пользователь.
-   * @type {AppHostAuthUser}
+   * @type {AppHostPartAuthUser}
    */
-  currentUser: AppHostAuthUser;
+  currentUser: AppHostPartAuthUser;
 
   /**
    * Признак успешного входа в систему.

@@ -3,7 +3,7 @@
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppHostMenuJobNodesFindInput} from '@app/host/menu/jobs/nodes/find/host-menu-job-nodes-find-input';
+import {AppHostPartMenuJobNodesFindInput} from '@app/host/parts/menu/jobs/nodes/find/host-part-menu-job-nodes-find-input';
 import {AppHostStoreState} from '@app/host/store/host-store.state';
 import {AppHostLayoutMenuState} from './host-layout-menu-state';
 import {AppHostLayoutMenuStoreActionClear} from './store/actions/host-layout-menu-store-action-clear';
@@ -62,9 +62,9 @@ export class AppHostLayoutMenuStore {
 
   /**
    * Запустить действие "Загрузка".
-   * @param {AppHostMenuJobNodesFindInput} input Ввод.
+   * @param {AppHostPartMenuJobNodesFindInput} input Ввод.
    */
-  runActionLoad(input: AppHostMenuJobNodesFindInput) {
+  runActionLoad(input: AppHostPartMenuJobNodesFindInput) {
     this.extStore.dispatch(new AppHostLayoutMenuStoreActionLoad(input, this.menuLevel));
   }
 

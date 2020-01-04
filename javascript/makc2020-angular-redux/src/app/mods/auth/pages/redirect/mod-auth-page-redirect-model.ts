@@ -9,9 +9,9 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostMenuOption} from '@app/host/menu/host-menu-option';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModAuthPageLogonService} from '@app/mods/auth/pages/logon/mod-auth-page-logon.service';
 import {AppModAuthPageRegisterService} from '@app/mods/auth/pages/register/mod-auth-page-register.service';
 import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resources';
@@ -34,11 +34,11 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
    * @param {AppCoreAuthTypeOidcService} appAuthTypeOidc Аутентификация типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации типа OIDC.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageRedirectStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
@@ -49,11 +49,11 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     appLoggerStore: AppCoreLoggingStore,
     private appAuthTypeOidc: AppCoreAuthTypeOidcService,
     private appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageRedirectStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute,
@@ -114,7 +114,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     super.onGetPageKeyOverAfterViewInit(pageKey);
 
     const lookupOptionByMenuNodeKey = {
-      [pageKey]: <AppHostMenuOption>{
+      [pageKey]: <AppHostPartMenuOption>{
         isNeededToRemove: true
       }
     };

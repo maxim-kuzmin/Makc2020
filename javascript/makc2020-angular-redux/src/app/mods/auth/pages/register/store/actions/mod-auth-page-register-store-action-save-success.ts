@@ -2,7 +2,7 @@
 
 import { Action } from '@ngrx/store';
 import { AppCoreExecutionResultWithData } from '@app/core/execution/core-execution-result-with-data';
-import { AppHostAuthUser } from '@app/host/auth/host-auth-user';
+import { AppHostPartAuthUser } from '@app/host/parts/auth/host-part-auth-user';
 import { AppModAuthPageRegisterEnumActions } from '../../enums/mod-auth-page-register-enum-actions';
 
 /** Мод "Auth". Страницы. Регистрация. Хранилище состояния. Действия. Успех сохранения. */
@@ -13,10 +13,10 @@ export class AppModAuthPageRegisterStoreActionSaveSuccess implements Action {
 
   /**
    * Конструктор.
-   * @param {AppCoreExecutionResultWithData<AppHostAuthUser>} jobRegisterResult
+   * @param {AppCoreExecutionResultWithData<AppHostPartAuthUser>} jobRegisterResult
    * Результат выполнения задания на регистрацию.
    */
   constructor(
-    public jobRegisterResult: AppCoreExecutionResultWithData<AppHostAuthUser>
+    public jobRegisterResult: AppCoreExecutionResultWithData<AppHostPartAuthUser>
   ) { }
 }

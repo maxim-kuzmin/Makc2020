@@ -8,8 +8,8 @@ import {AppCoreLocalizationState} from '@app/core/localization/core-localization
 import {AppCoreLocalizationStore} from '@app/core/localization/core-localization-store';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppRootPageContactsResources} from './root-page-contacts-resources';
 import {AppRootPageContactsService} from './root-page-contacts.service';
 import {AppRootPageContactsState} from './root-page-contacts-state';
@@ -30,9 +30,9 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLocalizationStore} appLocalizerStore Хранилище состояния локализатора.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppRootPageContactsService} appRootPageContacts Страница "RootPageContacts".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageContactsStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
@@ -41,9 +41,9 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
     appLocalizer: AppCoreLocalizationService,
     private appLocalizerStore: AppCoreLocalizationStore,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appRootPageContacts: AppRootPageContactsService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppRootPageContactsStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute

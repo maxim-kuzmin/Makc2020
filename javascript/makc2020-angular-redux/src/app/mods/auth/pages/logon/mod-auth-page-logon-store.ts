@@ -3,8 +3,8 @@
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppHostAuthCommonJobLoginInput} from '@app/host/auth/common/jobs/login/host-auth-common-job-login-input';
-import {AppHostAuthUser} from '@app/host/auth/host-auth-user';
+import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
+import {AppHostPartAuthUser} from '@app/host/parts/auth/host-part-auth-user';
 import {AppModAuthStoreState} from '../../store/mod-auth-store.state';
 import {AppModAuthPageLogonState} from './mod-auth-page-logon-state';
 import {AppModAuthPageLogonStoreActionClear} from './store/actions/mod-auth-page-logon-store-action-clear';
@@ -57,27 +57,27 @@ export class AppModAuthPageLogonStore {
 
   /**
    * Запустить действие "Загрузка".
-   * @param {AppHostAuthUser} currentUser Текущий пользователь.
+   * @param {AppHostPartAuthUser} currentUser Текущий пользователь.
    * @param {boolean} isLoggedIn Признак того, что вход в систему выполнен.
    */
-  runActionLoad(currentUser: AppHostAuthUser, isLoggedIn: boolean) {
+  runActionLoad(currentUser: AppHostPartAuthUser, isLoggedIn: boolean) {
     this.extStore.dispatch(new AppModAuthPageLogonStoreActionLoad(currentUser, isLoggedIn));
   }
 
   /**
    * Запустить действие "Вход в систему".
-   * @param {AppHostAuthCommonJobLoginInput} input Ввод.
+   * @param {AppHostPartAuthCommonJobLoginInput} input Ввод.
    */
-  runActionLogin(input: AppHostAuthCommonJobLoginInput) {
+  runActionLogin(input: AppHostPartAuthCommonJobLoginInput) {
     this.extStore.dispatch(new AppModAuthPageLogonStoreActionLogin(input));
   }
 
   /**
    * Запустить действие "Выход из системы".
-   * @param {AppHostAuthUser} currentUser Текущий пользователь.
+   * @param {AppHostPartAuthUser} currentUser Текущий пользователь.
    * @param {boolean} isLoggedIn Признак того, что вход в систему выполнен.
    */
-  runActionLogout(currentUser: AppHostAuthUser, isLoggedIn: boolean) {
+  runActionLogout(currentUser: AppHostPartAuthUser, isLoggedIn: boolean) {
     this.extStore.dispatch(new AppModAuthPageLogonStoreActionLogout(currentUser, isLoggedIn));
   }
 

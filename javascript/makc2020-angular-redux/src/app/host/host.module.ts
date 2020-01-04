@@ -10,8 +10,8 @@ import {AppHostLayoutFooterStoreEffects} from './layout/footer/store/host-layout
 import {AppHostLayoutMenuStoreEffects} from './layout/menu/store/host-layout-menu-store.effects';
 import {appHostStoreConfigFeatureName} from './store/host-store-config';
 import {appHostStoreReducers} from './store/host-store.reducers';
-import {AppHostAuthStore} from './auth/host-auth-store';
-import {AppHostMenuStore} from './menu/host-menu-store';
+import {AppHostPartAuthStore} from './parts/auth/host-part-auth-store';
+import {AppHostPartMenuStore} from './parts/menu/host-part-menu-store';
 import {AppSkinHostModule} from '@app-skin/host/host.module';
 
 /** Хост. Модуль. */
@@ -53,8 +53,8 @@ export class AppHostModule {
     return {
       ngModule: AppHostModule,
       providers: [
-        AppHostAuthStore,
-        AppHostMenuStore
+        AppHostPartAuthStore,
+        AppHostPartMenuStore
       ]
     };
   }

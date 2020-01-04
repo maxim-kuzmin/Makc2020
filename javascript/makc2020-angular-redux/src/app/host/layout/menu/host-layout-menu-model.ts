@@ -6,11 +6,11 @@ import {AppCoreCommonUnsubscribable} from '@app/core/common/core-common-unsubscr
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreTreeEnumAxisMany} from '@app/core/tree/enums/core-tree-enum-axis-many';
 import {AppHostLayoutMenuDataItem} from '@app/host/layout/menu/data/host-layout-menu-data-item';
-import {AppHostMenuDataItem} from '@app/host/menu/data/host-menu-data-item';
-import {AppHostMenuJobNodeFindInput} from '@app/host/menu/jobs/node/find/host-menu-job-node-find-input';
-import {AppHostMenuJobNodesFindInput} from '@app/host/menu/jobs/nodes/find/host-menu-job-nodes-find-input';
-import {AppHostMenuState} from '@app/host/menu/host-menu-state';
-import {AppHostMenuStore} from '@app/host/menu/host-menu-store';
+import {AppHostPartMenuDataItem} from '@app/host/parts/menu/data/host-part-menu-data-item';
+import {AppHostPartMenuJobNodeFindInput} from '@app/host/parts/menu/jobs/node/find/host-part-menu-job-node-find-input';
+import {AppHostPartMenuJobNodesFindInput} from '@app/host/parts/menu/jobs/nodes/find/host-part-menu-job-nodes-find-input';
+import {AppHostPartMenuState} from '@app/host/parts/menu/host-part-menu-state';
+import {AppHostPartMenuStore} from '@app/host/parts/menu/host-part-menu-store';
 import {AppHostLayoutMenuState} from './host-layout-menu-state';
 import {AppHostLayoutMenuStore} from './host-layout-menu-store';
 
@@ -20,12 +20,12 @@ export class AppHostLayoutMenuModel extends AppCoreCommonUnsubscribable {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppHostMenuStore} appMenuStore Хранилище состояния меню.
+   * @param {AppHostPartMenuStore} appMenuStore Хранилище состояния меню.
    * @param {AppHostLayoutMenuStore} appStore Хранилище состояния.
    */
   constructor(
     private appLocalizer: AppCoreLocalizationService,
-    private appMenuStore: AppHostMenuStore,
+    private appMenuStore: AppHostPartMenuStore,
     private appStore: AppHostLayoutMenuStore
   ) {
     super();
@@ -53,7 +53,7 @@ export class AppHostLayoutMenuModel extends AppCoreCommonUnsubscribable {
 
   /**
    * Локализировать элементы.
-   * @param {AppHostMenuDataItem[]} items Элементы.
+   * @param {AppHostPartMenuDataItem[]} items Элементы.
    */
   localizeItems(items: AppHostLayoutMenuDataItem[]) {
     items.forEach(item => {
@@ -77,13 +77,13 @@ export class AppHostLayoutMenuModel extends AppCoreCommonUnsubscribable {
     this.appStore.runActionClear();
   }
 
-  /** @param {AppHostMenuJobNodeFindInput} input */
-  private executeActionLoad(input: AppHostMenuJobNodesFindInput) {
+  /** @param {AppHostPartMenuJobNodeFindInput} input */
+  private executeActionLoad(input: AppHostPartMenuJobNodesFindInput) {
     this.appStore.runActionLoad(input);
   }
 
-  /** @param {AppHostMenuDataItem} item */
-  private localizeItem(item: AppHostMenuDataItem) {
+  /** @param {AppHostPartMenuDataItem} item */
+  private localizeItem(item: AppHostPartMenuDataItem) {
     this.appLocalizer.createTranslator(
       item.titleResourceKey
     ).translate$().pipe(takeUntil(this.unsubscribe$)).subscribe(s => {
@@ -92,11 +92,11 @@ export class AppHostLayoutMenuModel extends AppCoreCommonUnsubscribable {
   }
 
   /**
-   * @param {AppHostMenuState} menuState
-   * @returns {Observable<AppHostMenuJobNodeFindInput>}
+   * @param {AppHostPartMenuState} menuState
+   * @returns {Observable<AppHostPartMenuJobNodeFindInput>}
    */
-  private onMenuStateSwitchMap(menuState: AppHostMenuState): Observable<AppHostMenuJobNodesFindInput> {
-    const input = new AppHostMenuJobNodesFindInput(
+  private onMenuStateSwitchMap(menuState: AppHostPartMenuState): Observable<AppHostPartMenuJobNodesFindInput> {
+    const input = new AppHostPartMenuJobNodesFindInput(
       menuState.menuNodeKey,
       AppCoreTreeEnumAxisMany.Ancestors,
       1,

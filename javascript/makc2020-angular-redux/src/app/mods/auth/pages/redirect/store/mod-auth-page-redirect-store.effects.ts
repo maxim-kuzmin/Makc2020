@@ -6,8 +6,8 @@ import {Action} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
-import {AppHostAuthService} from '@app/host/auth/host-auth.service';
-import {AppHostAuthStore} from '@app/host/auth/host-auth-store';
+import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppModAuthPageRedirectEnumActions} from '../enums/mod-auth-page-redirect-enum-actions';
 import {AppModAuthPageRedirectStoreActions} from './mod-auth-page-redirect-store.actions';
 import {AppModAuthPageRedirectStoreActionLoadSuccess} from './actions/mod-auth-page-redirect-store-action-load-success';
@@ -49,14 +49,14 @@ export class AppModAuthPageRedirectStoreEffects {
 
   /**
    * Конструктор.
-   * @param {AppHostAuthService} appAuth Аутентификация.
-   * @param {AppHostAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppHostPartAuthService} appAuth Аутентификация.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {Actions<AppModAuthPageRedirectStoreActions>} extActions$ Поток действий.
    */
   constructor(
-    private appAuth: AppHostAuthService,
-    private appAuthStore: AppHostAuthStore,
+    private appAuth: AppHostPartAuthService,
+    private appAuthStore: AppHostPartAuthStore,
     private appLogger: AppCoreLoggingService,
     private extActions$: Actions<AppModAuthPageRedirectStoreActions>
   ) {

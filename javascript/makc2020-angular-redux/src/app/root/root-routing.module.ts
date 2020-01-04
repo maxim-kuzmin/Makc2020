@@ -2,7 +2,7 @@
 
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AppHostAuthGuard} from '@app/host/auth/host-auth.guard';
+import {AppHostPartAuthGuard} from '@app/host/parts/auth/host-part-auth.guard';
 import {AppSkinRootPageAdministrationComponent} from '@app-skin/root/pages/administration/root-page-administration.component';
 import {AppSkinRootPageContactsComponent} from '@app-skin/root/pages/contacts/root-page-contacts.component';
 import {AppSkinRootPageErrorComponent} from '@app-skin/root/pages/error/root-page-error.component';
@@ -23,7 +23,7 @@ import {appRootPageSiteConfigKey, appRootPageSiteConfigRoutePath} from './pages/
 
 const routes: Routes = [
   {
-    canActivateChild: [AppHostAuthGuard],
+    canActivateChild: [AppHostPartAuthGuard],
     children: [
       {
         component: AppSkinRootPageAdministrationComponent,

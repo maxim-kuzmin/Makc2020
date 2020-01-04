@@ -6,7 +6,7 @@ import {Action} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
-import {AppHostAuthService} from '@app/host/auth/host-auth.service';
+import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
 import {AppModAuthPageRegisterEnumActions} from '../enums/mod-auth-page-register-enum-actions';
 import {AppModAuthPageRegisterStoreActionSaveSuccess} from './actions/mod-auth-page-register-store-action-save-success';
 import {AppModAuthPageRegisterStoreActions} from './mod-auth-page-register-store.actions';
@@ -38,12 +38,12 @@ export class AppModAuthPageRegisterStoreEffects {
 
   /**
    * Конструктор.
-   * @param {AppHostAuthService} appAuth Аутентификация.
+   * @param {AppHostPartAuthService} appAuth Аутентификация.
    * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {Actions<AppModAuthPageRegisterStoreActions>} extActions$ Поток действий.
    */
   constructor(
-    private appAuth: AppHostAuthService,
+    private appAuth: AppHostPartAuthService,
     private appLogger: AppCoreLoggingService,
     private extActions$: Actions<AppModAuthPageRegisterStoreActions>
   ) { }

@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
-import {AppHostMenuDataNode} from '@app/host/menu/data/host-menu-data-node';
+import {AppHostPartMenuDataNode} from '@app/host/parts/menu/data/host-part-menu-data-node';
 import {AppHostLayoutMenuActions} from './host-layout-menu-actions';
 import {AppHostLayoutMenuModel} from './host-layout-menu-model';
 import {AppHostLayoutMenuDataItem, appHostLayoutMenuDataItemCreate} from './data/host-layout-menu-data-item';
@@ -30,13 +30,13 @@ export class AppHostLayoutMenuPresenter {
   }
 
   /**
-   * @param {AppHostMenuDataNode} node
-   * @param {AppHostMenuDataNode} selectedNode
+   * @param {AppHostPartMenuDataNode} node
+   * @param {AppHostPartMenuDataNode} selectedNode
    * @returns {AppHostLayoutMenuDataItem}
    */
   private createDataItem(
-    node: AppHostMenuDataNode,
-    selectedNode: AppHostMenuDataNode
+    node: AppHostPartMenuDataNode,
+    selectedNode: AppHostPartMenuDataNode
   ): AppHostLayoutMenuDataItem {
     let nodeKey = node.key;
 
@@ -81,7 +81,7 @@ export class AppHostLayoutMenuPresenter {
 
       const parentNodeLevel = this.view.menuLevel - 1;
 
-      let prevNode: AppHostMenuDataNode;
+      let prevNode: AppHostPartMenuDataNode;
 
       data.nodes.forEach((node => {
         if (node.level === parentNodeLevel) {

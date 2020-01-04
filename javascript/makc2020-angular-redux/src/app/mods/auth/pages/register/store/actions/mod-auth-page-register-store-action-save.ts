@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Action} from '@ngrx/store';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
 import {AppModAuthPageRegisterEnumActions} from '../../enums/mod-auth-page-register-enum-actions';
 
 /** Мод "Auth". Страницы. Регистрация. Хранилище состояния. Действия. Сохранение. */

@@ -9,7 +9,7 @@ import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppHostLayoutMenuActions} from '../host-layout-menu-actions';
 import {AppHostLayoutMenuStoreActionLoadSuccess} from './actions/host-layout-menu-store-action-load-success';
 import {AppHostLayoutMenuStoreActions} from './host-layout-menu-store.actions';
-import {AppHostMenuJobNodesFindService} from '@app/host/menu/jobs/nodes/find/host-menu-job-nodes-find.service';
+import {AppHostPartMenuJobNodesFindService} from '@app/host/parts/menu/jobs/nodes/find/host-part-menu-job-nodes-find.service';
 
 /** Хост. Разметка. Меню. Хранилище состояния. Эффекты. */
 @Injectable()
@@ -38,12 +38,12 @@ export class AppHostLayoutMenuStoreEffects {
 
   /**
    * Конструктор.
-   * @param {AppHostMenuJobNodesFindService} appJobNodesFind Задание на поиск узлов.
+   * @param {AppHostPartMenuJobNodesFindService} appJobNodesFind Задание на поиск узлов.
    * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {Actions<AppHostLayoutMenuStoreActions>} extActions$ Поток действий.
    */
   constructor(
-    protected appJobNodesFind: AppHostMenuJobNodesFindService,
+    protected appJobNodesFind: AppHostPartMenuJobNodesFindService,
     private appLogger: AppCoreLoggingService,
     private extActions$: Actions<AppHostLayoutMenuStoreActions>
   ) {

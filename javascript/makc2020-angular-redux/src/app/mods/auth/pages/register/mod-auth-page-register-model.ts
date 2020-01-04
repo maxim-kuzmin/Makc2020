@@ -7,10 +7,10 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/auth/common/jobs/register/host-auth-common-job-register-input';
-import {AppHostMenuOption} from '@app/host/menu/host-menu-option';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModAuthPageRedirectService} from '../redirect/mod-auth-page-redirect.service';
 import {AppModAuthPageRegisterService} from './mod-auth-page-register.service';
 import {AppModAuthPageRegisterResources} from './mod-auth-page-register-resources';
@@ -32,10 +32,10 @@ export class AppModAuthPageRegisterModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageRegisterStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {FormBuilder} extFormBuilder Построитель форм.
@@ -44,10 +44,10 @@ export class AppModAuthPageRegisterModel extends AppCoreCommonPageModel {
   constructor(
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageRegisterStore,
     appTitle: AppCoreTitleService,
     public extFormBuilder: FormBuilder,
@@ -126,7 +126,7 @@ export class AppModAuthPageRegisterModel extends AppCoreCommonPageModel {
     } = this.appModAuthPageRedirect.settings;
 
     const lookupOptionByMenuNodeKey = {
-      [keyRedirect]: <AppHostMenuOption>{
+      [keyRedirect]: <AppHostPartMenuOption>{
         isNeededToRemove: true
       }
     };

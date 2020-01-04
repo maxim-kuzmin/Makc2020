@@ -8,13 +8,13 @@ import {AppCoreLocalizationService} from '@app/core/localization/core-localizati
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostAuthService} from '@app/host/auth/host-auth.service';
-import {AppHostAuthState} from '@app/host/auth/host-auth-state';
-import {AppHostAuthStore} from '@app/host/auth/host-auth-store';
-import {AppHostMenuOption} from '@app/host/menu/host-menu-option';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
-import {AppHostAuthCommonJobLoginInput} from '@app/host/auth/common/jobs/login/host-auth-common-job-login-input';
+import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
+import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
+import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
+import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
 import {AppModAuthPageRedirectService} from '../redirect/mod-auth-page-redirect.service';
 import {AppModAuthPageLogonResources} from './mod-auth-page-logon-resources';
 import {AppModAuthPageLogonService} from './mod-auth-page-logon.service';
@@ -34,15 +34,15 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppHostAuthService} appAuth Аутентификация.
-   * @param {AppHostAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppHostPartAuthService} appAuth Аутентификация.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageLogonStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {FormBuilder} extFormBuilder Построитель форм.
@@ -50,15 +50,15 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
-    private appAuth: AppHostAuthService,
-    private appAuthStore: AppHostAuthStore,
+    private appAuth: AppHostPartAuthService,
+    private appAuthStore: AppHostPartAuthStore,
     appLocalizer: AppCoreLocalizationService,
     private appLogger: AppCoreLoggingService,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageLogonStore,
     appTitle: AppCoreTitleService,
     public extFormBuilder: FormBuilder,
@@ -83,15 +83,15 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
    * Получить состояние аутентификации.
    * @returns {AppModAuthPageLogonState} Состояние аутентификации.
    */
-  getAuthState(): AppHostAuthState {
+  getAuthState(): AppHostPartAuthState {
     return this.appAuthStore.getState();
   }
 
   /**
    * Получить поток состояния аутентификации.
-   * @returns {Observable<AppHostAuthState>} Поток состояния аутентификации.
+   * @returns {Observable<AppHostPartAuthState>} Поток состояния аутентификации.
    */
-  getAuthState$(): Observable<AppHostAuthState> {
+  getAuthState$(): Observable<AppHostPartAuthState> {
     return this.appAuthStore.getState$(this.unsubscribe$);
   }
 
@@ -129,9 +129,9 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
 
   /**
    * Выполнить действие "Вход в систему".
-   * @param {AppHostAuthCommonJobLoginInput} input
+   * @param {AppHostPartAuthCommonJobLoginInput} input
    */
-  executeActionLogin(input: AppHostAuthCommonJobLoginInput) {
+  executeActionLogin(input: AppHostPartAuthCommonJobLoginInput) {
     this.appStore.runActionLogin(input);
   }
 
@@ -174,7 +174,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
     } = this.appModAuthPageRedirect.settings;
 
     const lookupOptionByMenuNodeKey = {
-      [keyRedirect]: <AppHostMenuOption>{
+      [keyRedirect]: <AppHostPartMenuOption>{
         isNeededToRemove: true
       }
     };

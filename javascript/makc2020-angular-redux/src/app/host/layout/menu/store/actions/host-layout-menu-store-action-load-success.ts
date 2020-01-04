@@ -2,7 +2,7 @@
 
 import {Action} from '@ngrx/store';
 import {AppHostLayoutMenuActions} from '@app/host/layout/menu/host-layout-menu-actions';
-import {AppHostMenuJobNodesFindResult} from '@app/host/menu/jobs/nodes/find/host-menu-job-nodes-find-result';
+import {AppHostPartMenuJobNodesFindResult} from '@app/host/parts/menu/jobs/nodes/find/host-part-menu-job-nodes-find-result';
 
 /** Хост. Разметка. Меню. Хранилище состояния. Действия. Успех загрузки. */
 export class AppHostLayoutMenuStoreActionLoadSuccess implements Action {
@@ -12,12 +12,12 @@ export class AppHostLayoutMenuStoreActionLoadSuccess implements Action {
 
   /**
    * Конструктор.
-   * @param {AppHostMenuJobNodesFindResult} jobNodesFindResult
+   * @param {AppHostPartMenuJobNodesFindResult} jobNodesFindResult
    * @param {number} menuLevel Уровень меню.
    * Результат выполнения задания на получение списка.
    */
   constructor(
-    public jobNodesFindResult: AppHostMenuJobNodesFindResult,
+    public jobNodesFindResult: AppHostPartMenuJobNodesFindResult,
     public menuLevel: number
   ) {
   }

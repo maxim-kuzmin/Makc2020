@@ -9,9 +9,9 @@ import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostMenuService} from '@app/host/menu/host-menu.service';
-import {AppHostMenuOption} from '@app/host/menu/host-menu-option';
-import {AppHostRouteService} from '@app/host/route/host-route.service';
+import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
+import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
+import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModDummyMainJobItemGetInput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-input';
 import {AppModDummyMainJobItemGetOutput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-output';
 import {AppModDummyMainPageListService} from '../list/mod-dummy-main-page-list.service';
@@ -48,11 +48,11 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
    * @param {AppCoreDialogService} appDialog Диалог.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppHostMenuService} appMenu Меню.
+   * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
-   * @param {AppHostRouteService} appRoute Маршрут.
+   * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModDummyMainPageItemStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {FormBuilder} extFormBuilder Построитель форм.
@@ -63,11 +63,11 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
     public appDialog: AppCoreDialogService,
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
-    private appMenu: AppHostMenuService,
+    private appMenu: AppHostPartMenuService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
     private appNavigation: AppCoreNavigationService,
-    appRoute: AppHostRouteService,
+    appRoute: AppHostPartRouteService,
     private appStore: AppModDummyMainPageItemStore,
     appTitle: AppCoreTitleService,
     public extFormBuilder: FormBuilder,
@@ -275,36 +275,36 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
       } = settings.paths;
 
       const lookupOptionByMenuNodeKey = {
-        [this.appModDummyMainPageList.settings.key]: <AppHostMenuOption>{
+        [this.appModDummyMainPageList.settings.key]: <AppHostPartMenuOption>{
           routerLink: this.appModDummyMainPageList.createRouterLink()
         },
-        [keyCreate]: <AppHostMenuOption>{
+        [keyCreate]: <AppHostPartMenuOption>{
           routerLink: this.appModDummyMainPageItem.createRouterLink(pathCreate)
         }
       };
 
       switch (this.pageKey) {
         case keyCreate: {
-          lookupOptionByMenuNodeKey[keyCreate] = <AppHostMenuOption>{
+          lookupOptionByMenuNodeKey[keyCreate] = <AppHostPartMenuOption>{
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathCreate)
           };
 
-          lookupOptionByMenuNodeKey[keyEdit] = <AppHostMenuOption>{
+          lookupOptionByMenuNodeKey[keyEdit] = <AppHostPartMenuOption>{
             isNeededToRemove: true
           };
 
-          lookupOptionByMenuNodeKey[keyView] = <AppHostMenuOption>{
+          lookupOptionByMenuNodeKey[keyView] = <AppHostPartMenuOption>{
             isNeededToRemove: true
           };
         }
           break;
         case keyEdit:
         case keyView: {
-          lookupOptionByMenuNodeKey[keyEdit] = <AppHostMenuOption>{
+          lookupOptionByMenuNodeKey[keyEdit] = <AppHostPartMenuOption>{
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathEdit)
           };
 
-          lookupOptionByMenuNodeKey[keyView] = <AppHostMenuOption>{
+          lookupOptionByMenuNodeKey[keyView] = <AppHostPartMenuOption>{
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathView)
           };
         }
