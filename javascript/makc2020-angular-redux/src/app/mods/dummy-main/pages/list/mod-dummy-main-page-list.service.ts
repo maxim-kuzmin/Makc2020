@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {AppCoreService} from '@app/core/core.service';
+import {AppCoreSettings} from '@app/core/core-settings';
 import {AppModDummyMainPageListLocation} from './mod-dummy-main-page-list-location';
 import {AppModDummyMainPageListParameters} from './mod-dummy-main-page-list-parameters';
 import {AppModDummyMainPageListSettings} from './mod-dummy-main-page-list-settings';
@@ -32,10 +32,10 @@ export class AppModDummyMainPageListService {
 
   /**
    * Конструктор.
-   * @param {AppCoreService} appCore Конфигурация ядра.
+   * @param {AppCoreSettings} appSettings Настройки.
    */
   constructor(
-    private appCore: AppCoreService
+    private appSettings: AppCoreSettings
   ) {
     this.locationChanged$ = new BehaviorSubject<AppModDummyMainPageListLocation>(this.location);
   }
@@ -46,7 +46,7 @@ export class AppModDummyMainPageListService {
    * @returns {AppModDummyMainPageItemParameters} Параметры.
    */
   createParameters(index: string): AppModDummyMainPageListParameters {
-    return new AppModDummyMainPageListParameters(this.appCore, index);
+    return new AppModDummyMainPageListParameters(this.appSettings, index);
   }
 
   /**

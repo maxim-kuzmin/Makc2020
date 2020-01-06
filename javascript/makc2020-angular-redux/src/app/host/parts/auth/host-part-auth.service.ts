@@ -3,7 +3,6 @@
 import {Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {AppCoreAuthService} from '@app/core/auth/core-auth.service';
 import {AppCoreAuthTypeJwtService} from '@app/core/auth/types/jwt/core-auth-type-jwt.service';
 import {AppCoreAuthTypeOidcJobLoginService} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login.service';
 import {AppCoreAuthTypeOidcJobLogoutService} from '@app/core/auth/types/oidc/jobs/logout/core-auth-type-oidc-job-logout.service';
@@ -14,12 +13,13 @@ import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result'
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppHostPartAuthCommonJobLoginInput} from './common/jobs/login/host-part-auth-common-job-login-input';
 import {AppHostPartAuthCommonJobLoginJwtOutput} from './common/jobs/login/jwt/host-part-auth-common-job-login-jwt-output';
-import {AppHostAuthCommonJobRegisterInput} from './common/jobs/register/host-auth-common-job-register-input';
-import {AppHostAuthCommonJobRegisterResult} from './common/jobs/register/host-auth-common-job-register-result';
+import {AppHostPartAuthCommonJobRegisterInput} from './common/jobs/register/host-part-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterResult} from './common/jobs/register/host-part-auth-common-job-register-result';
 import {AppHostPartAuthStore} from './host-part-auth-store';
+import {AppCoreSettings} from '@app/core/core-settings';
 
 /** Хост. Часть "Auth". Сервис. */
-export abstract class AppHostPartAuthService extends AppCoreAuthService {
+export abstract class AppHostPartAuthService {
 
   private removeCurrentUserAndTokensViaOidcUnsubscribe$ = new Subject<boolean>();
 
@@ -30,6 +30,7 @@ export abstract class AppHostPartAuthService extends AppCoreAuthService {
    * @param {AppCoreAuthTypeOidcJobLogoutService} appAuthTypeOidcJobLogout Задание на выход из системы для аутентификации типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppCoreSettings} appSettings Настройки.
    * @param {Router} extRouter Маршрутизатор.
    */
   protected constructor(
@@ -38,10 +39,9 @@ export abstract class AppHostPartAuthService extends AppCoreAuthService {
     private appAuthTypeOidcJobLogout: AppCoreAuthTypeOidcJobLogoutService,
     protected appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
     protected appAuthStore: AppHostPartAuthStore,
+    protected appSettings: AppCoreSettings,
     private extRouter: Router
   ) {
-    super();
-
     this.onRemoveCurrentUserAndTokensViaOidcGetState = this.onRemoveCurrentUserAndTokensViaOidcGetState.bind(this);
   }
 
@@ -86,13 +86,13 @@ export abstract class AppHostPartAuthService extends AppCoreAuthService {
   /**
    * Зарегистрировать.
    * @param {AppCoreLoggingService} logger Регистратор.
-   * @param {AppHostAuthCommonJobRegisterInput} input Ввод.
-   * @returns {Observable<AppHostAuthCommonJobRegisterResult>} Результирующий поток.
+   * @param {AppHostPartAuthCommonJobRegisterInput} input Ввод.
+   * @returns {Observable<AppHostPartAuthCommonJobRegisterResult>} Результирующий поток.
    */
   abstract register$(
     logger: AppCoreLoggingService,
-    input: AppHostAuthCommonJobRegisterInput
-  ): Observable<AppHostAuthCommonJobRegisterResult>;
+    input: AppHostPartAuthCommonJobRegisterInput
+  ): Observable<AppHostPartAuthCommonJobRegisterResult>;
 
   /**
    * Попробовать войти в систему и вернуться.
@@ -136,7 +136,11 @@ export abstract class AppHostPartAuthService extends AppCoreAuthService {
   protected tryLogin(
     logger: AppCoreLoggingService
   ) {
-    switch (this.authType) {
+    const {
+      authType
+    } = this.appSettings;
+
+    switch (authType) {
       case AppCoreAuthEnumTypes.Jwt: {
         const {
           logonUrl
@@ -159,7 +163,11 @@ export abstract class AppHostPartAuthService extends AppCoreAuthService {
   ) {
     this.appAuthStore.runActionCurrentUserSet();
 
-    switch (this.authType) {
+    const {
+      authType
+    } = this.appSettings;
+
+    switch (authType) {
       case AppCoreAuthEnumTypes.Jwt:
         this.removeCurrentUserAndTokensViaJwt();
         break;

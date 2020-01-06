@@ -28,8 +28,8 @@ import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 // //makc//>//
 import {appBaseDiTokenLocalStorage, appBaseDiTokenSessionStorage, appBaseDiTokenWindow} from './src/app/base/base-di';
-import {appBaseConfigHostPort} from './src/app/base/base-config';
-const PORT = appBaseConfigHostPort; // //makc// process.env.PORT;
+import {appCoreSettings} from './src/app/core/core-settings';
+const PORT = appCoreSettings.hostPort; // //makc// process.env.PORT;
 const domino = require('domino');
 const sessionStorage = require('sessionstorage');
 const LocalStorage = require('node-localstorage').LocalStorage;

@@ -2,7 +2,7 @@
 
 import {AppCoreCommonPageParameter} from '@app/core/common/page/core-common-page-parameter';
 import {AppCoreCommonPageParameters} from '@app/core/common/page/core-common-page-parameters';
-import {AppCoreService} from '@app/core/core.service';
+import {AppCoreSettings} from '@app/core/core-settings';
 import {AppModDummyMainJobListGetInput} from '@app/mods/dummy-main/jobs/list/get/mod-dummy-main-job-list-get-input';
 
 /** Мод "DummyMain". Страницы. Список. Параметры. */
@@ -76,16 +76,16 @@ export class AppModDummyMainPageListParameters extends AppCoreCommonPageParamete
 
   /**
    * Конструктор.
-   * @param {AppCoreService} appCore Ядро.
+   * @param {AppCoreSettings} appSettings Настройки.
    * @param {string} index Индекс.
    */
-  constructor(appCore: AppCoreService, index: string) {
+  constructor(appSettings: AppCoreSettings, index: string) {
     super(index);
 
     const {
       pageSize,
       sortDirection
-    } = appCore.settings;
+    } = appSettings;
 
     this.paramIsDataRefreshed.value = false;
     this.paramPageNumber.value = 1;

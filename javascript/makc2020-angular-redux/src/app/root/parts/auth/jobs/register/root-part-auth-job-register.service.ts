@@ -8,8 +8,8 @@ import {AppCoreExecutionService} from '@app/core/execution/core-execution.servic
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
-import {AppHostAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-result';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-result';
 
 /** Корень. Часть "Auth". Задания. Регистрция. Сервис. */
 @Injectable({
@@ -32,21 +32,21 @@ export class AppRootPartAuthJobRegisterService {
   /**
    * Выполнить.
    * @param {AppCoreLoggingService} logger Регистратор.
-   * @param {AppHostAuthCommonJobRegisterInput} input Ввод.
-   * @returns {Observable<AppHostAuthCommonJobRegisterResult>} Поток вывода.
+   * @param {AppHostPartAuthCommonJobRegisterInput} input Ввод.
+   * @returns {Observable<AppHostPartAuthCommonJobRegisterResult>} Поток вывода.
    */
   execute$(
     logger: AppCoreLoggingService,
-    input: AppHostAuthCommonJobRegisterInput
-  ): Observable<AppHostAuthCommonJobRegisterResult> {
+    input: AppHostPartAuthCommonJobRegisterInput
+  ): Observable<AppHostPartAuthCommonJobRegisterResult> {
     const url = this.appNavigation.createAbsoluteUrlOfApi('auth/register');
 
     const jobName = this.appExecution.createJobName(appCoreExecutionMethod.post, url, input);
 
-    return this.appHttp.post<AppHostAuthCommonJobRegisterResult>(url, input)
+    return this.appHttp.post<AppHostPartAuthCommonJobRegisterResult>(url, input)
       .pipe(
         map(result =>
-          this.appExecution.onSuccess<AppHostAuthCommonJobRegisterResult>(
+          this.appExecution.onSuccess<AppHostPartAuthCommonJobRegisterResult>(
             jobName,
             result,
             logger

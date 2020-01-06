@@ -9,10 +9,10 @@ export class AppBaseDialogDefault extends AppCoreDialogDefault {
 
   /**
    * Конструктор.
-   * @param {Window} window Окно.
+   * @param {Window} appWindow Окно.
    */
   constructor(
-    @Inject(appBaseDiTokenWindow) private window: Window
+    @Inject(appBaseDiTokenWindow) private appWindow: Window
   ) {
     super();
   }
@@ -22,7 +22,7 @@ export class AppBaseDialogDefault extends AppCoreDialogDefault {
    * @param {?string} message Сообщение с предупреждением.
    */
   alert(message?: string) {
-    this.window.alert(message);
+    this.appWindow.alert(message);
   }
 
   /**
@@ -31,6 +31,6 @@ export class AppBaseDialogDefault extends AppCoreDialogDefault {
    * @returns {boolean} Результат подтверждения.
    */
   confirm(message?: string): boolean {
-    return this.window.confirm(message);
+    return this.appWindow.confirm(message);
   }
 }

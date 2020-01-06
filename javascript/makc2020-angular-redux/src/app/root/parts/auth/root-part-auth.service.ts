@@ -6,11 +6,18 @@ import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {switchMap, take} from 'rxjs/operators';
 import {AppCoreAuthEnumTypes} from '@app/core/auth/enums/core-auth-enum-types';
 import {AppCoreAuthTypeJwtService} from '@app/core/auth/types/jwt/core-auth-type-jwt.service';
+import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
+import {AppCoreAuthTypeOidcJobLoginService} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login.service';
+import {AppCoreAuthTypeOidcJobLogoutService} from '@app/core/auth/types/oidc/jobs/logout/core-auth-type-oidc-job-logout.service';
+import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type-oidc-state';
+// tslint:disable-next-line:max-line-length
+import {AppCoreAuthTypeOidcJobRefreshTokenService} from '@app/core/auth/types/oidc/jobs/resresh-token/core-auth-type-oidc-job-refresh-token.service';
 import {AppCoreExecutionResult, appCoreExecutionResultCopy} from '@app/core/execution/core-execution-result';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
+import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
-import {AppHostAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-result';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-result';
 import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppModAuthPageLogonService} from '@app/mods/auth/pages/logon/mod-auth-page-logon.service';
@@ -21,12 +28,6 @@ import {AppRootPartAuthJobLoginJwtService} from './jobs/login/jwt/root-part-auth
 import {AppRootPartAuthJobRefreshJwtInput} from './jobs/refresh/jwt/root-part-auth-job-refresh-jwt-input';
 import {AppRootPartAuthJobRefreshJwtService} from './jobs/refresh/jwt/root-part-auth-job-refresh-jwt.service';
 import {AppRootPartAuthJobRegisterService} from './jobs/register/root-part-auth-job-register.service';
-import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
-import {AppCoreAuthTypeOidcJobLoginService} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login.service';
-import {AppCoreAuthTypeOidcJobLogoutService} from '@app/core/auth/types/oidc/jobs/logout/core-auth-type-oidc-job-logout.service';
-import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type-oidc-state';
-// tslint:disable-next-line:max-line-length
-import {AppCoreAuthTypeOidcJobRefreshTokenService} from '@app/core/auth/types/oidc/jobs/resresh-token/core-auth-type-oidc-job-refresh-token.service';
 
 /** Корень. Часть "Auth". Сервис. */
 @Injectable()
@@ -50,6 +51,7 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
    * @param {AppRootPartAuthJobRegisterService} appJobRegister Задание на регистрацию.
    * @param {AppHostPartAuthJobCurrentUserGetService} appJobCurrentUserGet Задание на получение текущего пользователя.
    * @param {AppCoreLoggingService} appLogger Регистратор.
+   * @param {AppCoreSettings} appSettings Настройки.
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
@@ -66,6 +68,7 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
     private appJobRegister: AppRootPartAuthJobRegisterService,
     private appJobCurrentUserGet: AppHostPartAuthJobCurrentUserGetService,
     private appLogger: AppCoreLoggingService,
+    appSettings: AppCoreSettings,
     extRouter: Router
   ) {
     super(
@@ -74,6 +77,7 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
       appAuthTypeOidcJobLogout,
       appAuthTypeOidcStore,
       appAuthStore,
+      appSettings,
       extRouter
     );
 
@@ -132,13 +136,13 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
   /**
    * @inheritDoc
    * @param {AppCoreLoggingService} logger
-   * @param {AppHostAuthCommonJobRegisterInput} input
-   * @returns {Observable<AppHostAuthCommonJobRegisterResult>}
+   * @param {AppHostPartAuthCommonJobRegisterInput} input
+   * @returns {Observable<AppHostPartAuthCommonJobRegisterResult>}
    */
   register$(
     logger: AppCoreLoggingService,
-    input: AppHostAuthCommonJobRegisterInput
-  ): Observable<AppHostAuthCommonJobRegisterResult> {
+    input: AppHostPartAuthCommonJobRegisterInput
+  ): Observable<AppHostPartAuthCommonJobRegisterResult> {
     return this.appJobRegister.execute$(logger, input);
   }
 
@@ -174,7 +178,11 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
   private refreshAccount$(
     logger: AppCoreLoggingService
   ): Observable<never> {
-    switch (this.authType) {
+    const {
+      authType
+    } = this.appSettings;
+
+    switch (authType) {
       case AppCoreAuthEnumTypes.Jwt:
         return this.refreshAccountViaJwt(logger);
       case AppCoreAuthEnumTypes.Oidc:

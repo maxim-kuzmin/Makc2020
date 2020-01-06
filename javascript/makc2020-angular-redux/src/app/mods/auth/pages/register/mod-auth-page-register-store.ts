@@ -3,7 +3,7 @@
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
 import {AppModAuthStoreState} from '../../store/mod-auth-store.state';
 import {AppModAuthPageRegisterState} from './mod-auth-page-register-state';
 import {AppModAuthPageRegisterStoreActionClear} from './store/actions/mod-auth-page-register-store-action-clear';
@@ -53,9 +53,9 @@ export class AppModAuthPageRegisterStore {
 
   /**
    * Запустить действие "Сохранение".
-   * @param {AppHostAuthCommonJobRegisterInput} input Ввод.
+   * @param {AppHostPartAuthCommonJobRegisterInput} input Ввод.
    */
-  runActionSave(input: AppHostAuthCommonJobRegisterInput) {
+  runActionSave(input: AppHostPartAuthCommonJobRegisterInput) {
     this.extStore.dispatch(new AppModAuthPageRegisterStoreActionSave(input));
   }
 

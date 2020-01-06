@@ -10,10 +10,10 @@ export class AppBaseLoggingDefault extends AppCoreLoggingDefault {
 
   /**
    * Конструктор.
-   * @param {Window} window Окно.
+   * @param {Window} appWindow Окно.
    */
   constructor(
-    @Inject(appBaseDiTokenWindow) private window: Window
+    @Inject(appBaseDiTokenWindow) private appWindow: Window
   ) {
     super();
   }
@@ -30,16 +30,16 @@ export class AppBaseLoggingDefault extends AppCoreLoggingDefault {
 
     switch (entryKind) {
       case appCoreLoggingEntryKind.info:
-        func = this.window.console.info;
+        func = this.appWindow.console.info;
         break;
       case appCoreLoggingEntryKind.debug:
-        func = this.window.console.debug;
+        func = this.appWindow.console.debug;
         break;
       case appCoreLoggingEntryKind.error:
-        func = this.window.console.error;
+        func = this.appWindow.console.error;
         break;
       default:
-        func = this.window.console.log;
+        func = this.appWindow.console.log;
         break;
     }
 

@@ -3,12 +3,12 @@
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {merge, Observable, of, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
-import {AppCoreService} from '@app/core/core.service';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
+import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -46,7 +46,6 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreService} appCore Ядро.
    * @param {AppCoreDialogService} appDialog Диалог.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
@@ -55,12 +54,12 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModDummyMainPageListStore} appStore Хранилище состояния.
+   * @param {AppCoreSettings} appSettings Настройки.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
-    private appCore: AppCoreService,
     private appDialog: AppCoreDialogService,
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
@@ -69,6 +68,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
     private appModDummyMainPageList: AppModDummyMainPageListService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModDummyMainPageListStore,
+    private appSettings: AppCoreSettings,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute,
     private extRouter: Router
@@ -283,7 +283,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    * @returns {number[]} Настройка вариантов размеров страницы.
    */
   getSettingPageSizeOptions(): number[] {
-    return this.appCore.settings.pageSizeOptions;
+    return this.appSettings.pageSizeOptions;
   }
 
   /**
@@ -368,7 +368,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
   ): Subscription {
     const {
       searchDelayMilliseconds
-    } = this.appCore.settings;
+    } = this.appSettings;
 
     return this.subscribeToEvent(
       event$.pipe(

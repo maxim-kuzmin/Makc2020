@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 /** Хост. Часть "Auth". Общее. Задания. Регистрация. Ввод. */
-export class AppHostAuthCommonJobRegisterInput {
+export class AppHostPartAuthCommonJobRegisterInput {
 
   /**
    * Имя пользователя данных.

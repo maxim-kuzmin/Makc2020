@@ -2,8 +2,8 @@
 
 import {Injectable} from '@angular/core';
 import {AuthConfig, JwksValidationHandler, OAuthService} from 'angular-oauth2-oidc';
-import {appCoreConfigAuthOidcServerUrl, appCoreConfigAuthType} from '@app/core/core-config';
 import {AppCoreAuthEnumTypes} from '../../enums/core-auth-enum-types';
+import {AppCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. Аутентификация. Типы. OIDC. Сервис. */
 @Injectable({
@@ -16,15 +16,17 @@ export class AppCoreAuthTypeOidcService {
    * @type {boolean}
    */
   get isEnabled(): boolean {
-    return appCoreConfigAuthType === AppCoreAuthEnumTypes.Oidc;
+    return this.appSettings.authType === AppCoreAuthEnumTypes.Oidc;
   }
 
   /**
    * Конструктор.
    * @param {OAuthService} extOauthService Авторизация OAuth 2.0.
+   * @param {AppCoreSettings} appSettings Настройки.
    */
   constructor(
-    private extOauthService: OAuthService
+    private extOauthService: OAuthService,
+    private appSettings: AppCoreSettings
   ) {
   }
 
@@ -71,7 +73,7 @@ export class AppCoreAuthTypeOidcService {
     const authConfig = {
 
       // Url of the Identity Provider
-      issuer: appCoreConfigAuthOidcServerUrl,
+      issuer: this.appSettings.authTypeOidcServerUrl,
 
       // URL of the SPA to redirect the user to after login
       redirectUri: redirectUrl || window.location.origin,

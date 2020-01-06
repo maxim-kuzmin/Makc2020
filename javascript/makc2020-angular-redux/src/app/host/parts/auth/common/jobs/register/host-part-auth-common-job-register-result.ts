@@ -4,6 +4,6 @@ import { AppCoreExecutionResultWithData } from '@app/core/execution/core-executi
 import { AppHostPartAuthUser } from '../../../host-part-auth-user';
 
 /** Хост. Часть "Auth". Общее. Задания. Регистрация. Результат. */
-export interface AppHostAuthCommonJobRegisterResult
+export interface AppHostPartAuthCommonJobRegisterResult
   extends AppCoreExecutionResultWithData<AppHostPartAuthUser> {
 }

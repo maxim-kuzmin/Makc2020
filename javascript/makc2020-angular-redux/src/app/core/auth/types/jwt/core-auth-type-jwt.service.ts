@@ -3,9 +3,9 @@
 // tslint:disable:no-bitwise
 
 import {Injectable} from '@angular/core';
-import {appCoreConfigAuthType} from '@app/core/core-config';
 import {AppCoreAuthEnumTypes} from '../../enums/core-auth-enum-types';
 import {AppCoreAuthTypeJwtDefault} from './core-auth-type-jwt-default';
+import {AppCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. Аутентификация. Типы. JWT. Сервис. */
 @Injectable({
@@ -21,15 +21,17 @@ export class AppCoreAuthTypeJwtService {
    * @type {boolean}
    */
   get isEnabled(): boolean {
-    return appCoreConfigAuthType === AppCoreAuthEnumTypes.Jwt;
+    return this.appSettings.authType === AppCoreAuthEnumTypes.Jwt;
   }
 
   /**
    * Конструктор.
    * @param {AppCoreAuthTypeJwtDefault} appAuthJwtTypeDefault Умолчание аутентификации типа JWT.
+   * @param {AppCoreSettings} appSettings Настройки.
    */
   constructor(
-    private appAuthJwtTypeDefault: AppCoreAuthTypeJwtDefault
+    private appAuthJwtTypeDefault: AppCoreAuthTypeJwtDefault,
+    private appSettings: AppCoreSettings
   ) {
     this.expirationOffsetSeconds = this.appAuthJwtTypeDefault.expirationOffsetSeconds;
 

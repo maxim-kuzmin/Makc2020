@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Action} from '@ngrx/store';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
 import {AppModAuthPageRegisterEnumActions} from '../../enums/mod-auth-page-register-enum-actions';
 
 /** Мод "Auth". Страницы. Регистрация. Хранилище состояния. Действия. Сохранение. */
@@ -12,10 +12,10 @@ export class AppModAuthPageRegisterStoreActionSave implements Action {
 
   /**
    * Конструктор.
-   * @param {AppHostAuthCommonJobRegisterInput} jobRegisterInput
+   * @param {AppHostPartAuthCommonJobRegisterInput} jobRegisterInput
    * Ввод задания на регистрацию.
    */
   constructor(
-    public jobRegisterInput: AppHostAuthCommonJobRegisterInput
+    public jobRegisterInput: AppHostPartAuthCommonJobRegisterInput
   ) { }
 }

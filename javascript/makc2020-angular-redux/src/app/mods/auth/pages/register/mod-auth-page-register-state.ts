@@ -1,8 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AppCoreCommonState} from '@app/core/common/core-common-state';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
-import {AppHostAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-result';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterResult} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-result';
 import {AppModAuthPageRegisterEnumActions} from './enums/mod-auth-page-register-enum-actions';
 
 /** Мод "Auth". Страницы. Регистрация. Состояние. */
@@ -10,13 +10,13 @@ export class AppModAuthPageRegisterState extends AppCoreCommonState<AppModAuthPa
 
   /**
    * Ввод задания на регистрацию.
-   * @type {AppHostAuthCommonJobRegisterInput}
+   * @type {AppHostPartAuthCommonJobRegisterInput}
    */
-  jobRegisterInput: AppHostAuthCommonJobRegisterInput;
+  jobRegisterInput: AppHostPartAuthCommonJobRegisterInput;
 
   /**
    * Результат выполнения задания на регистрацию.
-   * @type {AppHostAuthCommonJobRegisterResult}
+   * @type {AppHostPartAuthCommonJobRegisterResult}
    */
-  jobRegisterResult: AppHostAuthCommonJobRegisterResult;
+  jobRegisterResult: AppHostPartAuthCommonJobRegisterResult;
 }

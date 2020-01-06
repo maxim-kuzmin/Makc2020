@@ -4,7 +4,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
-import {appCoreConfigApiUrl} from '@app/core/core-config';
+import {AppCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. HTTP. Перехватчик. */
 @Injectable()
@@ -15,12 +15,16 @@ export class AppCoreHttpInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (request.url.startsWith(appCoreConfigApiUrl)) {
+    const {
+      apiUrl
+    } = this.appSettings;
+
+    if (request.url.startsWith(apiUrl)) {
       let req = request.clone({
         headers: request.headers
           .set('Content-Type', 'application/json'),
         params: request.params
-          .set('lang', this.translator.currentLang)
+          .set('lang', this.extTranslator.currentLang)
       });
 
       if (req.method === 'GET') {
@@ -39,10 +43,12 @@ export class AppCoreHttpInterceptor implements HttpInterceptor {
 
   /**
    * Конструктор.
-   * @param {TranslateService} translator Переводчик.
+   * @param {AppCoreSettings} appSettings Настройки.
+   * @param {TranslateService} extTranslator Переводчик.
    */
   constructor(
-    private translator: TranslateService
+    private appSettings: AppCoreSettings,
+    private extTranslator: TranslateService
   ) {
   }
 }

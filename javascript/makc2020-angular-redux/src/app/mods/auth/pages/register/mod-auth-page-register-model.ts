@@ -7,7 +7,7 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
-import {AppHostAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-auth-common-job-register-input';
+import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -108,9 +108,9 @@ export class AppModAuthPageRegisterModel extends AppCoreCommonPageModel {
 
   /**
    * Выполнить действие "Сохранение".
-   * @param {AppHostAuthCommonJobRegisterInput} input Ввод.
+   * @param {AppHostPartAuthCommonJobRegisterInput} input Ввод.
    */
-  executeActionSave(input: AppHostAuthCommonJobRegisterInput) {
+  executeActionSave(input: AppHostPartAuthCommonJobRegisterInput) {
     this.appStore.runActionSave(input);
   }
 
