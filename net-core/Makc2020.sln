@@ -77,6 +77,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Apps.Api.Base
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Apps.Api.Web", "Makc2020.Root.Apps.Api.Web\Makc2020.Root.Apps.Api.Web.csproj", "{C9F10EA8-91CB-4796-8183-DF8B09C4A352}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

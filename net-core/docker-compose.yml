@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  makc2020.apps.api.web:
+    image: ${DOCKER_REGISTRY-}makc2020appsapiweb
+    build:
+      context: .
+      dockerfile: Makc2020.Apps.Api.Web/Dockerfile

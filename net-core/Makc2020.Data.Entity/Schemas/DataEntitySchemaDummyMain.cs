@@ -94,11 +94,6 @@ namespace Makc2020.Data.Entity.Schema
                 TimeZoneInfo.Local.GetUtcOffset(localTime)
                 );
 
-            var dateAndOffsetTokyo = new DateTimeOffset(
-                localTime, 
-                TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time").GetUtcOffset(localTime)
-                );
-
             return new DataEntityObjectDummyMain
             {
                 Id = id,
@@ -109,7 +104,7 @@ namespace Makc2020.Data.Entity.Schema
                 PropDate = new DateTime(2018, 01, day),
                 PropDateNullable = isEven ? new DateTime?(new DateTime(2018, 02, day)) : null,
                 PropDateTimeOffset = dateAndOffsetLocal,
-                PropDateTimeOffsetNullable = isEven ? new DateTimeOffset?(dateAndOffsetTokyo) : null,
+                PropDateTimeOffsetNullable = isEven ? new DateTimeOffset?(dateAndOffsetLocal) : null,
                 PropDecimal = 1000M + id + (id / 100M),
                 PropDecimalNullable = isEven ? new decimal?(2000M + id + (id / 200M)) : null,
                 PropInt32 = 1000 + (int)id,
