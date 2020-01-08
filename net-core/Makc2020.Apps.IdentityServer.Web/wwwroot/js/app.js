@@ -1,0 +1,3 @@
+﻿app = (function () {
+    return {};
+})();

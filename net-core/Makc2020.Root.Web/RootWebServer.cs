@@ -31,7 +31,7 @@ namespace Makc2020.Root.Web
         /// </summary>
         protected virtual void OnBeginRequest(HttpContext httpContext)
         {
-            Logger.LogDebug("RootWebDiAutofacServer.OnBeginRequest begin");
+            Logger.LogDebug("RootWebServer.OnBeginRequest begin");
 
             Logger.LogDebug($"Request path: {httpContext.Request.Path}");
 
@@ -46,7 +46,7 @@ namespace Makc2020.Root.Web
 
             context.InitCurrentCulture(cultureName);
 
-            Logger.LogDebug("RootWebDiAutofacServer.OnBeginRequest end");
+            Logger.LogDebug("RootWebServer.OnBeginRequest end");
         }
 
         #endregion Protected methods

@@ -15,12 +15,12 @@
     }
   },
   "PartLdap": {
-    "Domain": "localhost",
+    "Domain": "local",
     "IsSecureSocketLayerEnabled": false,
     "Port": 389,
     "Hosts": [
-      "001.localhost",
-      "002.localhost"
+      "001.local",
+      "002.local"
     ]
   }
 }

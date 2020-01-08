@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;Test</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Core.Web\Makc2020.Core.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.IdentityServer.Base\Makc2020.Mods.IdentityServer.Base.csproj" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ConfigFiles\Mod.IdentityServer.Web.Mvc.config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

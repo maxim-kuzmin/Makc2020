@@ -10,7 +10,7 @@
     },
     "Oidc": {
       "Audience": "Makc2020WebApi",
-      "Authority": "http://localhost:6003",
+      "Authority": "http://localhost:6002",
       "RequireHttpsMetadata": false
     }
   }

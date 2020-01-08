@@ -1,0 +1,11 @@
+﻿{
+  "PartAccount": {
+    "AllowLocalLogin": true,
+    "AllowRememberLogin": true,
+    "RememberLoginDurationInDays": 30,
+    "ShowLogoutPrompt": true,
+    "AutomaticRedirectAfterSignOut": true,
+    "WindowsAuthenticationSchemeName": "Windows",
+    "IncludeWindowsGroups": true
+  }
+}
