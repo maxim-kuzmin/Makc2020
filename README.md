@@ -1,7 +1,8 @@
-# javascript
+# javascript/makc2020-angular-redux
 
 Стартовый комплект программиста. Клиентская часть.
 Технологии: Angular 8.x, TypeScript, HTML, CSS.
+Подробное описание [здесь](./javascript/makc2020-angular-redux/README.md).
 
 # markup
 
