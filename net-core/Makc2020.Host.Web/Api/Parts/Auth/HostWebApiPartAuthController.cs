@@ -11,7 +11,7 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
     /// <summary>
     /// Хост. Beб. API. Часть "Auth". API. Контроллер.
     /// </summary>
-    [Route("api/auth")]
+    [ApiController, Route("api/auth")]
     public class HostWebApiPartAuthController : ControllerBase
     {
         #region Properties
@@ -41,7 +41,7 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
         /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными списка.</returns>
         [Route("current-user"), HttpGet]
-        public async Task<IActionResult> CurrentUserGet(HostBasePartAuthJobCurrentUserGetInput input)
+        public async Task<IActionResult> CurrentUserGet([FromQuery] HostBasePartAuthJobCurrentUserGetInput input)
         {
             var result = new HostBasePartAuthJobCurrentUserGetResult();
 

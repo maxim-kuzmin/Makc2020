@@ -14,7 +14,7 @@ namespace Makc2020.Mods.Auth.Web.Api
     /// <summary>
     /// Мод "Auth". Веб. API. Контроллер.
     /// </summary>
-    [Route("api/auth")]
+    [ApiController, Route("api/auth")]
     public class ModAuthWebApiController : ControllerBase
     {
         #region Properties

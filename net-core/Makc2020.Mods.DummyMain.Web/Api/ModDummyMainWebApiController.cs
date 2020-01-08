@@ -14,7 +14,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
     /// <summary>
     /// Мод "DummyMain". Веб. API. Контроллер.
     /// </summary>
-    [Route("api/dummy-main")]
+    [ApiController, Route("api/dummy-main")]
     public class ModDummyMainWebApiController : ControllerBase
     {
         #region Properties
@@ -44,7 +44,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными списка.</returns>
         [Route("list"), HttpGet]
-        public async Task<IActionResult> Get(ModDummyMainBaseJobListGetInput input)
+        public async Task<IActionResult> Get([FromQuery] ModDummyMainBaseJobListGetInput input)
         {
             var result = new ModDummyMainBaseJobListGetResult();
 
@@ -70,7 +70,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="intput">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpGet]
-        public async Task<IActionResult> Get(ModDummyMainBaseJobItemGetInput input)
+        public async Task<IActionResult> Get([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
             var result = new ModDummyMainBaseJobItemGetResult();
 
@@ -198,7 +198,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="intputData">Ввод.</param>
         /// <returns>Результат выполнения.</returns>
         [Route("item"), HttpDelete]
-        public async Task<IActionResult> Delete(ModDummyMainBaseJobItemGetInput input)
+        public async Task<IActionResult> Delete([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
             var result = new CoreBaseExecutionResult();
 

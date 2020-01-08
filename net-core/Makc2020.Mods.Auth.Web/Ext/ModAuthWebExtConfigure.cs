@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,9 @@ namespace Makc2020.Mods.Auth.Web.Ext
             }
             else if (authTypeIsJwt)
             {
+#if TEST || DEBUG
+                IdentityModelEventSource.ShowPII = true;
+#endif
                 result.AddJwtBearer();
 
                 ConfigureAuthenticationJwt(services, configSettingTypesJwt);

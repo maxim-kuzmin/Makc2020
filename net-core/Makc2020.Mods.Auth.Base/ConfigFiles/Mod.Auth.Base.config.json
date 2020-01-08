@@ -1,5 +1,5 @@
 ﻿{
-  "Type": "Oidc",
+  "Type": "Jwt",
   "Types": {
     "Jwt": {
       "Issuer": "Makc2020",
