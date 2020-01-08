@@ -1,27 +1,94 @@
-# Makc2020AngularRedux
+# Клиентское веб-приложение
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.5.
+Реализовано на Angular, Redux, TypeScript, HTML и CSS.
 
-## Development server
+Взаимодействует с двумя веб-приложениями:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Сервер API - серверное веб-приложение, предоставляющее HTTP REST API для доступа к базе данных
+(реализованно на .NET Core 3.x, C#, Entity Framework, MS SQL Server);
 
-## Code scaffolding
+- Сервер идентичности - серверное веб-приложение, предоставляющее HTTP REST API для аутентификации
+с помощью библиотеки [IdentityServer4](http://docs.identityserver.io/en/latest/index.html)
+(реализованно на .NET Core 3.x, C#, Entity Framework, MS SQL Server).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Подготовка окружения
 
-## Build
+Всю необходимую информацию по подготовке окружения можно найти [здесь](https://angular.io/guide/setup-local).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Установка внешних библиотек
 
-## Running unit tests
+1. Открыть консоль и перейти в корневую папку приложения - ту, что содержит файл **package.json**.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. В консоли выполнить команду: **npm i**, которая установит все необходимые внешние библиотеки в папку node_modules,
+размещённую в корневой папке приложения. Предварительно создавать пустую папку с этим названием не нужно, так как
+она будет создана автоматически в случае её отсутствия.
 
-## Running end-to-end tests
+## Настройка приложения
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+1. Открыть файл **src/environments/environment.ts**.
 
-## Further help
+2. Значение переменной **hostPort** установить в номер порта клиентского веб-приложения, например: **4201**.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+3. Значение поля **apiServerUrl** установить в URL REST API для доступа к базе данных без символа **/**
+на конце, например: **'http://localhost:5002'**.
+
+4. Значение поля **authTypeOidcIsEnabled** установить в **true**.
+
+5. Значение переменной **identityServerUrl** установить в URL REST API сервера аутентификации без символа **/**
+на конце, например: **'http://localhost:6002'**.
+
+6. Значение переменной **hostUrl** установить в URL клиентского веб-приложения без базового пути,
+например: **\`http://localhost:${hostPort}\`**.
+
+## Настройка базового пути
+
+1. Открыть файл **src/index.html**.
+
+2. Установить значение атрибута **href** тэга **base**, например: **"/"**.
+Описание этого атрибута можно увидеть [здесь](http://htmlbook.ru/html/base/href).
+
+## Настройка аутентификации
+
+Для аутентификации используется библиотека
+[angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc).
+Перечисленные ниже настройки относятся к ней.
+
+1. Открыть файл **src/app/core/auth/types/oidc/core-auth-type-oidc.service.ts**.
+
+2. Внутри функции **start** значение переменной **clientId** установить в идентификатор клиентского
+веб-приложения на сервере аутентификации, например: **'Makc2020WebClient'**.
+
+3. Внутри функции **start** значение переменной **responseType** установить в тип аутентификации,
+например: **'code'**.
+
+4. Внутри функции **start** значение переменной **scope** установить в перечисленные через пробел
+ ресурсы, обслуживаемые сервером аутентификации, например: **'offline_access openid Makc2020WebApi'**.
+
+## Разработка
+
+1. Открыть консоль и перейти в корневую папку приложения - ту, что содержит файл **package.json**.
+
+2. Выполнить команду **npm run hm-start**.
+
+3. Открыть веб-браузер и ввести в его адресную строку URL клиентского веб-приложения, совпадающий
+со значением переменной **appCoreConfigHostUrlWithoutBasePath** в файле **src/app/core/core-config.ts**
+с добавлением базового пути из атрибута **href** тэга **base** в файле **src/index.html**,
+например: **http://localhost:4203/**.
+
+4. Любые изменения в файлах проекта после их сохранения будут приводить к немедленной пересборке
+исходного кода и обновлению окна браузера, в котором открыто клиентское веб-приложение.
+
+## Развёртывание
+
+1. Открыть консоль и перейти в корневую папку приложения - ту, что содержит файл **package.json**.
+
+2. Для развёртывания на тестовый сервер в консоли выполнить команду: **ng build**. 
+
+3. Для развёртывания на продуктовый сервер в консоли выполнить команду: **ng build --prod**.
+
+4. Переместить результат построения из папки **dist** в папку на тестовом или продуктовом серверах.
+
+5. Настроить веб-сервер на обслуживание этой папки таким образом, чтобы запросы к несуществующим
+файлам и папкам перенаправлялись на файл index.html.
+О том, как настроить IIS, встроенный веб-сервер операционной системы Windows, можно прочитать
+[здесь](https://devblogs.microsoft.com/premier-developer/tips-for-running-an-angular-app-in-iis/).

@@ -106,11 +106,12 @@ Angular, .Net Core, MS SQL Server.
 ## Приложения
 
 
-1. [Веб-сервер API](./Makc2020.Apps.Api.Web/README.md) - серверное веб-приложение, предоставляющее
-HTTP REST API для доступа к базе данных
-(реализованно на .NET Core 3.x, C#, Entity Framework, MS SQL Server).
+1. [Примеры работы с API](./Makc2020.Apps.Api.Base/README.md) - консольное приложение, предоставляющее
+примеры работы с API для доступа к базе данных.
 
-2. [Веб-сервер идентичности](./Makc2020.Apps.IdentityServer.Web/README.md) - серверное веб-приложение,
+2. [Веб-сервер API](./Makc2020.Apps.Api.Web/README.md) - серверное веб-приложение, предоставляющее
+HTTP REST API для доступа к базе данных.
+
+3. [Веб-сервер идентичности](./Makc2020.Apps.IdentityServer.Web/README.md) - серверное веб-приложение,
 предоставляющее HTTP REST API для аутентификации по технологии
 [Single Sign-On](https://ru.wikipedia.org/wiki/Технология_единого_входа).
-(реализованно на .NET Core 3.x, C#, Entity Framework, MS SQL Server).
