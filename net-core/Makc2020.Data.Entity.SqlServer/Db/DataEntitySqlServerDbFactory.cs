@@ -5,7 +5,6 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.SqlServer.Config;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 using System.Reflection;
 
 namespace Makc2020.Data.Entity.SqlServer.Db
@@ -47,8 +46,6 @@ namespace Makc2020.Data.Entity.SqlServer.Db
         /// <inheritdoc/>
         protected sealed override string CreateConnectionString()
         {
-            var basePath = Directory.GetCurrentDirectory();
-
             var configFilePath = DataEntitySqlServerConfig.CreateFilePath();
 
             var configSettings = DataEntitySqlServerConfigSettings.Create(configFilePath, Environment);

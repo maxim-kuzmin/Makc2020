@@ -75,7 +75,7 @@ namespace Makc2020.Core.Base.Common.Config.Providers
                     );
             }
 
-            configurationBuilder.Build().Bind(Settings);
+            configurationBuilder.AddEnvironmentVariables().Build().Bind(Settings);
         }
 
         /// <inheritdoc/>

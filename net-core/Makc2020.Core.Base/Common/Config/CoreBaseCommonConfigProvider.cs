@@ -6,7 +6,7 @@ namespace Makc2020.Core.Base.Common.Config
     /// Ядро. Основа. Общее. Конфигурация. Поставщик.
     /// </summary>
     /// <typeparam name="TSettings">Тип настроек.</typeparam>
-    public abstract class CoreBaseCommonConfigProvider<TSettings> : ICoreBaseCommonConfigProvider
+    public abstract class CoreBaseCommonConfigProvider<TSettings>
     {
         #region Properties
 
