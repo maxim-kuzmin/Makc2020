@@ -77,8 +77,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Apps.Api.Base
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Apps.Api.Web", "Makc2020.Root.Apps.Api.Web\Makc2020.Root.Apps.Api.Web.csproj", "{C9F10EA8-91CB-4796-8183-DF8B09C4A352}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{DC6ED4D2-E9B9-4E6A-9400-9F43AB35053D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Mods.IdentityServer.Base", "Makc2020.Mods.IdentityServer.Base\Makc2020.Mods.IdentityServer.Base.csproj", "{4F1B0BD5-9D24-4092-BFD7-5E0303D60323}"
@@ -90,6 +88,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Apps.IdentityServer.Web", "Makc2020.Root.Apps.IdentityServer.Web\Makc2020.Root.Apps.IdentityServer.Web.csproj", "{CD45C465-BA0D-45E7-AE0C-1DCDEE625BBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Apps.IdentityServer.Web", "Makc2020.Apps.IdentityServer.Web\Makc2020.Apps.IdentityServer.Web.csproj", "{3AA6EB4D-7730-4BC5-B0F3-A189DC55FD37}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E4780F24-76AA-49F5-BD53-FA45572CADAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -230,12 +230,6 @@ Global
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{C9F10EA8-91CB-4796-8183-DF8B09C4A352}.Test|Any CPU.Build.0 = Test|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{76A7BF1C-8C99-443A-ABBC-CC3F4083467D}.Test|Any CPU.Build.0 = Test|Any CPU
 		{4F1B0BD5-9D24-4092-BFD7-5E0303D60323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F1B0BD5-9D24-4092-BFD7-5E0303D60323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F1B0BD5-9D24-4092-BFD7-5E0303D60323}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -266,6 +260,12 @@ Global
 		{3AA6EB4D-7730-4BC5-B0F3-A189DC55FD37}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3AA6EB4D-7730-4BC5-B0F3-A189DC55FD37}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{3AA6EB4D-7730-4BC5-B0F3-A189DC55FD37}.Test|Any CPU.Build.0 = Test|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
