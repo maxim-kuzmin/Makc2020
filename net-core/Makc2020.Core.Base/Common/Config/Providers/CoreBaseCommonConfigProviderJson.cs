@@ -75,7 +75,11 @@ namespace Makc2020.Core.Base.Common.Config.Providers
                     );
             }
 
-            configurationBuilder.AddEnvironmentVariables().Build().Bind(Settings);
+            var configuration = configurationBuilder.AddEnvironmentVariables().Build();
+
+            var cn = configuration["ConnectionString"];
+
+            configuration.Bind(Settings);
         }
 
         /// <inheritdoc/>

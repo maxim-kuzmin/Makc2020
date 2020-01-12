@@ -53,6 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Host.Base", "Makc2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@@@@", "@@@@", "{F3B85D6B-A5CD-48AB-BE52-519A90895E61}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		.gitignore = .gitignore
 		README.md = README.md
 	EndProjectSection

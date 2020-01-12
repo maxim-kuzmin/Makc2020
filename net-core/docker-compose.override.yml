@@ -1,9 +1,15 @@
-version: '3.4'
+﻿version: '3.4'
 
 services:
+  makc2020.apps.api.base:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString
+
   makc2020.apps.api.web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString
     ports:
       - "5002:80"
 
@@ -11,6 +17,7 @@ services:
   makc2020.apps.identityserver.web:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString
     ports:
       - "6002:80"
 
