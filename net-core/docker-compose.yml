@@ -1,22 +1,49 @@
-﻿version: '3.4'
+﻿version: "3.7"
 
 services:
   makc2020.apps.api.base:
-    image: ${DOCKER_REGISTRY-}makc2020appsapibase
+    image: ${DOCKER_REGISTRY-}makc2020appsapibase:${TAG:-latest}
     build:
       context: .
       dockerfile: Makc2020.Apps.Api.Base/Dockerfile
+    depends_on:
+      - mssql
 
   makc2020.apps.api.web:
-    image: ${DOCKER_REGISTRY-}makc2020appsapiweb
+    image: ${DOCKER_REGISTRY-}makc2020appsapiweb:${TAG:-latest}
     build:
       context: .
       dockerfile: Makc2020.Apps.Api.Web/Dockerfile
-
+    depends_on:
+      - mssql
 
   makc2020.apps.identityserver.web:
-    image: ${DOCKER_REGISTRY-}makc2020appsidentityserverweb
+    image: ${DOCKER_REGISTRY-}makc2020appsidentityserverweb:${TAG:-latest}
     build:
       context: .
       dockerfile: Makc2020.Apps.IdentityServer.Web/Dockerfile
+    depends_on:
+      - mssql
 
+  makc2020-angular-redux:
+    image: ${DOCKER_REGISTRY-}makc2020angularredux:${TAG:-latest}
+    container_name: makc2020-angular-redux
+    build:
+      context: ../javascript/makc2020-angular-redux      
+    depends_on:
+      - makc2020.apps.api.web
+      - makc2020.apps.identityserver.web
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server
+    container_name: mssql
+    volumes:
+      - mssql-data:/var/opt/mssql
+    environment:
+      SA_PASSWORD: "${DB_PW}"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+
+volumes:
+  mssql-data:

@@ -1,23 +1,24 @@
-﻿version: '3.4'
+﻿version: "3.7"
+
+x-server-environment:
+  &server-environment
+  - ConnectionString=Server=mssql;Initial Catalog=Makc2020;User Id=sa;Password=${DB_PW}
+  - ASPNETCORE_ENVIRONMENT=Development
 
 services:
   makc2020.apps.api.base:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionString
+    environment: *server-environment
 
   makc2020.apps.api.web:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionString
+    environment: *server-environment
     ports:
       - "5002:80"
 
-
   makc2020.apps.identityserver.web:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionString
+    environment: *server-environment
     ports:
       - "6002:80"
 
+  makc2020-angular-redux:    
+    ports:
+      - "4201:80"
