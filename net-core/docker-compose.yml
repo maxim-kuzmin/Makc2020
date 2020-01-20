@@ -17,6 +17,12 @@ services:
     depends_on:
       - mssql
 
+  makc2020.apps.automation.base:
+    image: ${DOCKER_REGISTRY-}makc2020appsautomationbase:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Makc2020.Apps.Automation.Base/Dockerfile
+
   makc2020.apps.identityserver.web:
     image: ${DOCKER_REGISTRY-}makc2020appsidentityserverweb:${TAG:-latest}
     build:

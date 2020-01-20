@@ -99,8 +99,8 @@ namespace Makc2020.Root.Apps.Api.Base
         {
             base.TrySetModule(commonModule);
 
-            if (TrySet<ModDummyMainBaseModule>(x => ModDummyMainBase = x, commonModule)) return true;
             if (TrySet<ModAuthBaseModule>(x => ModAuthBase = x, commonModule)) return true;
+            if (TrySet<ModDummyMainBaseModule>(x => ModDummyMainBase = x, commonModule)) return true;            
 
             return false;
         }

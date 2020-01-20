@@ -253,12 +253,17 @@ namespace Makc2020.Mods.DummyMain.Base
             return result;
         }
 
-        public async Task DeleteItem(ModDummyMainBaseJobItemGetInput filter)
+        /// <summary>
+        /// Удалить элемент.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task DeleteItem(ModDummyMainBaseJobItemGetInput input)
         {
             using var source = CreateDbContext();
 
             var obj = await source.DummyMain.FirstAsync(
-                x => x.Id == filter.DataId
+                x => x.Id == input.DataId
                 ).CoreBaseExtTaskWithCurrentCulture(false);
 
             source.DummyMain.Remove(obj);
