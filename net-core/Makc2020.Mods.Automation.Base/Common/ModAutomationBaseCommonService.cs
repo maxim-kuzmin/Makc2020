@@ -36,15 +36,17 @@ namespace Makc2020.Mods.Automation.Base.Common
 
         #region Protected methods
 
-        protected List<string> GetFilePaths(
-            string fileSearchPattern,
-            string pathToFolder,
-            HashSet<string> excludedFolderNames
+        protected void EnumerateFiles(
+            string path,
+            string fileSearchPattern,            
+            HashSet<string> excludedFolderNames,            
+            Action<string, int> handleFile,
+            Action<string> handleFolder = null
             )
         {
-            var result = new List<string>();
+            int fileNumber = 0;
 
-            foreach (var folderPath in Directory.EnumerateDirectories(pathToFolder, "*.*", SearchOption.AllDirectories))
+            foreach (var folderPath in Directory.EnumerateDirectories(path, "*.*", SearchOption.AllDirectories))
             {
                 var folderName = Path.GetFileName(Path.GetDirectoryName(folderPath));
 
@@ -53,42 +55,34 @@ namespace Makc2020.Mods.Automation.Base.Common
                     continue;
                 }
 
+                if (handleFolder != null)
+                {
+                    handleFolder.Invoke(folderName);
+                }
+
                 foreach (var filePath in Directory.EnumerateFiles(folderPath, fileSearchPattern))
                 {
-                    result.Add(filePath);
+                    fileNumber++;
+
+                    handleFile.Invoke(filePath, fileNumber);
                 }
             }
-
-            return result;
         }
-
-        protected void HandleFiles(
-            List<string> filePaths,
+        
+        protected void ReportProgress(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            Action<string> fileHandler
+            string filePath,
+            int fileNumber,
+            int fileCount
             )
         {
-            double index = 0;
-
-            var count = filePaths.Count;
-
-            foreach (var filePath in filePaths)
+            var info = new ModAutomationBaseCommonJobCodeGenerateInfo
             {
-                index++;
+                FilePath = filePath,
+                Percentage = (int)Math.Round((double)fileNumber / fileCount, 2) * 100
+            };
 
-                fileHandler.Invoke(filePath);
-
-                if (progress != null)
-                {
-                    var info = new ModAutomationBaseCommonJobCodeGenerateInfo
-                    {
-                        FilePath = filePath,
-                        Percentage = (int)Math.Round(index / count, 2) * 100
-                    };
-
-                    progress.Report(info);
-                }
-            }
+            progress.Report(info);
         }
 
         /// <summary>

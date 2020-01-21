@@ -1,5 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Apps.Automation.Base.App.Common;
+using Makc2020.Apps.Automation.Base.App.Parts.Angular.Jobs.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -41,6 +44,17 @@ namespace Makc2020.Apps.Automation.Base.App
         public Task StartAsync(CancellationToken cancellationToken)
         {
             Server.OnStarted();
+
+            var clients = new AppCommonClient[]
+            {
+                GetService<AppPartAngularJobCodeGenerateClient>(),
+                GetService<AppPartNetCoreJobCodeGenerateClient>()
+            };
+
+            foreach (var client in clients)
+            {
+                client.Run();
+            }
 
             Console.WriteLine();
             Console.Write("Press <Enter> to exit");

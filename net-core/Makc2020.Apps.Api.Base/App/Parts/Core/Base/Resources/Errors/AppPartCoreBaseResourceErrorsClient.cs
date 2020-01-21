@@ -1,19 +1,20 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Apps.Api.Base.App.Common;
 using Makc2020.Core.Base.Resources.Errors;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 
-namespace Makc2020.Apps.Api.Base.App.Samples.Core.Base.Resources
+namespace Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors
 {
     /// <summary>
-    /// Приложение. Примеры. Ядро. Основа. Ресурсы. Ошибки.
+    /// Приложение. Часть "Core". Ядро. Основа. Ресурсы. Ошибки. Клиент.
     /// </summary>
-    public class AppSampleCoreBaseResourceErrors : AppSample
+    public class AppPartCoreBaseResourceErrorsClient : AppCommonClient
     {
         #region Properties
 
-        private CoreBaseResourceErrors CoreBaseResourceErrors { get; set; }
+        private CoreBaseResourceErrors Resource { get; set; }
 
         #endregion Properties
 
@@ -23,13 +24,13 @@ namespace Makc2020.Apps.Api.Base.App.Samples.Core.Base.Resources
         /// Конструктор.
         /// </summary>
         /// <param name="logger">Регистратор.</param>
-        /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        public AppSampleCoreBaseResourceErrors(
-            ILogger<AppSampleCoreBaseResourceErrors> logger,
-            CoreBaseResourceErrors coreBaseResourceErrors
+        /// <param name="resource">Ресурс.</param>
+        public AppPartCoreBaseResourceErrorsClient(
+            ILogger<AppPartCoreBaseResourceErrorsClient> logger,
+            CoreBaseResourceErrors resource
             ) : base(logger)
         {
-            CoreBaseResourceErrors = coreBaseResourceErrors;
+            Resource = resource;
         }
 
         #endregion Constructors
@@ -64,9 +65,9 @@ namespace Makc2020.Apps.Api.Base.App.Samples.Core.Base.Resources
         {
             return string.Join(" @ ", new[]
             {
-                CoreBaseResourceErrors.GetStringFormatMessagePartWithUrl(),
-                CoreBaseResourceErrors.GetStringFormatMessageWithCode(),
-                CoreBaseResourceErrors.GetStringUnknownError()
+                Resource.GetStringFormatMessagePartWithUrl(),
+                Resource.GetStringFormatMessageWithCode(),
+                Resource.GetStringUnknownError()
             });
         }
 

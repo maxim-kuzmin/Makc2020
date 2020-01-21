@@ -3,12 +3,12 @@
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Makc2020.Apps.Api.Base.App
+namespace Makc2020.Apps.Automation.Base.App.Common
 {
     /// <summary>
-    /// Приложение. Пример.
+    /// Приложение. Часть.
     /// </summary>
-    public abstract class AppSample
+    public abstract class AppCommonClient
     {
         #region Properties
 
@@ -22,7 +22,7 @@ namespace Makc2020.Apps.Api.Base.App
         /// Конструктор.
         /// </summary>
         /// <param name="logger">Регистратор.</param>
-        public AppSample(ILogger logger)
+        public AppCommonClient(ILogger logger)
         {
             Logger = logger;
         }

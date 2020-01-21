@@ -1,21 +1,22 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Apps.Api.Base.App.Common;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Makc2020.Apps.Api.Base.App.Samples.Mods.DummyMain.Base.Jobs
+namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.Item.Get
 {
     /// <summary>
-    /// Приложение. Примеры. Мод "DummyMain". Основа. Задания. Элемент. Получение.
+    /// Приложение. Часть "Mods". Мод "DummyMain". Основа. Задания. Элемент. Получение. Клиент.
     /// </summary>
-    public class AppSampleModDummyMainBaseJobItemGet : AppSample
+    public class AppPartModDummyMainBaseJobItemGetClient : AppCommonClient
     {
         #region Properties
 
-        private ModDummyMainBaseJobItemGetService JobItemGet { get; set; }
+        private ModDummyMainBaseJobItemGetService Job { get; set; }
 
         #endregion Properties
 
@@ -25,13 +26,13 @@ namespace Makc2020.Apps.Api.Base.App.Samples.Mods.DummyMain.Base.Jobs
         /// Конструктор.
         /// </summary>
         /// <param name="logger">Регистратор.</param>
-        /// <param name="jobItemGet">Задание на получение элемента.</param>
-        public AppSampleModDummyMainBaseJobItemGet(
-            ILogger<AppSampleModDummyMainBaseJobItemGet> logger,
-            ModDummyMainBaseJobItemGetService jobItemGet
+        /// <param name="job">Задание.</param>
+        public AppPartModDummyMainBaseJobItemGetClient(
+            ILogger<AppPartModDummyMainBaseJobItemGetClient> logger,
+            ModDummyMainBaseJobItemGetService job
             ) : base(logger)
         {
-            JobItemGet = jobItemGet;
+            Job = job;
         }
 
         #endregion Constructors        
@@ -50,13 +51,13 @@ namespace Makc2020.Apps.Api.Base.App.Samples.Mods.DummyMain.Base.Jobs
 
             try
             {
-                result.Data = JobItemGet.Execute(input).CoreBaseExtTaskWithCurrentCulture(false).GetResult();
+                result.Data = Job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false).GetResult();
 
-                JobItemGet.OnSuccess(Logger, result, input);
+                Job.OnSuccess(Logger, result, input);
             }
             catch (Exception ex)
             {
-                JobItemGet.OnError(ex, Logger, result);
+                Job.OnError(ex, Logger, result);
             }
 
             var msg = result.CoreBaseExtJsonSerialize(CoreBaseExtJson.OptionsForLogger);

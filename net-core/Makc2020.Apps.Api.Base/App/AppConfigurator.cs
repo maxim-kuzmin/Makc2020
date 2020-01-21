@@ -1,7 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Api.Base.App.Samples.Core.Base.Resources;
-using Makc2020.Apps.Api.Base.App.Samples.Mods.DummyMain.Base.Jobs;
+using Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors;
+using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.Item.Get;
+using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,9 +22,9 @@ namespace Makc2020.Apps.Api.Base.App
 
             services.AddTransient(x => AppServer.Instance.GetContext());
 
-            services.AddTransient<AppSampleCoreBaseResourceErrors>();
-            services.AddTransient<AppSampleModDummyMainBaseJobItemGet>();
-            services.AddTransient<AppSampleModDummyMainBaseJobListGet>();
+            services.AddTransient<AppPartCoreBaseResourceErrorsClient>();
+            services.AddTransient<AppPartModDummyMainBaseJobItemGetClient>();
+            services.AddTransient<AppPartModDummyMainBaseJobListGetClient>();
 
             services.AddHostedService<AppHostedService>();            
         }
