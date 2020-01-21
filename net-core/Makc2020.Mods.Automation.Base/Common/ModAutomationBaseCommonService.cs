@@ -43,7 +43,7 @@ namespace Makc2020.Mods.Automation.Base.Common
         protected void HandleFiles(
             List<string> filePaths,
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            Action<string> fileHandler
+            Action<ModAutomationBaseCommonJobCodeGenerateInfo> fileHandler
             )
         {
             double index = 0;
@@ -54,19 +54,19 @@ namespace Makc2020.Mods.Automation.Base.Common
             {
                 index++;
 
+                var info = new ModAutomationBaseCommonJobCodeGenerateInfo
+                {
+                    FileName = Path.GetFileName(filePath),
+                    PathToFolder = Path.GetDirectoryName(filePath),
+                    Percentage = (int)Math.Round(index / count, 2) * 100
+                };
+
+                fileHandler.Invoke(info);
+
                 if (progress != null)
                 {
-                    var info = new ModAutomationBaseCommonJobCodeGenerateInfo
-                    {
-                        FileName = Path.GetFileName(filePath),
-                        PathToFolder = Path.GetDirectoryName(filePath),
-                        Percentage = (int)Math.Round(index / count, 2) * 100
-                    };
-
                     progress.Report(info);
                 }
-
-                fileHandler.Invoke(filePath);
             }
         }
 

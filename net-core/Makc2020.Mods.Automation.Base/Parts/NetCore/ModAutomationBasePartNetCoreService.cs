@@ -58,11 +58,19 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
 
             var filePaths = GetFilePaths("*.cs", input.Path, excludedFolderNames);
 
-            HandleFiles(filePaths, input.Progress, filePath => { });
+            HandleFiles(filePaths, input.Progress, HandleFile);
 
             return Task.CompletedTask;
         }
 
         #endregion Public methods
+
+        #region Private methods
+
+        private void HandleFile(ModAutomationBaseCommonJobCodeGenerateInfo info)
+        {
+        }
+
+        #endregion Private methods
     }
 }
