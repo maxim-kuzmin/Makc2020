@@ -67,7 +67,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
 
         #region Private methods
 
-        private void HandleFile(ModAutomationBaseCommonJobCodeGenerateInfo info)
+        private void HandleFile(string filePath)
         {
         }
 
