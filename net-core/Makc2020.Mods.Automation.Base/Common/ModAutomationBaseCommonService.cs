@@ -40,29 +40,6 @@ namespace Makc2020.Mods.Automation.Base.Common
             return result;
         }
 
-        protected void PrepareCommonJobCodeGenerateInput(
-            ModAutomationBaseCommonJobCodeGenerateInput input,
-            string path,
-            string sourceEntityName,
-            string targetEntityName
-            )
-        {
-            if (string.IsNullOrWhiteSpace(input.Path))
-            {
-                input.Path = path;
-            }
-
-            if (string.IsNullOrWhiteSpace(input.SourceEntityName))
-            {
-                input.SourceEntityName = sourceEntityName;
-            }
-
-            if (string.IsNullOrWhiteSpace(input.TargetEntityName))
-            {
-                input.TargetEntityName = targetEntityName;
-            }
-        }
-
         protected void HandleFiles(
             List<string> filePaths,
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
@@ -90,6 +67,29 @@ namespace Makc2020.Mods.Automation.Base.Common
                 }
 
                 fileHandler.Invoke(filePath);
+            }
+        }
+
+        protected void InitJobCodeGenerateInput(
+            ModAutomationBaseCommonJobCodeGenerateInput input,
+            string path,
+            string sourceEntityName,
+            string targetEntityName
+            )
+        {
+            if (string.IsNullOrWhiteSpace(input.Path))
+            {
+                input.Path = path;
+            }
+
+            if (string.IsNullOrWhiteSpace(input.SourceEntityName))
+            {
+                input.SourceEntityName = sourceEntityName;
+            }
+
+            if (string.IsNullOrWhiteSpace(input.TargetEntityName))
+            {
+                input.TargetEntityName = targetEntityName;
             }
         }
 

@@ -41,7 +41,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
         /// <returns>Задача.</returns>
         public Task GenerateCode(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
-            PrepareCommonJobCodeGenerateInput(
+            InitJobCodeGenerateInput(
                 input,
                 ConfigSettings.Path,
                 ConfigSettings.SourceEntityName,
