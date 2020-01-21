@@ -6,7 +6,7 @@ using System;
 namespace Makc2020.Apps.Automation.Base.App.Common
 {
     /// <summary>
-    /// Приложение. Часть.
+    /// Приложение. Общее. Клиент.
     /// </summary>
     public abstract class AppCommonClient
     {
