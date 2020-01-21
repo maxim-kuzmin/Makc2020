@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using System;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
@@ -12,9 +13,14 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         #region Properties
 
         /// <summary>
-        /// Путь к папке с кодом.
+        /// Путь.
         /// </summary>
-        public string PathToCodeFolder { get; set; }
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Прогресс.
+        /// </summary>
+        public IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> Progress { get; set; }
 
         /// <summary>
         /// Имя исходной сущности.
@@ -38,9 +44,9 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         {
             var result = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(PathToCodeFolder))
+            if (string.IsNullOrWhiteSpace(Path))
             {
-                result.Add(nameof(PathToCodeFolder));
+                result.Add(nameof(Path));
             }
 
             if (string.IsNullOrWhiteSpace(SourceEntityName))

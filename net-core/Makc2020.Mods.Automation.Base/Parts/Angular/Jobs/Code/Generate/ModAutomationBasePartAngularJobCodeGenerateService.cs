@@ -6,17 +6,17 @@ using Makc2020.Mods.Automation.Base.Resources.Successes;
 using System;
 using System.Threading.Tasks;
 
-namespace Makc2020.Mods.Automation.Base.Jobs.JavascriptCode.Generate
+namespace Makc2020.Mods.Automation.Base.Parts.Angular.Jobs.Code.Generate
 {
     /// <summary>
-    /// Мод "Automation". Основа. Задания. Код "NetCore". Генерация. Сервис.
+    /// Мод "Automation". Основа. Часть "Angular". Задания. Код. Генерация. Сервис.
     /// </summary>
-    public class ModAutomationBaseJobNetCoreCodeGenerateService : ModAutomationBaseCommonJobCodeGenerateService
+    public class ModAutomationBasePartAngularJobCodeGenerateService : ModAutomationBaseCommonJobCodeGenerateService
     {
         #region Constructors
 
         /// <inheritdoc/>
-        public ModAutomationBaseJobNetCoreCodeGenerateService(
+        public ModAutomationBasePartAngularJobCodeGenerateService(
             Func<ModAutomationBaseCommonJobCodeGenerateInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModAutomationBaseResourceSuccesses resourceSuccesses

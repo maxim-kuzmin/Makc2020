@@ -1,5 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Mods.Automation.Base.Parts.Angular.Config;
+using Makc2020.Mods.Automation.Base.Parts.NetCore.Config;
+
 namespace Makc2020.Mods.Automation.Base.Config
 {
     /// <summary>
@@ -10,24 +13,14 @@ namespace Makc2020.Mods.Automation.Base.Config
         #region Properties
 
         /// <summary>
-        /// Путь к папке с кодом "Javascript".
+        /// Часть "Angular".
         /// </summary>
-        string PathToJavascriptCodeFolder { get; }
+        IModAutomationBasePartAngularConfigSettings PartAngular { get; }
 
         /// <summary>
-        /// Путь к папке с кодом ".NET Core".
+        /// Часть "NetCore".
         /// </summary>
-        string PathToNetCoreCodeFolder { get; }
-
-        /// <summary>
-        /// Имя исходной сущности.
-        /// </summary>
-        string SourceEntityName { get; }
-
-        /// <summary>
-        /// Имя целевой сущности.
-        /// </summary>
-        string TargetEntityName { get; }
+        IModAutomationBasePartNetCoreConfigSettings PartNetCore { get; }
 
         #endregion Properties
     }

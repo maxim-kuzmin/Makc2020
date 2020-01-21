@@ -36,11 +36,14 @@ namespace Makc2020.Mods.Automation.Base
         {
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
-            services.AddTransient(x => GetContext(x).Jobs.JobJavascriptCodeGenerate);
-            services.AddTransient(x => GetContext(x).Jobs.JobNetCoreCodeGenerate);
+            services.AddTransient(x => GetContext(x).PartAngular);
+            services.AddTransient(x => GetContext(x).PartAngular.Jobs.JobCodeGenerate);
+            services.AddTransient(x => GetContext(x).PartAngular.Service);
+            services.AddTransient(x => GetContext(x).PartNetCore);
+            services.AddTransient(x => GetContext(x).PartNetCore.Jobs.JobCodeGenerate);
+            services.AddTransient(x => GetContext(x).PartNetCore.Service);
             services.AddTransient(x => GetContext(x).Resources.Errors);
             services.AddTransient(x => GetContext(x).Resources.Successes);
-            services.AddTransient(x => GetContext(x).Service);
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
+using Makc2020.Mods.Automation.Base.Parts.Angular.Config;
+using Makc2020.Mods.Automation.Base.Parts.NetCore.Config;
 
 namespace Makc2020.Mods.Automation.Base.Config
 {
@@ -11,17 +13,21 @@ namespace Makc2020.Mods.Automation.Base.Config
     {
         #region Properties
 
-        /// <inheritdoc/>
-        public string PathToJavascriptCodeFolder { get; set; }
+        /// <summary>
+        /// Часть "Angular".
+        /// </summary>
+        public ModAutomationBasePartAngularConfigSettings PartAngular { get; set; }
 
         /// <inheritdoc/>
-        public string PathToNetCoreCodeFolder { get; set; }
+        IModAutomationBasePartAngularConfigSettings IModAutomationBaseConfigSettings.PartAngular => PartAngular;
+
+        /// <summary>
+        /// Часть "NetCore".
+        /// </summary>
+        public ModAutomationBasePartNetCoreConfigSettings PartNetCore { get; set; }
 
         /// <inheritdoc/>
-        public string SourceEntityName { get; set; }
-
-        /// <inheritdoc/>
-        public string TargetEntityName { get; set; }
+        IModAutomationBasePartNetCoreConfigSettings IModAutomationBaseConfigSettings.PartNetCore => PartNetCore;
 
         #endregion Properties
 

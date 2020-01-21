@@ -1,5 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Mods.Automation.Base.Parts.Angular;
+using Makc2020.Mods.Automation.Base.Parts.NetCore;
+using Makc2020.Mods.Automation.Base.Resources.Errors;
+using Makc2020.Mods.Automation.Base.Resources.Successes;
+
 namespace Makc2020.Mods.Automation.Base
 {
     /// <summary>
@@ -15,19 +20,19 @@ namespace Makc2020.Mods.Automation.Base
         public ModAutomationBaseConfig Config { get; private set; }
 
         /// <summary>
-        /// Задания.
+        /// Часть "Angular".
         /// </summary>
-        public ModAutomationBaseJobs Jobs { get; private set; }
+        public ModAutomationBasePartAngularContext PartAngular { get; set; }
+
+        /// <summary>
+        /// Часть "NetCore".
+        /// </summary>
+        public ModAutomationBasePartNetCoreContext PartNetCore { get; set; }
 
         /// <summary>
         /// Ресурсы.
         /// </summary>
-        public ModAutomationBaseResources Resources { get; private set; }
-
-        /// <summary>
-        /// Сервис.
-        /// </summary>
-        public ModAutomationBaseService Service { get; private set; }
+        public ModAutomationBaseResources Resources { get; set; }
 
         #endregion Properties
 
@@ -41,21 +46,31 @@ namespace Makc2020.Mods.Automation.Base
         public ModAutomationBaseContext(ModAutomationBaseConfig config, ModAutomationBaseExternals externals)
         {
             Config = config;
-            
+
+            var resourceErrors = new ModAutomationBaseResourceErrors(externals.ResourceErrorsLocalizer);
+            var resourceSuccesses = new ModAutomationBaseResourceSuccesses(externals.ResourceSuccessesLocalizer);
+
+            PartAngular = new ModAutomationBasePartAngularContext(
+                Config.Settings.PartAngular,
+                new ModAutomationBasePartAngularExternals
+                {
+                    CoreBaseResourceErrors = externals.CoreBaseResourceErrors,
+                    ResourceErrors = resourceErrors,
+                    ResourceSuccesses = resourceSuccesses
+                });
+
+            PartNetCore = new ModAutomationBasePartNetCoreContext(
+                Config.Settings.PartNetCore,
+                new ModAutomationBasePartNetCoreExternals
+                {
+                    CoreBaseResourceErrors = externals.CoreBaseResourceErrors,
+                    ResourceErrors = resourceErrors,
+                    ResourceSuccesses = resourceSuccesses
+                });
+
             Resources = new ModAutomationBaseResources(
                 externals.ResourceErrorsLocalizer,
                 externals.ResourceSuccessesLocalizer
-                );
-
-            Service = new ModAutomationBaseService(
-                Config.Settings
-                );
-
-            Jobs = new ModAutomationBaseJobs(
-                externals.CoreBaseResourceErrors,
-                Resources.Successes,
-                Resources.Errors,
-                Service
                 );
         }
 

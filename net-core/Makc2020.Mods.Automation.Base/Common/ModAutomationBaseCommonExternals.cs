@@ -5,12 +5,12 @@ using Makc2020.Mods.Automation.Base.Resources.Errors;
 using Makc2020.Mods.Automation.Base.Resources.Successes;
 using Microsoft.Extensions.Localization;
 
-namespace Makc2020.Mods.Automation.Base
+namespace Makc2020.Mods.Automation.Base.Common
 {
     /// <summary>
-    /// Мод "Automation". Основа. Внешнее.
+    /// Мод "Automation". Основа. Общее. Внешнее.
     /// </summary>
-    public class ModAutomationBaseExternals
+    public class ModAutomationBaseCommonExternals
     {
         #region Properties
 
@@ -20,14 +20,14 @@ namespace Makc2020.Mods.Automation.Base
         public CoreBaseResourceErrors CoreBaseResourceErrors { get; set; }
 
         /// <summary>
-        /// Локализатор ресурса ошибок.
+        /// Ресурс ошибок.
         /// </summary>
-        public IStringLocalizer<ModAutomationBaseResourceErrors> ResourceErrorsLocalizer { get; set; }
+        public ModAutomationBaseResourceErrors ResourceErrors { get; set; }
 
         /// <summary>
-        /// Локализатор ресурса успехов.
+        /// Ресурс успехов.
         /// </summary>
-        public IStringLocalizer<ModAutomationBaseResourceSuccesses> ResourceSuccessesLocalizer { get; set; }
+        public ModAutomationBaseResourceSuccesses ResourceSuccesses { get; set; }
 
         #endregion Properties
     }
