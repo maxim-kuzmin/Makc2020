@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
+using Makc2020.Mods.Automation.Base.Common.Config;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +11,29 @@ namespace Makc2020.Mods.Automation.Base.Common
     /// <summary>
     /// Мод "Automation". Основа. Общее. Сервис.
     /// </summary>
-    public class ModAutomationBaseCommonService
+    /// <typeparam name="TConfigSettings">Тип конфигурационных настроек.</typeparam>
+    public class ModAutomationBaseCommonService<TConfigSettings>
+        where TConfigSettings: IModAutomationBaseCommonConfigSettings
     {
+        #region Properties
+
+        protected TConfigSettings ConfigSettings { get; private set; }
+
+        #endregion Properties
+
+        #region Constructors
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="configSettings">Конфигурационные настройки.</param>
+        public ModAutomationBaseCommonService(TConfigSettings configSettings)
+        {
+            ConfigSettings = configSettings;
+        }
+
+        #endregion Constructors
+
         #region Protected methods
 
         protected List<string> GetFilePaths(
@@ -69,26 +91,26 @@ namespace Makc2020.Mods.Automation.Base.Common
             }
         }
 
-        protected void InitJobCodeGenerateInput(
-            ModAutomationBaseCommonJobCodeGenerateInput input,
-            string path,
-            string sourceEntityName,
-            string targetEntityName
-            )
+        /// <summary>
+        /// Инициализировать ввод задания на генерацию кода.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <param name="configSettings">Конфигурационные настройки.</param>
+        protected void InitJobCodeGenerateInput(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
             if (string.IsNullOrWhiteSpace(input.Path))
             {
-                input.Path = path;
+                input.Path = ConfigSettings.Path;
             }
 
             if (string.IsNullOrWhiteSpace(input.SourceEntityName))
             {
-                input.SourceEntityName = sourceEntityName;
+                input.SourceEntityName = ConfigSettings.SourceEntityName;
             }
 
             if (string.IsNullOrWhiteSpace(input.TargetEntityName))
             {
-                input.TargetEntityName = targetEntityName;
+                input.TargetEntityName = ConfigSettings.TargetEntityName;
             }
         }
 

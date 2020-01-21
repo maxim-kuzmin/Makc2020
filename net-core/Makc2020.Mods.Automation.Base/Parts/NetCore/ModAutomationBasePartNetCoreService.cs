@@ -11,23 +11,14 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
     /// <summary>
     /// Мод "Automation". Основа. Часть "NetCore". Сервис.
     /// </summary>
-    public class ModAutomationBasePartNetCoreService : ModAutomationBaseCommonService
+    public class ModAutomationBasePartNetCoreService : ModAutomationBaseCommonService<IModAutomationBasePartNetCoreConfigSettings>
     {
-        #region Properties
-
-        private IModAutomationBasePartNetCoreConfigSettings ConfigSettings { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="configSettings">Конфигурационные настройки.</param>
+        /// <inheritdoc/>
         public ModAutomationBasePartNetCoreService(IModAutomationBasePartNetCoreConfigSettings configSettings)
+            : base(configSettings)
         {
-            ConfigSettings = configSettings;
         }
 
         #endregion Constructors
@@ -41,12 +32,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
         /// <returns>Задача.</returns>
         public Task GenerateCode(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
-            InitJobCodeGenerateInput(
-                input,
-                ConfigSettings.Path,
-                ConfigSettings.SourceEntityName,
-                ConfigSettings.TargetEntityName
-                );
+            InitJobCodeGenerateInput(input);
 
             var excludedFolderNames = new HashSet<string>
             {

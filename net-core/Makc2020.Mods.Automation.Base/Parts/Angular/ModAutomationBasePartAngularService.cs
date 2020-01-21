@@ -11,23 +11,14 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
     /// <summary>
     /// Мод "Automation". Основа. Часть "Angular". Сервис.
     /// </summary>
-    public class ModAutomationBasePartAngularService : ModAutomationBaseCommonService
+    public class ModAutomationBasePartAngularService : ModAutomationBaseCommonService<IModAutomationBasePartAngularConfigSettings>
     {
-        #region Properties
-
-        private IModAutomationBasePartAngularConfigSettings ConfigSettings { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="configSettings">Конфигурационные настройки.</param>
+        /// <inheritdoc/>
         public ModAutomationBasePartAngularService(IModAutomationBasePartAngularConfigSettings configSettings)
+            : base(configSettings)
         {
-            ConfigSettings = configSettings;
         }
 
         #endregion Constructors
@@ -41,12 +32,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
         /// <returns>Задача.</returns>
         public Task GenerateCode(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
-            InitJobCodeGenerateInput(
-                input,
-                ConfigSettings.Path,
-                ConfigSettings.SourceEntityName,
-                ConfigSettings.TargetEntityName
-                );
+            InitJobCodeGenerateInput(input);
 
             var excludedFolderNames = new HashSet<string>
             {
@@ -54,7 +40,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                 "node_modules"
             };
 
-            var filePaths = GetFilePaths("*.cs", input.Path, excludedFolderNames);
+            var filePaths = GetFilePaths("*.ts", input.Path, excludedFolderNames);
 
             HandleFiles(filePaths, input.Progress, HandleFile);
 
