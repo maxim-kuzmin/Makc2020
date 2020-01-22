@@ -13,14 +13,19 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         #region Properties
 
         /// <summary>
+        /// Прогресс обработки файлов.
+        /// </summary>
+        public IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> FileHandleProgress { get; set; }
+
+        /// <summary>
+        /// Прогресс обработки папок.
+        /// </summary>
+        public IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> FolderHandleProgress { get; set; }
+
+        /// <summary>
         /// Путь.
         /// </summary>
         public string Path { get; set; }
-
-        /// <summary>
-        /// Прогресс.
-        /// </summary>
-        public IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> Progress { get; set; }
 
         /// <summary>
         /// Имя исходной сущности.

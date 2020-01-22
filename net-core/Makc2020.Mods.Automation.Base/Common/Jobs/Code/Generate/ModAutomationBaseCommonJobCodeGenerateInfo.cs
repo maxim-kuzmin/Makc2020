@@ -10,14 +10,19 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         #region Properties
 
         /// <summary>
-        /// Путь к файлу.
+        /// Счётчик.
         /// </summary>
-        public string FilePath { get; set; }
+        public int Count { get; set; }
 
         /// <summary>
-        /// Процент.
+        /// Номер.
         /// </summary>
-        public int Percentage { get; set; }
+        public int Number { get; set; }
+
+        /// <summary>
+        /// Путь.
+        /// </summary>
+        public string Path { get; set; }
 
         #endregion Properties
     }

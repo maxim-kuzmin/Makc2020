@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Automation.Base.App.Common;
+using Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
@@ -13,27 +13,16 @@ namespace Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate
     /// <summary>
     /// Приложение. Часть "NetCore". Задания. Код. Генерация. Клиент.
     /// </summary>
-    public class AppPartNetCoreJobCodeGenerateClient : AppCommonClient
+    public class AppPartNetCoreJobCodeGenerateClient : AppCommonJobCodeGenerateClient<ModAutomationBasePartNetCoreJobCodeGenerateService>
     {
-        #region Properties
-
-        private ModAutomationBasePartNetCoreJobCodeGenerateService Job { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="logger">Регистратор.</param>
-        /// <param name="job">Задание.</param>
+        /// <inheritdoc/>
         public AppPartNetCoreJobCodeGenerateClient(
             ILogger<AppPartNetCoreJobCodeGenerateClient> logger,
             ModAutomationBasePartNetCoreJobCodeGenerateService job
-            ) : base(logger)
+            ) : base(logger, job)
         {
-            Job = job;
         }
 
         #endregion Constructors        
@@ -43,7 +32,11 @@ namespace Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate
         /// <inheritdoc/>
         protected sealed override void DoRun()
         {
-            var input = new ModAutomationBaseCommonJobCodeGenerateInput();
+            var input = new ModAutomationBaseCommonJobCodeGenerateInput
+            {
+                FileHandleProgress = new AppCommonJobCodeGenerateProgress(HandleFileProgress),
+                FolderHandleProgress = new AppCommonJobCodeGenerateProgress(HandleFolderProgress)
+            };
 
             var result = new CoreBaseExecutionResult();
 

@@ -30,23 +30,16 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
             const string fileSearchPattern = "*.ts";
 
-            var fileCount = 0;
+            var (filesCount, foldersCount) = GetCounts(input.Path, fileSearchPattern, excludedFolderNames);
 
-            EnumerateFiles(
-                input.Path,
-                fileSearchPattern,
-                excludedFolderNames,
-                (filePath, fileNumber) => fileCount++
-                );
-
-            if (fileCount > 0)
+            if (filesCount > 0)
             {
                 EnumerateFiles(
                     input.Path,
                     fileSearchPattern,
                     excludedFolderNames,
-                    (filePath, fileNumber) => HandleFile(input.Progress, filePath, fileNumber, fileCount),
-                    HandleFolder
+                    (path, number) => HandleFile(input.FileHandleProgress, path, number, filesCount),
+                    (path, number) => HandleFolder(input.FolderHandleProgress, path, number, foldersCount)
                     );
             }
 
@@ -59,19 +52,28 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
         private void HandleFile(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            string filePath,
-            int fileNumber,
-            int fileCount
+            string path,
+            int number,
+            int count
             )
         {
             if (progress != null)
             {
-                ReportProgress(progress, filePath, fileNumber, fileCount);
+                ReportProgress(progress, path, number, count);
             }
         }
 
-        private void HandleFolder(string folderPath)
+        private void HandleFolder(
+            IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
+            string path,
+            int number,
+            int count
+            )
         {
+            if (progress != null)
+            {
+                ReportProgress(progress, path, number, count);
+            }
         }
 
         #endregion Private methods
