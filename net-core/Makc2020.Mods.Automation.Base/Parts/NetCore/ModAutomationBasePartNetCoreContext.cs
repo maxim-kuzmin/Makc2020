@@ -35,14 +35,13 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
             ModAutomationBasePartNetCoreExternals externals
             )
         {
-            Service = new ModAutomationBasePartNetCoreService(
-                configSettings
-                );
+            Service = new ModAutomationBasePartNetCoreService();
 
             Jobs = new ModAutomationBasePartNetCoreJobs(
                 externals.CoreBaseResourceErrors,
                 externals.ResourceSuccesses,
                 externals.ResourceErrors,
+                configSettings,
                 Service
                 );
         }

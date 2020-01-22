@@ -64,6 +64,14 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
         }
 
         /// <summary>
+        /// Мод "IdentityServer". Веб. Аутентификация. Отключить.
+        /// </summary>
+        public void ModIdentityServerWebAuthenticationDisable()
+        {
+            ModIdentityServerBaseConfigSettings = null;
+        }
+
+        /// <summary>
         /// Мод "IdentityServer". Веб. Аутентификация. Включить.
         /// </summary>
         /// <param name="configSettings">Конфигурационные настройки.</param>

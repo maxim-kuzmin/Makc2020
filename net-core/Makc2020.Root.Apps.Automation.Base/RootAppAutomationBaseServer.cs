@@ -16,5 +16,20 @@ namespace Makc2020.Root.Apps.Automation.Base
         where TModules: RootAppAutomationBaseModules
         where TConfigurator : RootAppAutomationBaseConfigurator<TContext, TModules>
     {
+        #region Protected methods
+
+        /// <inheritdoc/>
+        protected override void InitConfigurator(TConfigurator configurator)
+        {
+            base.InitConfigurator(configurator);
+
+            configurator.DataEntityDbContextDisable();
+            IsMigrateDatabaseEnabled = false;
+
+            configurator.IdentityDisable();
+            IsSeedAuthEnabled = false;
+        }
+
+        #endregion Protected methods
     }
 }

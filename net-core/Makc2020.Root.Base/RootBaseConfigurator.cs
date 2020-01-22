@@ -94,6 +94,14 @@ namespace Makc2020.Root.Base
         }
 
         /// <summary>
+        /// Данные. Entity Framework. База данных. Контекст. Отключить.
+        /// </summary>
+        public void DataEntityDbContextDisable()
+        {
+            FuncGetDataEntityDbFactory = null;
+        }
+
+        /// <summary>
         /// Данные. Entity Framework. База данных. Контекст. Включить.
         /// </summary>
         /// <param name="funcGetDataEntityDbFactory">Функция получения. Данные. Entity Framework. База данных. Фабрика.</param>
@@ -103,11 +111,27 @@ namespace Makc2020.Root.Base
         }
 
         /// <summary>
+        /// Идентичность. Отключить.
+        /// </summary>
+        public void IdentityDisable()
+        {
+            IdentityIsEnabled = false;
+        }
+
+        /// <summary>
         /// Идентичность. Включить.
         /// </summary>
         public void IdentityEnable()
         {
             IdentityIsEnabled = true;
+        }
+
+        /// <summary>
+        /// Локализация. Отключить.
+        /// </summary>
+        public void LocalizationDisable()
+        {
+            LocalizationIsEnabled = false;
         }
 
         /// <summary>

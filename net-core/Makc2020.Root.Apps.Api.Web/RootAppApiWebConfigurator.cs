@@ -73,6 +73,14 @@ namespace Makc2020.Root.Apps.Api.Web
         }
 
         /// <summary>
+        /// Хост. Веб. Часть "Auth". Отключить.
+        /// </summary>
+        public void HostWebPartAuthenticationDisable()
+        {
+            ModAuthBaseConfigSettings = null;
+        }
+
+        /// <summary>
         /// Хост. Веб. Часть "Auth". Включить.
         /// </summary>
         /// <param name="configSettings">Конфигурационные настройки.</param>

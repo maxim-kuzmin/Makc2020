@@ -26,10 +26,20 @@ namespace Makc2020.Core.Base.Execution.Exceptions
         /// </summary>
         /// <param name="invalidProperties">Список свойств с недействительными значениями.</param>
         public CoreExecutionExceptionInvalidInput(List<string> invalidProperties)
+            : base(CreateErrorMessage(invalidProperties))
         {
             InvalidProperties = invalidProperties;
         }
 
         #endregion Constructors
+
+        #region Private methods
+
+        private static string CreateErrorMessage(List<string> invalidProperties)
+        {
+            return $"Invalid properties: {string.Join(", ", invalidProperties)}";
+        }
+
+        #endregion Private methods
     }
 }

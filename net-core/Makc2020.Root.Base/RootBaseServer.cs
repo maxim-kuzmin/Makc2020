@@ -61,6 +61,16 @@ namespace Makc2020.Root.Base
         private IServiceScope ServiceScope { get; set; }
 
         /// <summary>
+        /// Признак необходимости проведения миграции базы данных.
+        /// </summary>
+        protected bool IsMigrateDatabaseEnabled { get; set; }
+
+        /// <summary>
+        /// Признак необходимости добавления пользователей и ролей по-умолчанию.
+        /// </summary>
+        protected bool IsSeedAuthEnabled { get; set; }
+
+        /// <summary>
         /// Модули.
         /// </summary>
         protected TModules Modules { get; private set; }
@@ -179,9 +189,15 @@ namespace Makc2020.Root.Base
 
             context.InitCurrentCulture(CULTURE_NAME);
 
-            MigrateDatabase();
+            if (IsMigrateDatabaseEnabled)
+            {
+                MigrateDatabase();
+            }
 
-            SeedAuth();
+            if (IsSeedAuthEnabled)
+            {
+                SeedAuth();
+            }
 
             Logger.LogDebug("RootBaseServer.OnStarted end");
         }
@@ -265,7 +281,10 @@ namespace Makc2020.Root.Base
             configurator.LocalizationEnable();
 
             configurator.DataEntityDbContextEnable(GetService<DataEntityDbFactory>);
+            IsMigrateDatabaseEnabled = true;
+
             configurator.IdentityEnable();
+            IsSeedAuthEnabled = true;
         }
 
         /// <summary>

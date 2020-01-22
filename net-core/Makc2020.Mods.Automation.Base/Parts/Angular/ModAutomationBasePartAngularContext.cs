@@ -35,14 +35,13 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
             ModAutomationBasePartAngularExternals externals
             )
         {
-            Service = new ModAutomationBasePartAngularService(
-                configSettings
-                );
+            Service = new ModAutomationBasePartAngularService();
 
             Jobs = new ModAutomationBasePartAngularJobs(
                 externals.CoreBaseResourceErrors,
                 externals.ResourceSuccesses,
                 externals.ResourceErrors,
+                configSettings,
                 Service
                 );
         }

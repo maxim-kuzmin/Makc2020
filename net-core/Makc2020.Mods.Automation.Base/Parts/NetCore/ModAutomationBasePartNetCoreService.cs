@@ -12,18 +12,8 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
     /// <summary>
     /// Мод "Automation". Основа. Часть "NetCore". Сервис.
     /// </summary>
-    public class ModAutomationBasePartNetCoreService : ModAutomationBaseCommonService<IModAutomationBasePartNetCoreConfigSettings>
+    public class ModAutomationBasePartNetCoreService : ModAutomationBaseCommonService
     {
-        #region Constructors
-
-        /// <inheritdoc/>
-        public ModAutomationBasePartNetCoreService(IModAutomationBasePartNetCoreConfigSettings configSettings)
-            : base(configSettings)
-        {
-        }
-
-        #endregion Constructors
-
         #region Public methods
 
         /// <summary>
@@ -32,9 +22,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
         /// <param name="input">Ввод.</param>
         /// <returns>Задача.</returns>
         public Task GenerateCode(ModAutomationBaseCommonJobCodeGenerateInput input)
-        {
-            InitJobCodeGenerateInput(input);
-
+        {            
             var excludedFolderNames = new HashSet<string>
             {
                 ".vs",

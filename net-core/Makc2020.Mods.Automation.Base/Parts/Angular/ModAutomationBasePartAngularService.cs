@@ -2,7 +2,6 @@
 
 using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
-using Makc2020.Mods.Automation.Base.Parts.Angular.Config;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,18 +11,8 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
     /// <summary>
     /// Мод "Automation". Основа. Часть "Angular". Сервис.
     /// </summary>
-    public class ModAutomationBasePartAngularService : ModAutomationBaseCommonService<IModAutomationBasePartAngularConfigSettings>
+    public class ModAutomationBasePartAngularService : ModAutomationBaseCommonService
     {
-        #region Constructors
-
-        /// <inheritdoc/>
-        public ModAutomationBasePartAngularService(IModAutomationBasePartAngularConfigSettings configSettings)
-            : base(configSettings)
-        {
-        }
-
-        #endregion Constructors
-
         #region Public methods
 
         /// <summary>
@@ -33,8 +22,6 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
         /// <returns>Задача.</returns>
         public Task GenerateCode(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
-            InitJobCodeGenerateInput(input);
-
             var excludedFolderNames = new HashSet<string>
             {
                 ".idea",
