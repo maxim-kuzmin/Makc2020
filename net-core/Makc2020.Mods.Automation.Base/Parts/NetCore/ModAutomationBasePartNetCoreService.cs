@@ -34,12 +34,17 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
 
             const string fileSearchPattern = "*.cs";
 
-            var (filesCount, foldersCount) = GetCounts(input.Path, fileSearchPattern, excludedFolderNames);
+            var (filesCount, foldersCount) = GetCounts(
+                input.SourcePath,
+                fileSearchPattern,
+                excludedFolderNames,
+                filePath => FilePathIsValid(filePath, input.SourceEntityName)
+                );
 
             if (filesCount > 0)
             {
                 EnumerateFiles(
-                    input.Path,
+                    input.SourcePath,
                     fileSearchPattern,
                     excludedFolderNames,
                     (path, number) => HandleFile(
@@ -48,15 +53,20 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                         number,
                         filesCount,
                         input.SourceEntityName,
-                        input.TargetEntityName
+                        input.SourcePath,
+                        input.TargetEntityName,
+                        input.TargetPath
                         ),
                     (path, number) => HandleFolder(
                         input.FolderHandleProgress,
                         path,
-                        number,
-                        foldersCount,
+                        number,                        
+                        foldersCount,                        
                         input.SourceEntityName,
-                        input.TargetEntityName
+                        input.SourcePath,
+                        input.TargetEntityName,
+                        input.TargetPath,
+                        fileSearchPattern
                         )
                     );
             }
@@ -70,33 +80,38 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
 
         private void HandleFile(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            string path,
+            string path,            
             int number,
             int count,
             string sourceEntityName,
-            string targetEntityName
+            string sourcePath,
+            string targetEntityName,
+            string targetPath
             )
         {
-            var fileName = Path.GetFileName(path);
-
-            if (fileName.Contains(sourceEntityName))
+            if (FilePathIsValid(path, sourceEntityName))
             {
-                var targetPath = path.Replace(sourceEntityName, targetEntityName);
+                var destPath = path.Replace(sourceEntityName, targetEntityName);
 
-                File.Copy(path, targetPath, false);
+                if (sourcePath != targetPath)
+                {
+                    destPath = destPath.Replace(sourcePath, targetPath);
+                }
+
+                File.Copy(path, destPath, false);
 
                 var encoding = Encoding.UTF8;
 
-                var targetText = File.ReadAllText(targetPath, encoding);
+                var targetText = File.ReadAllText(destPath, encoding);
 
                 targetText = targetText.Replace(sourceEntityName, targetEntityName);
 
-                File.WriteAllText(targetPath, targetText, encoding);
-            }
+                File.WriteAllText(destPath, targetText, encoding);
 
-            if (progress != null)
-            {
-                ReportProgress(progress, path, number, count);
+                if (progress != null)
+                {
+                    ReportProgress(progress, path, number, count);
+                }
             }
         }
 
@@ -104,21 +119,29 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
             string path,
             int number,
-            int count,
+            int count,            
             string sourceEntityName,
-            string targetEntityName
+            string sourcePath,
+            string targetEntityName,
+            string targetPath,
+            string fileSearchPattern
             )
         {
-            if (path.Contains(sourceEntityName))
+            if (FolderPathIsValid(path, fileSearchPattern, filePath => FilePathIsValid(filePath, sourceEntityName)))
             {
-                var targetPath = path.Replace(sourceEntityName, targetEntityName);
+                var destPath = path.Replace(sourceEntityName, targetEntityName);
 
-                Directory.CreateDirectory(targetPath);
-            }
+                if (sourcePath != targetPath)
+                {
+                    destPath = destPath.Replace(sourcePath, targetPath);
+                }
 
-            if (progress != null)
-            {
-                ReportProgress(progress, path, number, count);
+                Directory.CreateDirectory(destPath);
+
+                if (progress != null)
+                {
+                    ReportProgress(progress, path, number, count);
+                }
             }
         }
 

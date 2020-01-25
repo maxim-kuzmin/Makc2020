@@ -23,19 +23,24 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         public IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> FolderHandleProgress { get; set; }
 
         /// <summary>
-        /// Путь.
-        /// </summary>
-        public string Path { get; set; }
-
-        /// <summary>
         /// Имя исходной сущности.
         /// </summary>
         public string SourceEntityName { get; set; }
 
         /// <summary>
+        /// Исходный путь.
+        /// </summary>
+        public string SourcePath { get; set; }
+
+        /// <summary>
         /// Имя целевой сущности.
         /// </summary>
         public string TargetEntityName { get; set; }
+
+        /// <summary>
+        /// Целевой путь.
+        /// </summary>
+        public string TargetPath { get; set; }
 
         #endregion Properties
 
@@ -49,19 +54,24 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         {
             var result = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(Path))
-            {
-                result.Add(nameof(Path));
-            }
-
             if (string.IsNullOrWhiteSpace(SourceEntityName))
             {
                 result.Add(nameof(SourceEntityName));
             }
 
+            if (string.IsNullOrWhiteSpace(SourcePath))
+            {
+                result.Add(nameof(SourcePath));
+            }
+
             if (string.IsNullOrWhiteSpace(TargetEntityName))
             {
                 result.Add(nameof(TargetEntityName));
+            }
+
+            if (string.IsNullOrWhiteSpace(TargetPath))
+            {
+                result.Add(nameof(TargetPath));
             }
 
             return result;

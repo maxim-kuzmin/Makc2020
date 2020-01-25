@@ -69,19 +69,24 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
 
         protected void InitInput(ModAutomationBaseCommonJobCodeGenerateInput input)
         {
-            if (string.IsNullOrWhiteSpace(input.Path))
-            {
-                input.Path = ConfigSettings.Path;
-            }
-
             if (string.IsNullOrWhiteSpace(input.SourceEntityName))
             {
                 input.SourceEntityName = ConfigSettings.SourceEntityName;
             }
 
+            if (string.IsNullOrWhiteSpace(input.SourcePath))
+            {
+                input.SourcePath = ConfigSettings.SourcePath;
+            }
+
             if (string.IsNullOrWhiteSpace(input.TargetEntityName))
             {
                 input.TargetEntityName = ConfigSettings.TargetEntityName;
+            }
+
+            if (string.IsNullOrWhiteSpace(input.TargetPath))
+            {
+                input.TargetPath = ConfigSettings.TargetPath;
             }
         }
 

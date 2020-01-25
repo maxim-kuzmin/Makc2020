@@ -10,19 +10,24 @@ namespace Makc2020.Mods.Automation.Base.Common.Config
         #region Properties
 
         /// <summary>
-        /// Путь.
-        /// </summary>
-        string Path { get; }
-
-        /// <summary>
         /// Имя исходной сущности.
         /// </summary>
         string SourceEntityName { get; }
 
         /// <summary>
+        /// Исходный путь.
+        /// </summary>
+        string SourcePath { get; }
+
+        /// <summary>
         /// Имя целевой сущности.
         /// </summary>
         string TargetEntityName { get; }
+
+        /// <summary>
+        /// Целевой путь.
+        /// </summary>
+        string TargetPath { get; }
 
         #endregion Properties
     }

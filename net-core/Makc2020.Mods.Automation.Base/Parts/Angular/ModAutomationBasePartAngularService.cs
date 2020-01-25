@@ -4,6 +4,7 @@ using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +32,12 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
             const string fileSearchPattern = "*.ts";
 
-            var (filesCount, foldersCount) = GetCounts(input.Path, fileSearchPattern, excludedFolderNames);
+            var (filesCount, foldersCount) = GetCounts(
+                input.SourcePath,
+                fileSearchPattern,
+                excludedFolderNames,
+                filePath => FilePathIsValid(filePath, input.SourceEntityName)
+                );
 
             if (filesCount > 0)
             {
@@ -39,7 +45,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                 var targetEntityFileName = GetFileNameFromEntityName(input.TargetEntityName);
 
                 EnumerateFiles(
-                    input.Path,
+                    input.SourcePath,
                     fileSearchPattern,
                     excludedFolderNames,
                     (path, number) => HandleFile(
@@ -48,9 +54,11 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                         number,
                         filesCount,
                         input.SourceEntityName,
-                        input.TargetEntityName,
                         sourceEntityFileName,
-                        targetEntityFileName
+                        input.SourcePath,
+                        input.TargetEntityName,
+                        targetEntityFileName,
+                        input.TargetPath
                         ),
                     (path, number) => HandleFolder(
                         input.FolderHandleProgress,
@@ -58,9 +66,11 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                         number,
                         foldersCount,
                         input.SourceEntityName,
-                        input.TargetEntityName,
                         sourceEntityFileName,
-                        targetEntityFileName
+                        input.SourcePath,
+                        input.TargetEntityName,                        
+                        targetEntityFileName,
+                        input.TargetPath
                         )
                     );
             }
@@ -105,10 +115,12 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
             string path,
             int number,
             int count,
-            string sourceEntityName,
+            string sourceEntityName,            
+            string sourceEntityFileName,
+            string sourcePath,
             string targetEntityName,
-            string sourceEntityFileName,            
-            string targetEntityFileName
+            string targetEntityFileName,
+            string targetPath
             )
         {
             if (progress != null)
@@ -123,9 +135,11 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
             int number,
             int count,
             string sourceEntityName,
-            string targetEntityName,
             string sourceEntityFileName,
-            string targetEntityFileName
+            string sourcePath,
+            string targetEntityName,
+            string targetEntityFileName,
+            string targetPath
             )
         {
             if (progress != null)

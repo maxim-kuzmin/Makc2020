@@ -20,11 +20,13 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
         /// <param name="excludedFolderNames">Имена исключаемых папок.</param>
+        /// <param name="funcFilePathIsValid">Функция проверки годности пути к файлу для обработки.</param>
         /// <returns>Счётчик файлов, счётчик папок.</returns>
         protected (int, int) GetCounts(
             string path,
             string fileSearchPattern,
-            HashSet<string> excludedFolderNames
+            HashSet<string> excludedFolderNames,
+            Func<string, bool> funcFilePathIsValid
             )
         {
             int filesCount = 0;
@@ -54,11 +56,17 @@ namespace Makc2020.Mods.Automation.Base.Common
                     continue;
                 }
 
-                foldersCount++;
+                if (FolderPathIsValid(folderPath, fileSearchPattern, funcFilePathIsValid))
+                {
+                    foldersCount++;
+                }
 
                 foreach (var filePath in Directory.EnumerateFiles(folderPath, fileSearchPattern))
                 {
-                    filesCount++;
+                    if (funcFilePathIsValid.Invoke(filePath))
+                    {
+                        filesCount++;
+                    }
                 }
             }
 
@@ -71,8 +79,8 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
         /// <param name="excludedFolderNames">Имена исключаемых папок.</param>
-        /// <param name="handleFile">Обработчик файла.</param>
-        /// <param name="handleFolder">Обработчик папки.</param>
+        /// <param name="actionHandleFile">Действие по обработке файла.</param>
+        /// <param name="actionHandleFolder">Действие по обработке папки.</param>
         /// <param name="fileNumber">Номер файла.</param>
         /// <param name="folderNumber">Номер папки.</param>
         /// <returns>Счётчик файлов, счётчик папок.</returns>
@@ -80,8 +88,8 @@ namespace Makc2020.Mods.Automation.Base.Common
             string path,
             string fileSearchPattern,            
             HashSet<string> excludedFolderNames,
-            Action<string, int> handleFile,
-            Action<string, int> handleFolder,
+            Action<string, int> actionHandleFile,
+            Action<string, int> actionHandleFolder,
             int fileNumber = 0,
             int folderNumber = 0
         )
@@ -92,13 +100,13 @@ namespace Makc2020.Mods.Automation.Base.Common
             {
                 folderNumber++;
 
-                handleFolder.Invoke(path, folderNumber);
+                actionHandleFolder.Invoke(path, folderNumber);
 
                 foreach (var filePath in Directory.EnumerateFiles(path, fileSearchPattern))
                 {
                     fileNumber++;
 
-                    handleFile.Invoke(filePath, fileNumber);
+                    actionHandleFile.Invoke(filePath, fileNumber);
                 }
 
                 foreach (var folderPath in Directory.EnumerateDirectories(path, "*.*"))
@@ -107,8 +115,8 @@ namespace Makc2020.Mods.Automation.Base.Common
                         folderPath,
                         fileSearchPattern,
                         excludedFolderNames,
-                        handleFile,
-                        handleFolder,
+                        actionHandleFile,
+                        actionHandleFolder,
                         fileNumber,
                         folderNumber
                         );
@@ -116,6 +124,43 @@ namespace Makc2020.Mods.Automation.Base.Common
             }
 
             return (fileNumber, folderNumber);
+        }
+
+        /// <summary>
+        /// Получить признак того, что путь к файлу годнен для обработки.
+        /// </summary>
+        /// <param name="path">Путь</param>
+        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
+        /// <returns></returns>
+        protected bool FilePathIsValid(string path, string sourceEntityFileName)
+        {
+            var fileName = Path.GetFileName(path);
+
+            return fileName.Contains(sourceEntityFileName);
+        }
+
+        /// <summary>
+        /// Получить признак того, что путь к папке годен для обработки.
+        /// </summary>
+        /// <param name="path">Путь.</param>
+        /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
+        /// <param name="funcFilePathIsValid">Функция проверки годности пути к файлу для обработки.</param>
+        /// <returns></returns>
+        protected bool FolderPathIsValid(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsValid)
+        {
+            var result = false;
+
+            foreach (var filePath in Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.AllDirectories))
+            {
+                if (funcFilePathIsValid.Invoke(filePath))
+                {
+                    result = true;
+
+                    break;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

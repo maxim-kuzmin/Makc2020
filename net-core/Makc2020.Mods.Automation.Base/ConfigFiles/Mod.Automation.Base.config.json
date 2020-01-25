@@ -1,12 +1,14 @@
 ﻿{
   "PartAngular": {
-    "Path": "E:\\TMP\\javascript\\makc2020-angular-redux\\src",
     "SourceEntityName": "DummyMain",
-    "TargetEntityName": "Product"
+    "SourcePath": "E:\\TMP\\source\\javascript\\makc2020-angular-redux\\src",
+    "TargetEntityName": "Product",
+    "TargetPath": "E:\\TMP\\target\\javascript\\makc2020-angular-redux\\src"
   },
   "PartNetCore": {
-    "Path": "E:\\TMP\\net-core",
     "SourceEntityName": "DummyMain",
-    "TargetEntityName": "Product"
+    "SourcePath": "E:\\TMP\\source\\net-core",
+    "TargetEntityName": "Product",
+    "TargetPath": "E:\\TMP\\target\\net-core"
   }
 }

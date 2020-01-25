@@ -10,13 +10,16 @@ namespace Makc2020.Mods.Automation.Base.Common.Config
         #region Properties
 
         /// <inheritdoc/>
-        public string Path { get; set; }
-
-        /// <inheritdoc/>
         public string SourceEntityName { get; set; }
 
         /// <inheritdoc/>
+        public string SourcePath { get; set; }
+
+        /// <inheritdoc/>
         public string TargetEntityName { get; set; }
+
+        /// <inheritdoc/>
+        public string TargetPath { get; set; }
 
         #endregion Properties
     }
