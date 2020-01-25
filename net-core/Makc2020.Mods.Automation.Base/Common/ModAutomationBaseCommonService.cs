@@ -238,16 +238,21 @@ namespace Makc2020.Mods.Automation.Base.Common
 
             var folderPath = Path.GetDirectoryName(path);
 
-            if (sourcePath != targetPath)
-            {
-                folderPath = folderPath.Replace(sourcePath, targetPath);
-            }
+            var relativePath = folderPath.Substring(sourcePath.Length);
 
-            folderPath = folderPath.Replace(sourceEntityFileName, targetEntityFileName);
+            if (!string.IsNullOrEmpty(relativePath))
+            {
+                relativePath = relativePath.Replace(sourceEntityFileName, targetEntityFileName);
+
+                if (relativePath.StartsWith(Path.DirectorySeparatorChar))
+                {
+                    relativePath = relativePath.Substring(1);
+                }
+            }            
 
             fileName = fileName.Replace(sourceEntityFileName, targetEntityFileName);
-            
-            var destPath = Path.Combine(folderPath, fileName);
+                        
+            var destPath = Path.Combine(targetPath, relativePath, fileName);
 
             if (!File.Exists(destPath))
             {
