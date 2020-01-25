@@ -107,7 +107,9 @@ namespace Makc2020.Mods.Automation.Base.Common
                     folderNumber--;
                 }
 
-                foreach (var filePath in Directory.EnumerateFiles(path, fileSearchPattern))
+                var filePaths = Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.TopDirectoryOnly);
+
+                foreach (var filePath in filePaths)
                 {
                     fileNumber++;
 
@@ -117,7 +119,9 @@ namespace Makc2020.Mods.Automation.Base.Common
                     }
                 }
 
-                foreach (var folderPath in Directory.EnumerateDirectories(path, "*.*"))
+                var folderPaths = Directory.EnumerateDirectories(path, "*.*", SearchOption.TopDirectoryOnly);
+
+                foreach (var folderPath in folderPaths)
                 {
                     (fileNumber, folderNumber) = EnumerateFiles(
                         folderPath,
@@ -158,7 +162,9 @@ namespace Makc2020.Mods.Automation.Base.Common
         {
             var result = false;
 
-            foreach (var filePath in Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.AllDirectories))
+            var filePaths = Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.AllDirectories);
+
+            foreach (var filePath in filePaths)
             {
                 if (funcFilePathIsValid.Invoke(filePath))
                 {
