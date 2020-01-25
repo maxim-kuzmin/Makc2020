@@ -109,9 +109,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
             string targetEntityName
             )
         {
-            var folderName = Path.GetFileName(path);
-
-            if (folderName.Contains($".{sourceEntityName}."))
+            if (path.Contains(sourceEntityName))
             {
                 var targetPath = path.Replace(sourceEntityName, targetEntityName);
 

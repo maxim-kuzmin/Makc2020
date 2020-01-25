@@ -47,7 +47,7 @@ namespace Makc2020.Apps.Automation.Base.App
 
             var clients = new AppCommonClient[]
             {
-                GetService<AppPartAngularJobCodeGenerateClient>(),
+                //GetService<AppPartAngularJobCodeGenerateClient>(),
                 GetService<AppPartNetCoreJobCodeGenerateClient>()
             };
 
