@@ -2,10 +2,7 @@
 
 using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Makc2020.Mods.Automation.Base.Parts.NetCore
@@ -38,7 +35,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                 input.SourcePath,
                 fileSearchPattern,
                 excludedFolderNames,
-                filePath => FilePathIsValid(filePath, input.SourceEntityName)
+                filePath => FilePathIsHandleable(filePath, input.SourceEntityName)
                 );
 
             if (filesCount > 0)

@@ -21,13 +21,13 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
         /// <param name="excludedFolderNames">Имена исключаемых папок.</param>
-        /// <param name="funcFilePathIsValid">Функция проверки годности пути к файлу для обработки.</param>
+        /// <param name="funcFilePathIsHandleable">Функция проверки годности пути к файлу для обработки.</param>
         /// <returns>Счётчик файлов, счётчик папок.</returns>
         protected (int, int) GetCounts(
             string path,
             string fileSearchPattern,
             HashSet<string> excludedFolderNames,
-            Func<string, bool> funcFilePathIsValid
+            Func<string, bool> funcFilePathIsHandleable
             )
         {
             int filesCount = 0;
@@ -41,10 +41,7 @@ namespace Makc2020.Mods.Automation.Base.Common
 
                 foreach (var folderName in folderNames)
                 {
-                    if (excludedFolderNames != null && excludedFolderNames.Contains(folderName))
-                    {
-                        isOk = false;
-                    }
+                    isOk = excludedFolderNames == null || !excludedFolderNames.Contains(folderName);
 
                     if (!isOk)
                     {
@@ -57,14 +54,18 @@ namespace Makc2020.Mods.Automation.Base.Common
                     continue;
                 }
 
-                if (FolderPathIsValid(folderPath, fileSearchPattern, funcFilePathIsValid))
+                isOk = FolderPathIsHandleable(folderPath, fileSearchPattern, funcFilePathIsHandleable);
+
+                if (isOk)
                 {
                     foldersCount++;
                 }
 
                 foreach (var filePath in Directory.EnumerateFiles(folderPath, fileSearchPattern))
                 {
-                    if (funcFilePathIsValid.Invoke(filePath))
+                    isOk = funcFilePathIsHandleable.Invoke(filePath);
+
+                    if (isOk)
                     {
                         filesCount++;
                     }
@@ -80,17 +81,17 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
         /// <param name="excludedFolderNames">Имена исключаемых папок.</param>
-        /// <param name="actionHandleFile">Действие по обработке файла.</param>
-        /// <param name="actionHandleFolder">Действие по обработке папки.</param>
+        /// <param name="funcHandleFile">Функция обработки файла.</param>
+        /// <param name="funcHandleFolder">Функция обработки папки.</param>
         /// <param name="fileNumber">Номер файла.</param>
         /// <param name="folderNumber">Номер папки.</param>
         /// <returns>Счётчик файлов, счётчик папок.</returns>
         protected (int, int) EnumerateFiles(
             string path,
-            string fileSearchPattern,            
+            string fileSearchPattern,
             HashSet<string> excludedFolderNames,
-            Action<string, int> actionHandleFile,
-            Action<string, int> actionHandleFolder,
+            Func<string, int, bool> funcHandleFile,
+            Func<string, int, bool> funcHandleFolder,
             int fileNumber = 0,
             int folderNumber = 0
         )
@@ -101,13 +102,19 @@ namespace Makc2020.Mods.Automation.Base.Common
             {
                 folderNumber++;
 
-                actionHandleFolder.Invoke(path, folderNumber);
+                if (!funcHandleFolder.Invoke(path, folderNumber))
+                {
+                    folderNumber--;
+                }
 
                 foreach (var filePath in Directory.EnumerateFiles(path, fileSearchPattern))
                 {
                     fileNumber++;
 
-                    actionHandleFile.Invoke(filePath, fileNumber);
+                    if (!funcHandleFile.Invoke(filePath, fileNumber))
+                    {
+                        fileNumber--;
+                    }
                 }
 
                 foreach (var folderPath in Directory.EnumerateDirectories(path, "*.*"))
@@ -116,8 +123,8 @@ namespace Makc2020.Mods.Automation.Base.Common
                         folderPath,
                         fileSearchPattern,
                         excludedFolderNames,
-                        actionHandleFile,
-                        actionHandleFolder,
+                        funcHandleFile,
+                        funcHandleFolder,
                         fileNumber,
                         folderNumber
                         );
@@ -128,12 +135,12 @@ namespace Makc2020.Mods.Automation.Base.Common
         }
 
         /// <summary>
-        /// Получить признак того, что путь к файлу годнен для обработки.
+        /// Получить признак того, что путь к файлу годен для обработки.
         /// </summary>
         /// <param name="path">Путь</param>
         /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
-        /// <returns></returns>
-        protected bool FilePathIsValid(string path, string sourceEntityFileName)
+        /// <returns>Признак годности к обработке.</returns>
+        protected bool FilePathIsHandleable(string path, string sourceEntityFileName)
         {
             var fileName = Path.GetFileName(path);
 
@@ -146,8 +153,8 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
         /// <param name="funcFilePathIsValid">Функция проверки годности пути к файлу для обработки.</param>
-        /// <returns></returns>
-        protected bool FolderPathIsValid(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsValid)
+        /// <returns>Признак годности к обработке.</returns>
+        protected bool FolderPathIsHandleable(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsValid)
         {
             var result = false;
 
@@ -177,7 +184,8 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="targetEntityName">Имя конечной сущности.</param>
         /// <param name="targetEntityFileName">Имя файла конечной сущности.</param>
         /// <param name="targetPath">Конечный путь.</param>
-        protected void HandleFile(
+        /// <returns>Признак того, что файл был обработан.</returns>
+        protected bool HandleFile(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
             string path,
             int number,
@@ -190,35 +198,44 @@ namespace Makc2020.Mods.Automation.Base.Common
             string targetPath
             )
         {
-            if (FilePathIsValid(path, sourceEntityFileName))
+            var isOk = FilePathIsHandleable(path, sourceEntityFileName);
+
+            if (!isOk)
             {
-                var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
-
-                if (sourcePath != targetPath)
-                {
-                    destPath = destPath.Replace(sourcePath, targetPath);
-                }
-
-                File.Copy(path, destPath, false);
-
-                var encoding = Encoding.UTF8;
-
-                var targetText = File.ReadAllText(destPath, encoding);
-
-                targetText = targetText.Replace(sourceEntityName, targetEntityName);
-                
-                if (sourceEntityFileName != sourceEntityName)
-                {
-                    targetText = targetText.Replace(sourceEntityFileName, targetEntityFileName);
-                }
-
-                File.WriteAllText(destPath, targetText, encoding);
-
-                if (progress != null)
-                {
-                    ReportProgress(progress, path, number, count);
-                }
+                return false;
             }
+
+            var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
+
+            if (sourcePath != targetPath)
+            {
+                destPath = destPath.Replace(sourcePath, targetPath);
+            }
+
+            if (!File.Exists(destPath))
+            {
+                File.Copy(path, destPath);
+            }
+
+            var encoding = Encoding.UTF8;
+
+            var targetText = File.ReadAllText(destPath, encoding);
+
+            targetText = targetText.Replace(sourceEntityName, targetEntityName);
+
+            if (sourceEntityFileName != sourceEntityName)
+            {
+                targetText = targetText.Replace(sourceEntityFileName, targetEntityFileName);
+            }
+
+            File.WriteAllText(destPath, targetText, encoding);
+
+            if (progress != null)
+            {
+                ReportProgress(progress, path, number, count);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -233,7 +250,8 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="targetEntityFileName">Имя файла конечной сущности.</param>
         /// <param name="targetPath">Конечный путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
-        protected void HandleFolder(
+        /// <returns>Признак того, что папка была обработана.</returns>
+        protected bool HandleFolder(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
             string path,
             int number,
@@ -245,22 +263,35 @@ namespace Makc2020.Mods.Automation.Base.Common
             string fileSearchPattern
             )
         {
-            if (FolderPathIsValid(path, fileSearchPattern, filePath => FilePathIsValid(filePath, sourceEntityFileName)))
+            var isOk = FolderPathIsHandleable(
+                path,
+                fileSearchPattern,
+                filePath => FilePathIsHandleable(filePath, sourceEntityFileName)
+                );
+
+            if (!isOk)
             {
-                var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
-
-                if (sourcePath != targetPath)
-                {
-                    destPath = destPath.Replace(sourcePath, targetPath);
-                }
-
-                Directory.CreateDirectory(destPath);
-
-                if (progress != null)
-                {
-                    ReportProgress(progress, path, number, count);
-                }
+                return false;
             }
+
+            var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
+
+            if (sourcePath != targetPath)
+            {
+                destPath = destPath.Replace(sourcePath, targetPath);
+            }
+
+            if (!Directory.Exists(destPath))
+            {
+                Directory.CreateDirectory(destPath);
+            }
+
+            if (progress != null)
+            {
+                ReportProgress(progress, path, number, count);
+            }
+
+            return true;
         }
 
         /// <summary>
