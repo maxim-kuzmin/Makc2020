@@ -33,12 +33,12 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         public string SourcePath { get; set; }
 
         /// <summary>
-        /// Имя целевой сущности.
+        /// Имя конечной сущности.
         /// </summary>
         public string TargetEntityName { get; set; }
 
         /// <summary>
-        /// Целевой путь.
+        /// Конечный путь.
         /// </summary>
         public string TargetPath { get; set; }
 

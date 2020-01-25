@@ -20,12 +20,12 @@ namespace Makc2020.Mods.Automation.Base.Common.Config
         string SourcePath { get; }
 
         /// <summary>
-        /// Имя целевой сущности.
+        /// Имя конечной сущности.
         /// </summary>
         string TargetEntityName { get; }
 
         /// <summary>
-        /// Целевой путь.
+        /// Конечный путь.
         /// </summary>
         string TargetPath { get; }
 

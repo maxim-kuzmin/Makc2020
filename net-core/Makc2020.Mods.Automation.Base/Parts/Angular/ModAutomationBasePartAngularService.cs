@@ -32,16 +32,17 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
             const string fileSearchPattern = "*.ts";
 
+            var sourceEntityFileName = GetFileNameFromEntityName(input.SourceEntityName);
+
             var (filesCount, foldersCount) = GetCounts(
                 input.SourcePath,
                 fileSearchPattern,
                 excludedFolderNames,
-                filePath => FilePathIsValid(filePath, input.SourceEntityName)
+                filePath => FilePathIsValid(filePath, sourceEntityFileName)
                 );
 
             if (filesCount > 0)
-            {
-                var sourceEntityFileName = GetFileNameFromEntityName(input.SourceEntityName);
+            {                
                 var targetEntityFileName = GetFileNameFromEntityName(input.TargetEntityName);
 
                 EnumerateFiles(
@@ -65,12 +66,11 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                         path,
                         number,
                         foldersCount,
-                        input.SourceEntityName,
                         sourceEntityFileName,
                         input.SourcePath,
-                        input.TargetEntityName,                        
                         targetEntityFileName,
-                        input.TargetPath
+                        input.TargetPath,
+                        fileSearchPattern
                         )
                     );
             }
@@ -108,44 +108,6 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
             }
 
             return result.ToString();
-        }
-
-        private void HandleFile(
-            IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            string path,
-            int number,
-            int count,
-            string sourceEntityName,            
-            string sourceEntityFileName,
-            string sourcePath,
-            string targetEntityName,
-            string targetEntityFileName,
-            string targetPath
-            )
-        {
-            if (progress != null)
-            {
-                ReportProgress(progress, path, number, count);
-            }
-        }
-
-        private void HandleFolder(
-            IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
-            string path,
-            int number,
-            int count,
-            string sourceEntityName,
-            string sourceEntityFileName,
-            string sourcePath,
-            string targetEntityName,
-            string targetEntityFileName,
-            string targetPath
-            )
-        {
-            if (progress != null)
-            {
-                ReportProgress(progress, path, number, count);
-            }
         }
 
         #endregion Private methods

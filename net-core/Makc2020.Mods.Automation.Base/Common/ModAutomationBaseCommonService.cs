@@ -4,6 +4,7 @@ using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Makc2020.Mods.Automation.Base.Common
 {
@@ -161,6 +162,105 @@ namespace Makc2020.Mods.Automation.Base.Common
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Обработать файл.
+        /// </summary>
+        /// <param name="progress">Прогресс.</param>
+        /// <param name="path">Путь.</param>
+        /// <param name="number">Номер.</param>
+        /// <param name="count">Счётчик.</param>
+        /// <param name="sourceEntityName">Имя файла сущности.</param>
+        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
+        /// <param name="sourcePath">Исходный путь.</param>
+        /// <param name="targetEntityName">Имя конечной сущности.</param>
+        /// <param name="targetEntityFileName">Имя файла конечной сущности.</param>
+        /// <param name="targetPath">Конечный путь.</param>
+        protected void HandleFile(
+            IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
+            string path,
+            int number,
+            int count,
+            string sourceEntityName,
+            string sourceEntityFileName,
+            string sourcePath,
+            string targetEntityName,
+            string targetEntityFileName,
+            string targetPath
+            )
+        {
+            if (FilePathIsValid(path, sourceEntityFileName))
+            {
+                var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
+
+                if (sourcePath != targetPath)
+                {
+                    destPath = destPath.Replace(sourcePath, targetPath);
+                }
+
+                File.Copy(path, destPath, false);
+
+                var encoding = Encoding.UTF8;
+
+                var targetText = File.ReadAllText(destPath, encoding);
+
+                targetText = targetText.Replace(sourceEntityName, targetEntityName);
+                
+                if (sourceEntityFileName != sourceEntityName)
+                {
+                    targetText = targetText.Replace(sourceEntityFileName, targetEntityFileName);
+                }
+
+                File.WriteAllText(destPath, targetText, encoding);
+
+                if (progress != null)
+                {
+                    ReportProgress(progress, path, number, count);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обработать папку.
+        /// </summary>
+        /// <param name="progress">Прогресс.</param>
+        /// <param name="path">Путь.</param>
+        /// <param name="number">Номер.</param>
+        /// <param name="count">Счётчик.</param>
+        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
+        /// <param name="sourcePath">Исходный путь.</param>
+        /// <param name="targetEntityFileName">Имя файла конечной сущности.</param>
+        /// <param name="targetPath">Конечный путь.</param>
+        /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
+        protected void HandleFolder(
+            IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
+            string path,
+            int number,
+            int count,
+            string sourceEntityFileName,
+            string sourcePath,
+            string targetEntityFileName,
+            string targetPath,
+            string fileSearchPattern
+            )
+        {
+            if (FolderPathIsValid(path, fileSearchPattern, filePath => FilePathIsValid(filePath, sourceEntityFileName)))
+            {
+                var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
+
+                if (sourcePath != targetPath)
+                {
+                    destPath = destPath.Replace(sourcePath, targetPath);
+                }
+
+                Directory.CreateDirectory(destPath);
+
+                if (progress != null)
+                {
+                    ReportProgress(progress, path, number, count);
+                }
+            }
         }
 
         /// <summary>
