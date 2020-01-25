@@ -1,11 +1,11 @@
 ﻿{
   "PartAngular": {
-    "Path": "E:\\Git\\maxim-kuzmin\\Makc2020\\javascript\\makc2020-angular-redux\\src",
+    "Path": "E:\\TMP\\javascript\\makc2020-angular-redux\\src",
     "SourceEntityName": "DummyMain",
     "TargetEntityName": "Product"
   },
   "PartNetCore": {
-    "Path": "E:\\Git\\maxim-kuzmin\\Makc2020\\net-core",
+    "Path": "E:\\TMP\\net-core",
     "SourceEntityName": "DummyMain",
     "TargetEntityName": "Product"
   }

@@ -4,6 +4,7 @@ using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Makc2020.Mods.Automation.Base.Parts.Angular
@@ -34,12 +35,33 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
             if (filesCount > 0)
             {
+                var sourceEntityFileName = GetFileNameFromEntityName(input.SourceEntityName);
+                var targetEntityFileName = GetFileNameFromEntityName(input.TargetEntityName);
+
                 EnumerateFiles(
                     input.Path,
                     fileSearchPattern,
                     excludedFolderNames,
-                    (path, number) => HandleFile(input.FileHandleProgress, path, number, filesCount),
-                    (path, number) => HandleFolder(input.FolderHandleProgress, path, number, foldersCount)
+                    (path, number) => HandleFile(
+                        input.FileHandleProgress,
+                        path,
+                        number,
+                        filesCount,
+                        input.SourceEntityName,
+                        input.TargetEntityName,
+                        sourceEntityFileName,
+                        targetEntityFileName
+                        ),
+                    (path, number) => HandleFolder(
+                        input.FolderHandleProgress,
+                        path,
+                        number,
+                        foldersCount,
+                        input.SourceEntityName,
+                        input.TargetEntityName,
+                        sourceEntityFileName,
+                        targetEntityFileName
+                        )
                     );
             }
 
@@ -50,11 +72,43 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
 
         #region Private methods
 
+        private string GetFileNameFromEntityName(string entityName)
+        {
+            var result = new StringBuilder();
+
+            var entityNameUpper = entityName.ToUpper();
+
+            for (var i = 0; i < entityNameUpper.Length; i++)
+            {
+                var letter = entityName[i];
+
+                if (letter != entityNameUpper[i])
+                {
+                    result.Append(letter);
+                }
+                else
+                {
+                    if (i > 0)
+                    {
+                        result.Append("-");
+                    }
+
+                    result.Append(letter.ToString().ToLower());
+                }
+            }
+
+            return result.ToString();
+        }
+
         private void HandleFile(
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
             string path,
             int number,
-            int count
+            int count,
+            string sourceEntityName,
+            string targetEntityName,
+            string sourceEntityFileName,            
+            string targetEntityFileName
             )
         {
             if (progress != null)
@@ -67,7 +121,11 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
             IProgress<ModAutomationBaseCommonJobCodeGenerateInfo> progress,
             string path,
             int number,
-            int count
+            int count,
+            string sourceEntityName,
+            string targetEntityName,
+            string sourceEntityFileName,
+            string targetEntityFileName
             )
         {
             if (progress != null)
