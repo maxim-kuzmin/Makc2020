@@ -16,6 +16,60 @@ namespace Makc2020.Mods.Automation.Base.Common
         #region Protected methods
 
         /// <summary>
+        /// Проверить, является ли имя файла пригодным для обработки.
+        /// </summary>
+        /// <param name="fileName">Имя файла.</param>
+        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
+        /// <returns>Признак годности к обработке.</returns>
+        protected bool CheckIfFileNameIsHandleable(string fileName, string sourceEntityFileName)
+        {
+            return fileName.Contains(sourceEntityFileName);
+        }
+
+        /// <summary>
+        /// Проверить, является ли путь к файлу пригодным для обработки.
+        /// </summary>
+        /// <param name="filePath">Путь к файлу.</param>
+        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
+        /// <returns>Признак годности к обработке.</returns>
+        protected bool CheckIfFilePathIsHandleable(string filePath, string sourceEntityFileName)
+        {
+            var fileName = Path.GetFileName(filePath);
+
+            return CheckIfFileNameIsHandleable(fileName, sourceEntityFileName);
+        }
+
+        /// <summary>
+        /// Проверить, является ли путь к папке пригодным для обработки.
+        /// </summary>
+        /// <param name="path">Путь.</param>
+        /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
+        /// <param name="funcFilePathIsHandleable">Функция проверки годности пути к файлу для обработки.</param>
+        /// <returns>Признак годности к обработке.</returns>
+        protected bool CheckIfFolderPathIsHandleable(
+            string path,
+            string fileSearchPattern,
+            Func<string, bool> funcFilePathIsHandleable
+            )
+        {
+            var result = false;
+
+            var filePaths = Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.AllDirectories);
+
+            foreach (var filePath in filePaths)
+            {
+                result = funcFilePathIsHandleable.Invoke(filePath);
+
+                if (result == true)
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Получить счётчики.
         /// </summary>
         /// <param name="path">Путь.</param>
@@ -56,7 +110,7 @@ namespace Makc2020.Mods.Automation.Base.Common
                     continue;
                 }
 
-                isOk = FolderPathIsHandleable(folderPath, fileSearchPattern, funcFilePathIsHandleable);
+                isOk = CheckIfFolderPathIsHandleable(folderPath, fileSearchPattern, funcFilePathIsHandleable);
 
                 if (isOk)
                 {
@@ -145,45 +199,6 @@ namespace Makc2020.Mods.Automation.Base.Common
         }
 
         /// <summary>
-        /// Получить признак того, что путь к файлу годен для обработки.
-        /// </summary>
-        /// <param name="path">Путь</param>
-        /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
-        /// <returns>Признак годности к обработке.</returns>
-        protected bool FilePathIsHandleable(string path, string sourceEntityFileName)
-        {
-            var fileName = Path.GetFileName(path);
-
-            return fileName.Contains(sourceEntityFileName);
-        }
-
-        /// <summary>
-        /// Получить признак того, что путь к папке годен для обработки.
-        /// </summary>
-        /// <param name="path">Путь.</param>
-        /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
-        /// <param name="funcFilePathIsHandleable">Функция проверки годности пути к файлу для обработки.</param>
-        /// <returns>Признак годности к обработке.</returns>
-        protected bool FolderPathIsHandleable(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsHandleable)
-        {
-            var result = false;
-
-            var filePaths = Directory.EnumerateFiles(path, fileSearchPattern, SearchOption.AllDirectories);
-
-            foreach (var filePath in filePaths)
-            {
-                result = funcFilePathIsHandleable.Invoke(filePath);
-
-                if (result == true)
-                {
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Обработать файл.
         /// </summary>
         /// <param name="progress">Прогресс.</param>
@@ -212,19 +227,27 @@ namespace Makc2020.Mods.Automation.Base.Common
             string targetPath
             )
         {
-            var isOk = FilePathIsHandleable(path, sourceEntityFileName);
+            var fileName = Path.GetFileName(path);
+
+            var isOk = CheckIfFileNameIsHandleable(fileName, sourceEntityFileName);
 
             if (!isOk)
             {
                 return false;
             }
 
-            var destPath = path.Replace(sourceEntityFileName, targetEntityFileName);
+            var folderPath = Path.GetDirectoryName(path);
 
             if (sourcePath != targetPath)
             {
-                destPath = destPath.Replace(sourcePath, targetPath);
+                folderPath = folderPath.Replace(sourcePath, targetPath);
             }
+
+            folderPath = folderPath.Replace(sourceEntityFileName, targetEntityFileName);
+
+            fileName = fileName.Replace(sourceEntityFileName, targetEntityFileName);
+            
+            var destPath = Path.Combine(folderPath, fileName);
 
             if (!File.Exists(destPath))
             {
@@ -275,10 +298,10 @@ namespace Makc2020.Mods.Automation.Base.Common
             string fileSearchPattern
             )
         {
-            var isOk = FolderPathIsHandleable(
+            var isOk = CheckIfFolderPathIsHandleable(
                 path,
                 fileSearchPattern,
-                filePath => FilePathIsHandleable(filePath, sourceEntityFileName)
+                filePath => CheckIfFilePathIsHandleable(filePath, sourceEntityFileName)
                 );
 
             if (!isOk)

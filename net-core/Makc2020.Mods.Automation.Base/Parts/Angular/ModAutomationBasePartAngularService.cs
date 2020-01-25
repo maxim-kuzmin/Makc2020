@@ -36,7 +36,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                 input.SourcePath,
                 fileSearchPattern,
                 excludedFolderNames,
-                filePath => FilePathIsHandleable(filePath, sourceEntityFileName)
+                filePath => CheckIfFilePathIsHandleable(filePath, sourceEntityFileName)
                 );
 
             if (filesCount > 0)

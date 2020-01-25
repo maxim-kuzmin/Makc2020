@@ -36,7 +36,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                 input.SourcePath,
                 fileSearchPattern,
                 excludedFolderNames,
-                filePath => FilePathIsHandleable(filePath, input.SourceEntityName)
+                filePath => CheckIfFilePathIsHandleable(filePath, input.SourceEntityName)
                 );
 
             if (filesCount > 0)
