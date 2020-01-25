@@ -52,6 +52,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                         path,
                         number,
                         filesCount,
+                        new UTF8Encoding(false),
                         input.SourceEntityName,
                         sourceEntityFileName,
                         input.SourcePath,

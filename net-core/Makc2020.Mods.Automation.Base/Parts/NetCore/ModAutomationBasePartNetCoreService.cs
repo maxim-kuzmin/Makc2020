@@ -3,6 +3,7 @@
 using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Makc2020.Mods.Automation.Base.Parts.NetCore
@@ -49,6 +50,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                         path,
                         number,
                         filesCount,
+                        new UTF8Encoding(true),
                         input.SourceEntityName,
                         input.SourceEntityName,
                         input.SourcePath,

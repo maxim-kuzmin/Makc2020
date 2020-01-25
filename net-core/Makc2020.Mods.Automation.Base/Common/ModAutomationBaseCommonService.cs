@@ -178,6 +178,7 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// <param name="path">Путь.</param>
         /// <param name="number">Номер.</param>
         /// <param name="count">Счётчик.</param>
+        /// <param name="encoding">Кодировка.</param>
         /// <param name="sourceEntityName">Имя файла сущности.</param>
         /// <param name="sourceEntityFileName">Имя файла исходной сущности.</param>
         /// <param name="sourcePath">Исходный путь.</param>
@@ -190,6 +191,7 @@ namespace Makc2020.Mods.Automation.Base.Common
             string path,
             int number,
             int count,
+            Encoding encoding,
             string sourceEntityName,
             string sourceEntityFileName,
             string sourcePath,
@@ -216,8 +218,6 @@ namespace Makc2020.Mods.Automation.Base.Common
             {
                 File.Copy(path, destPath);
             }
-
-            var encoding = Encoding.UTF8;
 
             var targetText = File.ReadAllText(destPath, encoding);
 
