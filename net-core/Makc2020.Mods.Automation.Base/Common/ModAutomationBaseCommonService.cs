@@ -33,7 +33,9 @@ namespace Makc2020.Mods.Automation.Base.Common
             int filesCount = 0;
             int foldersCount = 1;
 
-            foreach (var folderPath in Directory.EnumerateDirectories(path, "*.*", SearchOption.AllDirectories))
+            var folderPaths = Directory.EnumerateDirectories(path, "*.*", SearchOption.AllDirectories);
+
+            foreach (var folderPath in folderPaths)
             {
                 var folderNames = folderPath.Split(Path.DirectorySeparatorChar);
 
@@ -98,7 +100,9 @@ namespace Makc2020.Mods.Automation.Base.Common
         {
             var folderName = Path.GetFileName(path);
 
-            if (folderNumber == 0 || excludedFolderNames == null || !excludedFolderNames.Contains(folderName))
+            var isOk = folderNumber == 0 || excludedFolderNames == null || !excludedFolderNames.Contains(folderName);
+
+            if (isOk)
             {
                 folderNumber++;
 
@@ -113,7 +117,9 @@ namespace Makc2020.Mods.Automation.Base.Common
                 {
                     fileNumber++;
 
-                    if (!funcHandleFile.Invoke(filePath, fileNumber))
+                    isOk = funcHandleFile.Invoke(filePath, fileNumber);
+
+                    if (!isOk)
                     {
                         fileNumber--;
                     }
@@ -156,9 +162,9 @@ namespace Makc2020.Mods.Automation.Base.Common
         /// </summary>
         /// <param name="path">Путь.</param>
         /// <param name="fileSearchPattern">Шаблон поиска файлов.</param>
-        /// <param name="funcFilePathIsValid">Функция проверки годности пути к файлу для обработки.</param>
+        /// <param name="funcFilePathIsHandleable">Функция проверки годности пути к файлу для обработки.</param>
         /// <returns>Признак годности к обработке.</returns>
-        protected bool FolderPathIsHandleable(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsValid)
+        protected bool FolderPathIsHandleable(string path, string fileSearchPattern, Func<string, bool> funcFilePathIsHandleable)
         {
             var result = false;
 
@@ -166,10 +172,10 @@ namespace Makc2020.Mods.Automation.Base.Common
 
             foreach (var filePath in filePaths)
             {
-                if (funcFilePathIsValid.Invoke(filePath))
-                {
-                    result = true;
+                result = funcFilePathIsHandleable.Invoke(filePath);
 
+                if (result == true)
+                {
                     break;
                 }
             }

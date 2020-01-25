@@ -3,7 +3,6 @@
 using Makc2020.Mods.Automation.Base.Common;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,11 +41,6 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
 
             if (filesCount > 0)
             {
-                if (!Directory.Exists(input.TargetPath))
-                {
-                    Directory.CreateDirectory(input.TargetPath);
-                }
-
                 EnumerateFiles(
                     input.SourcePath,
                     fileSearchPattern,
