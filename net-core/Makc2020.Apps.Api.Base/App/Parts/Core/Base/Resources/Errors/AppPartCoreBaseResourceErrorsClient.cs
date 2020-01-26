@@ -58,7 +58,7 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors
 
             var msg = $"{cultureName}: {CreateMessage()}";
 
-            Log(msg);
+            Show(msg);
         }
 
         private string CreateMessage()

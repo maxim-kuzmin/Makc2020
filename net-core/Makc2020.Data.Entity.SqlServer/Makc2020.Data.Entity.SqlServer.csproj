@@ -18,10 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="ConfigFiles\Data.Entity.SqlServer.config.m.mkuzmin2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ConfigFiles\Data.Entity.SqlServer.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigFiles\Data.Entity.SqlServer.config.m.WIN10-MAKC.json">
+    <None Update="ConfigFiles\Data.Entity.SqlServer.config.m.MAKC2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

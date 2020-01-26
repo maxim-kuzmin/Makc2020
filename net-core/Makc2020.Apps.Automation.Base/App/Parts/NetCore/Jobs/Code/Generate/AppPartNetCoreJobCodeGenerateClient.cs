@@ -53,7 +53,7 @@ namespace Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate
 
             var msg = result.CoreBaseExtJsonSerialize(CoreBaseExtJson.OptionsForLogger);
 
-            Log(msg);
+            Show(msg, false);
         }
 
         #endregion Protected methods

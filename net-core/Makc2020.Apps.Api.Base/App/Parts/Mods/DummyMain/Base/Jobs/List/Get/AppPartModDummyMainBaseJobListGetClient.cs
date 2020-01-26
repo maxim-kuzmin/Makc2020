@@ -63,7 +63,7 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get
 
             var msg = result.CoreBaseExtJsonSerialize(CoreBaseExtJson.OptionsForLogger);
 
-            Log(msg);
+            Show(msg, false);
         }
 
         #endregion Protected methods

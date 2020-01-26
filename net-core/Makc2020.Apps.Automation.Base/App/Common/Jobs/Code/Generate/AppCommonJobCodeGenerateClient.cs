@@ -42,7 +42,7 @@ namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
         /// <param name="info">Информация.</param>
         protected void HandleFileProgress(ModAutomationBaseCommonJobCodeGenerateInfo info)
         {
-            Log($"File {info.Number} from {info.Count}: {info.Path}");
+            Show($"File {info.Number} from {info.Count}: {info.Path}");
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
         /// <param name="info">Информация.</param>
         protected void HandleFolderProgress(ModAutomationBaseCommonJobCodeGenerateInfo info)
         {
-            Log($"Folder {info.Number} from {info.Count}: {info.Path}");
+            Show($"Folder {info.Number} from {info.Count}: {info.Path}");
         }
 
         #endregion Private methods

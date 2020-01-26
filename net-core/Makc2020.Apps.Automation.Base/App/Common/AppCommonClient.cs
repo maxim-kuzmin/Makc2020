@@ -33,11 +33,11 @@ namespace Makc2020.Apps.Automation.Base.App.Common
 
         public void Run()
         {
-            Log($"### {GetType().Name} start ###");
+            Show($"### {GetType().Name} start ###");
 
             DoRun();
 
-            Log($"### {GetType().Name} finish ###");
+            Show($"### {GetType().Name} finish ###");
         }
 
         #endregion Public methods
@@ -50,12 +50,16 @@ namespace Makc2020.Apps.Automation.Base.App.Common
         protected abstract void DoRun();
 
         /// <summary>
-        /// Регистрировать.
+        /// Показать.
         /// </summary>
         /// <param name="msg">Сообщение.</param>
-        protected void Log(string msg)
+        /// <param name="isLoggingNeeded">Признак необходимости логирования. По-умолчанию: true.</param>
+        protected void Show(string msg, bool isLoggingNeeded = true)
         {
-            Logger.LogDebug(msg);
+            if (isLoggingNeeded)
+            {
+                Logger.LogDebug(msg);
+            }
 
             Console.WriteLine();
             Console.WriteLine(msg);
