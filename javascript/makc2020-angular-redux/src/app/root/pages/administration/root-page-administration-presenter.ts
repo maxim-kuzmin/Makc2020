@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppRootPageAdministrationModel} from './root-page-administration-model';
 import {AppRootPageAdministrationResources} from './root-page-administration-resources';
 import {AppRootPageAdministrationState} from './root-page-administration-state';
 import {AppRootPageAdministrationView} from './root-page-administration-view';
 
 /** Корень. Страницы. Администрирование. Представитель. */
-export class AppRootPageAdministrationPresenter {
+export class AppRootPageAdministrationPresenter extends AppCoreCommonPagePresenter<AppRootPageAdministrationModel> {
 
   /**
    * Ресурсы.
@@ -22,29 +23,26 @@ export class AppRootPageAdministrationPresenter {
    * @param {AppRootPageAdministrationView} view Вид.
    */
   constructor(
-    private model: AppRootPageAdministrationModel,
+    model: AppRootPageAdministrationModel,
     private view: AppRootPageAdministrationView
   ) {
+    super(model);
+
     this.onGetState = this.onGetState.bind(this);
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
-
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModDummyMainPageIndex = this.model.createRouterLinkToModDummyMainPageIndex();
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /** @param {AppRootPageAdministrationState} state */

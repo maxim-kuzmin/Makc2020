@@ -2,18 +2,19 @@
 
 import {isDevMode} from '@angular/core';
 import {Validators} from '@angular/forms';
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
-import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
 import {AppHostPartAuthEnumActions} from '@app/host/parts/auth/enums/host-part-auth-enum-actions';
+import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
 import {AppModAuthPageLogonEnumActions} from './enums/mod-auth-page-logon-enum-actions';
-import {AppModAuthPageLogonView} from './mod-auth-page-logon-view';
+import {AppModAuthPageLogonModel} from './mod-auth-page-logon-model';
 import {AppModAuthPageLogonResources} from './mod-auth-page-logon-resources';
 import {AppModAuthPageLogonState} from './mod-auth-page-logon-state';
-import {AppModAuthPageLogonModel} from './mod-auth-page-logon-model';
+import {AppModAuthPageLogonView} from './mod-auth-page-logon-view';
 
 /** Мод "Auth". Страницы. Вход в систему. Представитель. */
-export class AppModAuthPageLogonPresenter {
+export class AppModAuthPageLogonPresenter extends AppCoreCommonPagePresenter<AppModAuthPageLogonModel> {
 
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangedAsync: AppCoreExecutableAsync;
@@ -35,9 +36,11 @@ export class AppModAuthPageLogonPresenter {
    * @param {AppModAuthPageLogonView} view Вид.
    */
   constructor(
-    private model: AppModAuthPageLogonModel,
+    model: AppModAuthPageLogonModel,
     private view: AppModAuthPageLogonView
   ) {
+    super(model);
+
     this.onActionsDataChanged = this.onActionsDataChanged.bind(this);
     this.onActionsDataChangedAsync = new AppCoreExecutableAsync(this.onActionsDataChanged);
 
@@ -50,24 +53,25 @@ export class AppModAuthPageLogonPresenter {
     this.buildView();
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.view.initRefreshSpinner();
 
     this.model.getAuthState$().subscribe(this.onGetAuthState);
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
+  /**
+   * @inheritDoc
+   * @param {string} errorMessage Сообщение об ошибке.
+   * @param {any} errorData Данные ошибки.
+   */
+  protected onError(errorMessage: string, errorData: any) {
+    this.view.hideRefreshSpinner();
 
-  /** Обработчик события инициализации. */
-  onInit() {
-    this.model.onInit();
+    super.onError(errorMessage, errorData);
   }
 
   /** Обработчик события отправки. */

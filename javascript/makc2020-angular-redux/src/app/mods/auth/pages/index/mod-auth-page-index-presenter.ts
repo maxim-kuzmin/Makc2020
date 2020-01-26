@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppModAuthPageIndexModel} from './mod-auth-page-index-model';
 import {AppModAuthPageIndexResources} from './mod-auth-page-index-resources';
 import {AppModAuthPageIndexState} from './mod-auth-page-index-state';
 import {AppModAuthPageIndexView} from './mod-auth-page-index-view';
 
 /** Мод "Auth". Страницы. Начало. Представитель. */
-export class AppModAuthPageIndexPresenter {
+export class AppModAuthPageIndexPresenter extends AppCoreCommonPagePresenter<AppModAuthPageIndexModel> {
 
   /**
    * Ресурсы.
@@ -22,30 +23,27 @@ export class AppModAuthPageIndexPresenter {
    * @param {AppModAuthPageIndexView} view Вид.
    */
   constructor(
-    private model: AppModAuthPageIndexModel,
+    model: AppModAuthPageIndexModel,
     private view: AppModAuthPageIndexView
   ) {
+    super(model);
+
     this.onGetState = this.onGetState.bind(this);
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
-
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModAuthPageLogon = this.model.createRouterLinkToPageLogon();
     this.view.routerLinkToModAuthPageRegister = this.model.createRouterLinkToPageRegister();
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /** @param {AppModAuthPageIndexState} state */

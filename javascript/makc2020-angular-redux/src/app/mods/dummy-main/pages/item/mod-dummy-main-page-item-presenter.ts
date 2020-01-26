@@ -2,6 +2,7 @@
 
 import {Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {appDataObjectDummyMainCreate} from '@app/data/objects/data-object-dummy-main';
 import {
@@ -9,13 +10,13 @@ import {
   appModDummyMainJobItemGetOutputCreate
 } from '../../jobs/item/get/mod-dummy-main-job-item-get-output';
 import {AppModDummyMainPageItemEnumActions} from './enums/mod-dummy-main-page-item-enum-actions';
-import {AppModDummyMainPageItemView} from './mod-dummy-main-page-item-view';
+import {AppModDummyMainPageItemModel} from './mod-dummy-main-page-item-model';
 import {AppModDummyMainPageItemResources} from './mod-dummy-main-page-item-resources';
 import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
-import {AppModDummyMainPageItemModel} from './mod-dummy-main-page-item-model';
+import {AppModDummyMainPageItemView} from './mod-dummy-main-page-item-view';
 
 /** Мод "DummyMain". Страницы. Элемент. Представитель. */
-export class AppModDummyMainPageItemPresenter {
+export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageItemModel> {
 
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangedAsync: AppCoreExecutableAsync;
@@ -37,9 +38,11 @@ export class AppModDummyMainPageItemPresenter {
    * @param {AppModDummyMainPageItemView} view Вид.
    */
   constructor(
-    private model: AppModDummyMainPageItemModel,
+    model: AppModDummyMainPageItemModel,
     private view: AppModDummyMainPageItemView
   ) {
+    super(model);
+
     this.onActionsDataChanged = this.onActionsDataChanged.bind(this);
     this.onActionsDataChangedAsync = new AppCoreExecutableAsync(this.onActionsDataChanged);
 
@@ -69,26 +72,32 @@ export class AppModDummyMainPageItemPresenter {
     return this.view.formGroup.dirty ? appDialog.confirm$(actionDeactivate.confirm) : of(true);
   }
 
-  /** Обработчик события после инициализации вида. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.view.initLoadingSpinner(this.onDataLoaded);
     this.view.initRefreshSpinner();
 
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
+  /**
+   * @inheritDoc
+   * @param {string} errorMessage Сообщение об ошибке.
+   * @param {any} errorData Данные ошибки.
+   */
+  protected onError(errorMessage: string, errorData: any) {
+    this.hideSpinners();
+
+    super.onError(errorMessage, errorData);
   }
 
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.model.getIsDataChangeAllowed$().subscribe(this.onGetIsDataChangeAllowed);
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /** Обработчик события отправки. */
@@ -149,6 +158,18 @@ export class AppModDummyMainPageItemPresenter {
     });
 
     this.view.build(formGroup);
+  }
+
+  private hideSpinners() {
+    const {
+      isDataLoaded
+    } = this.view;
+
+    if (isDataLoaded) {
+      this.view.hideRefreshSpinner();
+    } else {
+      this.view.hideLoadingSpinner();
+    }
   }
 
   /** @param {AppModDummyMainJobItemGetOutput} data */
@@ -268,9 +289,6 @@ export class AppModDummyMainPageItemPresenter {
       action
     } = this.model.getState();
 
-    const {
-      isDataLoaded
-    } = this.view;
 
     switch (action) {
       case AppModDummyMainPageItemEnumActions.LoadSuccess:
@@ -281,11 +299,7 @@ export class AppModDummyMainPageItemPresenter {
         break;
     }
 
-    if (isDataLoaded) {
-      this.view.hideRefreshSpinner();
-    } else {
-      this.view.hideLoadingSpinner();
-    }
+    this.hideSpinners();
   }
 
   private onDataChangedByLoadSuccess() {

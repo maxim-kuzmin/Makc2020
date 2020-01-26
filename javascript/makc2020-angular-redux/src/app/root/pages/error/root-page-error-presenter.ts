@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppRootPageErrorModel} from './root-page-error-model';
 import {AppRootPageErrorResources} from './root-page-error-resources';
 import {AppRootPageErrorState} from './root-page-error-state';
 import {AppRootPageErrorView} from './root-page-error-view';
 
 /** Корень. Страницы. Ошибка. Представитель. */
-export class AppRootPageErrorPresenter {
+export class AppRootPageErrorPresenter extends AppCoreCommonPagePresenter<AppRootPageErrorModel> {
 
   /**
    * Ресурсы.
@@ -22,27 +23,19 @@ export class AppRootPageErrorPresenter {
    * @param {AppRootPageErrorView} view Вид.
    */
   constructor(
-    private model: AppRootPageErrorModel,
+    model: AppRootPageErrorModel,
     private view: AppRootPageErrorView
   ) {
+    super(model);
+
     this.onGetState = this.onGetState.bind(this);
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
-  }
-
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
-
-  /** Обработчик события инициализации. */
-  onInit() {
-    this.model.onInit();
+    super.onAfterViewInit();
   }
 
   /** @param {AppRootPageErrorState} state */

@@ -1,16 +1,17 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {AppModDummyMainJobListGetOutput} from '../../jobs/list/get/mod-dummy-main-job-list-get-output';
-import {AppModDummyMainPageListEnumActions} from './enums/mod-dummy-main-page-list-enum-actions';
-import {AppModDummyMainPageListView} from './mod-dummy-main-page-list-view';
-import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
-import {AppModDummyMainPageListResources} from './mod-dummy-main-page-list-resources';
 import {AppModDummyMainPageListDataItem} from './data/mod-dummy-main-page-list-data-item';
+import {AppModDummyMainPageListEnumActions} from './enums/mod-dummy-main-page-list-enum-actions';
 import {AppModDummyMainPageListModel} from './mod-dummy-main-page-list-model';
+import {AppModDummyMainPageListResources} from './mod-dummy-main-page-list-resources';
+import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
+import {AppModDummyMainPageListView} from './mod-dummy-main-page-list-view';
 
 /** Мод "DummyMain". Страницы. Список. Представитель. */
-export class AppModDummyMainPageListPresenter {
+export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageListModel> {
 
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangedAsync: AppCoreExecutableAsync;
@@ -32,9 +33,11 @@ export class AppModDummyMainPageListPresenter {
    * @param {AppModDummyMainPageListView} view Вид.
    */
   constructor(
-    private model: AppModDummyMainPageListModel,
+    model: AppModDummyMainPageListModel,
     private view: AppModDummyMainPageListView
   ) {
+    super(model);
+
     this.onActionsDataChanged = this.onActionsDataChanged.bind(this);
     this.onActionsDataChangedAsync = new AppCoreExecutableAsync(this.onActionsDataChanged);
 
@@ -51,7 +54,7 @@ export class AppModDummyMainPageListPresenter {
     this.onSortOrPageChange = this.onSortOrPageChange.bind(this);
   }
 
-  /** Обработчик события после инициализации вида. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.view.subscribeOnRowSelect(this.onRowSelect);
     this.view.subscribeOnSortChange(this.onSortChange);
@@ -63,20 +66,26 @@ export class AppModDummyMainPageListPresenter {
     this.model.getState$().subscribe(this.onGetState);
     this.model.subscribeToEventDelayedDistinct(this.view.fieldName.valueChanges, this.onFilterChange);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
+  /**
+   * @inheritDoc
+   * @param {string} errorMessage Сообщение об ошибке.
+   * @param {any} errorData Данные ошибки.
+   */
+  protected onError(errorMessage: string, errorData: any) {
+    this.hideSpinners();
+
+    super.onError(errorMessage, errorData);
   }
 
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.model.getIsDataRefreshed$().subscribe(this.onGetIsDataRefreshed);
     this.model.getIsItemDeleteStarted$().subscribe(this.onGetIsItemDeleteStarted);
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /**
@@ -116,6 +125,18 @@ export class AppModDummyMainPageListPresenter {
     this.view.setSelectedItemId(id);
 
     this.model.executeActionItemView(id);
+  }
+
+  private hideSpinners() {
+    const {
+      isDataLoaded
+    } = this.view;
+
+    if (isDataLoaded) {
+      this.view.hideRefreshSpinner();
+    } else {
+      this.view.hideLoadingSpinner();
+    }
   }
 
   /** @param {AppModDummyMainJobListGetOutput} data */
@@ -177,10 +198,6 @@ export class AppModDummyMainPageListPresenter {
       action
     } = this.model.getState();
 
-    const {
-      isDataLoaded
-    } = this.view;
-
     let isCompleted = false;
 
     switch (action) {
@@ -195,11 +212,7 @@ export class AppModDummyMainPageListPresenter {
     if (isCompleted) {
       this.view.isItemDeleteStarted = false;
 
-      if (isDataLoaded) {
-        this.view.hideRefreshSpinner();
-      } else {
-        this.view.hideLoadingSpinner();
-      }
+      this.hideSpinners();
     }
   }
 

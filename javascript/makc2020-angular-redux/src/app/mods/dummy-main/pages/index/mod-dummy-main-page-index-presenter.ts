@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppModDummyMainPageIndexModel} from './mod-dummy-main-page-index-model';
 import {AppModDummyMainPageIndexResources} from './mod-dummy-main-page-index-resources';
 import {AppModDummyMainPageIndexState} from './mod-dummy-main-page-index-state';
 import {AppModDummyMainPageIndexView} from './mod-dummy-main-page-index-view';
 
 /** Мод "DummyMain". Страницы. Начало. Представитель. */
-export class AppModDummyMainPageIndexPresenter {
+export class AppModDummyMainPageIndexPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageIndexModel> {
 
   /**
    * Ресурсы.
@@ -23,32 +23,29 @@ export class AppModDummyMainPageIndexPresenter {
    * @param {AppModDummyMainPageIndexView} view Вид.
    */
   constructor(
-    private model: AppModDummyMainPageIndexModel,
+    model: AppModDummyMainPageIndexModel,
     private view: AppModDummyMainPageIndexView
   ) {
+    super(model);
+
     this.onGetState = this.onGetState.bind(this);
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
-
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModDummyMainPageItemCreate = this.model.createRouterLinkToPageItemCreate();
     this.view.routerLinkToModDummyMainPageItemEdit = this.model.createRouterLinkToPageItemEdit();
     this.view.routerLinkToModDummyMainPageItemView = this.model.createRouterLinkToPageItemView();
     this.view.routerLinkToModDummyMainPageList = this.model.createRouterLinkToPageList();
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /** @param {AppModDummyMainPageIndexState} state */

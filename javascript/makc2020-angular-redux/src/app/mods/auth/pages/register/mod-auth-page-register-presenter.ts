@@ -1,16 +1,17 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Validators} from '@angular/forms';
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
 import {AppModAuthPageRegisterEnumActions} from './enums/mod-auth-page-register-enum-actions';
-import {AppModAuthPageRegisterView} from './mod-auth-page-register-view';
+import {AppModAuthPageRegisterModel} from './mod-auth-page-register-model';
 import {AppModAuthPageRegisterResources} from './mod-auth-page-register-resources';
 import {AppModAuthPageRegisterState} from './mod-auth-page-register-state';
-import {AppModAuthPageRegisterModel} from './mod-auth-page-register-model';
+import {AppModAuthPageRegisterView} from './mod-auth-page-register-view';
 
 /** Мод "Auth". Страницы. Регистрация. Представитель. */
-export class AppModAuthPageRegisterPresenter {
+export class AppModAuthPageRegisterPresenter extends AppCoreCommonPagePresenter<AppModAuthPageRegisterModel> {
 
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangedAsync: AppCoreExecutableAsync;
@@ -32,9 +33,11 @@ export class AppModAuthPageRegisterPresenter {
    * @param {AppModAuthPageRegisterView} view Вид.
    */
   constructor(
-    private model: AppModAuthPageRegisterModel,
+    model: AppModAuthPageRegisterModel,
     private view: AppModAuthPageRegisterView
   ) {
+    super(model);
+
     this.onActionsDataChanged = this.onActionsDataChanged.bind(this);
     this.onActionsDataChangedAsync = new AppCoreExecutableAsync(this.onActionsDataChanged);
 
@@ -46,23 +49,24 @@ export class AppModAuthPageRegisterPresenter {
     this.buildView();
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.view.initRefreshSpinner();
 
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
+  /**
+   * @inheritDoc
+   * @param {string} errorMessage Сообщение об ошибке.
+   * @param {any} errorData Данные ошибки.
+   */
+  protected onError(errorMessage: string, errorData: any) {
+    this.view.hideRefreshSpinner();
 
-  /** Обработчик события инициализации. */
-  onInit() {
-    this.model.onInit();
+    super.onError(errorMessage, errorData);
   }
 
   /** Обработчик события отправки. */

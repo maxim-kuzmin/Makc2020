@@ -1,12 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
+import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
+import {AppModAuthPageRedirectEnumActions} from '@app/mods/auth/pages/redirect/enums/mod-auth-page-redirect-enum-actions';
 import {AppModAuthPageRedirectModel} from './mod-auth-page-redirect-model';
 import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resources';
 import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
 import {AppModAuthPageRedirectView} from './mod-auth-page-redirect-view';
-import {AppModAuthPageRedirectEnumActions} from '@app/mods/auth/pages/redirect/enums/mod-auth-page-redirect-enum-actions';
-import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
-import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 
 /** Мод "Auth". Страницы. Перенаправление. Представитель. */
 export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<AppModAuthPageRedirectModel> {
@@ -34,9 +34,7 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
     model: AppModAuthPageRedirectModel,
     private view: AppModAuthPageRedirectView
   ) {
-    super(
-      model
-    );
+    super(model);
 
     this.onActionsDataChanged = this.onActionsDataChanged.bind(this);
     this.onActionsDataChangedAsync = new AppCoreExecutableAsync(this.onActionsDataChanged);

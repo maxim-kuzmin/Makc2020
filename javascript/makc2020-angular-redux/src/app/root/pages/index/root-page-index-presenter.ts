@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppRootPageIndexModel} from './root-page-index-model';
 import {AppRootPageIndexResources} from './root-page-index-resources';
 import {AppRootPageIndexState} from './root-page-index-state';
 import {AppRootPageIndexView} from './root-page-index-view';
 
 /** Корень. Страницы. Начало. Представитель. */
-export class AppRootPageIndexPresenter {
+export class AppRootPageIndexPresenter extends AppCoreCommonPagePresenter<AppRootPageIndexModel> {
 
   /**
    * Ресурсы.
@@ -22,30 +23,27 @@ export class AppRootPageIndexPresenter {
    * @param {AppRootPageIndexView} view Вид.
    */
   constructor(
-    private model: AppRootPageIndexModel,
+    model: AppRootPageIndexModel,
     private view: AppRootPageIndexView
   ) {
+    super(model);
+
     this.onGetState = this.onGetState.bind(this);
   }
 
-  /** Обработчик события после инициализации представления. */
+  /** @inheritDoc */
   onAfterViewInit() {
     this.model.getState$().subscribe(this.onGetState);
 
-    this.model.onAfterViewInit();
+    super.onAfterViewInit();
   }
 
-  /** Обработчик события уничтожения. */
-  onDestroy() {
-    this.model.onDestroy();
-  }
-
-  /** Обработчик события инициализации. */
+  /** @inheritDoc */
   onInit() {
     this.view.routerLinkToRootPageAdministration = this.model.createRouterLinkToRootPageAdministration();
     this.view.routerLinkToRootPageSite = this.model.createRouterLinkToRootPageSite();
 
-    this.model.onInit();
+    super.onInit();
   }
 
   /** @param {AppRootPageIndexState} state */
