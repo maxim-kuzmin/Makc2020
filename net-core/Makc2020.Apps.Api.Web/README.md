@@ -8,14 +8,11 @@
 
 1. Открыть файл **Makc2020.Apps.Api.Web/ConfigFiles/App.config.json**.
 
-2. В разделе **ConnectionStrings:DbContext** указать строку подключения к базе данных.
+2. В разделе **Logging:LogLevel:Default** указать уровень логирования по-умолчанию.
 
 **Пример:**
 
-    {
-      "ConnectionStrings": {
-        "DbContext": "Data Source=.\\SQLEXPRESS;Initial Catalog=Makc2020;Integrated Security=True"
-      },
+    {  
       "Logging": {
         "IncludeScopes": false,
         "LogLevel": {
