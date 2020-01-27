@@ -58,7 +58,7 @@ namespace Makc2020.Host.Base.Parts.Ldap
 
                     cn.Connect(host, ConfigSettings.Port);
 
-                    cn.Bind(LdapConnection.Ldap_V3, userName, input.Password);
+                    cn.Bind(LdapConnection.LdapV3, userName, input.Password);
 
                     if (cn.Bound)
                     {
@@ -70,7 +70,7 @@ namespace Makc2020.Host.Base.Parts.Ldap
                 }
                 catch (LdapException ex)
                 {
-                    if (ex.ResultCode != LdapException.CONNECT_ERROR)
+                    if (ex.ResultCode != LdapException.ConnectError)
                     {
                         throw;
                     }
