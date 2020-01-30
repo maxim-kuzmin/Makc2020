@@ -17,7 +17,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
         /// <summary>
         /// Действие "Login".
         /// </summary>
-        public const string ACTION_Login = "submit";
+        public const string ACTION_Login = "LoginPost";
 
         #endregion Constants
     }
