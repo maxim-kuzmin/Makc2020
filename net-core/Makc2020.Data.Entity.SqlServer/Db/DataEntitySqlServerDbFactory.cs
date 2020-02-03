@@ -14,12 +14,6 @@ namespace Makc2020.Data.Entity.SqlServer.Db
     /// </summary>
     public class DataEntitySqlServerDbFactory : DataEntityDbFactory
     {
-        #region Properties
-
-        private CoreBaseEnvironment Environment { get; set; }
-
-        #endregion Properties
-
         #region Constructors
 
         /// <inheritdoc/>
@@ -34,7 +28,7 @@ namespace Makc2020.Data.Entity.SqlServer.Db
             DataBaseSettings dataBaseSettings,
             CoreBaseEnvironment environment
             )
-            : base(connectionString, dataBaseSettings)
+            : base(connectionString, dataBaseSettings, environment)
         {
             Environment = environment;
         }

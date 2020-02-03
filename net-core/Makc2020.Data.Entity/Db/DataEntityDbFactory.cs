@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base;
 using Makc2020.Data.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -17,7 +18,15 @@ namespace Makc2020.Data.Entity.Db
 
         private DataBaseSettings DataBaseSettings { get; set; }
 
+        /// <summary>
+        /// Строка подключения.
+        /// </summary>
         protected string ConnectionString { get; private set; }
+
+        /// <summary>
+        /// Окружение.
+        /// </summary>
+        protected CoreBaseEnvironment Environment { get; set; }
 
         #endregion Properties
 
@@ -28,7 +37,12 @@ namespace Makc2020.Data.Entity.Db
         /// </summary>
         public DataEntityDbFactory()
         {
-            Initialize(CreateConnectionString(), DataBaseSettings.Instance);
+            var environment = new CoreBaseEnvironment
+            {
+                BasePath = System.AppContext.BaseDirectory
+            };
+
+            Initialize(CreateConnectionString(), DataBaseSettings.Instance, environment);
         }
 
         /// <summary>
@@ -36,9 +50,14 @@ namespace Makc2020.Data.Entity.Db
         /// </summary>
         /// <param name="connectionString">Строка подключения.</param>
         /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
-        public DataEntityDbFactory(string connectionString, DataBaseSettings dataBaseSettings)
+        /// <param name="environment">Окружение.</param>
+        public DataEntityDbFactory(
+            string connectionString,
+            DataBaseSettings dataBaseSettings,
+            CoreBaseEnvironment environment
+            )
         {
-            Initialize(connectionString, dataBaseSettings);
+            Initialize(connectionString, dataBaseSettings, environment);
         }
 
         #endregion Constructors
@@ -84,11 +103,16 @@ namespace Makc2020.Data.Entity.Db
 
         #region Private methods
 
-        private void Initialize(string connectionString, DataBaseSettings dataBaseSettings)
+        private void Initialize(
+            string connectionString,
+            DataBaseSettings dataBaseSettings,
+            CoreBaseEnvironment environment
+            )
         {
             ConnectionString = connectionString;
             DataBaseSettings = dataBaseSettings;
-            Options = CreateDbContextOptions();            
+            Environment = environment;
+            Options = CreateDbContextOptions();
         }
 
         private DbContextOptions<DataEntityDbContext> CreateDbContextOptions()
