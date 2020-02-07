@@ -29,13 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigFiles\App.config.m.mkuzmin2.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="ConfigFiles\App.config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFiles\App.config.m.MAKC2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ConfigFiles\nlog.config">
