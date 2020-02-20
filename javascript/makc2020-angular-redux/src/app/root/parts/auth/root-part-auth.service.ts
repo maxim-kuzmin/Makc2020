@@ -149,24 +149,24 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
   /**
    * @inheritDoc
    * @param {AppCoreLoggingService} logger
-   * @param {string} url
+   * @param {string} returnUrl
    * @returns {boolean}
    */
   tryLoginAndReturn$(
     logger: AppCoreLoggingService,
-    url: string
+    returnUrl: string
   ): Observable<boolean> {
     return this.refreshAccount$(logger).pipe(
       take(1),
       () => {
-        this.appAuthStore.runActionRedirectUrlSet(url);
+        this.appAuthStore.runActionReturnUrlSet(returnUrl);
 
         const {
           isLoggedIn
         } = this.appAuthStore.getState();
 
         if (!isLoggedIn) {
-          this.tryLogin(logger);
+          this.tryLogin(logger, returnUrl);
         }
 
         return of(isLoggedIn);

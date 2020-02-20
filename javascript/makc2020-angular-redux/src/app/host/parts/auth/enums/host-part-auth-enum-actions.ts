@@ -28,8 +28,8 @@ export enum AppHostPartAuthEnumActions {
   Init = '[AppHostAuth] Init',
 
   /**
-   * URL для перенаправления просле входа в систему. Установка.
+   * URL возврата. Установка.
    * @type {string}
    */
-  RedirectUrlSet = '[AppHostAuth] RedirectUrlSet'
+  ReturnUrlSet = '[AppHostPartAuth] ReturnUrlSet'
 }

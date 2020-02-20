@@ -27,8 +27,8 @@ export class AppModAuthPageRedirectState extends AppCoreCommonState<AppModAuthPa
   jobCurrentUserGetResult: AppCoreExecutionResult;
 
   /**
-   * URL для перенаправления после входа в систему.
+   * URL возврата.
    * @param {string}
    */
-  redirectUrl: string;
+  returnUrl: string;
 }

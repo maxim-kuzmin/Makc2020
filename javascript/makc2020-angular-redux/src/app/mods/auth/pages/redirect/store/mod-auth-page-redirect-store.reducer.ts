@@ -24,7 +24,7 @@ export function appModAuthPageRedirectStoreReducer(
         currentUser: action.currentUser,
         isLoggedIn: action.isLoggedIn,
         jobCurrentUserGetResult: action.jobCurrentUserGetResult,
-        redirectUrl: action.redirectUrl
+        returnUrl: action.returnUrl
       };
     default:
       return state;

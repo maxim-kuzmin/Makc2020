@@ -14,7 +14,10 @@ import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppHostPartAuthUser} from '@app/host/parts/auth/host-part-auth-user';
 // tslint:disable-next-line:max-line-length
-import {AppHostPartAuthJobCurrentUserGetResult, appHostAuthJobCurrentUserGetResultCreate} from './host-part-auth-job-current-user-get-result';
+import {
+  appHostAuthJobCurrentUserGetResultCreate,
+  AppHostPartAuthJobCurrentUserGetResult
+} from './host-part-auth-job-current-user-get-result';
 
 /** Хост. Часть "Auth". Задания. Текущий пользователь. Получение. Сервис. */
 @Injectable({

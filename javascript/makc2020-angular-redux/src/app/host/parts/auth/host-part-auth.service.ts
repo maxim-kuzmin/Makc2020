@@ -17,6 +17,7 @@ import {AppHostPartAuthCommonJobRegisterInput} from './common/jobs/register/host
 import {AppHostPartAuthCommonJobRegisterResult} from './common/jobs/register/host-part-auth-common-job-register-result';
 import {AppHostPartAuthStore} from './host-part-auth-store';
 import {AppCoreSettings} from '@app/core/core-settings';
+import {AppCoreAuthTypeOidcJobLoginInput} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login-input';
 
 /** Хост. Часть "Auth". Сервис. */
 export abstract class AppHostPartAuthService {
@@ -97,12 +98,12 @@ export abstract class AppHostPartAuthService {
   /**
    * Попробовать войти в систему и вернуться.
    * @param {AppCoreLoggingService} logger Регистратор.
-   * @param url URL страницы, на которую нужно вернуться после удачной попытки входа.
+   * @param returnUrl URL возврата.
    * @returns {boolean} Признак успешного входа.
    */
   abstract tryLoginAndReturn$(
     logger: AppCoreLoggingService,
-    url: string
+    returnUrl: string
   ): Observable<boolean>;
 
   /**
@@ -132,9 +133,11 @@ export abstract class AppHostPartAuthService {
   /**
    * Попробовать войти в систему.
    * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {string} returnUrl URL возврата.
    */
   protected tryLogin(
-    logger: AppCoreLoggingService
+    logger: AppCoreLoggingService,
+    returnUrl: string
   ) {
     const {
       authType
@@ -151,8 +154,11 @@ export abstract class AppHostPartAuthService {
         }
       }
         break;
-      case AppCoreAuthEnumTypes.Oidc:
-        this.appAuthTypeOidcJobLogin.execute(logger);
+      case AppCoreAuthEnumTypes.Oidc: {
+        const input = new AppCoreAuthTypeOidcJobLoginInput(returnUrl);
+
+        this.appAuthTypeOidcJobLogin.execute(logger, input);
+      }
         break;
     }
   }

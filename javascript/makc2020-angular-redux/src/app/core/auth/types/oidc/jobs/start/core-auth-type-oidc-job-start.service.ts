@@ -43,10 +43,10 @@ export class AppCoreAuthTypeOidcJobStartService {
 
     return from(this.appAuthTypeOidc.start(input.redirectUrl)).pipe(
       take(1),
-      map(isOk => {
+      map(isLoggedIn => {
         const result = appCoreExecutionResultCreate();
 
-        result.isOk = isOk;
+        result.isOk = true;
 
         return result;
       }),

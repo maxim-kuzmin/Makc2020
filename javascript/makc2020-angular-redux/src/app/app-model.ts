@@ -97,7 +97,7 @@ export class AppModel extends AppCoreCommonTitlable {
 
   /** Обработчик события инициализации. */
   onInit() {
-    this.appAuthStore.runActionRedirectUrlSet(this.appRootPageIndex.settings.path);
+    this.appAuthStore.runActionReturnUrlSet(this.appRootPageIndex.settings.path);
 
     if (this.appAuthTypeOidc.isEnabled) {
       const input = new AppCoreAuthTypeOidcJobStartInput(

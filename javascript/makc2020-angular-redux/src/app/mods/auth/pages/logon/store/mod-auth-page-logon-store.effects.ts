@@ -34,14 +34,14 @@ export class AppModAuthPageLogonStoreEffects {
               const {
                 currentUser,
                 isLoggedIn,
-                redirectUrl
+                returnUrl
               } = this.appAuthStore.getState();
 
               return new AppModAuthPageLogonStoreActionLoginSuccess(
                 currentUser,
                 isLoggedIn,
                 result,
-                redirectUrl
+                returnUrl
               );
             }
           )

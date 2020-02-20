@@ -31,14 +31,14 @@ export class AppModAuthPageRedirectStoreEffects {
               const {
                 currentUser,
                 isLoggedIn,
-                redirectUrl
+                returnUrl
               } = this.appAuthStore.getState();
 
               return new AppModAuthPageRedirectStoreActionLoadSuccess(
                 currentUser,
                 isLoggedIn,
                 result,
-                redirectUrl
+                returnUrl
               );
             }
           )

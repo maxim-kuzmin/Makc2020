@@ -17,13 +17,13 @@ export class AppModAuthPageRedirectStoreActionLoadSuccess implements Action {
    * @param {boolean} isLoggedIn Признак успешного ввода.
    * @param {AppCoreExecutionResult} jobCurrentUserGetResult
    * Результат выполнения задания на получение текущего пользователя.
-   * @param {string} redirectUrl URL для перенаправления после ввода.
+   * @param {string} returnUrl URL возврата.
    */
   constructor(
     public currentUser: AppHostPartAuthUser,
     public isLoggedIn: boolean,
     public jobCurrentUserGetResult: AppCoreExecutionResult,
-    public redirectUrl: string
+    public returnUrl: string
   ) {
   }
 }

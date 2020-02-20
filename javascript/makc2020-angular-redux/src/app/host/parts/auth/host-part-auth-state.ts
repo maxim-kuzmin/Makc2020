@@ -26,14 +26,14 @@ export class AppHostPartAuthState extends AppCoreCommonState<AppHostPartAuthEnum
   logonUrl: string;
 
   /**
-   * URL для перенаправления просле входа в систему.
-   * @type {string}
-   */
-  redirectUrl: string;
-
-  /**
    * URL регистрации.
    * @type {string}
    */
   registerUrl: string;
+
+  /**
+   * URL возврата.
+   * @type {string}
+   */
+  returnUrl: string;
 }

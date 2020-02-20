@@ -59,8 +59,8 @@ export class AppHostPartAuthStore {
       currentUser: undefined,
       isLoggedIn: undefined,
       logonUrl: undefined,
-      redirectUrl: undefined,
-      registerUrl: undefined
+      registerUrl: undefined,
+      returnUrl: undefined
     });
   }
 
@@ -98,14 +98,14 @@ export class AppHostPartAuthStore {
   }
 
   /**
-   * URL для перенаправления после входа в систему. Установка.
-   * @param {AppHostPartAuthUser} redirectUrl URL для перенаправления после входа в систему.
+   * URL возврата. Установка.
+   * @param {AppHostPartAuthUser} returnUrl URL возврата.
    */
-  runActionRedirectUrlSet(redirectUrl: string) {
+  runActionReturnUrlSet(returnUrl: string) {
     this.setState({
       ...this.state,
-      action: AppHostPartAuthEnumActions.RedirectUrlSet,
-      redirectUrl: redirectUrl
+      action: AppHostPartAuthEnumActions.ReturnUrlSet,
+      returnUrl
     });
   }
 

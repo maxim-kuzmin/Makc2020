@@ -9,11 +9,13 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModAuthPageLogonService} from '@app/mods/auth/pages/logon/mod-auth-page-logon.service';
 import {AppModAuthPageRegisterService} from '@app/mods/auth/pages/register/mod-auth-page-register.service';
+import {AppRootPageIndexService} from '@app/root/pages/index/root-page-index.service';
 import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resources';
 import {AppModAuthPageRedirectService} from './mod-auth-page-redirect.service';
 import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
@@ -32,12 +34,14 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreAuthTypeOidcService} appAuthTypeOidc Аутентификация типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации типа OIDC.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
+   * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageRedirectStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -47,12 +51,14 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
   constructor(
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
+    private appAuthStore: AppHostPartAuthStore,
     private appAuthTypeOidc: AppCoreAuthTypeOidcService,
     private appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
+    private appRootPageIndex: AppRootPageIndexService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageRedirectStore,
     appTitle: AppCoreTitleService,
@@ -99,6 +105,11 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     this.extRouter.navigateByUrl(redirectUrl).catch();
   }
 
+  /** Выполнить действие "Перенаправление на стартовую страницу". */
+  executeActionRedirectToRootPageIndex() {
+    this.executeActionRedirect(this.appRootPageIndex.settings.path);
+  }
+
   /** @inheritDoc */
   onDestroy() {
     super.onDestroy();
@@ -124,6 +135,14 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     this.executeTitleActionItemAdd();
 
     if (this.appAuthTypeOidc.isEnabled) {
+      const {
+        returnUrl
+      } = this.appAuthTypeOidc;
+
+      if (returnUrl) {
+        this.appAuthStore.runActionReturnUrlSet(returnUrl);
+      }
+
       this.appAuthTypeOidcStore.getState$(
         this.unsubscribe$
       ).subscribe(

@@ -20,6 +20,14 @@ export class AppCoreAuthTypeOidcService {
   }
 
   /**
+   * URL возврата.
+   * @type {string}
+   */
+  get returnUrl(): string {
+    return this.extOauthService.state;
+  }
+
+  /**
    * Конструктор.
    * @param {OAuthService} extOauthService Авторизация OAuth 2.0.
    * @param {AppCoreSettings} appSettings Настройки.
@@ -46,9 +54,12 @@ export class AppCoreAuthTypeOidcService {
     return this.extOauthService.loadUserProfile();
   }
 
-  /** Войти в систему. */
-  login() {
-    this.extOauthService.initLoginFlow();
+  /**
+   * Войти в систему.
+   * @param {string} returnUrl URL возврата.
+   */
+  login(returnUrl: string) {
+    this.extOauthService.initLoginFlow(returnUrl);
   }
 
   /** Выйти из системы. */
@@ -61,7 +72,11 @@ export class AppCoreAuthTypeOidcService {
    * @returns {Promise<object>}
    */
   refreshToken(): Promise<object> {
-      return this.extOauthService.refreshToken();
+    this.extOauthService.oidc = true;
+
+    return this.extOauthService.responseType === 'code'
+      ? this.extOauthService.refreshToken()
+      : this.extOauthService.silentRefresh();
   }
 
   /**
@@ -89,6 +104,9 @@ export class AppCoreAuthTypeOidcService {
       // dummyClientSecret: 'secret',
 
       responseType: 'code',
+
+      // URL of the SPA to redirect the user after silent refresh
+      silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
 
       // set the scope for the permissions the client should request
       // The first four are defined by OIDC.

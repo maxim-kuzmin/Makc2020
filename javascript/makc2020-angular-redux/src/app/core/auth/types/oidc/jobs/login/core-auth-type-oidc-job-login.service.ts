@@ -5,6 +5,7 @@ import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method'
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
+import {AppCoreAuthTypeOidcJobLoginInput} from './core-auth-type-oidc-job-login-input';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Вход в систему. Сервис. */
 @Injectable({
@@ -26,16 +27,18 @@ export class AppCoreAuthTypeOidcJobLoginService {
   /**
    * Выполнить.
    * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreAuthTypeOidcJobLoginInput} input Ввод.
    */
   execute(
-    logger: AppCoreLoggingService
+    logger: AppCoreLoggingService,
+    input: AppCoreAuthTypeOidcJobLoginInput
   ) {
     const url = 'AppCoreAuthTypeOidcService.login';
 
     const jobName = this.appExecution.createJobName(appCoreExecutionMethod.get, url);
 
     try {
-      this.appAuthTypeOidc.login();
+      this.appAuthTypeOidc.login(input.returnUrl);
     } catch (error) {
       this.appExecution.onError(
         jobName,

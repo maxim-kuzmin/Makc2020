@@ -61,6 +61,10 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
    * @param {any} errorData Данные ошибки.
    */
   protected onError(errorMessage: string, errorData: any) {
+    if (errorData && errorData.type === 'invalid_nonce_in_state') {
+      this.model.executeActionRedirectToRootPageIndex();
+    }
+
     this.hideSpinners();
 
     super.onError(errorMessage, errorData);
@@ -101,7 +105,7 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
   private onDataChangedByLoadSuccess() {
     const {
       jobCurrentUserGetResult: result,
-      redirectUrl
+      returnUrl
     } = this.model.getState();
 
     if (result) {
@@ -113,8 +117,8 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
       this.view.responseErrorMessages = errorMessages;
       this.view.responseSuccessMessages = successMessages;
 
-      if (redirectUrl) {
-        this.model.executeActionRedirect(redirectUrl);
+      if (returnUrl) {
+        this.model.executeActionRedirect(returnUrl);
       }
     }
   }
