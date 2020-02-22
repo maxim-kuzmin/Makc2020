@@ -95,7 +95,7 @@ export class AppCoreAuthTypeOidcService {
 
       // The SPA's id. The SPA is registered with this id at the auth-server
       // clientId: 'server.code',
-      clientId: 'SrtdbWebClient',
+      clientId: 'Makc2020WebClient',
 
       // Just needed if your auth server demands a secret. In general, this
       // is a sign that the auth server is not configured with SPAs in mind
@@ -112,7 +112,7 @@ export class AppCoreAuthTypeOidcService {
       // The first four are defined by OIDC.
       // Important: Request offline_access to get a refresh token
       // The api scope is a use case specific one
-      scope: 'offline_access openid SrtdbWebApi',
+      scope: 'offline_access openid Makc2020WebApi',
 
       showDebugInformation: true,
 
