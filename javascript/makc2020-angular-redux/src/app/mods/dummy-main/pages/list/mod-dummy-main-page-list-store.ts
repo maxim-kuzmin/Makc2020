@@ -11,7 +11,7 @@ import {AppModDummyMainPageListStoreActionClear} from './store/actions/mod-dummy
 import {AppModDummyMainPageListStoreActionDelete} from './store/actions/mod-dummy-main-page-list-store-action-delete';
 import {AppModDummyMainPageListStoreActionLoad} from './store/actions/mod-dummy-main-page-list-store-action-load';
 import {appModDummyMainPageListStoreSelector} from './store/mod-dummy-main-page-list-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Список. Хранилище состояния. */
 @Injectable()

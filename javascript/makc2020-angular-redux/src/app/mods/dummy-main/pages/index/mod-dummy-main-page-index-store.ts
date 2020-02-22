@@ -7,7 +7,7 @@ import {AppModDummyMainStoreState} from '@app/mods/dummy-main/store/mod-dummy-ma
 import {AppModDummyMainPageIndexState} from './mod-dummy-main-page-index-state';
 import {AppModDummyMainPageIndexStoreActionClear} from './store/actions/mod-dummy-main-page-index-store-action-clear';
 import {appModDummyMainPageIndexStoreSelector} from './store/mod-dummy-main-page-index-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Начало. Хранилище состояния. */
 @Injectable()

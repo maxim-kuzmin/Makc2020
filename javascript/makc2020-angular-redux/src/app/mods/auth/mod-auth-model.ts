@@ -5,7 +5,7 @@ import {AppCoreLocalizationService} from '@app/core/localization/core-localizati
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppModAuthResources} from './mod-auth-resources';
 import {AppModAuthService} from './mod-auth.service';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Модель. */
 @Injectable()

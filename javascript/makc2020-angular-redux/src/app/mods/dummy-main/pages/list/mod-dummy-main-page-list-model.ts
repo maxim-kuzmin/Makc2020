@@ -22,7 +22,7 @@ import {AppModDummyMainPageListService} from './mod-dummy-main-page-list.service
 import {AppModDummyMainPageListSettingColumns} from './settings/mod-dummy-main-page-list-setting-columns';
 import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
 import {AppModDummyMainPageListStore} from './mod-dummy-main-page-list-store';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Список. Модель. */
 @Injectable()

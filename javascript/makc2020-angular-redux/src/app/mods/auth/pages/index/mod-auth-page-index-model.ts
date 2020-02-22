@@ -14,7 +14,7 @@ import {AppModAuthPageIndexResources} from './mod-auth-page-index-resources';
 import {AppModAuthPageIndexService} from './mod-auth-page-index.service';
 import {AppModAuthPageIndexState} from './mod-auth-page-index-state';
 import {AppModAuthPageIndexStore} from './mod-auth-page-index-store';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Начало. Модель. */
 @Injectable()

@@ -8,7 +8,7 @@ import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
 import {AppModAuthPageRedirectStoreActionClear} from './store/actions/mod-auth-page-redirect-store-action-clear';
 import {appModAuthPageRedirectStoreSelector} from './store/mod-auth-page-redirect-store.selectors';
 import {AppModAuthPageRedirectStoreActionLoad} from '@app/mods/auth/pages/redirect/store/actions/mod-auth-page-redirect-store-action-load';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Перенаправление. Хранилище состояния. */
 @Injectable()

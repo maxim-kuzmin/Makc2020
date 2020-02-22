@@ -15,7 +15,7 @@ import {AppRootPageContactsService} from './root-page-contacts.service';
 import {AppRootPageContactsState} from './root-page-contacts-state';
 import {AppRootPageContactsStore} from './root-page-contacts-store';
 import {AppRootPageContactsJobContentLoadInput} from './jobs/content/load/host-layout-footer-job-content-load-input';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Контакты. Модель. */
 @Injectable()

@@ -7,7 +7,7 @@ import {AppRootStoreState} from '@app/root/store/root-store.state';
 import {AppRootPageAdministrationState} from './root-page-administration-state';
 import {AppRootPageAdministrationStoreActionClear} from './store/actions/root-page-administration-store-action-clear';
 import {appRootPageAdministrationStoreSelector} from './store/root-page-administration-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Администрирование. Хранилище состояния. */
 @Injectable()

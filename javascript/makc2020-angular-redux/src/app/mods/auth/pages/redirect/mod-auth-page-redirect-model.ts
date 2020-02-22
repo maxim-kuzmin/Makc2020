@@ -20,7 +20,7 @@ import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resource
 import {AppModAuthPageRedirectService} from './mod-auth-page-redirect.service';
 import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
 import {AppModAuthPageRedirectStore} from './mod-auth-page-redirect-store';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Перенаправление. Модель. */
 @Injectable()

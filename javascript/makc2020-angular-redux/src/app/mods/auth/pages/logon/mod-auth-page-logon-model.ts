@@ -22,7 +22,7 @@ import {AppModAuthPageLogonState} from './mod-auth-page-logon-state';
 import {AppModAuthPageLogonStore} from './mod-auth-page-logon-store';
 import {AppModAuthPageLogonSettingFields} from './settings/mod-auth-page-logon-setting-fields';
 import {AppModAuthPageLogonSettingErrors} from './settings/mod-auth-page-logon-setting-errors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Вход в систему. Модель. */
 @Injectable()

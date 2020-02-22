@@ -9,7 +9,7 @@ import {AppModAuthPageRegisterState} from './mod-auth-page-register-state';
 import {AppModAuthPageRegisterStoreActionClear} from './store/actions/mod-auth-page-register-store-action-clear';
 import {AppModAuthPageRegisterStoreActionSave} from './store/actions/mod-auth-page-register-store-action-save';
 import {appModAuthPageRegisterStoreSelector} from './store/mod-auth-page-register-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Регистрация. Хранилище состояния. */
 @Injectable()

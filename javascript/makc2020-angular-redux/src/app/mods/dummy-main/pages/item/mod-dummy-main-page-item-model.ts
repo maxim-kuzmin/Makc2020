@@ -24,7 +24,7 @@ import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
 import {AppModDummyMainPageItemStore} from './mod-dummy-main-page-item-store';
 import {appModDummyMainPageItemConfigIndex} from './mod-dummy-main-page-item-config';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Элемент. Модель. */
 @Injectable()

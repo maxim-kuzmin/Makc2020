@@ -7,7 +7,7 @@ import {AppRootStoreState} from '@app/root/store/root-store.state';
 import {AppRootPageErrorState} from './root-page-error-state';
 import {AppRootPageErrorStoreActionClear} from './store/actions/root-page-error-store-action-clear';
 import {appRootPageErrorStoreSelector} from './store/root-page-error-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Ошибка. Хранилище состояния. */
 @Injectable()

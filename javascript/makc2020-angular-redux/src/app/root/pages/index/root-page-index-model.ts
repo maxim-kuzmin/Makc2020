@@ -14,7 +14,7 @@ import {AppRootPageIndexResources} from './root-page-index-resources';
 import {AppRootPageIndexService} from './root-page-index.service';
 import {AppRootPageIndexState} from './root-page-index-state';
 import {AppRootPageIndexStore} from './root-page-index-store';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Начало. Модель. */
 @Injectable()

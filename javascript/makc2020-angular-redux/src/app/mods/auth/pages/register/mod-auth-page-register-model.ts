@@ -18,7 +18,7 @@ import {AppModAuthPageRegisterState} from './mod-auth-page-register-state';
 import {AppModAuthPageRegisterStore} from './mod-auth-page-register-store';
 import {AppModAuthPageRegisterSettingErrors} from './settings/mod-auth-page-register-setting-errors';
 import {AppModAuthPageRegisterSettingFields} from './settings/mod-auth-page-register-setting-fields';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Регистрация. Модель. */
 @Injectable()

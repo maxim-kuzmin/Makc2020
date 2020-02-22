@@ -5,7 +5,7 @@ import {AppCoreLocalizationService} from '@app/core/localization/core-localizati
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppModDummyMainResources} from './mod-dummy-main-resources';
 import {AppModDummyMainService} from './mod-dummy-main.service';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Модель. */
 @Injectable()

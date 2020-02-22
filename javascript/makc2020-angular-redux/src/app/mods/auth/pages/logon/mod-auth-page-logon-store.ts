@@ -12,7 +12,7 @@ import {AppModAuthPageLogonStoreActionLoad} from './store/actions/mod-auth-page-
 import {AppModAuthPageLogonStoreActionLogin} from './store/actions/mod-auth-page-logon-store-action-login';
 import {AppModAuthPageLogonStoreActionLogout} from './store/actions/mod-auth-page-logon-store-action-logout';
 import {appModAuthPageLogonStoreSelector} from './store/mod-auth-page-logon-store.selectors';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Вход в систему. Хранилище состояния. */
 @Injectable()
