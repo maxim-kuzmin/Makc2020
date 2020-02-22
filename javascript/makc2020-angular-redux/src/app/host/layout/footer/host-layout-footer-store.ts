@@ -9,8 +9,10 @@ import {AppHostLayoutFooterStoreActionClear} from './store/actions/host-layout-f
 import {AppHostLayoutFooterStoreActionLoad} from './store/actions/host-layout-footer-store-action-load';
 import {appHostLayoutFooterStoreSelector} from './store/host-layout-footer-store.selectors';
 import {AppHostLayoutFooterJobContentLoadInput} from '@app/host/layout/footer/jobs/content/load/host-layout-footer-job-content-load-input';
+import { Injectable } from "@angular/core";
 
 /** Хост. Разметка. Подвал. Хранилище состояния. */
+@Injectable()
 export class AppHostLayoutFooterStore {
 
   /** @type {AppHostLayoutFooterState} */

@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AppCoreCommonDisposable} from '@app/core/common/core-common-disposable';
-import {MessageService} from 'primeng/api';
+import {MessageService} from 'primeng';
 
 /** Ядро. Извещение. Ссылка. */
 export class AppSkinCoreNotificationRef implements AppCoreCommonDisposable {

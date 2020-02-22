@@ -14,8 +14,10 @@ import {AppRootPageSiteResources} from './root-page-site-resources';
 import {AppRootPageSiteService} from './root-page-site.service';
 import {AppRootPageSiteState} from './root-page-site-state';
 import {AppRootPageSiteStore} from './root-page-site-store';
+import { Injectable } from "@angular/core";
 
 /** Корень. Страницы. Сайт. Модель. */
+@Injectable()
 export class AppRootPageSiteModel extends AppCoreCommonPageModel {
 
   /**

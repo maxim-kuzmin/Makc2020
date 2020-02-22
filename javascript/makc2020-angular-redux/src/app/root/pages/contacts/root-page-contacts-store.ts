@@ -9,8 +9,10 @@ import {AppRootPageContactsStoreActionClear} from './store/actions/root-page-con
 import {appRootPageContactsStoreSelector} from './store/root-page-contacts-store.selectors';
 import {AppRootPageContactsJobContentLoadInput} from './jobs/content/load/host-layout-footer-job-content-load-input';
 import {AppRootPageContactsStoreActionLoad} from './store/actions/host-layout-footer-store-action-load';
+import { Injectable } from "@angular/core";
 
 /** Корень. Страницы. Контакты. Хранилище состояния. */
+@Injectable()
 export class AppRootPageContactsStore {
 
   /** @type {AppRootPageContactsState} */

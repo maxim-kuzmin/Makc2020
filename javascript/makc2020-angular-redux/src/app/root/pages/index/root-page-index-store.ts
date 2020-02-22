@@ -7,8 +7,10 @@ import {AppRootStoreState} from '@app/root/store/root-store.state';
 import {AppRootPageIndexState} from './root-page-index-state';
 import {AppRootPageIndexStoreActionClear} from './store/actions/root-page-index-store-action-clear';
 import {appRootPageIndexStoreSelector} from './store/root-page-index-store.selectors';
+import { Injectable } from "@angular/core";
 
 /** Корень. Страницы. Начало. Хранилище состояния. */
+@Injectable()
 export class AppRootPageIndexStore {
 
   /** @type {AppRootPageIndexState} */

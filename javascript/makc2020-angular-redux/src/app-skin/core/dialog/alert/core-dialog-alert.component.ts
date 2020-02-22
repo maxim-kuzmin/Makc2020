@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Component} from '@angular/core';
-import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/api';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreDialogAlertPresenter} from '@app/core/dialog/alert/core-dialog-alert-presenter';
 import {AppSkinCoreDialogAlertView} from './core-dialog-alert-view';

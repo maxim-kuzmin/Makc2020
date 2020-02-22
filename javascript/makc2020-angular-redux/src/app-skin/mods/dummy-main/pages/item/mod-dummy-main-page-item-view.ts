@@ -6,11 +6,9 @@ import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinn
 import {AppModDummyMainPageItemView} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-view';
 import {AppModDummyMainPageItemSettingErrors} from '@app/mods/dummy-main/pages/item/settings/mod-dummy-main-page-item-setting-errors';
 import {AppModDummyMainPageItemSettingFields} from '@app/mods/dummy-main/pages/item/settings/mod-dummy-main-page-item-setting-fields';
-import {SelectItem} from 'primeng/api';
-import {
-  AppModDummyMainCommonJobOptionsGetOutputList,
-  appModDummyMainCommonJobOptionsGetOutputListCreate
-} from '@app/mods/dummy-main/common/jobs/options/get/output/mod-dummy-main-common-job-options-get-output-list';
+import {SelectItem} from 'primeng';
+// tslint:disable-next-line:max-line-length
+import {AppModDummyMainCommonJobOptionsGetOutputList} from '@app/mods/dummy-main/common/jobs/options/get/output/mod-dummy-main-common-job-options-get-output-list';
 
 /** Мод "DummyMain". Страницы. Элемент. Представление. */
 export class AppSkinModDummyMainPageItemView extends AppModDummyMainPageItemView {

@@ -7,8 +7,10 @@ import {AppModAuthStoreState} from '@app/mods/auth/store/mod-auth-store.state';
 import {AppModAuthPageIndexState} from './mod-auth-page-index-state';
 import {AppModAuthPageIndexStoreActionClear} from './store/actions/mod-auth-page-index-store-action-clear';
 import {appModAuthPageIndexStoreSelector} from './store/mod-auth-page-index-store.selectors';
+import { Injectable } from "@angular/core";
 
 /** Мод "Auth". Страницы. Начало. Хранилище состояния. */
+@Injectable()
 export class AppModAuthPageIndexStore {
 
   /** @type {AppModAuthPageIndexState} */

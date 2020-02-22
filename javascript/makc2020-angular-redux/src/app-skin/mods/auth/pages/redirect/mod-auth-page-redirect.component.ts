@@ -25,7 +25,7 @@ import {AppSkinModAuthPageRedirectView} from '@app-skin/mods/auth/pages/redirect
 export class AppSkinModAuthPageRedirectComponent implements AfterViewInit, OnDestroy, OnInit {
 
   /** @type {AppSkinCoreProgressSpinnerComponent} */
-  @ViewChild('ctrlLoading', {static: false}) private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
+  @ViewChild('ctrlLoading') private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
 
   /**
    * Мой представитель.

@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Component, OnDestroy} from '@angular/core';
-import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/api';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreDialogConfirmPresenter} from '@app/core/dialog/confirm/core-dialog-confirm-presenter';
 import {AppSkinCoreDialogConfirmView} from './core-dialog-confirm-view';

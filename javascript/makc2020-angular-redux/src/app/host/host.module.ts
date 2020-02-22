@@ -49,7 +49,7 @@ export class AppHostModule {
    * Получить модуль с провайдерами для корня приложения.
    * @returns {ModuleWithProviders} Модуль с провайдерами.
    */
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AppHostModule> {
     return {
       ngModule: AppHostModule,
       providers: [

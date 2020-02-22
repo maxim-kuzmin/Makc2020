@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {AppCoreCommonDisposable} from '@app/core/common/core-common-disposable';
 import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
-import {Message, MessageService} from 'primeng/api';
+import {Message, MessageService} from 'primeng';
 import {AppCoreNotificationPresenter} from '@app/core/notification/core-notification-presenter';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreNotificationInfoSettings} from '@app/core/notification/info/core-notification-info-settings';

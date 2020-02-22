@@ -13,8 +13,10 @@ import {AppHostPartMenuState} from '@app/host/parts/menu/host-part-menu-state';
 import {AppHostPartMenuStore} from '@app/host/parts/menu/host-part-menu-store';
 import {AppHostLayoutMenuState} from './host-layout-menu-state';
 import {AppHostLayoutMenuStore} from './host-layout-menu-store';
+import { Injectable } from "@angular/core";
 
 /** Хост. Разметка. Меню. Модель. */
+@Injectable()
 export class AppHostLayoutMenuModel extends AppCoreCommonUnsubscribable {
 
   /**

@@ -13,8 +13,10 @@ import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppRootPageIndexService} from '@app/root/pages/index/root-page-index.service';
 import {AppHostLayoutHeaderResources} from './host-layout-header-resources';
 import {AppHostLayoutHeaderSettings} from './host-layout-header-settings';
+import { Injectable } from "@angular/core";
 
 /** Хост. Разметка. Шапка. Модель. */
+@Injectable()
 export class AppHostLayoutHeaderModel extends AppCoreCommonUnsubscribable {
 
   /**

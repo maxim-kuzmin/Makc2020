@@ -1,3 +1,4 @@
 // //Author Maxim Kuzmin//makc//
 
-export { AppServerModule } from './app/app.server.module';
+export { AppServerModule
+export { renderModule, renderModuleFactory } from '@angular/platform-server'; } from './app/app.server.module';

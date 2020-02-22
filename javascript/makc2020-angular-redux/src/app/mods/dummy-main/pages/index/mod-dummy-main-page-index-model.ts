@@ -15,8 +15,10 @@ import {AppModDummyMainPageIndexResources} from './mod-dummy-main-page-index-res
 import {AppModDummyMainPageIndexService} from './mod-dummy-main-page-index.service';
 import {AppModDummyMainPageIndexState} from './mod-dummy-main-page-index-state';
 import {AppModDummyMainPageIndexStore} from './mod-dummy-main-page-index-store';
+import { Injectable } from "@angular/core";
 
 /** Мод "DummyMain". Страницы. Начало. Модель. */
+@Injectable()
 export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
 
   /**

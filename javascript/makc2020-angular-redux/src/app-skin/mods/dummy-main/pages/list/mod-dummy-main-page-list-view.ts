@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import {Paginator} from 'primeng/paginator';
+import {Paginator, Table} from 'primeng';
 import {merge} from 'rxjs';
 import {AppModDummyMainPageListSettings} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-settings';
 import {AppModDummyMainPageListView} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-view';
@@ -9,8 +9,6 @@ import {AppSkinCoreProgressSpinnerComponent} from '@app-skin/core/progress/spinn
 import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinner/core-progress-spinner.directive';
 import {AppModDummyMainPageListDataItem} from '@app/mods/dummy-main/pages/list/data/mod-dummy-main-page-list-data-item';
 import {AppModDummyMainPageListResourceColumns} from '@app/mods/dummy-main/pages/list/resources/mod-dummy-main-page-list-resource-columns';
-import {Table} from 'primeng/table';
-import {AppModDummyMainJobListGetInput} from '@app/mods/dummy-main/jobs/list/get/mod-dummy-main-job-list-get-input';
 import {AppModDummyMainPageListParameters} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-parameters';
 
 /** Мод "DummyMain". Страницы. Список. Вид. */

@@ -7,8 +7,10 @@ import {AppHostLayoutFooterStore} from './host-layout-footer-store';
 import {AppCoreLocalizationStore} from '@app/core/localization/core-localization-store';
 import {AppCoreLocalizationState} from '@app/core/localization/core-localization-state';
 import {AppHostLayoutFooterJobContentLoadInput} from '@app/host/layout/footer/jobs/content/load/host-layout-footer-job-content-load-input';
+import { Injectable } from "@angular/core";
 
 /** Хост. Разметка. Подвал. Модель. */
+@Injectable()
 export class AppHostLayoutFooterModel extends AppCoreCommonUnsubscribable {
 
   /**

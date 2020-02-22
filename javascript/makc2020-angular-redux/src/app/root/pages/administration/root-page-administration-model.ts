@@ -13,8 +13,10 @@ import {AppRootPageAdministrationResources} from './root-page-administration-res
 import {AppRootPageAdministrationService} from './root-page-administration.service';
 import {AppRootPageAdministrationState} from './root-page-administration-state';
 import {AppRootPageAdministrationStore} from './root-page-administration-store';
+import { Injectable } from "@angular/core";
 
 /** Корень. Страницы. Администрирование. Модель. */
+@Injectable()
 export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
 
   /**

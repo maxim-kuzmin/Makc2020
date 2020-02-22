@@ -9,8 +9,10 @@ import {AppHostLayoutMenuState} from './host-layout-menu-state';
 import {AppHostLayoutMenuStoreActionClear} from './store/actions/host-layout-menu-store-action-clear';
 import {AppHostLayoutMenuStoreActionLoad} from './store/actions/host-layout-menu-store-action-load';
 import {appHostLayoutMenuStoreSelector} from './store/host-layout-menu-store.selectors';
+import { Injectable } from "@angular/core";
 
 /** Хост. Разметка. Меню. Хранилище состояния. */
+@Injectable()
 export class AppHostLayoutMenuStore {
 
   /** @type {number} */

@@ -1,8 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Paginator} from 'primeng/paginator';
-import {Table} from 'primeng/table';
+import {Paginator, Table} from 'primeng';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {appCoreLoggingDiTokenLoggerName} from '@app/core/logging/core-logging-di';
 import {AppModDummyMainPageListPresenter} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-presenter';
@@ -26,7 +25,7 @@ import {AppSkinModDummyMainPageListView} from './mod-dummy-main-page-list-view';
 export class AppSkinModDummyMainPageListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   /** @type {AppSkinCoreProgressSpinnerComponent} */
-  @ViewChild('ctrlLoading', {static: false}) private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
+  @ViewChild('ctrlLoading') private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
 
   /** @type {Paginator} */
   @ViewChild('ctrlPaginator', {static: true}) private ctrlPaginator: Paginator;

@@ -27,7 +27,7 @@ import {AppSkinModDummyMainPageItemView} from './mod-dummy-main-page-item-view';
 export class AppSkinModDummyMainPageItemComponent implements AfterViewInit, OnDestroy, OnInit, AppCoreDeactivatingAbility {
 
   /** @type {AppSkinCoreProgressSpinnerComponent} */
-  @ViewChild('ctrlLoading', {static: false}) private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
+  @ViewChild('ctrlLoading') private ctrlLoading: AppSkinCoreProgressSpinnerComponent;
 
   /** @type {AppSkinCoreProgressSpinnerDirective} */
   @ViewChild('ctrlRefresh', {static: true}) private ctrlRefresh: AppSkinCoreProgressSpinnerDirective;

@@ -23,8 +23,10 @@ import {AppResources} from './app-resources';
 import {AppService} from './app.service';
 import {AppCoreAuthTypeOidcJobStartInput} from '@app/core/auth/types/oidc/jobs/start/core-auth-type-oidc-job-start-input';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
+import { Injectable } from "@angular/core";
 
 /** Приложение. Модель. */
+@Injectable()
 export class AppModel extends AppCoreCommonTitlable {
 
   /** @type {Subject<boolean>} */

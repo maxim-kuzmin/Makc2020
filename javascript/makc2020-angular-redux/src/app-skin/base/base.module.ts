@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-
+import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.module';
 import {
   ButtonModule,
   CalendarModule,
@@ -13,6 +13,7 @@ import {
   DialogModule,
   DialogService,
   DropdownModule,
+  DynamicDialogModule,
   FileUploadModule,
   InputSwitchModule,
   InputTextareaModule,
@@ -21,13 +22,11 @@ import {
   MultiSelectModule,
   OverlayPanelModule,
   PaginatorModule,
-  TabViewModule
-} from 'primeng/primeng';
-import {ProgressSpinnerModule} from 'primeng/progressspinner';
-import {TableModule} from 'primeng/table';
-import {ToastModule} from 'primeng/toast';
-import {DynamicDialogModule} from 'primeng/dynamicdialog';
-import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.module';
+  ProgressSpinnerModule,
+  TableModule,
+  TabViewModule,
+  ToastModule
+} from 'primeng';
 
 /** Общее. Модуль. */
 @NgModule({
@@ -40,15 +39,14 @@ import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.mod
 
     // External
 
-    // primeng/dynamicdialog
-    DynamicDialogModule,
-    // primeng/primeng
+    // primeng
     ButtonModule,
     CalendarModule,
     CheckboxModule,
     ColorPickerModule,
     DialogModule,
     DropdownModule,
+    DynamicDialogModule,
     FileUploadModule,
     InputSwitchModule,
     InputTextareaModule,
@@ -56,12 +54,9 @@ import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.mod
     MultiSelectModule,
     OverlayPanelModule,
     PaginatorModule,
-    TabViewModule,
-    // primeng/progressspinner
     ProgressSpinnerModule,
-    // primeng/table
+    TabViewModule,
     TableModule,
-    // primeng/toast
     ToastModule,
 
     // Internal
@@ -112,7 +107,7 @@ export class AppSkinBaseModule {
    * Получить модуль с провайдерами для корня приложения.
    * @returns {ModuleWithProviders} Модуль с провайдерами.
    */
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AppSkinBaseModule> {
     return {
       ngModule: AppSkinBaseModule,
       providers: [

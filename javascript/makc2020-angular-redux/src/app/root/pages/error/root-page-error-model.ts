@@ -12,8 +12,10 @@ import {AppRootPageErrorResources} from './root-page-error-resources';
 import {AppRootPageErrorService} from './root-page-error.service';
 import {AppRootPageErrorState} from './root-page-error-state';
 import {AppRootPageErrorStore} from './root-page-error-store';
+import { Injectable } from "@angular/core";
 
 /** Корень. Страницы. Ошибка. Модель. */
+@Injectable()
 export class AppRootPageErrorModel extends AppCoreCommonPageModel {
 
   /**
