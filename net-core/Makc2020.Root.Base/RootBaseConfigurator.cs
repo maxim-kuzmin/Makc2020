@@ -34,9 +34,15 @@ namespace Makc2020.Root.Base
 
         private Func<DataEntityDbFactory> FuncGetDataEntityDbFactory { get; set; }
 
-        private bool IdentityIsEnabled { get; set; }
+        /// <summary>
+        /// Идентичность. Признак включения.
+        /// </summary>
+        protected bool IdentityIsEnabled { get; private set; }
 
-        private bool LocalizationIsEnabled { get; set; }
+        /// <summary>
+        /// Локализация. Признак включения.
+        /// </summary>
+        protected bool LocalizationIsEnabled { get; private set; }
 
         #endregion Properties
 
@@ -56,7 +62,7 @@ namespace Makc2020.Root.Base
 
             if (LocalizationIsEnabled)
             {
-                services.AddLocalization();
+                services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
             }
 
             if (DataEntityDbContextIsEnabled)
