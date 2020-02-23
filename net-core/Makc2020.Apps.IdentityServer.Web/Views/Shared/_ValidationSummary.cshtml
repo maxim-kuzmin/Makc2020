@@ -1,7 +1,9 @@
-﻿@if (ViewContext.ModelState.IsValid == false)
+﻿@inject Makc2020.Mods.IdentityServer.Base.Resources.Titles.ModIdentityServerBaseResourceTitles ResourceTitles
+
+@if (ViewContext.ModelState.IsValid == false)
 {
     <div class="alert alert-danger">
-        <strong>Error</strong>
+        <strong>@ResourceTitles.GetStringErrors()</strong>
         <div asp-validation-summary="All" class="danger"></div>
     </div>
 }

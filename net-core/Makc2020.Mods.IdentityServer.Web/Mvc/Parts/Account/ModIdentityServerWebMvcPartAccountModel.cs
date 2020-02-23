@@ -4,9 +4,12 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Makc2020.Core.Web.Mvc;
 using Makc2020.Data.Entity.Objects;
+using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
+using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post;
 using Microsoft.AspNetCore.Authentication;
@@ -25,13 +28,19 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
     {
         #region Properties
 
+        private HostBasePartLdapJobLoginService AppJobLdapLogin { get; set; }
+
         private ModIdentityServerWebMvcPartAccountJobLoginGetService AppJobLoginGet { get; set; }
 
-        private ModIdentityServerWebMvcPartAccountJobLoginPostService AppJobLoginPost { get; set; }
+        private ModIdentityServerWebMvcPartAccountJobLoginPostProcessService AppJobLoginPostProcess { get; set; }
+
+        private ModIdentityServerWebMvcPartAccountJobLoginPostProduceService AppJobLoginPostProduce { get; set; }
 
         private ModIdentityServerWebMvcPartAccountJobLogoutGetService AppJobLogoutGet { get; set; }
 
         private ModIdentityServerWebMvcPartAccountJobLogoutPostService AppJobLogoutPost { get; set; }
+
+        private HostBasePartAuthJobUserEntityCreateService AppJobUserEntityCreate { get; set; }
 
         private IClientStore ExtClientStore { get; set; }
 
@@ -39,11 +48,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         private IIdentityServerInteractionService ExtInteraction { get; set; }
 
+        private RoleManager<DataEntityObjectRole> ExtRoleManager { get; set; }
+
         private IAuthenticationSchemeProvider ExtSchemeProvider { get; set; }
 
         private SignInManager<DataEntityObjectUser> ExtSignInManager { get; set; }
 
         private UserManager<DataEntityObjectUser> ExtUserManager { get; set; }
+
 
         #endregion Properties
 
@@ -52,41 +64,53 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// <summary>
         /// Конструктор.
         /// </summary>
+        /// <param name="appJobLdapLogin">Задание на вход в систему через LDAP.</param>
         /// <param name="appJobLoginGet">Задание на получение входа в систему.</param>
-        /// <param name="appJobLoginPost">Задание на отправку входа в систему.</param>
+        /// <param name="appJobLoginPostProcess">Задание на обработку отправки данных входа в систему.</param>
+        /// <param name="appJobLoginPostProduce">Задание на создание отклика на отправку данных входа в систему.</param>
         /// <param name="appJobLogoutGet">Задание на получение выхода из системы.</param>
         /// <param name="appJobLogoutPost">Задание на отправку выхода из системы.</param>
+        /// <param name="appJobUserEntityCreate">Задание на создание сущности пользователя.</param>
         /// <param name="extClientStore">Хранилище клиентов.</param>
         /// <param name="extEvents">События.</param>
         /// <param name="extInteraction">Взаимодействие.</param>
         /// <param name="extLogger">Регистратор.</param>
+        /// <param name="extRoleManager">Менеджер ролей.</param>
         /// <param name="extSchemeProvider">Поставщик схем.</param>
         /// <param name="extSignInManager">Менеджер входа в систему.</param>
         /// <param name="extUserManager">Менеджер пользователей.</param>
         /// <param name="extViewEngine">Средство создания представлений.</param>
         public ModIdentityServerWebMvcPartAccountModel(
+            HostBasePartLdapJobLoginService appJobLdapLogin,
             ModIdentityServerWebMvcPartAccountJobLoginGetService appJobLoginGet,
-            ModIdentityServerWebMvcPartAccountJobLoginPostService appJobLoginPost,
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessService appJobLoginPostProcess,
+            ModIdentityServerWebMvcPartAccountJobLoginPostProduceService appJobLoginPostProduce,
             ModIdentityServerWebMvcPartAccountJobLogoutGetService appJobLogoutGet,
             ModIdentityServerWebMvcPartAccountJobLogoutPostService appJobLogoutPost,
+            HostBasePartAuthJobUserEntityCreateService appJobUserEntityCreate,
             IClientStore extClientStore,
             IEventService extEvents,
             IIdentityServerInteractionService extInteraction,
             ILogger<ModIdentityServerWebMvcPartAccountModel> extLogger,
+            RoleManager<DataEntityObjectRole> extRoleManager,
             IAuthenticationSchemeProvider extSchemeProvider,
             SignInManager<DataEntityObjectUser> extSignInManager,
             UserManager<DataEntityObjectUser> extUserManager,
             ICompositeViewEngine extViewEngine
-            )
+        )
             : base(extLogger, extViewEngine)
         {
+            AppJobLdapLogin = appJobLdapLogin;
             AppJobLoginGet = appJobLoginGet;
-            AppJobLoginPost = appJobLoginPost;
+            AppJobLoginPostProcess = appJobLoginPostProcess;
+            AppJobLoginPostProduce = appJobLoginPostProduce;
             AppJobLogoutGet = appJobLogoutGet;
             AppJobLogoutPost = appJobLogoutPost;
+            AppJobUserEntityCreate = appJobUserEntityCreate;
             ExtClientStore = extClientStore;
             ExtEvents = extEvents;
             ExtInteraction = extInteraction;
+            ExtRoleManager = extRoleManager;
             ExtSchemeProvider = extSchemeProvider;
             ExtSignInManager = extSignInManager;
             ExtUserManager = extUserManager;
@@ -129,7 +153,51 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         /// <summary>
-        /// Построить действие "Вход в систему. Отправка".
+        /// Построить действие "Вход в систему. Отправка. Обработка".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput>> execute,
+            Action<ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult> onSuccess,
+            Action<Exception, ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult> onError
+            ) BuildActionLoginPostProcess(ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput input)
+        {
+            input.СlientStore = ExtClientStore;
+            input.Events = ExtEvents;
+            input.Interaction = ExtInteraction;
+            input.JobLdapLogin = AppJobLdapLogin;
+            input.JobUserEntityCreate = AppJobUserEntityCreate;
+            input.Logger = ExtLogger;
+            input.RoleManager = ExtRoleManager;
+            input.SchemeProvider = ExtSchemeProvider;
+            input.SignInManager = ExtSignInManager;
+            input.UserManager = ExtUserManager;
+
+            var job = AppJobLoginPostProcess;
+
+            Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput> execute() => job.Execute(input);
+
+            void onSuccess(ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult result)
+            {
+                job.OnSuccess(ExtLogger, result, input);
+            }
+
+            void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+
+                foreach (var errorMessage in result.ErrorMessages)
+                {
+                    input.ModelState.AddModelError(string.Empty, errorMessage);
+                }
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Вход в систему. Отправка. Создание отклика".
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Функции действия.</returns>
@@ -137,16 +205,13 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             Func<Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput>> execute,
             Action<ModIdentityServerWebMvcPartAccountCommonJobLoginResult> onSuccess,
             Action<Exception, ModIdentityServerWebMvcPartAccountCommonJobLoginResult> onError
-            ) BuildActionLoginPost(ModIdentityServerWebMvcPartAccountJobLoginPostInput input)
+            ) BuildActionLoginPostProduce(ModIdentityServerWebMvcPartAccountJobLoginPostProduceInput input)
         {
             input.СlientStore = ExtClientStore;
-            input.Events = ExtEvents;
             input.Interaction = ExtInteraction;
             input.SchemeProvider = ExtSchemeProvider;
-            input.SignInManager = ExtSignInManager;
-            input.UserManager = ExtUserManager;
 
-            var job = AppJobLoginPost;
+            var job = AppJobLoginPostProduce;
 
             Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> execute() => job.Execute(input);
 

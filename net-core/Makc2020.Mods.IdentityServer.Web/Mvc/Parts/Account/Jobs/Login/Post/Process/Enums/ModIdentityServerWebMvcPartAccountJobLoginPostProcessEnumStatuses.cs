@@ -1,11 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Enums
+namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process.Enums
 {
     /// <summary>
-    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Вход в систему. Отправка. Перечисления. Статусы.
+    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Вход в систему. Отправка. Обработка. Перечисления. Статусы.
     /// </summary>
-    public enum ModIdentityServerWebMvcPartAccountJobLoginPostEnumStatuses
+    public enum ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses
     {
         /// <summary>
         /// По-молчанию.

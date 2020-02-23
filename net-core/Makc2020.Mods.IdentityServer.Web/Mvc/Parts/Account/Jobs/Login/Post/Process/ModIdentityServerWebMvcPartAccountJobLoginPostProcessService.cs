@@ -6,21 +6,20 @@ using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post
+namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process
 {
     /// <summary>
-    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Вход в систему. Отправка. Сервис.
+    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Вход в систему. Отправка. Обработка. Сервис.
     /// </summary>
-    public class ModIdentityServerWebMvcPartAccountJobLoginPostService : CoreBaseExecutableServiceAsyncWithInputAndOutput
+    public class ModIdentityServerWebMvcPartAccountJobLoginPostProcessService : CoreBaseExecutableServiceAsyncWithInputAndOutput
         <
-            ModIdentityServerWebMvcPartAccountJobLoginPostInput,
-            ModIdentityServerWebMvcPartAccountCommonJobLoginOutput
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput,
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput
         >
     {
         #region Properties
@@ -38,8 +37,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        public ModIdentityServerWebMvcPartAccountJobLoginPostService(
-            Func<ModIdentityServerWebMvcPartAccountJobLoginPostInput, Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput>> executable,
+        public ModIdentityServerWebMvcPartAccountJobLoginPostProcessService(
+            Func<ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput, Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModIdentityServerBaseResourceSuccesses resourceSuccesses,
             ModIdentityServerBaseResourceErrors resourceErrors
@@ -80,8 +79,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post
         }
 
         private IEnumerable<string> GetSuccessMessages(
-            ModIdentityServerWebMvcPartAccountJobLoginPostInput input,
-            ModIdentityServerWebMvcPartAccountCommonJobLoginOutput output
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput input,
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput output
             )
         {
             return new[]
@@ -90,11 +89,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post
             };
         }
 
-        private ModIdentityServerWebMvcPartAccountJobLoginPostInput TransformInput(ModIdentityServerWebMvcPartAccountJobLoginPostInput input)
+        private ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput TransformInput(ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput input)
         {
             if (input == null)
             {
-                input = new ModIdentityServerWebMvcPartAccountJobLoginPostInput();
+                input = new ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput();
             }
 
             var invalidProperties = input.GetInvalidProperties();

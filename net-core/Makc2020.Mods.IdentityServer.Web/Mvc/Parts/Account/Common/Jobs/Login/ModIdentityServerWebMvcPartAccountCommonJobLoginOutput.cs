@@ -26,18 +26,61 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
         /// </summary>
         public string LoginMethodTitle { get; set; }
 
+        /// <summary>
+        /// Заголовок "Запомнить логин входа" в систему.
+        /// </summary>
+        public string RememberMyLoginTitle { get; set; }
+
+        /// <summary>
+        /// Заголовок страницы.
+        /// </summary>
+        public string PageTitle { get; set; }
+
+        /// <summary>
+        /// Заголовок имени пользователя.
+        /// </summary>
+        public string UsernameTitle { get; set; }
+
+        /// <summary>
+        /// Заголовок пароля.
+        /// </summary>
+        public string PasswordTitle { get; set; }
+
+        /// <summary>
+        /// Заголовок действия по входу в систему.
+        /// </summary>
+        public string LoginActionTitle { get; set; }
+
+        /// <summary>
+        /// Признак необходимости запомнить вход в систему.
+        /// </summary>
         public bool AllowRememberLogin { get; set; } = true;
 
+        /// <summary>
+        /// Признак включения возможности входа в систему под локальной учётной записью.
+        /// </summary>
         public bool EnableLocalLogin { get; set; } = true;
 
+        /// <summary>
+        /// Внешние поставщики.
+        /// </summary>
         public IEnumerable<ModIdentityServerWebMvcPartAccountExternalProvider> ExternalProviders { get; set; } =
             Enumerable.Empty<ModIdentityServerWebMvcPartAccountExternalProvider>();
 
+        /// <summary>
+        /// Видимые внешние поставщики.
+        /// </summary>
         public IEnumerable<ModIdentityServerWebMvcPartAccountExternalProvider> VisibleExternalProviders =>
             ExternalProviders.Where(x => !string.IsNullOrWhiteSpace(x.DisplayName));
 
+        /// <summary>
+        /// Признак того, что для входа в систему доступен только единственный внешний поставщик.
+        /// </summary>
         public bool IsExternalLoginOnly => EnableLocalLogin == false && ExternalProviders?.Count() == 1;
 
+        /// <summary>
+        /// Схема внешнего поставщика.
+        /// </summary>
         public string ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
 
         #endregion Properties
@@ -76,6 +119,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
             };
 
             LoginMethodTitle = resourceTitles.GetStringLoginMethod();
+            RememberMyLoginTitle = resourceTitles.GetStringRememberMyLogin();
+            PageTitle = resourceTitles.GetStringLogin();
+            UsernameTitle = resourceTitles.GetStringUsername();
+            PasswordTitle = resourceTitles.GetStringPassword();
+            LoginActionTitle = resourceTitles.GetStringLoginAction();
         }
 
         #endregion Constructors

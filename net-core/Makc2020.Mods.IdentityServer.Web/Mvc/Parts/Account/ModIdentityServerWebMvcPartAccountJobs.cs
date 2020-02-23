@@ -4,7 +4,8 @@ using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post;
 
@@ -23,9 +24,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         public ModIdentityServerWebMvcPartAccountJobLoginGetService JobLoginGet { get; private set; }
 
         /// <summary>
-        /// Задание на отправку входа в систему.
+        /// Задание на обработку отправки данных входа в систему.
         /// </summary>
-        public ModIdentityServerWebMvcPartAccountJobLoginPostService JobLoginPost { get; private set; }
+        public ModIdentityServerWebMvcPartAccountJobLoginPostProcessService JobLoginPostProcess { get; private set; }
+
+        /// <summary>
+        /// Задание на создание отклика на отправку данных входа в систему.
+        /// </summary>
+        public ModIdentityServerWebMvcPartAccountJobLoginPostProduceService JobLoginPostProduce { get; private set; }
 
         /// <summary>
         /// Задание на получение выхода из системы.
@@ -60,11 +66,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 coreBaseResourceErrors
                 );
 
-            JobLoginPost = new ModIdentityServerWebMvcPartAccountJobLoginPostService(
-                service.PostLogin,
+            JobLoginPostProcess = new ModIdentityServerWebMvcPartAccountJobLoginPostProcessService(
+                service.PostLoginProcess,
                 coreBaseResourceErrors,
                 resourceSuccesses,
                 resourceErrors
+                );
+
+            JobLoginPostProduce = new ModIdentityServerWebMvcPartAccountJobLoginPostProduceService(
+                service.PostLoginProduce,
+                coreBaseResourceErrors
                 );
 
             JobLogoutGet = new ModIdentityServerWebMvcPartAccountJobLogoutGetService(
