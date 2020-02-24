@@ -68,8 +68,7 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
                 {
                     CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
                     ResourceErrors = ModIdentityServerBase.Context.Resources.Errors,
-                    ResourceSuccesses = ModIdentityServerBase.Context.Resources.Successes,
-                    ResourceTitles = ModIdentityServerBase.Context.Resources.Titles
+                    ResourceSuccesses = ModIdentityServerBase.Context.Resources.Successes
                 },
                 PartExternal = new ModIdentityServerWebMvcPartExternalExternals
                 {

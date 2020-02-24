@@ -1,16 +1,25 @@
 ﻿@using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 @model ModIdentityServerWebMvcPartAccountCommonJobLoginOutput
 
+@{ 
+    var loginMethodSelectListItems = Model.CreateLoginMethodSelectListItems(
+        Localizer["Учётная запись Windows"].Value,
+        Localizer["Учётная запись приложения"].Value,
+        Localizer["Учётная запись Active Directory"].Value
+        );
+}
 <div class="login-page">
     <div class="page-header">
-        <h1>@Model.PageTitle</h1>
+        <h1>@Localizer["Вход в систему"]</h1>
     </div>
 
     <partial name="_ValidationSummary" />
 
     <div class="row">
-        @*//makc//>//*@
         <div class="col-sm-6">
             <div class="panel panel-default app--css--hide" id="id--view--account--login--panel">
                 <div class="panel-body">
@@ -18,26 +27,26 @@
                         <input type="hidden" asp-for="ReturnUrl" />
                         <fieldset>
                             <div class="form-group">
-                                <label asp-for="LoginMethod">@Model.LoginMethodTitle</label>
+                                <label asp-for="LoginMethod">@Localizer["Способ входа в систему"]</label>
                                 <select class="form-control"
                                         asp-for="LoginMethod"
-                                        asp-items="Model.LoginMethodSelectListItems"                                        
+                                        asp-items="loginMethodSelectListItems"
                                         id="id--view--account--login--form--login-method--select"></select>
                             </div>
                             <div class="form-group" id="id--view--account--login--form--user-name--group">
-                                <label asp-for="Username"></label>
-                                <input class="form-control" placeholder="@Model.UsernameTitle" asp-for="Username" autofocus>
+                                <label asp-for="Username">@Localizer["Имя пользователя"]</label>
+                                <input class="form-control" placeholder="@Localizer["Имя пользователя"]" asp-for="Username" autofocus>
                             </div>
                             <div class="form-group" id="id--view--account--login--form--password--group">
-                                <label asp-for="Password"></label>
-                                <input type="password" class="form-control" placeholder="@Model.PasswordTitle" asp-for="Password" autocomplete="off">
+                                <label asp-for="Password">@Localizer["Пароль"]</label>
+                                <input type="password" class="form-control" placeholder="@Localizer["Пароль"]" asp-for="Password" autocomplete="off">
                             </div>
                             @if (Model.AllowRememberLogin)
                             {
                                 <div class="form-group login-remember" id="id--view--account--login--form--remember-login--group">
                                     <label asp-for="RememberLogin">
                                         <input asp-for="RememberLogin">
-                                        <strong>@Model.RememberMyLoginTitle</strong>
+                                        <strong>@Localizer["Запомнить мой вход в систему"]</strong>
                                     </label>
                                 </div>
                             }
@@ -48,101 +57,18 @@
                                    asp-route-provider="Windows"
                                    asp-route-returnUrl="@Model.ReturnUrl"
                                    id="id--view--account--login--form--button--windows">
-                                    @Model.LoginActionTitle
+                                    @Localizer["Войти"]
                                 </a>
                                 <button class="btn btn-primary" name="button" value="login"
                                         id="id--view--account--login--form--button--submit">
-                                    @Model.LoginActionTitle
-                                    </button>
+                                    @Localizer["Войти"]
+                                </button>
                             </div>
                         </fieldset>
                     </form>
                 </div>
             </div>
         </div>
-        @*//makc//<//*@
-        @*//makc//>//
-            @if (Model.EnableLocalLogin)
-            {
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Local Login</h3>
-                        </div>
-                        <div class="panel-body">
-
-                            <form asp-route="Login">
-                                <input type="hidden" asp-for="ReturnUrl" />
-
-                                <fieldset>
-                                    <div class="form-group">
-                                        <label asp-for="Username"></label>
-                                        <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Password"></label>
-                                        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
-                                    </div>
-                                    @if (Model.AllowRememberLogin)
-                                    {
-                                        <div class="form-group login-remember">
-                                            <label asp-for="RememberLogin">
-                                                <input asp-for="RememberLogin">
-                                                <strong>Remember My Login</strong>
-                                            </label>
-                                        </div>
-                                    }
-
-                                    <div>
-                                        <p>The default users are alice/bob, password: Pass123$</p>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <button class="btn btn-primary" name="button" value="login">Login</button>
-                                        <button class="btn btn-default" name="button" value="cancel">Cancel</button>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-        
-            @if (Model.VisibleExternalProviders.Any())
-            {
-                <div class="col-md-6 col-sm-6 external-providers">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">External Login</h3>
-                        </div>
-                        <div class="panel-body">
-                            <ul class="list-inline">
-                                @foreach (var provider in Model.VisibleExternalProviders)
-                                {
-                                    <li>
-                                        <a class="btn btn-default"
-                                           asp-controller="External"
-                                           asp-action="Challenge"
-                                           asp-route-provider="@provider.AuthenticationScheme"
-                                           asp-route-returnUrl="@Model.ReturnUrl">
-                                            @provider.DisplayName
-                                        </a>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            }
-        
-            @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
-            {
-                <div class="alert alert-warning">
-                    <strong>Invalid login request</strong>
-                    There are no login schemes configured for this client.
-                </div>
-            }
-            //makc//<//*@
     </div>
 </div>
 @section scripts

@@ -3,7 +3,6 @@
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 {
@@ -28,11 +27,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Ресурс успехов.
         /// </summary>
         public ModIdentityServerBaseResourceSuccesses ResourceSuccesses { get; set; }
-
-        /// <summary>
-        /// Ресурс заголовков.
-        /// </summary>
-        public ModIdentityServerBaseResourceTitles ResourceTitles { get; set; }
 
         #endregion Properties
     }

@@ -21,13 +21,15 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login
         /// <summary>
         /// Имя пользователя.
         /// </summary>
-        [Required(ErrorMessage = "The {0} field is required.")]
+        [Display(Name = "Имя пользователя")]
+        [Required(ErrorMessage = "Поле \"{0}\" является обязательным")]
         public string Username { get; set; }
 
         /// <summary>
         /// Пароль.
         /// </summary>
-        [Required(ErrorMessage = "The {0} field is required.")]
+        [Display(Name = "Пароль")]
+        [Required(ErrorMessage = "Поле \"{0}\" является обязательным")]
         public string Password { get; set; }
 
         /// <summary>

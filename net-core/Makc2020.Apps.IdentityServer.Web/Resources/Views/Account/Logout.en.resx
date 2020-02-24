@@ -117,16 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="URL возврата неверен" xml:space="preserve">
-    <value>Return url is invalid</value>
+  <data name="Вы точно хотите выйти из системы?" xml:space="preserve">
+    <value>Would you like to log out?</value>
   </data>
-  <data name="Введены неверные учётные данные" xml:space="preserve">
-    <value>Login is failed</value>
+  <data name="Выход из системы" xml:space="preserve">
+    <value>Log Out</value>
   </data>
-  <data name="Внешняя аутентификация не пройдена" xml:space="preserve">
-    <value>External authentication is failed</value>
-  </data>
-  <data name="Неизвестный идентификатор пользователя" xml:space="preserve">
-    <value>Unknown user identifier</value>
+  <data name="Да" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>

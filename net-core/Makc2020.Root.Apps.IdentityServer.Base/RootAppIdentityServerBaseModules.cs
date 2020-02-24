@@ -5,7 +5,6 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
 using Makc2020.Root.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -66,8 +65,7 @@ namespace Makc2020.Root.Apps.IdentityServer.Base
             ModIdentityServerBase?.InitContext(new ModIdentityServerBaseExternals
             {
                 ResourceErrorsLocalizer = GetLocalizer<ModIdentityServerBaseResourceErrors>(serviceProvider),
-                ResourceSuccessesLocalizer = GetLocalizer<ModIdentityServerBaseResourceSuccesses>(serviceProvider),
-                ResourceTitlesLocalizer = GetLocalizer<ModIdentityServerBaseResourceTitles>(serviceProvider)
+                ResourceSuccessesLocalizer = GetLocalizer<ModIdentityServerBaseResourceSuccesses>(serviceProvider)
             });
         }
 

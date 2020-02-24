@@ -87,9 +87,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             string action
             )
         {
-            var processOutput = await GetLoginPostProcessOutput(model, action).CoreBaseExtTaskWithCurrentCulture(false);
+            var processOutput = await GetLoginPostProcessOutput(model, action)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var produceOutput = await GetLoginPostProduceOutput(model).CoreBaseExtTaskWithCurrentCulture(false);
+            var produceOutput = await GetLoginPostProduceOutput(model)
+                .CoreBaseExtTaskWithCurrentCulture(false);
             
             return processOutput.Status switch
             {
@@ -152,9 +154,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountViewLogoutModel model
             )
         {
-            var processOutput = await GetLogoutPostProcessOutput(model).CoreBaseExtTaskWithCurrentCulture(false);
+            var processOutput = await GetLogoutPostProcessOutput(model)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var produceOutput = await GetLogoutPostProduceOutput(model).CoreBaseExtTaskWithCurrentCulture(false);
+            var produceOutput = await GetLogoutPostProduceOutput(model)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             return processOutput.Status switch
             {

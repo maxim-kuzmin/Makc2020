@@ -1,7 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Mods.IdentityServer.Base.Enums;
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -15,41 +14,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
     public class ModIdentityServerWebMvcPartAccountCommonJobLoginOutput : ModIdentityServerWebMvcPartAccountViewLoginModel
     {
         #region Properties
-
-        /// <summary>
-        /// Варианты способов входа в систему.
-        /// </summary>
-        public IEnumerable<SelectListItem> LoginMethodSelectListItems { get; set; }
-
-        /// <summary>
-        /// Заголовок способа входа в систему.
-        /// </summary>
-        public string LoginMethodTitle { get; set; }
-
-        /// <summary>
-        /// Заголовок "Запомнить логин входа" в систему.
-        /// </summary>
-        public string RememberMyLoginTitle { get; set; }
-
-        /// <summary>
-        /// Заголовок страницы.
-        /// </summary>
-        public string PageTitle { get; set; }
-
-        /// <summary>
-        /// Заголовок имени пользователя.
-        /// </summary>
-        public string UsernameTitle { get; set; }
-
-        /// <summary>
-        /// Заголовок пароля.
-        /// </summary>
-        public string PasswordTitle { get; set; }
-
-        /// <summary>
-        /// Заголовок действия по входу в систему.
-        /// </summary>
-        public string LoginActionTitle { get; set; }
 
         /// <summary>
         /// Признак необходимости запомнить вход в систему.
@@ -90,42 +54,51 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="resourceTitles">Ресурсы заголовков.</param>
         /// <param name="loginMethod">Способ входа в систему.</param>
         public ModIdentityServerWebMvcPartAccountCommonJobLoginOutput(
-            ModIdentityServerBaseResourceTitles resourceTitles,
             ModIdentityServerBaseEnumLoginMethods loginMethod
             )
         {
             LoginMethod = loginMethod;
+        }
 
-            LoginMethodSelectListItems = new[]
+        #endregion Constructors
+
+        #region Public methods
+
+        /// <summary>
+        /// Создать элементы списка выбора метода входа в систему.
+        /// </summary>
+        /// <param name="textWindows">Текст для метода "Windows".</param>
+        /// <param name="textLocal">Текст для метода "Local".</param>
+        /// <param name="textLdap">Текст для метода "LDAP".</param>
+        /// <returns></returns>
+        public IEnumerable<SelectListItem> CreateLoginMethodSelectListItems(
+            string textWindows,
+            string textLocal,
+            string textLdap
+            )
+        {
+            return new[]
             {
                 new SelectListItem(
-                    resourceTitles.GetStringLoginMethodWindows(),
+                    textWindows,
                     ModIdentityServerBaseEnumLoginMethods.Windows.ToString(),
                     LoginMethod == ModIdentityServerBaseEnumLoginMethods.Windows
                     ),
                 new SelectListItem(
-                    resourceTitles.GetStringLoginMethodLocal(),
+                    textLocal,
                     ModIdentityServerBaseEnumLoginMethods.Local.ToString(),
                     LoginMethod == ModIdentityServerBaseEnumLoginMethods.Local
                     ),
                 new SelectListItem(
-                    resourceTitles.GetStringLoginMethodLdap(),
+                    textLdap,
                     ModIdentityServerBaseEnumLoginMethods.Ldap.ToString(),
                     LoginMethod == ModIdentityServerBaseEnumLoginMethods.Ldap
                     )
             };
-
-            LoginMethodTitle = resourceTitles.GetStringLoginMethod();
-            RememberMyLoginTitle = resourceTitles.GetStringRememberMyLogin();
-            PageTitle = resourceTitles.GetStringLogin();
-            UsernameTitle = resourceTitles.GetStringUsername();
-            PasswordTitle = resourceTitles.GetStringPassword();
-            LoginActionTitle = resourceTitles.GetStringLoginAction();
         }
 
-        #endregion Constructors
+        #endregion Public methods
     }
 }

@@ -1,9 +1,11 @@
-﻿@inject Makc2020.Mods.IdentityServer.Base.Resources.Titles.ModIdentityServerBaseResourceTitles ResourceTitles
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 @if (ViewContext.ModelState.IsValid == false)
 {
     <div class="alert alert-danger">
-        <strong>@ResourceTitles.GetStringErrors()</strong>
+        <strong>@Localizer["Ошибки"]</strong>
         <div asp-validation-summary="All" class="danger"></div>
     </div>
 }

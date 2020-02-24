@@ -36,7 +36,6 @@ namespace Makc2020.Mods.IdentityServer.Base
         {
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
-            services.AddTransient(x => GetContext(x).Resources.Titles);
             services.AddTransient(x => GetContext(x).Resources.Errors);
             services.AddTransient(x => GetContext(x).Resources.Successes);
         }

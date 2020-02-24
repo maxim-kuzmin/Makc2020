@@ -15,7 +15,6 @@ using Makc2020.Host.Base.Parts.Ldap;
 using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Base.Enums;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
 using Makc2020.Mods.IdentityServer.Web.Ext;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config;
@@ -51,8 +50,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         private IModIdentityServerWebMvcPartAccountConfigSettings ConfigSettings { get; set; }
 
-        private ModIdentityServerBaseResourceTitles ResourceTitles { get; set; }
-
         #endregion Properties
 
         #region Constructors
@@ -61,14 +58,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Конструктор.
         /// </summary>        
         /// <param name="configSettings">Конфигурационные настройки.</param>        
-        /// <param name="resourceTitles">Ресурс заголовков.</param>
         public ModIdentityServerWebMvcPartAccountService(
-            IModIdentityServerWebMvcPartAccountConfigSettings configSettings,
-            ModIdentityServerBaseResourceTitles resourceTitles
+            IModIdentityServerWebMvcPartAccountConfigSettings configSettings
             )
         {
             ConfigSettings = configSettings;
-            ResourceTitles = resourceTitles;
         }
 
         #endregion Constructors
@@ -488,7 +482,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 UserName = user.UserName
             };
 
-            var execResult = await CreateUserEntity(logger, jobUserEntityCreate, input).CoreBaseExtTaskWithCurrentCulture(false);
+            var execResult = await CreateUserEntity(logger, jobUserEntityCreate, input)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             if (!execResult.IsOk)
             {
@@ -560,7 +555,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var context = await interaction.GetAuthorizationContextAsync(returnUrl)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput(ResourceTitles, loginMethod)
+            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput(loginMethod)
             {
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint
@@ -641,7 +636,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ClaimsPrincipal user
             )
         {
-            var result = new ModIdentityServerWebMvcPartAccountJobLogoutGetOutput(ResourceTitles)
+            var result = new ModIdentityServerWebMvcPartAccountJobLogoutGetOutput
             {
                 LogoutId = logoutId,
                 ShowLogoutPrompt = ConfigSettings.ShowLogoutPrompt
@@ -655,7 +650,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 return result;
             }
 
-            var context = await interaction.GetLogoutContextAsync(logoutId);
+            var context = await interaction.GetLogoutContextAsync(logoutId)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             if (context?.ShowSignoutPrompt == false)
             {
@@ -685,15 +681,20 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 httpContext,
                 interaction,
                 user
-                );
+                ).CoreBaseExtTaskWithCurrentCulture(false);
 
             if (user?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await signInManager.SignOutAsync();
+                await signInManager.SignOutAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
                 // raise the logout event
-                await events.RaiseAsync(new UserLogoutSuccessEvent(user.GetSubjectId(), user.GetDisplayName()));
+                await events.RaiseAsync(
+                    new UserLogoutSuccessEvent(
+                        user.GetSubjectId(),
+                        user.GetDisplayName()
+                        )
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             // check if we need to trigger sign-out at an upstream identity provider
@@ -714,9 +715,10 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             )
         {
             // get context information (client name, post logout redirect URI and iframe for federated signout)
-            var context = await interaction.GetLogoutContextAsync(logoutId);
+            var context = await interaction.GetLogoutContextAsync(logoutId)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var result = new ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput(ResourceTitles)
+            var result = new ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput
             {
                 AutomaticRedirectAfterSignOut = ConfigSettings.AutomaticRedirectAfterSignOut,
                 PostLogoutRedirectUri = context?.PostLogoutRedirectUri,
@@ -731,7 +733,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
                 if (idp != null && idp != IdentityServerConstants.LocalIdentityProvider)
                 {
-                    var providerSupportsSignout = await httpContext.GetSchemeSupportsSignOutAsync(idp);
+                    var providerSupportsSignout = await httpContext.GetSchemeSupportsSignOutAsync(idp)
+                        .CoreBaseExtTaskWithCurrentCulture(false);
 
                     if (providerSupportsSignout)
                     {
@@ -740,7 +743,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                             // if there's no current logout context, we need to create one
                             // this captures necessary info from the current logged in user
                             // before we signout and redirect away to the external IdP for signout
-                            result.LogoutId = await interaction.CreateLogoutContextAsync();
+                            result.LogoutId = await interaction.CreateLogoutContextAsync()
+                                .CoreBaseExtTaskWithCurrentCulture(false);
                         }
 
                         result.ExternalAuthenticationScheme = idp;

@@ -1,20 +1,23 @@
 ﻿@using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 @model ModIdentityServerWebMvcPartAccountJobLogoutGetOutput
 
 <div class="logout-page">
     <div class="page-header">
-        <h1>@Model.PageTitle</h1>
+        <h1>@Localizer["Выход из системы"]</h1>
     </div>
 
     <div class="row">
         <div class="col-sm-6">
-            <p>Would you like to logout of IdentityServer?</p>
+            <p>@Localizer["Вы точно хотите выйти из системы?"]</p>
             <form asp-action="Logout">
-                <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
+                <input type="hidden" name="logoutId" value="@Model.LogoutId" />
                 <fieldset>
                     <div class="form-group">
-                        <button class="btn btn-primary">@Model.ConfirmTitle</button>
+                        <button class="btn btn-primary">@Localizer["Да"]</button>
                     </div>
                 </fieldset>
             </form>

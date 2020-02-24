@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Makc2020.Core.Web\Makc2020.Core.Web.csproj" />
     <ProjectReference Include="..\Makc2020.Host.Base\Makc2020.Host.Base.csproj" />
   </ItemGroup>

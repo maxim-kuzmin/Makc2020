@@ -34,8 +34,7 @@ namespace Makc2020.Mods.IdentityServer.Base
 
             Resources = new ModIdentityServerBaseResources(
                 externals.ResourceErrorsLocalizer,
-                externals.ResourceSuccessesLocalizer,
-                externals.ResourceTitlesLocalizer
+                externals.ResourceSuccessesLocalizer
                 );
         }
 

@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
-
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.LoggedOut
 {
     /// <summary>
@@ -46,24 +44,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.LoggedOut
         /// </summary>
         public bool TriggerExternalSignout => ExternalAuthenticationScheme != null;
 
-        /// <summary>
-        /// Заголовок страницы.
-        /// </summary>
-        public string PageTitle { get; set; }
-
         #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="resourceTitles">Ресурс заголовков.</param>
-        public ModIdentityServerWebMvcPartAccountViewLoggedOutModel(ModIdentityServerBaseResourceTitles resourceTitles)
-        {
-            PageTitle = resourceTitles.GetStringLogout();
-        }
-
-        #endregion Constructor
     }
 }

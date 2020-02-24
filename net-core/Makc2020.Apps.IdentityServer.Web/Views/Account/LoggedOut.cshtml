@@ -1,4 +1,7 @@
 ﻿@using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.LoggedOut
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
 
 @model ModIdentityServerWebMvcPartAccountViewLoggedOutModel
 
@@ -7,22 +10,28 @@
     ViewData["signed-out"] = true;
 }
 
-<div class="page-header logged-out">
-    <h1>@Model.PageTitle</h1>
+    <div class="page-header logged-out">
+        <h1>@Localizer["Выход из системы"]</h1>
 
-    @if (Model.PostLogoutRedirectUri != null)
-    {
-        <div>
-            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
-            <span>@Model.ClientName</span> application.
-        </div>
-    }
+        @if (Model.PostLogoutRedirectUri != null)
+        {
+            <div>
+                @Html.Raw(
+                    string.Format(
+                       Localizer["Щёлкните {0}здесь{1}, чтобы возвратиться в приложение {2}"].Value,
+                       $"<a class=\"PostLogoutRedirectUri\" href=\"{Model.PostLogoutRedirectUri}\">",
+                       "</a>",
+                       $"<span>{Model.ClientName}</span>"
+                       )
+                    )
+            </div>
+        }
 
-    @if (Model.SignOutIframeUrl != null)
-    {
-        <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
-    }
-</div>
+        @if (Model.SignOutIframeUrl != null)
+        {
+            <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+        }
+    </div>
 
 @section scripts
 {

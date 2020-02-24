@@ -27,7 +27,7 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
 
             if (LocalizationIsEnabled)
             {
-                mvcBuilder.AddDataAnnotationsLocalization();
+                mvcBuilder.AddDataAnnotationsLocalization().AddViewLocalization();
             }
 
             // configures IIS out-of-proc settings (see https://github.com/aspnet/AspNetCore/issues/14882)

@@ -36,8 +36,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             )
         {
             Service = new ModIdentityServerWebMvcPartAccountService(
-                configSettings,
-                externals.ResourceTitles
+                configSettings
                 );
 
             Jobs = new ModIdentityServerWebMvcPartAccountJobs(

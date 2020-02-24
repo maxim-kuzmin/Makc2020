@@ -117,16 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="URL возврата неверен" xml:space="preserve">
-    <value>Return url is invalid</value>
+  <data name="Войти" xml:space="preserve">
+    <value>Log On</value>
   </data>
-  <data name="Введены неверные учётные данные" xml:space="preserve">
-    <value>Login is failed</value>
+  <data name="Вход в систему" xml:space="preserve">
+    <value>Login</value>
   </data>
-  <data name="Внешняя аутентификация не пройдена" xml:space="preserve">
-    <value>External authentication is failed</value>
+  <data name="Запомнить мой вход в систему" xml:space="preserve">
+    <value>Remember My Login</value>
   </data>
-  <data name="Неизвестный идентификатор пользователя" xml:space="preserve">
-    <value>Unknown user identifier</value>
+  <data name="Имя пользователя" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="Пароль" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Способ входа в систему" xml:space="preserve">
+    <value>Login method</value>
+  </data>
+  <data name="Учётная запись Active Directory" xml:space="preserve">
+    <value>Active Directory account</value>
+  </data>
+  <data name="Учётная запись Windows" xml:space="preserve">
+    <value>Windows account</value>
+  </data>
+  <data name="Учётная запись приложения" xml:space="preserve">
+    <value>Application account</value>
   </data>
 </root>

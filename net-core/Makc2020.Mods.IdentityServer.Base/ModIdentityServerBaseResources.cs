@@ -2,7 +2,6 @@
 
 using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
-using Makc2020.Mods.IdentityServer.Base.Resources.Titles;
 using Microsoft.Extensions.Localization;
 
 namespace Makc2020.Mods.IdentityServer.Base
@@ -24,11 +23,6 @@ namespace Makc2020.Mods.IdentityServer.Base
         /// </summary>
         public ModIdentityServerBaseResourceSuccesses Successes { get; set; }
 
-        /// <summary>
-        /// Заголовки.
-        /// </summary>
-        public ModIdentityServerBaseResourceTitles Titles { get; set; }
-
         #endregion Properties
 
         #region Constructor
@@ -39,13 +33,11 @@ namespace Makc2020.Mods.IdentityServer.Base
         /// <param name="resourceTitlesLocalizer">Локализатор ресурсов заголовков.</param>
         public ModIdentityServerBaseResources(
             IStringLocalizer<ModIdentityServerBaseResourceErrors> resourceErrorsLocalizer,
-            IStringLocalizer<ModIdentityServerBaseResourceSuccesses> resourceSuccessesLocalizer,
-            IStringLocalizer<ModIdentityServerBaseResourceTitles> resourceTitlesLocalizer
+            IStringLocalizer<ModIdentityServerBaseResourceSuccesses> resourceSuccessesLocalizer
             )
         {
             Errors = new ModIdentityServerBaseResourceErrors(resourceErrorsLocalizer);
             Successes = new ModIdentityServerBaseResourceSuccesses(resourceSuccessesLocalizer);
-            Titles = new ModIdentityServerBaseResourceTitles(resourceTitlesLocalizer);
         }
 
         #endregion Constructor

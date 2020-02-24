@@ -117,43 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LDAP" xml:space="preserve">
-    <value>LDAP</value>
-  </data>
-  <data name="Local" xml:space="preserve">
-    <value>Local</value>
-  </data>
-  <data name="Windows" xml:space="preserve">
-    <value>Windows</value>
-  </data>
-  <data name="Войти" xml:space="preserve">
-    <value>Log On</value>
-  </data>
-  <data name="Вход в систему" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Вы точно хотите выйти из системы?" xml:space="preserve">
-    <value>Would you like to log out?</value>
-  </data>
   <data name="Выход из системы" xml:space="preserve">
     <value>Log Out</value>
   </data>
-  <data name="Да" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="Запомнить мой вход в систему" xml:space="preserve">
-    <value>Remember My Login</value>
-  </data>
-  <data name="Имя пользователя" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="Ошибки" xml:space="preserve">
-    <value>Errors</value>
-  </data>
-  <data name="Пароль" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="Способ входа в систему" xml:space="preserve">
-    <value>Login method</value>
+  <data name="Щёлкните {0}здесь{1}, чтобы возвратиться в приложение {2}" xml:space="preserve">
+    <value>Click {0}here{1} to return to the {2} application</value>
   </data>
 </root>
