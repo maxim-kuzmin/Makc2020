@@ -24,8 +24,9 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Enums;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process.Enums;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Logout;
 using Microsoft.AspNetCore.Authentication;
@@ -174,23 +175,36 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         /// <summary>
-        /// Отправить выход из системы.
+        /// Обработать отправку данных входа из системы.
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с выводом.</returns>
-        public async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostOutput> PostLogout(
-            ModIdentityServerWebMvcPartAccountJobLogoutPostInput input
+        public async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput> PostLogoutProcess(
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput input
             )
         {
-            input.Status = await ProcessLogoutPost(
+            return new ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput
+            {
+                Status = await ProcessLogoutPost(
                 input.Model,
                 input.Events,
                 input.SignInManager,
                 input.HttpContext,
                 input.Interaction,
                 input.User
-                ).CoreBaseExtTaskWithCurrentCulture(false);
+                ).CoreBaseExtTaskWithCurrentCulture(false)
+            };
+        }
 
+        /// <summary>
+        /// Создать отклик на отправку данных выхода из системы.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача с выводом.</returns>
+        public async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput> PostLogoutProduce(
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProduceInput input
+            )
+        {
             return await ProduceLogoutPost(
                 input.Model.LogoutId,
                 input.HttpContext,
@@ -656,7 +670,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             return result;
         }
 
-        private async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostEnumStatuses> ProcessLogoutPost(
+        private async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses> ProcessLogoutPost(
             ModIdentityServerWebMvcPartAccountViewLogoutModel model,
             IEventService events,
             SignInManager<DataEntityObjectUser> signInManager,
@@ -686,13 +700,13 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             if (vm.TriggerExternalSignout)
             {
                 // this triggers a redirect to the external provider for sign-out
-                return ModIdentityServerWebMvcPartAccountJobLogoutPostEnumStatuses.Default;
+                return ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses.Default;
             }
 
-            return ModIdentityServerWebMvcPartAccountJobLogoutPostEnumStatuses.LoggedOut;
+            return ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses.LoggedOut;
         }
 
-        private async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostOutput> ProduceLogoutPost(
+        private async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput> ProduceLogoutPost(
             string logoutId,
             HttpContext httpContext,
             IIdentityServerInteractionService interaction,
@@ -702,7 +716,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             // get context information (client name, post logout redirect URI and iframe for federated signout)
             var context = await interaction.GetLogoutContextAsync(logoutId);
 
-            var result = new ModIdentityServerWebMvcPartAccountJobLogoutPostOutput(ResourceTitles)
+            var result = new ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput(ResourceTitles)
             {
                 AutomaticRedirectAfterSignOut = ConfigSettings.AutomaticRedirectAfterSignOut,
                 PostLogoutRedirectUri = context?.PostLogoutRedirectUri,

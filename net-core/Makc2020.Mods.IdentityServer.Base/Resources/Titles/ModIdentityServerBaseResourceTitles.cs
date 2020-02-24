@@ -12,7 +12,7 @@ namespace Makc2020.Mods.IdentityServer.Base.Resources.Titles
         #region Properties
 
         private IStringLocalizer<ModIdentityServerBaseResourceTitles> Localizer { get; }
-        
+
         #endregion Properties
 
         #region Constructors
@@ -94,21 +94,12 @@ namespace Makc2020.Mods.IdentityServer.Base.Resources.Titles
         }
 
         /// <summary>
-        /// Получить строку "Выйти".
+        /// Получить строку "Выход из системы".
         /// </summary>
         /// <returns>Строка.</returns>
         public string GetStringLogout()
         {
-            return Localizer["Выйти"];
-        }
-
-        /// <summary>
-        /// Получить строку "Сейчас будет произведен выход со страницы".
-        /// </summary>
-        /// <returns>Строка.</returns>
-        public string GetStringLogoutDescription()
-        {
-            return Localizer["Сейчас будет произведен выход со страницы"];
+            return Localizer["Выход из системы"];
         }
 
         /// <summary>

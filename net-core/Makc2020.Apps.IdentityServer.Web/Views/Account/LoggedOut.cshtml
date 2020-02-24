@@ -8,10 +8,7 @@
 }
 
 <div class="page-header logged-out">
-    <h1>
-        @Model.LogoutTitle
-        <small>@Model.LogoutDescriptionTitle</small>
-    </h1>
+    <h1>@Model.PageTitle</h1>
 
     @if (Model.PostLogoutRedirectUri != null)
     {

@@ -2,6 +2,7 @@
 
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Makc2020.Core.Web.Ext;
 using Makc2020.Core.Web.Mvc;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
@@ -11,7 +12,8 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Produce;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -38,7 +40,9 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         private ModIdentityServerWebMvcPartAccountJobLogoutGetService AppJobLogoutGet { get; set; }
 
-        private ModIdentityServerWebMvcPartAccountJobLogoutPostService AppJobLogoutPost { get; set; }
+        private ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService AppJobLogoutPostProcess { get; set; }
+
+        private ModIdentityServerWebMvcPartAccountJobLogoutPostProduceService AppJobLogoutPostProduce { get; set; }
 
         private HostBasePartAuthJobUserEntityCreateService AppJobUserEntityCreate { get; set; }
 
@@ -69,7 +73,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// <param name="appJobLoginPostProcess">Задание на обработку отправки данных входа в систему.</param>
         /// <param name="appJobLoginPostProduce">Задание на создание отклика на отправку данных входа в систему.</param>
         /// <param name="appJobLogoutGet">Задание на получение выхода из системы.</param>
-        /// <param name="appJobLogoutPost">Задание на отправку выхода из системы.</param>
+        /// <param name="appJobLogoutPostProcess">Задание на обработку отправки данных выхода из системы.</param>
+        /// <param name="appJobLogoutPostProduce">Задание на создание отклика на отправку данных выхода из системы.</param>
         /// <param name="appJobUserEntityCreate">Задание на создание сущности пользователя.</param>
         /// <param name="extClientStore">Хранилище клиентов.</param>
         /// <param name="extEvents">События.</param>
@@ -86,7 +91,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountJobLoginPostProcessService appJobLoginPostProcess,
             ModIdentityServerWebMvcPartAccountJobLoginPostProduceService appJobLoginPostProduce,
             ModIdentityServerWebMvcPartAccountJobLogoutGetService appJobLogoutGet,
-            ModIdentityServerWebMvcPartAccountJobLogoutPostService appJobLogoutPost,
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService appJobLogoutPostProcess,
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProduceService appJobLogoutPostProduce,
             HostBasePartAuthJobUserEntityCreateService appJobUserEntityCreate,
             IClientStore extClientStore,
             IEventService extEvents,
@@ -105,7 +111,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             AppJobLoginPostProcess = appJobLoginPostProcess;
             AppJobLoginPostProduce = appJobLoginPostProduce;
             AppJobLogoutGet = appJobLogoutGet;
-            AppJobLogoutPost = appJobLogoutPost;
+            AppJobLogoutPostProcess = appJobLogoutPostProcess;
+            AppJobLogoutPostProduce = appJobLogoutPostProduce;
             AppJobUserEntityCreate = appJobUserEntityCreate;
             ExtClientStore = extClientStore;
             ExtEvents = extEvents;
@@ -187,10 +194,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             {
                 job.OnError(ex, ExtLogger, result);
 
-                foreach (var errorMessage in result.ErrorMessages)
-                {
-                    input.ModelState.AddModelError(string.Empty, errorMessage);
-                }
+                input.ModelState.CoreWebExtModelStateFill(result);
             }
 
             return (execute, onSuccess, onError);
@@ -224,10 +228,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             {
                 job.OnError(ex, ExtLogger, result);
 
-                foreach (var errorMessage in result.ErrorMessages)
-                {
-                    input.ModelState.AddModelError(string.Empty, errorMessage);
-                }
+                input.ModelState.CoreWebExtModelStateFill(result);
             }
 
             return (execute, onSuccess, onError);
@@ -264,32 +265,66 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         /// <summary>
-        /// Построить действие "Выход из системы. Отправка".
+        /// Построить действие "Выход из системы. Отправка. Обработка".
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Функции действия.</returns>
         public (
-            Func<Task<ModIdentityServerWebMvcPartAccountJobLogoutPostOutput>> execute,
-            Action<ModIdentityServerWebMvcPartAccountJobLogoutPostResult> onSuccess,
-            Action<Exception, ModIdentityServerWebMvcPartAccountJobLogoutPostResult> onError
-            ) BuildActionLogoutPost(ModIdentityServerWebMvcPartAccountJobLogoutPostInput input)
+            Func<Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput>> execute,
+            Action<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult> onSuccess,
+            Action<Exception, ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult> onError
+            ) BuildActionLogoutPostProcess(ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput input)
         {
             input.Events = ExtEvents;
             input.Interaction = ExtInteraction;
             input.SignInManager = ExtSignInManager;
 
-            var job = AppJobLogoutPost;
+            var job = AppJobLogoutPostProcess;
 
-            Task<ModIdentityServerWebMvcPartAccountJobLogoutPostOutput> execute() => job.Execute(input);
+            Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput> execute() => job.Execute(input);
 
-            void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutPostResult result)
+            void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult result)
             {
                 job.OnSuccess(ExtLogger, result, input);
             }
 
-            void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutPostResult result)
+            void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult result)
             {
                 job.OnError(ex, ExtLogger, result);
+
+                input.ModelState.CoreWebExtModelStateFill(result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Выход из системы. Отправка. Создание отклика".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput>> execute,
+            Action<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult> onSuccess,
+            Action<Exception, ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult> onError
+            ) BuildActionLogoutPostProduce(ModIdentityServerWebMvcPartAccountJobLogoutPostProduceInput input)
+        {
+            input.Interaction = ExtInteraction;
+
+            var job = AppJobLogoutPostProduce;
+
+            Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput> execute() => job.Execute(input);
+
+            void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult result)
+            {
+                job.OnSuccess(ExtLogger, result, input);
+            }
+
+            void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+
+                input.ModelState.CoreWebExtModelStateFill(result);
             }
 
             return (execute, onSuccess, onError);

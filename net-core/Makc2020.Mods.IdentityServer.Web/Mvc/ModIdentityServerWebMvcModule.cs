@@ -43,7 +43,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginPostProcess);
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginPostProduce);
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutGet);
-            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutPost);
+            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutPostProcess);
+            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutPostProduce);
             services.AddTransient(x => GetContext(x).PartAccount.Service);
             services.AddTransient<ModIdentityServerWebMvcPartAccountModel>();
             services.AddTransient(x => GetContext(x).PartExternal);

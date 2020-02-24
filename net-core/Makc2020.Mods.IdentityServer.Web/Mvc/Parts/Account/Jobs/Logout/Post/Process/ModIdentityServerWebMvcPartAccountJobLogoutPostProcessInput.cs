@@ -3,19 +3,19 @@
 using IdentityServer4.Services;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Logout;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Logout;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 
-namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
+namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process
 {
     /// <summary>
-    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Выход из системы. Отправка. Ввод.
+    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Выход из системы. Отправка. Обработка. Ввод.
     /// </summary>
-    public class ModIdentityServerWebMvcPartAccountJobLogoutPostInput : ModIdentityServerWebMvcPartAccountCommonJobLogoutInput
+    public class ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput : ModIdentityServerWebMvcPartAccountCommonJobLogoutInput
     {
         #region Properties
 
@@ -35,15 +35,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
         public ModIdentityServerWebMvcPartAccountViewLogoutModel Model { get; set; }
 
         /// <summary>
+        /// Состояние модели.
+        /// </summary>
+        public ModelStateDictionary ModelState { get; set; }
+
+        /// <summary>
         /// Менеджер входа в систему.
         /// </summary>
         public SignInManager<DataEntityObjectUser> SignInManager { get; set; }
-
-        /// <summary>
-        /// Статус.
-        /// </summary>
-        public ModIdentityServerWebMvcPartAccountJobLogoutPostEnumStatuses Status { get; set; } =
-            ModIdentityServerWebMvcPartAccountJobLogoutPostEnumStatuses.Default;
 
         /// <summary>
         /// Помощник URL.
@@ -75,6 +74,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
             if (Model == null)
             {
                 result.Add(nameof(Model));
+            }
+
+            if (ModelState == null)
+            {
+                result.Add(nameof(ModelState));
             }
 
             if (SignInManager == null)

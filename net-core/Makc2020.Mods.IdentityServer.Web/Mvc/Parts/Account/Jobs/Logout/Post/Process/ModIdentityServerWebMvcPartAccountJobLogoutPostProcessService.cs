@@ -7,15 +7,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
+namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process
 {
     /// <summary>
-    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Выход из системы. Отправка. Сервис.
+    /// Мод "IdentityServer". Веб. MVC. Часть "Account". Задания. Выход из системы. Отправка. Обработка. Сервис.
     /// </summary>
-    public class ModIdentityServerWebMvcPartAccountJobLogoutPostService : CoreBaseExecutableServiceAsyncWithInputAndOutput
+    public class ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService : CoreBaseExecutableServiceAsyncWithInputAndOutput
         <
-            ModIdentityServerWebMvcPartAccountJobLogoutPostInput,
-            ModIdentityServerWebMvcPartAccountJobLogoutPostOutput
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput,
+            ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput
         >
     {
         #region Constructors
@@ -25,8 +25,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        public ModIdentityServerWebMvcPartAccountJobLogoutPostService(
-            Func<ModIdentityServerWebMvcPartAccountJobLogoutPostInput, Task<ModIdentityServerWebMvcPartAccountJobLogoutPostOutput>> executable,
+        public ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService(
+            Func<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput, Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors
             ) : base(executable, coreBaseResourceErrors)
         {
@@ -37,11 +37,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post
 
         #region Private methods
 
-        private ModIdentityServerWebMvcPartAccountJobLogoutPostInput TransformInput(ModIdentityServerWebMvcPartAccountJobLogoutPostInput input)
+        private ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput TransformInput(ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput input)
         {
             if (input == null)
             {
-                input = new ModIdentityServerWebMvcPartAccountJobLogoutPostInput();
+                input = new ModIdentityServerWebMvcPartAccountJobLogoutPostProcessInput();
             }
 
             var invalidProperties = input.GetInvalidProperties();

@@ -7,7 +7,8 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Produce;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 {
@@ -39,9 +40,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         public ModIdentityServerWebMvcPartAccountJobLogoutGetService JobLogoutGet { get; private set; }
 
         /// <summary>
-        /// Задание на отправку выхода из системы.
+        /// Задание на обработку отправки данных выхода из системы.
         /// </summary>
-        public ModIdentityServerWebMvcPartAccountJobLogoutPostService JobLogoutPost { get; private set; }
+        public ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService JobLogoutPostProcess { get; private set; }
+
+        /// <summary>
+        /// Задание на создание отклика на отправку данных выхода из системы.
+        /// </summary>
+        public ModIdentityServerWebMvcPartAccountJobLogoutPostProduceService JobLogoutPostProduce { get; private set; }
 
         #endregion Properties
 
@@ -83,8 +89,13 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 coreBaseResourceErrors
                 );
 
-            JobLogoutPost = new ModIdentityServerWebMvcPartAccountJobLogoutPostService(
-                service.PostLogout,
+            JobLogoutPostProcess = new ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService(
+                service.PostLogoutProcess,
+                coreBaseResourceErrors
+                );
+
+            JobLogoutPostProduce = new ModIdentityServerWebMvcPartAccountJobLogoutPostProduceService(
+                service.PostLogoutProduce,
                 coreBaseResourceErrors
                 );
         }
