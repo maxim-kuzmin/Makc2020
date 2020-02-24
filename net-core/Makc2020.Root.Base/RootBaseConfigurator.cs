@@ -62,7 +62,7 @@ namespace Makc2020.Root.Base
 
             if (LocalizationIsEnabled)
             {
-                services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+                services.AddLocalization(options => { options.ResourcesPath = "ResourceFiles"; });
             }
 
             if (DataEntityDbContextIsEnabled)
