@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Mods.Auth.Base.Resources.Errors;
+using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 using Microsoft.Extensions.Localization;
 

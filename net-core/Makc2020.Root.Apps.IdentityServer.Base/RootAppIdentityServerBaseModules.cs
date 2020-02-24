@@ -2,8 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
-using Makc2020.Mods.Auth.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base;
+using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 using Makc2020.Root.Base;
 using Microsoft.Extensions.DependencyInjection;

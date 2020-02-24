@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Resources.Successes;
+using Makc2020.Mods.Auth.Base.Settings.Errors;
+using Makc2020.Mods.Auth.Base.Settings.Successes;
 using Microsoft.Extensions.Localization;
 
 namespace Makc2020.Mods.Auth.Base

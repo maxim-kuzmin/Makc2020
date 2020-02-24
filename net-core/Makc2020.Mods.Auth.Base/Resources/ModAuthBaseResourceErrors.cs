@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Localization;
 
-namespace Makc2020.Mods.Auth.Base.Resources.Errors
+namespace Makc2020.Mods.Auth.Base.Settings.Errors
 {
     /// <summary>
     /// Мод "Auth". Основа. Ресурсы. Ошибки.

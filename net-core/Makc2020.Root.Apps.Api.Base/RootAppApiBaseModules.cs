@@ -3,8 +3,8 @@
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.Auth.Base;
-using Makc2020.Mods.Auth.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Resources.Successes;
+using Makc2020.Mods.Auth.Base.Settings.Errors;
+using Makc2020.Mods.Auth.Base.Settings.Successes;
 using Makc2020.Mods.DummyMain.Base;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;

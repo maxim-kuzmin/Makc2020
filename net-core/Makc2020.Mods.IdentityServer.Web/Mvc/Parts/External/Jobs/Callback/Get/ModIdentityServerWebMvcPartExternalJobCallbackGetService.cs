@@ -3,7 +3,7 @@
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Execution.Exceptions;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Resources.Errors;
+using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Resources.Errors;
+using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
 {
