@@ -1,18 +1,18 @@
-//Author Maxim Kuzmin//makc//
+п»ї//Author Maxim Kuzmin//makc//
 
 namespace Makc2020.Apps.IdentityServer.Web
 {
     /// <summary>
-    /// Программа.
+    /// РџСЂРѕРіСЂР°РјРјР°.
     /// </summary>
     public class Program
     {
         #region Public methods
 
         /// <summary>
-        /// Точка входа.
+        /// РўРѕС‡РєР° РІС…РѕРґР°.
         /// </summary>
-        /// <param name="args">Аргументы.</param>
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹.</param>
         public static void Main(string[] args)
         {
             Startup.Run(args);

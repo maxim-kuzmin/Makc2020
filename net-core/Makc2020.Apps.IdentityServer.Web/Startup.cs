@@ -1,4 +1,4 @@
-//Author Maxim Kuzmin//makc//
+п»ї//Author Maxim Kuzmin//makc//
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +13,7 @@ using System.IO;
 namespace Makc2020.Apps.IdentityServer.Web
 {
     /// <summary>
-    /// Пуск.
+    /// РџСѓСЃРє.
     /// </summary>
     public class Startup
     {
@@ -26,19 +26,19 @@ namespace Makc2020.Apps.IdentityServer.Web
         #region Public methods
 
         /// <summary>
-        /// Запустить.
+        /// Р—Р°РїСѓСЃС‚РёС‚СЊ.
         /// </summary>
-        /// <param name="args">Аргументы.</param>        
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹.</param>        
         public static void Run(string[] args)
         {
             Run<Startup>(args);
         }
 
         /// <summary>
-        /// Запустить.
+        /// Р—Р°РїСѓСЃС‚РёС‚СЊ.
         /// </summary>
-        /// <typeparam name="TStartup">Тип пуска.</typeparam>
-        /// <param name="args">Аргументы.</param>        
+        /// <typeparam name="TStartup">РўРёРї РїСѓСЃРєР°.</typeparam>
+        /// <param name="args">РђСЂРіСѓРјРµРЅС‚С‹.</param>        
         public static void Run<TStartup>(string[] args) where TStartup : class
         {
             var basePath = System.AppContext.BaseDirectory;
@@ -89,20 +89,20 @@ namespace Makc2020.Apps.IdentityServer.Web
         }
 
         /// <summary>
-        /// Настроить сервисы.
+        /// РќР°СЃС‚СЂРѕРёС‚СЊ СЃРµСЂРІРёСЃС‹.
         /// </summary>
-        /// <param name="services">Сервисы.</param>
+        /// <param name="services">РЎРµСЂРІРёСЃС‹.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             Server.ConfigureServices(services);
         }
 
         /// <summary>
-        /// Настроить.
+        /// РќР°СЃС‚СЂРѕРёС‚СЊ.
         /// </summary>
-        /// <param name="app">Построитель приложения.</param>
-        /// <param name="env">Окружение.</param>
-        /// <param name="appLifetime">Жизненный цикл приложения.</param>
+        /// <param name="app">РџРѕСЃС‚СЂРѕРёС‚РµР»СЊ РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
+        /// <param name="env">РћРєСЂСѓР¶РµРЅРёРµ.</param>
+        /// <param name="appLifetime">Р–РёР·РЅРµРЅРЅС‹Р№ С†РёРєР» РїСЂРёР»РѕР¶РµРЅРёСЏ.</param>
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
