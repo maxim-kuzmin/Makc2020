@@ -5,6 +5,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreLoggingEnumActions} from './enums/core-logging-enum-actions';
 import {AppCoreLoggingState} from './core-logging-state';
+import {strict} from 'assert';
 
 /** Ядро. Ошибка. Хранилище состояния. */
 @Injectable({
@@ -47,8 +48,24 @@ export class AppCoreLoggingStore {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.Clear,
+      debugMessage: undefined,
       errorData: undefined,
-      errorMessage: undefined
+      errorIsUnhandled: undefined,
+      errorMessage: undefined,
+      successMessage: undefined,
+      warningMessage: undefined
+    });
+  }
+
+  /**
+   * Запустить действие "Зарегистрировать отладочное сообщение".
+   * @param {string} debugMessage Отладочное сообщение.
+   */
+  runActionLogDebug(debugMessage: string) {
+    this.setState({
+      ...this.state,
+      action: AppCoreLoggingEnumActions.LogDebug,
+      debugMessage
     });
   }
 
@@ -65,6 +82,30 @@ export class AppCoreLoggingStore {
       errorData,
       errorIsUnhandled,
       errorMessage
+    });
+  }
+
+  /**
+   * Запустить действие "Зарегистрировать успех".
+   * @param {string} successMessage Сообщение об успехе.
+   */
+  runActionLogSuccess(successMessage: string) {
+    this.setState({
+      ...this.state,
+      action: AppCoreLoggingEnumActions.LogSuccess,
+      successMessage
+    });
+  }
+
+  /**
+   * Запустить действие "Зарегистрировать предупреждение".
+   * @param {string} warningMessage Предупреждающее сообщение.
+   */
+  runActionLogWarning(warningMessage: string) {
+    this.setState({
+      ...this.state,
+      action: AppCoreLoggingEnumActions.LogWarning,
+      warningMessage
     });
   }
 

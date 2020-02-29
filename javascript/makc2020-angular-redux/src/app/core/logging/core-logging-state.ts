@@ -7,6 +7,12 @@ import {AppCoreLoggingEnumActions} from './enums/core-logging-enum-actions';
 export class AppCoreLoggingState extends AppCoreCommonState<AppCoreLoggingEnumActions> {
 
   /**
+   * Отладочное сообщение.
+   * @type {string}
+   */
+  debugMessage: string;
+
+  /**
    * Данные ошибки.
    * @type {any}
    */
@@ -20,7 +26,19 @@ export class AppCoreLoggingState extends AppCoreCommonState<AppCoreLoggingEnumAc
 
   /**
    * Сообщение об ошибке.
-   * @type {any}
+   * @type {string}
    */
   errorMessage: string;
+
+  /**
+   * Сообщение об успехе.
+   * @type {string}
+   */
+  successMessage: string;
+
+  /**
+   * Предупреждающее сообщение.
+   * @type {string}
+   */
+  warningMessage: string;
 }

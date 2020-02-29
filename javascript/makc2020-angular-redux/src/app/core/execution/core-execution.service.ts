@@ -68,7 +68,7 @@ export class AppCoreExecutionService {
       }
     }
 
-    logger.logError(true, message, error);
+    logger.logError(true, [message], error);
 
     this.appNotification.showError([message]);
   }
@@ -102,26 +102,38 @@ export class AppCoreExecutionService {
     result: TResult,
     logger: AppCoreLoggingService
   ): TResult {
-    if (result.warningMessages && result.warningMessages.length > 0) {
-      logger.logInfo(result.warningMessages.join('. '));
-      this.appNotification.showInfo(result.warningMessages);
+    const {
+      warningMessages
+    } = result;
+
+    if (warningMessages && warningMessages.length > 0) {
+      logger.logWarning(warningMessages);
+      this.appNotification.showInfo(warningMessages);
     }
 
     if (result.isOk) {
-      if (result.successMessages && result.successMessages.length > 0) {
-        logger.logInfo(result.successMessages.join('. '));
+      const {
+        successMessages
+      } = result;
 
-        this.appNotification.showSuccess(result.successMessages);
+      if (successMessages && successMessages.length > 0) {
+        logger.logSuccess(successMessages);
+
+        this.appNotification.showSuccess(successMessages);
       } else {
-        logger.logDebug(`${jobName} is successful`, result);
+        logger.logDebug([`${jobName} is successful`], result);
       }
     } else {
-      if (result.errorMessages && result.errorMessages.length > 0) {
-        logger.logError(false, result.errorMessages.join('. '));
+      const {
+        errorMessages
+      } = result;
 
-        this.appNotification.showError(result.errorMessages);
+      if (errorMessages && errorMessages.length > 0) {
+        logger.logError(false, errorMessages);
+
+        this.appNotification.showError(errorMessages);
       } else {
-        logger.logError(false, `${jobName} is failed`, result);
+        logger.logError(false, [`${jobName} is failed`], result);
       }
     }
 

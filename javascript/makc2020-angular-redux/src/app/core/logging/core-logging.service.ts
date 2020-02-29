@@ -24,33 +24,64 @@ export class AppCoreLoggingService {
   }
 
   /**
-   * Зарегистрировать информацию.
-   * @param {string} message Сообщение.
-   * @param {?any} data Данные.
-   */
-  logInfo(message: string, data?: any) {
-    this.appLoggerDefault.log(appCoreLoggingEntryKind.info, this.transformMessage(message), data);
-  }
-
-  /**
    * Зарегистрировать отладочную информацию.
-   * @param {string} message Сообщение.
+   * @param {string[]} messages Сообщения.
    * @param {?any} data Данные.
    */
-  logDebug(message: string, data?: any) {
+  logDebug(messages: string[], data?: any) {
+    const message = this.createMessage(messages);
+
+    this.appStore.runActionLogDebug(message);
+
     this.appLoggerDefault.log(appCoreLoggingEntryKind.debug, this.transformMessage(message), data);
   }
 
   /**
    * Зарегистрировать ошибку.
    * @param {boolean} errorIsUnhandled Признак того, что ошибка не обработана.
-   * @param {string} message Сообщение.
+   * @param {string[]} messages Сообщения.
    * @param {?any} data Данные.
    */
-  logError(errorIsUnhandled: boolean, message: string, data?: any) {
+  logError(errorIsUnhandled: boolean, messages: string[], data?: any) {
+    const message = this.createMessage(messages);
+
     this.appStore.runActionLogError(errorIsUnhandled, message, data);
 
     this.appLoggerDefault.log(appCoreLoggingEntryKind.error, this.transformMessage(message), data);
+  }
+
+  /**
+   * Зарегистрировать успех.
+   * @param {string[]} messages Сообщения.
+   * @param {?any} data Данные.
+   */
+  logSuccess(messages: string[], data?: any) {
+    const message = this.createMessage(messages);
+
+    this.appStore.runActionLogSuccess(message);
+
+    this.appLoggerDefault.log(appCoreLoggingEntryKind.info, this.transformMessage(message), data);
+  }
+
+  /**
+   * Зарегистрировать предупреждение.
+   * @param {string[]} messages Сообщения.
+   * @param {?any} data Данные.
+   */
+  logWarning(messages: string[], data?: any) {
+    const message = this.createMessage(messages);
+
+    this.appStore.runActionLogWarning(message);
+
+    this.appLoggerDefault.log(appCoreLoggingEntryKind.info, this.transformMessage(message), data);
+  }
+
+  /**
+   * @param {string[]} messages
+   * @returns {string}
+   */
+  private createMessage(messages: string[]): string {
+    return messages.join('. ');
   }
 
   /**
