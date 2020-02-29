@@ -57,17 +57,17 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
 
   /**
    * @inheritDoc
-   * @param {string} errorMessage Сообщение об ошибке.
-   * @param {any} errorData Данные ошибки.
+   * @param {string[]} errorMessages
+   * @param {any} errorData
    */
-  protected onError(errorMessage: string, errorData: any) {
+  protected onLogError(errorMessages: string[], errorData: any) {
     if (errorData && errorData.type === 'invalid_nonce_in_state') {
       this.model.executeActionRedirectToRootPageIndex();
     }
 
     this.hideSpinners();
 
-    super.onError(errorMessage, errorData);
+    super.onLogError(errorMessages, errorData);
   }
 
   private hideSpinners() {

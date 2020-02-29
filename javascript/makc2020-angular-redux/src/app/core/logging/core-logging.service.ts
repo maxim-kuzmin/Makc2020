@@ -31,9 +31,9 @@ export class AppCoreLoggingService {
   logDebug(messages: string[], data?: any) {
     const message = this.createMessage(messages);
 
-    this.appStore.runActionLogDebug(message);
-
     this.appLoggerDefault.log(appCoreLoggingEntryKind.debug, this.transformMessage(message), data);
+
+    this.appStore.runActionLogDebug(messages);
   }
 
   /**
@@ -45,9 +45,9 @@ export class AppCoreLoggingService {
   logError(errorIsUnhandled: boolean, messages: string[], data?: any) {
     const message = this.createMessage(messages);
 
-    this.appStore.runActionLogError(errorIsUnhandled, message, data);
-
     this.appLoggerDefault.log(appCoreLoggingEntryKind.error, this.transformMessage(message), data);
+
+    this.appStore.runActionLogError(errorIsUnhandled, messages, data);
   }
 
   /**
@@ -58,9 +58,9 @@ export class AppCoreLoggingService {
   logSuccess(messages: string[], data?: any) {
     const message = this.createMessage(messages);
 
-    this.appStore.runActionLogSuccess(message);
-
     this.appLoggerDefault.log(appCoreLoggingEntryKind.info, this.transformMessage(message), data);
+
+    this.appStore.runActionLogSuccess(messages);
   }
 
   /**
@@ -71,9 +71,9 @@ export class AppCoreLoggingService {
   logWarning(messages: string[], data?: any) {
     const message = this.createMessage(messages);
 
-    this.appStore.runActionLogWarning(message);
-
     this.appLoggerDefault.log(appCoreLoggingEntryKind.info, this.transformMessage(message), data);
+
+    this.appStore.runActionLogWarning(messages);
   }
 
   /**

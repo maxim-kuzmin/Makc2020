@@ -84,13 +84,13 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
 
   /**
    * @inheritDoc
-   * @param {string} errorMessage Сообщение об ошибке.
-   * @param {any} errorData Данные ошибки.
+   * @param {string[]} errorMessages
+   * @param {any} errorData
    */
-  protected onError(errorMessage: string, errorData: any) {
+  protected onLogError(errorMessages: string[], errorData: any) {
     this.hideSpinners();
 
-    super.onError(errorMessage, errorData);
+    super.onLogError(errorMessages, errorData);
   }
 
   /** @inheritDoc */

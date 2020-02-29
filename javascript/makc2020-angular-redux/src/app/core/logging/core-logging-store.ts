@@ -48,64 +48,64 @@ export class AppCoreLoggingStore {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.Clear,
-      debugMessage: undefined,
+      debugMessages: undefined,
       errorData: undefined,
       errorIsUnhandled: undefined,
-      errorMessage: undefined,
-      successMessage: undefined,
-      warningMessage: undefined
+      errorMessages: undefined,
+      successMessages: undefined,
+      warningMessages: undefined
     });
   }
 
   /**
    * Запустить действие "Зарегистрировать отладочное сообщение".
-   * @param {string} debugMessage Отладочное сообщение.
+   * @param {string[]} debugMessages Отладочные сообщения.
    */
-  runActionLogDebug(debugMessage: string) {
+  runActionLogDebug(debugMessages: string[]) {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.LogDebug,
-      debugMessage
+      debugMessages
     });
   }
 
   /**
    * Запустить действие "Зарегистрировать ошибку".
    * @param {boolean} errorIsUnhandled Признак того, что ошибка не обработана.
-   * @param {string} errorMessage Сообщение об ошибке.
+   * @param {string[]} errorMessages Сообщения об ошибках.
    * @param {any} errorData Данные ошибки.
    */
-  runActionLogError(errorIsUnhandled: boolean, errorMessage: string, errorData: any) {
+  runActionLogError(errorIsUnhandled: boolean, errorMessages: string[], errorData: any) {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.LogError,
       errorData,
       errorIsUnhandled,
-      errorMessage
+      errorMessages
     });
   }
 
   /**
    * Запустить действие "Зарегистрировать успех".
-   * @param {string} successMessage Сообщение об успехе.
+   * @param {string[]} successMessages Сообщения об успехах.
    */
-  runActionLogSuccess(successMessage: string) {
+  runActionLogSuccess(successMessages: string[]) {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.LogSuccess,
-      successMessage
+      successMessages
     });
   }
 
   /**
    * Запустить действие "Зарегистрировать предупреждение".
-   * @param {string} warningMessage Предупреждающее сообщение.
+   * @param {string[]} warningMessages Предупреждающие сообщения.
    */
-  runActionLogWarning(warningMessage: string) {
+  runActionLogWarning(warningMessages: string[]) {
     this.setState({
       ...this.state,
       action: AppCoreLoggingEnumActions.LogWarning,
-      warningMessage
+      warningMessages
     });
   }
 
