@@ -1,5 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
@@ -7,6 +8,7 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
 import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
@@ -22,7 +24,6 @@ import {AppModAuthPageLogonState} from './mod-auth-page-logon-state';
 import {AppModAuthPageLogonStore} from './mod-auth-page-logon-store';
 import {AppModAuthPageLogonSettingFields} from './settings/mod-auth-page-logon-setting-fields';
 import {AppModAuthPageLogonSettingErrors} from './settings/mod-auth-page-logon-setting-errors';
-import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Вход в систему. Модель. */
 @Injectable()
@@ -44,6 +45,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageLogonStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -60,6 +62,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
     private appMenu: AppHostPartMenuService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
+    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageLogonStore,
     appTitle: AppCoreTitleService,
@@ -69,6 +72,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

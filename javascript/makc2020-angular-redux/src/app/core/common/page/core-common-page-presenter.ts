@@ -67,6 +67,7 @@ export abstract class AppCoreCommonPagePresenter<TModel extends AppCoreCommonPag
    * @param {string[]} debugMessages Отладочные сообщения.
    */
   protected onLogDebug(debugMessages: string[]) {
+    this.model.onLogDebug(debugMessages);
   }
 
   /**
@@ -75,13 +76,7 @@ export abstract class AppCoreCommonPagePresenter<TModel extends AppCoreCommonPag
    * @param {any} errorData Данные ошибки.
    */
   protected onLogError(errorMessages: string[], errorData: any) {
-  }
-
-  /**
-   * Обработчик события регистрации предупреждения.
-   * @param {string[]} warningMessages Предупреждающие сообщения.
-   */
-  protected onLogWarning(warningMessages: string[]) {
+    this.model.onLogError(errorMessages, errorData);
   }
 
   /**
@@ -89,6 +84,15 @@ export abstract class AppCoreCommonPagePresenter<TModel extends AppCoreCommonPag
    * @param {string[]} successMessages Сообщения об успехах.
    */
   protected onLogSuccess(successMessages: string[]) {
+    this.model.onLogSuccess(successMessages);
+  }
+
+  /**
+   * Обработчик события регистрации предупреждения.
+   * @param {string[]} warningMessages Предупреждающие сообщения.
+   */
+  protected onLogWarning(warningMessages: string[]) {
+    this.model.onLogWarning(warningMessages);
   }
 
   /** @param {AppCoreLoggingState} state */
@@ -98,8 +102,19 @@ export abstract class AppCoreCommonPagePresenter<TModel extends AppCoreCommonPag
         action
       } = state;
 
-      if (action === AppCoreLoggingEnumActions.LogError) {
-        this.onLoggerActionLogErrorAsync.execute();
+      switch (action) {
+        case AppCoreLoggingEnumActions.LogDebug:
+          this.onLoggerActionLogDebugAsync.execute();
+          break;
+        case AppCoreLoggingEnumActions.LogError:
+          this.onLoggerActionLogErrorAsync.execute();
+          break;
+        case AppCoreLoggingEnumActions.LogSuccess:
+          this.onLoggerActionLogSuccessAsync.execute();
+          break;
+        case AppCoreLoggingEnumActions.LogWarning:
+          this.onLoggerActionLogWarningAsync.execute();
+          break;
       }
     }
   }

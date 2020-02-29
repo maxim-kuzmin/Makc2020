@@ -1,5 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
@@ -8,6 +9,7 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
@@ -24,7 +26,6 @@ import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
 import {AppModDummyMainPageItemStore} from './mod-dummy-main-page-item-store';
 import {appModDummyMainPageItemConfigIndex} from './mod-dummy-main-page-item-config';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Элемент. Модель. */
 @Injectable()
@@ -54,6 +55,7 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModDummyMainPageItemStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -69,6 +71,7 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
     private appNavigation: AppCoreNavigationService,
+    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModDummyMainPageItemStore,
     appTitle: AppCoreTitleService,
@@ -78,6 +81,7 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

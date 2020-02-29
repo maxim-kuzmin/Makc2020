@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -12,7 +14,6 @@ import {AppRootPageErrorResources} from './root-page-error-resources';
 import {AppRootPageErrorService} from './root-page-error.service';
 import {AppRootPageErrorState} from './root-page-error-state';
 import {AppRootPageErrorStore} from './root-page-error-store';
-import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Ошибка. Модель. */
 @Injectable()
@@ -29,6 +30,7 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
    * @param {AppHostPartMenuService} appMenu Меню.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageErrorService} appRootPageError Страница "RootPageError".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageErrorStore} appStore Хранилище состояния.
@@ -39,6 +41,7 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
     private appMenu: AppHostPartMenuService,
+    appNotification: AppCoreNotificationService,
     private appRootPageError: AppRootPageErrorService,
     appRoute: AppHostPartRouteService,
     private appStore: AppRootPageErrorStore,
@@ -47,6 +50,7 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

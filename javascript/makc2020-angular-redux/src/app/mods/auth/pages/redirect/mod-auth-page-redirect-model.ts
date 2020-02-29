@@ -1,5 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
@@ -8,6 +9,7 @@ import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
@@ -20,7 +22,6 @@ import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resource
 import {AppModAuthPageRedirectService} from './mod-auth-page-redirect.service';
 import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
 import {AppModAuthPageRedirectStore} from './mod-auth-page-redirect-store';
-import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Перенаправление. Модель. */
 @Injectable()
@@ -43,6 +44,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageRedirectStore} appStore Хранилище состояния.
@@ -60,6 +62,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
+    appNotification: AppCoreNotificationService,
     private appRootPageIndex: AppRootPageIndexService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageRedirectStore,
@@ -69,6 +72,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

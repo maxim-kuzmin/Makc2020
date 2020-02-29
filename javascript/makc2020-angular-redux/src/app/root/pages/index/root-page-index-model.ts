@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -14,7 +16,6 @@ import {AppRootPageIndexResources} from './root-page-index-resources';
 import {AppRootPageIndexService} from './root-page-index.service';
 import {AppRootPageIndexState} from './root-page-index-state';
 import {AppRootPageIndexStore} from './root-page-index-store';
-import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Начало. Модель. */
 @Injectable()
@@ -31,6 +32,7 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
    * @param {AppHostPartMenuService} appMenu Меню.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageAdministrationService} appRootPageAdministration
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppRootPageSiteService} appRootPageSite
@@ -43,6 +45,7 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
     appLocalizer: AppCoreLocalizationService,
     appLoggerStore: AppCoreLoggingStore,
     private appMenu: AppHostPartMenuService,
+    appNotification: AppCoreNotificationService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     private appRootPageIndex: AppRootPageIndexService,
     private appRootPageSite: AppRootPageSiteService,
@@ -53,6 +56,7 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

@@ -8,6 +8,7 @@ import {AppCoreLoggingState} from '@app/core/logging/core-logging-state';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 
 /** Ядро. Общее. Страница. Модель. */
 export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
@@ -26,12 +27,14 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
   /**
    * Конструктор.
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   protected constructor(
     private appLoggerStore: AppCoreLoggingStore,
+    private appNotification: AppCoreNotificationService,
     protected appRoute: AppHostPartRouteService,
     appTitle: AppCoreTitleService,
     protected extRoute: ActivatedRoute
@@ -76,6 +79,35 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
     ).subscribe(
       this.onGetPageKeyOverInit
     );
+  }
+
+  /**
+   * Обработчик события регистрации отладочного сообщения.
+   * @param {string[]} debugMessages Отладочные сообщения.
+   */
+  onLogDebug(debugMessages: string[]) {
+  }
+
+  /**
+   * Обработчик события регистрации ошибки.
+   * @param {string[]} errorMessages Сообщения об ошибках.
+   * @param {any} errorData Данные ошибки.
+   */
+  onLogError(errorMessages: string[], errorData: any) {
+  }
+
+  /**
+   * Обработчик события регистрации успеха.
+   * @param {string[]} successMessages Сообщения об успехах.
+   */
+  onLogSuccess(successMessages: string[]) {
+  }
+
+  /**
+   * Обработчик события регистрации предупреждения.
+   * @param {string[]} warningMessages Предупреждающие сообщения.
+   */
+  onLogWarning(warningMessages: string[]) {
   }
 
   /**

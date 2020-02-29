@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -14,7 +16,6 @@ import {AppModAuthPageIndexResources} from './mod-auth-page-index-resources';
 import {AppModAuthPageIndexService} from './mod-auth-page-index.service';
 import {AppModAuthPageIndexState} from './mod-auth-page-index-state';
 import {AppModAuthPageIndexStore} from './mod-auth-page-index-store';
-import { Injectable } from '@angular/core';
 
 /** Мод "Auth". Страницы. Начало. Модель. */
 @Injectable()
@@ -34,6 +35,7 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
    * @param {AppModAuthPageIndexService} appModAuthPageIndex Страница "ModAuthPageIndex".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageIndexStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -46,6 +48,7 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
     private appModAuthPageIndex: AppModAuthPageIndexService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
+    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageIndexStore,
     appTitle: AppCoreTitleService,
@@ -53,6 +56,7 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute

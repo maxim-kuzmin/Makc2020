@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -13,7 +15,6 @@ import {AppRootPageAdministrationResources} from './root-page-administration-res
 import {AppRootPageAdministrationService} from './root-page-administration.service';
 import {AppRootPageAdministrationState} from './root-page-administration-state';
 import {AppRootPageAdministrationStore} from './root-page-administration-store';
-import { Injectable } from '@angular/core';
 
 /** Корень. Страницы. Администрирование. Модель. */
 @Injectable()
@@ -31,6 +32,7 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
    * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageAdministrationService} appRootPageAdministration Страница "RootPageAdministration".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageAdministrationStore} appStore Хранилище состояния.
@@ -42,6 +44,7 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
     appLoggerStore: AppCoreLoggingStore,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
+    appNotification: AppCoreNotificationService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppRootPageAdministrationStore,
@@ -50,6 +53,7 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
   ) {
     super(
       appLoggerStore,
+      appNotification,
       appRoute,
       appTitle,
       extRoute
