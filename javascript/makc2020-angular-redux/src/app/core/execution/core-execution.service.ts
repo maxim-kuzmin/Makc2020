@@ -4,7 +4,6 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {AppCoreLoggingService} from '../logging/core-logging.service';
-import {AppCoreNotificationService} from '../notification/core-notification.service';
 import {AppCoreExecutionMethodValue} from './core-execution-method';
 import {AppCoreExecutionResult} from './core-execution-result';
 
@@ -13,15 +12,6 @@ import {AppCoreExecutionResult} from './core-execution-result';
   providedIn: 'root'
 })
 export class AppCoreExecutionService {
-
-  /**
-   * Конструктор.
-   * @param {AppCoreNotificationService} appNotification Извещение.
-   */
-  constructor(
-    private appNotification: AppCoreNotificationService
-  ) {
-  }
 
   /**
    * Создать наименование задания.
@@ -69,8 +59,6 @@ export class AppCoreExecutionService {
     }
 
     logger.logError(true, [message], error);
-
-    this.appNotification.showError([message]);
   }
 
   /**
@@ -108,7 +96,6 @@ export class AppCoreExecutionService {
 
     if (warningMessages && warningMessages.length > 0) {
       logger.logWarning(warningMessages);
-      this.appNotification.showInfo(warningMessages);
     }
 
     if (result.isOk) {
@@ -118,8 +105,6 @@ export class AppCoreExecutionService {
 
       if (successMessages && successMessages.length > 0) {
         logger.logSuccess(successMessages);
-
-        this.appNotification.showSuccess(successMessages);
       } else {
         logger.logDebug([`${jobName} is successful`], result);
       }
@@ -130,8 +115,6 @@ export class AppCoreExecutionService {
 
       if (errorMessages && errorMessages.length > 0) {
         logger.logError(false, errorMessages);
-
-        this.appNotification.showError(errorMessages);
       } else {
         logger.logError(false, [`${jobName} is failed`], result);
       }

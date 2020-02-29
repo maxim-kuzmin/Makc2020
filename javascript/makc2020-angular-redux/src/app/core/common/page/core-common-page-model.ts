@@ -6,9 +6,9 @@ import {filter, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
 import {AppCoreLoggingState} from '@app/core/logging/core-logging-state';
 import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 
 /** Ядро. Общее. Страница. Модель. */
 export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
@@ -94,6 +94,7 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
    * @param {any} errorData Данные ошибки.
    */
   onLogError(errorMessages: string[], errorData: any) {
+    this.appNotification.showError(errorMessages);
   }
 
   /**
@@ -101,6 +102,7 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
    * @param {string[]} successMessages Сообщения об успехах.
    */
   onLogSuccess(successMessages: string[]) {
+    this.appNotification.showSuccess(successMessages);
   }
 
   /**
@@ -108,6 +110,7 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
    * @param {string[]} warningMessages Предупреждающие сообщения.
    */
   onLogWarning(warningMessages: string[]) {
+    this.appNotification.showInfo(warningMessages);
   }
 
   /**
