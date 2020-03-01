@@ -61,10 +61,6 @@ export class AppModAuthPageRedirectPresenter extends AppCoreCommonPagePresenter<
    * @param {any} errorData
    */
   protected onLogError(errorMessages: string[], errorData: any) {
-    if (errorData && errorData.type === 'invalid_nonce_in_state') {
-      this.model.executeActionRedirectToRootPageIndex();
-    }
-
     this.hideSpinners();
 
     super.onLogError(errorMessages, errorData);

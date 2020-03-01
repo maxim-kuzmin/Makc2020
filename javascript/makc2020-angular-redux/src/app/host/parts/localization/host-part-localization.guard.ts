@@ -3,24 +3,18 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, Route, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
-import {AppHostPartAuthService} from './host-part-auth.service';
 
-/** Хост. Часть "Auth". Защитник. */
+/** Хост. Часть "Localization". Защитник. */
 @Injectable({
   providedIn: 'root'
 })
-export class AppHostPartAuthGuard implements CanActivate, CanActivateChild, CanLoad {
+export class AppHostPartLocalizationGuard implements CanActivate, CanActivateChild, CanLoad {
 
   /**
    * Конструктор.
-   * @param {AppCoreLoggingService} appLogger Регистратор.
-   * @param {AppHostPartAuthService} appAuth Аутентификация.
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
-    private appLogger: AppCoreLoggingService,
-    private appAuth: AppHostPartAuthService,
     private extRouter: Router
   ) {
   }
@@ -30,7 +24,7 @@ export class AppHostPartAuthGuard implements CanActivate, CanActivateChild, CanL
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.appAuth.tryLoginAndReturn$(this.appLogger, state.url);
+    return true;
   }
 
   /** @inheritDoc */
@@ -38,13 +32,13 @@ export class AppHostPartAuthGuard implements CanActivate, CanActivateChild, CanL
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.appAuth.tryLoginAndReturn$(this.appLogger, state.url);
+    return true;
   }
 
   /** @inheritDoc */
   canLoad(
     route: Route
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.appAuth.tryLoginAndReturn$(this.appLogger, `/${route.path}`);
+    return true;
   }
 }

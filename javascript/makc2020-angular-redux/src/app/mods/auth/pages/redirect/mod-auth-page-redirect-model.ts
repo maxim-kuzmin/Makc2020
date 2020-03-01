@@ -111,16 +111,24 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     this.extRouter.navigateByUrl(redirectUrl).catch();
   }
 
-  /** Выполнить действие "Перенаправление на стартовую страницу". */
-  executeActionRedirectToRootPageIndex() {
-    this.executeActionRedirect(this.appRootPageIndex.settings.path);
-  }
-
   /** @inheritDoc */
   onDestroy() {
     super.onDestroy();
 
     this.appStore.runActionClear();
+  }
+
+  /**
+   * @inheritDoc
+   * @param {string[]} errorMessages
+   * @param {any} errorData
+   */
+  onLogError(errorMessages: string[], errorData: any) {
+    if (errorData && errorData.type === 'invalid_nonce_in_state') {
+      this.executeActionRedirect(this.appRootPageIndex.settings.path);
+    }
+
+    super.onLogError(errorMessages, errorData);
   }
 
   /**
