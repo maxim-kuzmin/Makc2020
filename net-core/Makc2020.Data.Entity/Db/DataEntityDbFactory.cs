@@ -37,12 +37,7 @@ namespace Makc2020.Data.Entity.Db
         /// </summary>
         public DataEntityDbFactory()
         {
-            var environment = new CoreBaseEnvironment
-            {
-                BasePath = System.AppContext.BaseDirectory
-            };
-
-            Initialize(CreateConnectionString(), DataBaseSettings.Instance, environment);
+            Initialize(null, null, null);
         }
 
         /// <summary>
@@ -109,9 +104,13 @@ namespace Makc2020.Data.Entity.Db
             CoreBaseEnvironment environment
             )
         {
-            ConnectionString = connectionString;
-            DataBaseSettings = dataBaseSettings;
-            Environment = environment;
+            Environment = environment ?? new CoreBaseEnvironment
+            {
+                BasePath = System.AppContext.BaseDirectory
+            };
+
+            DataBaseSettings = dataBaseSettings ?? DataBaseSettings.Instance;
+            ConnectionString = connectionString ?? CreateConnectionString();
             Options = CreateDbContextOptions();
         }
 

@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Entity.Db;
-
 namespace Makc2020.Data.Entity
 {
     /// <summary>
