@@ -1,10 +1,15 @@
 // //Author Maxim Kuzmin//makc//
+
+import { Injectable } from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {AppCoreAuthTypeOidcJobStartInput} from '@app/core/auth/types/oidc/jobs/start/core-auth-type-oidc-job-start-input';
 import {AppCoreAuthTypeOidcJobStartService} from '@app/core/auth/types/oidc/jobs/start/core-auth-type-oidc-job-start.service';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
+import {AppCoreExecutionOptions} from '@app/core/execution/core-execution-options';
+import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
 import {AppCoreLocalizationService} from './core/localization/core-localization.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
@@ -21,9 +26,6 @@ import {AppRootPageAdministrationService} from '@app/root/pages/administration/r
 import {AppRootPageIndexService} from '@app/root/pages/index/root-page-index.service';
 import {AppResources} from './app-resources';
 import {AppService} from './app.service';
-import {AppCoreAuthTypeOidcJobStartInput} from '@app/core/auth/types/oidc/jobs/start/core-auth-type-oidc-job-start-input';
-import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
-import { Injectable } from '@angular/core';
 
 /** Приложение. Модель. */
 @Injectable()
@@ -106,9 +108,14 @@ export class AppModel extends AppCoreCommonTitlable {
         this.appNavigation.createAbsoluteUrlOfHost(this.appModAuthPageRedirect.settings.path)
       );
 
+      const options = {
+        isErrorNotificationNeeded: true
+      } as AppCoreExecutionOptions;
+
       this.appAuthTypeOidcJobStart.execute$(
         this.appLogger,
-        input
+        input,
+        options
       ).subscribe(
         this.onAuthTypeOidcJobStart
       );

@@ -126,9 +126,9 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
   onLogError(errorMessages: string[], errorData: any) {
     if (errorData && errorData.type === 'invalid_nonce_in_state') {
       this.executeActionRedirect(this.appRootPageIndex.settings.path);
+    } else {
+      super.onLogError(errorMessages, errorData);
     }
-
-    super.onLogError(errorMessages, errorData);
   }
 
   /**

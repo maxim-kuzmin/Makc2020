@@ -5,13 +5,24 @@ import {Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {AppCoreLoggingService} from '../logging/core-logging.service';
 import {AppCoreExecutionMethodValue} from './core-execution-method';
+import {AppCoreExecutionOptions} from '@app/core/execution/core-execution-options';
 import {AppCoreExecutionResult} from './core-execution-result';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 
 /** Ядро. Выполнение. Сервис. */
 @Injectable({
   providedIn: 'root'
 })
 export class AppCoreExecutionService {
+
+  /**
+   * Конструктор.
+   * @param {AppCoreNotificationService} appNotification Извещение.
+   */
+  constructor(
+    private appNotification: AppCoreNotificationService
+  ) {
+  }
 
   /**
    * Создать наименование задания.
@@ -39,13 +50,19 @@ export class AppCoreExecutionService {
    * @param {string} jobName Наименование задания.
    * @param {any} error Ошибка.
    * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionOptions} options Параметры.
    * @returns {Observable<never>} Пустой поток.
    */
   onError(
     jobName: string,
     error: any,
-    logger: AppCoreLoggingService
+    logger: AppCoreLoggingService,
+    options: AppCoreExecutionOptions = null
   ) {
+    if (!options) {
+      options = new AppCoreExecutionOptions();
+    }
+
     let message = `${jobName} is failed`;
 
     if (error instanceof HttpErrorResponse) {
@@ -58,7 +75,17 @@ export class AppCoreExecutionService {
       }
     }
 
-    logger.logError(true, [message], error);
+    const errorMessages = [message];
+
+    logger.logError(true, errorMessages, error);
+
+    const {
+      isErrorNotificationNeeded
+    } = options;
+
+    if (isErrorNotificationNeeded) {
+      this.appNotification.showError(errorMessages);
+    }
   }
 
   /**
@@ -66,14 +93,16 @@ export class AppCoreExecutionService {
    * @param {string} jobName Наименование задания.
    * @param {any} error Ошибка.
    * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionOptions} options Параметры.
    * @returns {Observable<never>} Пустой поток.
    */
   onError$(
     jobName: string,
     error: any,
-    logger: AppCoreLoggingService
+    logger: AppCoreLoggingService,
+    options: AppCoreExecutionOptions = null
   ): Observable<never> {
-    this.onError(jobName, error, logger);
+    this.onError(jobName, error, logger, options);
 
     return EMPTY;
   }
@@ -83,13 +112,19 @@ export class AppCoreExecutionService {
    * @param {string} jobName Наименование задания.
    * @param {TResult} result Результат.
    * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionOptions} options Параметры.
    * @returns {TResult} Результат.
    */
   onSuccess<TResult extends AppCoreExecutionResult>(
     jobName: string,
     result: TResult,
-    logger: AppCoreLoggingService
+    logger: AppCoreLoggingService,
+    options: AppCoreExecutionOptions = null
   ): TResult {
+    if (!options) {
+      options = new AppCoreExecutionOptions();
+    }
+
     const {
       warningMessages
     } = result;
@@ -99,24 +134,44 @@ export class AppCoreExecutionService {
     }
 
     if (result.isOk) {
-      const {
+      let {
         successMessages
       } = result;
 
       if (successMessages && successMessages.length > 0) {
         logger.logSuccess(successMessages);
       } else {
-        logger.logDebug([`${jobName} is successful`], result);
+        successMessages = [`${jobName} is successful`];
+
+        logger.logDebug(successMessages, result);
+      }
+
+      const {
+        isSuccessNotificationNeeded
+      } = options;
+
+      if (isSuccessNotificationNeeded) {
+        this.appNotification.showSuccess(successMessages);
       }
     } else {
-      const {
+      let {
         errorMessages
       } = result;
 
       if (errorMessages && errorMessages.length > 0) {
         logger.logError(false, errorMessages);
       } else {
-        logger.logError(false, [`${jobName} is failed`], result);
+        errorMessages = [`${jobName} is failed`];
+
+        logger.logError(false, errorMessages, result);
+      }
+
+      const {
+        isErrorNotificationNeeded
+      } = options;
+
+      if (isErrorNotificationNeeded) {
+        this.appNotification.showError(errorMessages);
       }
     }
 
