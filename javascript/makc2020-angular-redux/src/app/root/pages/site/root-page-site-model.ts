@@ -1,12 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -30,10 +29,9 @@ export class AppRootPageSiteModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageIndexService} appModAuthPageIndex Страница "ModAuthPageIndex".
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageContactsService} appRootPageContacts Страница "RootPageContacts".
    * @param {AppRootPageSiteService} appRootPageSite Страница "RootPageSite".
    * @param {AppHostPartRouteService} appRoute Маршрут.
@@ -43,10 +41,9 @@ export class AppRootPageSiteModel extends AppCoreCommonPageModel {
    */
   constructor(
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageIndex: AppModAuthPageIndexService,
-    appNotification: AppCoreNotificationService,
     private appRootPageContacts: AppRootPageContactsService,
     private appRootPageSite: AppRootPageSiteService,
     appRoute: AppHostPartRouteService,
@@ -55,8 +52,7 @@ export class AppRootPageSiteModel extends AppCoreCommonPageModel {
     extRoute: ActivatedRoute
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute

@@ -3,15 +3,15 @@
 import {Injectable} from '@angular/core';
 import {from, Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
-import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
-import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
-import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
-import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {
   AppCoreAuthTypeOidcJobCurrentUserGetResult,
   appCoreAuthTypeOidcJobCurrentUserGetResultCreate
 } from './core-auth-type-oidc-job-current-user-get-result';
+import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
+import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
+import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Текущий пользователь. Получение. Сервис. */
 @Injectable({
@@ -34,11 +34,11 @@ export class AppCoreAuthTypeOidcJobCurrentUserGetService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreAuthTypeOidcJobCurrentUserGetResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreAuthTypeOidcJobCurrentUserGetResult> {
     const url = 'AppCoreAuthTypeOidcService.loadUserProfile';
 
@@ -60,7 +60,7 @@ export class AppCoreAuthTypeOidcJobCurrentUserGetService {
             return this.appExecution.onSuccess<AppCoreAuthTypeOidcJobCurrentUserGetResult>(
               jobName,
               result,
-              logger
+              handler
             );
           }
         ),
@@ -68,7 +68,7 @@ export class AppCoreAuthTypeOidcJobCurrentUserGetService {
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );
@@ -80,7 +80,7 @@ export class AppCoreAuthTypeOidcJobCurrentUserGetService {
       return of(this.appExecution.onSuccess<AppCoreAuthTypeOidcJobCurrentUserGetResult>(
         jobName,
         result,
-        logger
+        handler
       ));
     }
   }

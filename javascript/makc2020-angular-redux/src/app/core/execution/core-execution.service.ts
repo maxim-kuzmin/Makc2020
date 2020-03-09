@@ -2,12 +2,11 @@
 
 import {HttpErrorResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {EMPTY, Observable} from 'rxjs';
-import {AppCoreLoggingService} from '../logging/core-logging.service';
+import {EMPTY, NEVER, Observable} from 'rxjs';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
+import {AppCoreExecutionHandler} from './core-execution-handler';
 import {AppCoreExecutionMethodValue} from './core-execution-method';
-import {AppCoreExecutionOptions} from '@app/core/execution/core-execution-options';
 import {AppCoreExecutionResult} from './core-execution-result';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 
 /** Ядро. Выполнение. Сервис. */
 @Injectable({
@@ -17,10 +16,10 @@ export class AppCoreExecutionService {
 
   /**
    * Конструктор.
-   * @param {AppCoreNotificationService} appNotification Извещение.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    */
   constructor(
-    private appNotification: AppCoreNotificationService
+    private appExceptionStore: AppCoreExceptionStore
   ) {
   }
 
@@ -49,20 +48,14 @@ export class AppCoreExecutionService {
    * Обработчик ошибки.
    * @param {string} jobName Наименование задания.
    * @param {any} error Ошибка.
-   * @param {AppCoreLoggingService} logger Регистратор.
-   * @param {AppCoreExecutionOptions} options Параметры.
-   * @returns {Observable<never>} Пустой поток.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
+   * @returns {Observable<NEVER>} Пустой поток.
    */
   onError(
     jobName: string,
     error: any,
-    logger: AppCoreLoggingService,
-    options: AppCoreExecutionOptions = null
+    handler: AppCoreExecutionHandler
   ) {
-    if (!options) {
-      options = new AppCoreExecutionOptions();
-    }
-
     let message = `${jobName} is failed`;
 
     if (error instanceof HttpErrorResponse) {
@@ -75,34 +68,24 @@ export class AppCoreExecutionService {
       }
     }
 
-    const errorMessages = [message];
+    this.appExceptionStore.runActionThrow(message, error);
 
-    logger.logError(true, errorMessages, error);
-
-    const {
-      isErrorNotificationNeeded
-    } = options;
-
-    if (isErrorNotificationNeeded) {
-      this.appNotification.showError(errorMessages);
-    }
+    handler.onException(message, error);
   }
 
   /**
    * Получить результирующий поток после обработки ошибки.
    * @param {string} jobName Наименование задания.
    * @param {any} error Ошибка.
-   * @param {AppCoreLoggingService} logger Регистратор.
-   * @param {AppCoreExecutionOptions} options Параметры.
-   * @returns {Observable<never>} Пустой поток.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
+   * @returns {Observable<NEVER>} Пустой поток.
    */
   onError$(
     jobName: string,
     error: any,
-    logger: AppCoreLoggingService,
-    options: AppCoreExecutionOptions = null
+    handler: AppCoreExecutionHandler
   ): Observable<never> {
-    this.onError(jobName, error, logger, options);
+    this.onError(jobName, error, handler);
 
     return EMPTY;
   }
@@ -111,26 +94,20 @@ export class AppCoreExecutionService {
    * Получить результат после обработки успеха.
    * @param {string} jobName Наименование задания.
    * @param {TResult} result Результат.
-   * @param {AppCoreLoggingService} logger Регистратор.
-   * @param {AppCoreExecutionOptions} options Параметры.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {TResult} Результат.
    */
   onSuccess<TResult extends AppCoreExecutionResult>(
     jobName: string,
     result: TResult,
-    logger: AppCoreLoggingService,
-    options: AppCoreExecutionOptions = null
+    handler: AppCoreExecutionHandler
   ): TResult {
-    if (!options) {
-      options = new AppCoreExecutionOptions();
-    }
-
     const {
       warningMessages
     } = result;
 
     if (warningMessages && warningMessages.length > 0) {
-      logger.logWarning(warningMessages);
+      handler.onWarning(warningMessages);
     }
 
     if (result.isOk) {
@@ -138,41 +115,21 @@ export class AppCoreExecutionService {
         successMessages
       } = result;
 
-      if (successMessages && successMessages.length > 0) {
-        logger.logSuccess(successMessages);
-      } else {
+      if (!successMessages || successMessages.length < 1) {
         successMessages = [`${jobName} is successful`];
-
-        logger.logDebug(successMessages, result);
       }
 
-      const {
-        isSuccessNotificationNeeded
-      } = options;
-
-      if (isSuccessNotificationNeeded) {
-        this.appNotification.showSuccess(successMessages);
-      }
+      handler.onSuccess(successMessages);
     } else {
       let {
         errorMessages
       } = result;
 
-      if (errorMessages && errorMessages.length > 0) {
-        logger.logError(false, errorMessages);
-      } else {
+      if (!errorMessages || errorMessages.length < 1) {
         errorMessages = [`${jobName} is failed`];
-
-        logger.logError(false, errorMessages, result);
       }
 
-      const {
-        isErrorNotificationNeeded
-      } = options;
-
-      if (isErrorNotificationNeeded) {
-        this.appNotification.showError(errorMessages);
-      }
+      handler.onError(errorMessages);
     }
 
     return result;

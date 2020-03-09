@@ -65,13 +65,13 @@ export class AppModAuthPageLogonPresenter extends AppCoreCommonPagePresenter<App
 
   /**
    * @inheritDoc
-   * @param {string[]} errorMessages
-   * @param {any} errorData
+   * @param {string} message
+   * @param {any} error
    */
-  protected onLogError(errorMessages: string[], errorData: any) {
+  protected onException(message: string, error: any) {
     this.view.hideRefreshSpinner();
 
-    super.onLogError(errorMessages, errorData);
+    super.onException(message, error);
   }
 
   /** Обработчик события отправки. */

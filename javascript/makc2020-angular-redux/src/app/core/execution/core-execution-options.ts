@@ -1,17 +1,30 @@
 // //Author Maxim Kuzmin//makc//
 
-/** Ядро. Выполнение. Параметры. */
+/** Ядро. Выполнение. Опции. */
 export class AppCoreExecutionOptions {
 
   /**
-   * Признак необходимости извещения об ошибке.
+   * Признак отключения логирования.
    * @type {boolean}
    */
-  isErrorNotificationNeeded = false;
+  isLoggingDisabled = false;
 
   /**
-   * Признак необходимости извещения об успехе.
+   * Признак отключения извещения.
    * @type {boolean}
    */
-  isSuccessNotificationNeeded = false;
+  isNotificationDisabled = false;
+
+  /**
+   * Корнировать.
+   * @returns {AppCoreExecutionOptions} Опции.
+   */
+  clone(): AppCoreExecutionOptions {
+    const result = new AppCoreExecutionOptions();
+
+    result.isLoggingDisabled = this.isLoggingDisabled;
+    result.isNotificationDisabled = this.isNotificationDisabled;
+
+    return result;
+  }
 }

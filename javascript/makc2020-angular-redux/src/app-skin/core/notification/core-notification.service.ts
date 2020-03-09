@@ -98,7 +98,7 @@ export class AppSkinCoreNotificationService extends AppCoreNotificationService {
    * @param {string[]} messages
    * @returns {AppCoreCommonDisposable}
    */
-  showWarn(messages: string[]): AppCoreCommonDisposable {
+  showWarning(messages: string[]): AppCoreCommonDisposable {
     return this.createNotificationRef('warn', messages);
   }
 

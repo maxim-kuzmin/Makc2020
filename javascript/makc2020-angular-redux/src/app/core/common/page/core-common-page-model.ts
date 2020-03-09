@@ -4,9 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
-import {AppCoreLoggingState} from '@app/core/logging/core-logging-state';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionState} from '@app/core/exception/core-exception-state';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 
@@ -26,15 +25,13 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
 
   /**
    * Конструктор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
-   * @param {AppCoreNotificationService} appNotification Извещение.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   protected constructor(
-    private appLoggerStore: AppCoreLoggingStore,
-    private appNotification: AppCoreNotificationService,
+    private appExceptionStore: AppCoreExceptionStore,
     protected appRoute: AppHostPartRouteService,
     appTitle: AppCoreTitleService,
     protected extRoute: ActivatedRoute
@@ -46,19 +43,19 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
   }
 
   /**
-   * Получить состояние регистратора.
-   * @returns {AppCoreLoggingState} Состояние регистратора.
+   * Получить состояние исключения.
+   * @returns {AppCoreExceptionState} Состояние исключения.
    */
-  getLoggerState(): AppCoreLoggingState {
-    return this.appLoggerStore.getState();
+  getExceptionState(): AppCoreExceptionState {
+    return this.appExceptionStore.getState();
   }
 
   /**
-   * Получить поток состояния регистратора.
-   * @returns {Observable<AppCoreLoggingState>} Поток состояния регистратора.
+   * Получить поток состояния исключения.
+   * @returns {Observable<AppCoreExceptionState>} Поток состояния исключения.
    */
-  getLoggerState$(): Observable<AppCoreLoggingState> {
-    return this.appLoggerStore.getState$(this.unsubscribe$);
+  getExceptionState$(): Observable<AppCoreExceptionState> {
+    return this.appExceptionStore.getState$(this.unsubscribe$);
   }
 
   /** Обработчик события после инициализации представления. */
@@ -79,38 +76,6 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
     ).subscribe(
       this.onGetPageKeyOverInit
     );
-  }
-
-  /**
-   * Обработчик события регистрации отладочного сообщения.
-   * @param {string[]} debugMessages Отладочные сообщения.
-   */
-  onLogDebug(debugMessages: string[]) {
-  }
-
-  /**
-   * Обработчик события регистрации ошибки.
-   * @param {string[]} errorMessages Сообщения об ошибках.
-   * @param {any} errorData Данные ошибки.
-   */
-  onLogError(errorMessages: string[], errorData: any) {
-    this.appNotification.showError(errorMessages);
-  }
-
-  /**
-   * Обработчик события регистрации успеха.
-   * @param {string[]} successMessages Сообщения об успехах.
-   */
-  onLogSuccess(successMessages: string[]) {
-    this.appNotification.showSuccess(successMessages);
-  }
-
-  /**
-   * Обработчик события регистрации предупреждения.
-   * @param {string[]} warningMessages Предупреждающие сообщения.
-   */
-  onLogWarning(warningMessages: string[]) {
-    this.appNotification.showInfo(warningMessages);
   }
 
   /**

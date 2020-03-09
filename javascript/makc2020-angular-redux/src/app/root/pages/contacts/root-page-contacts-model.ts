@@ -1,14 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLocalizationState} from '@app/core/localization/core-localization-state';
 import {AppCoreLocalizationStore} from '@app/core/localization/core-localization-store';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -32,9 +31,8 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLocalizationStore} appLocalizerStore Хранилище состояния локализатора.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageContactsService} appRootPageContacts Страница "RootPageContacts".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageContactsStore} appStore Хранилище состояния.
@@ -44,9 +42,8 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
   constructor(
     appLocalizer: AppCoreLocalizationService,
     private appLocalizerStore: AppCoreLocalizationStore,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
-    appNotification: AppCoreNotificationService,
     private appRootPageContacts: AppRootPageContactsService,
     appRoute: AppHostPartRouteService,
     private appStore: AppRootPageContactsStore,
@@ -54,8 +51,7 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
     extRoute: ActivatedRoute
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute

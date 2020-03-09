@@ -1,6 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreAuthTypeOidcJobStartInput} from '@app/core/auth/types/oidc/jobs/start/core-auth-type-oidc-job-start-input';
@@ -8,10 +9,12 @@ import {AppCoreAuthTypeOidcJobStartService} from '@app/core/auth/types/oidc/jobs
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreExecutionOptions} from '@app/core/execution/core-execution-options';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
 import {AppCoreLocalizationService} from './core/localization/core-localization.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppCoreTitleService} from './core/title/core-title.service';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
@@ -30,6 +33,9 @@ import {AppService} from './app.service';
 /** Приложение. Модель. */
 @Injectable()
 export class AppModel extends AppCoreCommonTitlable {
+
+  /** @type {AppCoreExecutionHandler} */
+  private readonly executionHandlerOnAuthTypeOidcJobStart = new AppCoreExecutionHandler();
 
   /** @type {Subject<boolean>} */
   private isAdminModeEnabledChanged$ = new Subject<boolean>();
@@ -55,10 +61,12 @@ export class AppModel extends AppCoreCommonTitlable {
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param appRootPageAdministration {AppRootPageAdministrationService} Страница "RootPageAdministration".
    * @param {AppCoreTitleService} appTitle Заголовок.
+   * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
     private app: AppService,
@@ -67,17 +75,19 @@ export class AppModel extends AppCoreCommonTitlable {
     private appAuthTypeOidcJobStart: AppCoreAuthTypeOidcJobStartService,
     private appAuthStore: AppHostPartAuthStore,
     private appLocalizer: AppCoreLocalizationService,
-    private appLogger: AppCoreLoggingService,
+    appLogger: AppCoreLoggingService,
     private appMenuData: AppHostPartMenuDataService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
     private appNavigation: AppCoreNavigationService,
+    appNotification: AppCoreNotificationService,
     private appRootPageIndex: AppRootPageIndexService,
     private appRoute: AppHostPartRouteService,
     private appRootPageAdministration: AppRootPageAdministrationService,
-    appTitle: AppCoreTitleService
+    appTitle: AppCoreTitleService,
+    private extRouter: Router
   ) {
     super(
       appTitle
@@ -85,6 +95,15 @@ export class AppModel extends AppCoreCommonTitlable {
 
     this.onAuthTypeOidcJobStart = this.onAuthTypeOidcJobStart.bind(this);
     this.onGetRouteData = this.onGetRouteData.bind(this);
+    this.setExceptionOptions = this.setExceptionOptions.bind(this);
+
+    this.executionHandlerOnAuthTypeOidcJobStart.funcExecuteAfterException = () => {
+      this.isAdminModeEnabledChanged$.next(false);
+    };
+
+    this.executionHandlerOnAuthTypeOidcJobStart.logger = appLogger;
+    this.executionHandlerOnAuthTypeOidcJobStart.notification = appNotification;
+    this.executionHandlerOnAuthTypeOidcJobStart.funcSetExceptionOptions = this.setExceptionOptions;
 
     this.resources = new AppResources(
       this.appLocalizer,
@@ -108,14 +127,9 @@ export class AppModel extends AppCoreCommonTitlable {
         this.appNavigation.createAbsoluteUrlOfHost(this.appModAuthPageRedirect.settings.path)
       );
 
-      const options = {
-        isErrorNotificationNeeded: true
-      } as AppCoreExecutionOptions;
-
       this.appAuthTypeOidcJobStart.execute$(
-        this.appLogger,
         input,
-        options
+        this.executionHandlerOnAuthTypeOidcJobStart
       ).subscribe(
         this.onAuthTypeOidcJobStart
       );
@@ -171,5 +185,13 @@ export class AppModel extends AppCoreCommonTitlable {
     }
 
     this.isAdminModeEnabledChanged$.next(isAdminModeEnabled);
+  }
+
+  private setExceptionOptions(options: AppCoreExecutionOptions, error: any) {
+    if (error && error.type === 'invalid_nonce_in_state') {
+      options.isNotificationDisabled = true;
+
+      this.extRouter.navigateByUrl(this.appRootPageIndex.settings.path).catch();
+    }
   }
 }

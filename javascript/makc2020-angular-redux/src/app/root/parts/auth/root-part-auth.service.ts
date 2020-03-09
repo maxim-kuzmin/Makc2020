@@ -12,8 +12,8 @@ import {AppCoreAuthTypeOidcJobLogoutService} from '@app/core/auth/types/oidc/job
 import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type-oidc-state';
 // tslint:disable-next-line:max-line-length
 import {AppCoreAuthTypeOidcJobRefreshTokenService} from '@app/core/auth/types/oidc/jobs/resresh-token/core-auth-type-oidc-job-refresh-token.service';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreExecutionResult, appCoreExecutionResultCopy} from '@app/core/execution/core-execution-result';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartAuthCommonJobLoginInput} from '@app/host/parts/auth/common/jobs/login/host-part-auth-common-job-login-input';
 import {AppHostPartAuthCommonJobRegisterInput} from '@app/host/parts/auth/common/jobs/register/host-part-auth-common-job-register-input';
@@ -50,7 +50,6 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
    * @param {AppRootPartAuthJobRefreshJwtService} appJobRefresh Задание на обновление.
    * @param {AppRootPartAuthJobRegisterService} appJobRegister Задание на регистрацию.
    * @param {AppHostPartAuthJobCurrentUserGetService} appJobCurrentUserGet Задание на получение текущего пользователя.
-   * @param {AppCoreLoggingService} appLogger Регистратор.
    * @param {AppCoreSettings} appSettings Настройки.
    * @param {Router} extRouter Маршрутизатор.
    */
@@ -67,7 +66,6 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
     private appJobRefresh: AppRootPartAuthJobRefreshJwtService,
     private appJobRegister: AppRootPartAuthJobRegisterService,
     private appJobCurrentUserGet: AppHostPartAuthJobCurrentUserGetService,
-    private appLogger: AppCoreLoggingService,
     appSettings: AppCoreSettings,
     extRouter: Router
   ) {
@@ -87,15 +85,14 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
     this.appAuthStore.runActionInit(appPageLogon.url, appPageRegister.url);
   }
 
-  /**
-   * @inheritDoc
-   * @param {AppCoreLoggingService} logger
+  /** @inheritDoc
+   * @param {AppCoreExecutionHandler} handler
    * @returns {Observable<AppCoreExecutionResult>}
    */
   loadCurrentUser$(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult> {
-    return this.appJobCurrentUserGet.execute$(this.appLogger).pipe(
+    return this.appJobCurrentUserGet.execute$(handler).pipe(
       switchMap(
         output => {
           this.appAuthStore.runActionCurrentUserSet(output.data);
@@ -110,20 +107,20 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
 
   /**
    * @inheritDoc
-   * @param {AppCoreLoggingService} logger
    * @param {AppHostPartAuthCommonJobLoginInput} input
+   * @param {AppCoreExecutionHandler} handler
    * @returns {Observable<AppCoreExecutionResult>}
    */
   login$(
-    logger: AppCoreLoggingService,
-    input: AppHostPartAuthCommonJobLoginInput
+    input: AppHostPartAuthCommonJobLoginInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult> {
-    this.logout(logger);
+    this.logout(handler);
 
-    return this.appJobLogin.execute$(logger, input).pipe(
+    return this.appJobLogin.execute$(input, handler).pipe(
       switchMap(
         output => {
-          this.loadLoginOutput(logger, output.data);
+          this.loadLoginOutput(output.data, handler);
 
           const result = appCoreExecutionResultCopy(output);
 
@@ -135,28 +132,28 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
 
   /**
    * @inheritDoc
-   * @param {AppCoreLoggingService} logger
    * @param {AppHostPartAuthCommonJobRegisterInput} input
+   * @param {AppCoreExecutionHandler} handler
    * @returns {Observable<AppHostPartAuthCommonJobRegisterResult>}
    */
   register$(
-    logger: AppCoreLoggingService,
-    input: AppHostPartAuthCommonJobRegisterInput
+    input: AppHostPartAuthCommonJobRegisterInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppHostPartAuthCommonJobRegisterResult> {
-    return this.appJobRegister.execute$(logger, input);
+    return this.appJobRegister.execute$(input, handler);
   }
 
   /**
    * @inheritDoc
-   * @param {AppCoreLoggingService} logger
    * @param {string} returnUrl
+   * @param {AppCoreExecutionHandler} handler
    * @returns {boolean}
    */
   tryLoginAndReturn$(
-    logger: AppCoreLoggingService,
-    returnUrl: string
+    returnUrl: string,
+    handler: AppCoreExecutionHandler
   ): Observable<boolean> {
-    return this.refreshAccount$(logger).pipe(
+    return this.refreshAccount$(handler).pipe(
       take(1),
       () => {
         this.appAuthStore.runActionReturnUrlSet(returnUrl);
@@ -166,7 +163,7 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
         } = this.appAuthStore.getState();
 
         if (!isLoggedIn) {
-          this.tryLogin(logger, returnUrl);
+          this.tryLogin(returnUrl, handler);
         }
 
         return of(isLoggedIn);
@@ -174,9 +171,9 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
     );
   }
 
-  /** @param {AppCoreLoggingService} logger Регистратор. */
+  /** @param {AppCoreExecutionHandler} handler */
   private refreshAccount$(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<never> {
     const {
       authType
@@ -184,17 +181,17 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
 
     switch (authType) {
       case AppCoreAuthEnumTypes.Jwt:
-        return this.refreshAccountViaJwt(logger);
+        return this.refreshAccountViaJwt(handler);
       case AppCoreAuthEnumTypes.Oidc:
-        return this.refreshAccountViaOidc();
+        return this.refreshAccountViaOidc(handler);
       default:
         return EMPTY;
     }
   }
 
-  /** @param {AppCoreLoggingService} logger Регистратор. */
+  /** @param {AppCoreExecutionHandler} handler */
   private refreshAccountViaJwt(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<never> {
     const accessToken = this.appAuthTypeJwt.getAccessToken();
 
@@ -203,14 +200,14 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
         const refreshToken = this.appAuthTypeJwt.getRefreshToken();
 
         if (refreshToken) {
-          this.logout(logger);
+          this.logout(handler);
 
           const input = new AppRootPartAuthJobRefreshJwtInput(refreshToken);
 
-          return this.appJobRefresh.execute$(this.appLogger, input).pipe(
+          return this.appJobRefresh.execute$(input, handler).pipe(
             switchMap(
               result => {
-                this.loadLoginOutput(logger, result.data);
+                this.loadLoginOutput(result.data, handler);
                 return EMPTY;
               }
             )
@@ -218,13 +215,16 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
         }
       }
 
-      return this.onRefreshToken(true);
+      return this.onRefreshToken(true, handler);
     }
 
     return EMPTY;
   }
 
-  private onRefreshAccountViaOidcGetState(state: AppCoreAuthTypeOidcState) {
+  private onRefreshAccountViaOidcGetState(
+    state: AppCoreAuthTypeOidcState,
+    handler: AppCoreExecutionHandler
+  ) {
     const {
       isInitialized
     } = state;
@@ -233,22 +233,26 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
       this.refreshAccountViaOidcUnsubscribe$.next(true);
       this.refreshAccountViaOidcUnsubscribe$.complete();
 
-      this.refreshTokenViaOidc();
+      this.refreshTokenViaOidc(handler);
     }
   }
 
   /**
    * @param {boolean} isTokenValid
-   * @returns {Observable<never>}
+   * @param {AppCoreExecutionHandler} handler
+   * @returns {Observable<NEVER>}
    */
-  private onRefreshToken(isTokenValid: boolean): Observable<never> {
+  private onRefreshToken(
+    isTokenValid: boolean,
+    handler: AppCoreExecutionHandler
+  ): Observable<never> {
     if (isTokenValid) {
       const {
         isLoggedIn
       } = this.appAuthStore.getState();
 
       if (!isLoggedIn) {
-        return this.loadCurrentUser$(this.appLogger).pipe(
+        return this.loadCurrentUser$(handler).pipe(
           switchMap(() => EMPTY)
         );
       }
@@ -257,30 +261,34 @@ export class AppRootPartAuthService extends AppHostPartAuthService {
     return EMPTY;
   }
 
-  private refreshAccountViaOidc(): Observable<never> {
+  /** @param {AppCoreExecutionHandler} handler */
+  private refreshAccountViaOidc(
+    handler: AppCoreExecutionHandler
+  ): Observable<never> {
     const {
       isInitialized
     } = this.appAuthTypeOidcStore.getState();
 
     if (isInitialized) {
-      this.refreshTokenViaOidc();
+      this.refreshTokenViaOidc(handler);
     } else {
       this.appAuthTypeOidcStore.getState$(
         this.refreshAccountViaOidcUnsubscribe$
       ).subscribe(
-        this.onRefreshAccountViaOidcGetState
+        state => this.onRefreshAccountViaOidcGetState(state, handler)
       );
     }
 
     return EMPTY;
   }
 
-  private refreshTokenViaOidc() {
-    this.appAuthTypeOidcJobRefreshToken.execute$(
-      this.appLogger
-    ).pipe(
+  /** @param {AppCoreExecutionHandler} handler */
+  private refreshTokenViaOidc(
+    handler: AppCoreExecutionHandler
+  ) {
+    this.appAuthTypeOidcJobRefreshToken.execute$(handler).pipe(
       switchMap(result => of(result.isOk))
     ).subscribe(
-      this.onRefreshToken
+      isTokenValid => this.onRefreshToken(isTokenValid, handler)
     );
   }}

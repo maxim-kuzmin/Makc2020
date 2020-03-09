@@ -3,21 +3,21 @@
 import {Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {AppCoreAuthEnumTypes} from '@app/core/auth/enums/core-auth-enum-types';
 import {AppCoreAuthTypeJwtService} from '@app/core/auth/types/jwt/core-auth-type-jwt.service';
+import {AppCoreAuthTypeOidcJobLoginInput} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login-input';
 import {AppCoreAuthTypeOidcJobLoginService} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login.service';
 import {AppCoreAuthTypeOidcJobLogoutService} from '@app/core/auth/types/oidc/jobs/logout/core-auth-type-oidc-job-logout.service';
 import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type-oidc-state';
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
-import {AppCoreAuthEnumTypes} from '@app/core/auth/enums/core-auth-enum-types';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
+import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartAuthCommonJobLoginInput} from './common/jobs/login/host-part-auth-common-job-login-input';
 import {AppHostPartAuthCommonJobLoginJwtOutput} from './common/jobs/login/jwt/host-part-auth-common-job-login-jwt-output';
 import {AppHostPartAuthCommonJobRegisterInput} from './common/jobs/register/host-part-auth-common-job-register-input';
 import {AppHostPartAuthCommonJobRegisterResult} from './common/jobs/register/host-part-auth-common-job-register-result';
 import {AppHostPartAuthStore} from './host-part-auth-store';
-import {AppCoreSettings} from '@app/core/core-settings';
-import {AppCoreAuthTypeOidcJobLoginInput} from '@app/core/auth/types/oidc/jobs/login/core-auth-type-oidc-job-login-input';
 
 /** Хост. Часть "Auth". Сервис. */
 export abstract class AppHostPartAuthService {
@@ -48,72 +48,72 @@ export abstract class AppHostPartAuthService {
 
   /**
    * Загрузить текущего пользователя.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>}
    * Поток с результатом выполнения.
    */
   abstract loadCurrentUser$(
-    logger: AppCoreLoggingService,
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult>;
 
   /**
    * Войти в систему.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppHostPartAuthCommonJobLoginInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>}
    * Поток с результатом выполнения.
    */
   abstract login$(
-    logger: AppCoreLoggingService,
-    input: AppHostPartAuthCommonJobLoginInput
+    input: AppHostPartAuthCommonJobLoginInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult>;
 
   /**
    * Выйти из системы.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    */
   logout(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ) {
     const {
       isLoggedIn
     } = this.appAuthStore.getState();
 
     if (isLoggedIn) {
-      this.removeCurrentUserAndTokens(logger);
+      this.removeCurrentUserAndTokens(handler);
     }
   }
 
   /**
    * Зарегистрировать.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppHostPartAuthCommonJobRegisterInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppHostPartAuthCommonJobRegisterResult>} Результирующий поток.
    */
   abstract register$(
-    logger: AppCoreLoggingService,
-    input: AppHostPartAuthCommonJobRegisterInput
+    input: AppHostPartAuthCommonJobRegisterInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppHostPartAuthCommonJobRegisterResult>;
 
   /**
    * Попробовать войти в систему и вернуться.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param returnUrl URL возврата.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {boolean} Признак успешного входа.
    */
   abstract tryLoginAndReturn$(
-    logger: AppCoreLoggingService,
-    returnUrl: string
+    returnUrl: string,
+    handler: AppCoreExecutionHandler
   ): Observable<boolean>;
 
   /**
    * Загрузить вывод от задания на вход в систему.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppHostPartAuthCommonJobLoginJwtOutput} output Данные.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    */
   protected loadLoginOutput(
-    logger: AppCoreLoggingService,
-    output: AppHostPartAuthCommonJobLoginJwtOutput
+    output: AppHostPartAuthCommonJobLoginJwtOutput,
+    handler: AppCoreExecutionHandler
   ) {
     if (output) {
       this.appAuthStore.runActionCurrentUserSet(output.currentUser);
@@ -126,18 +126,18 @@ export abstract class AppHostPartAuthService {
         this.appAuthTypeJwt.setRefreshToken(output.refreshToken);
       }
     } else {
-      this.removeCurrentUserAndTokens(logger);
+      this.removeCurrentUserAndTokens(handler);
     }
   }
 
   /**
    * Попробовать войти в систему.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {string} returnUrl URL возврата.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    */
   protected tryLogin(
-    logger: AppCoreLoggingService,
-    returnUrl: string
+    returnUrl: string,
+    handler: AppCoreExecutionHandler
   ) {
     const {
       authType
@@ -157,15 +157,15 @@ export abstract class AppHostPartAuthService {
       case AppCoreAuthEnumTypes.Oidc: {
         const input = new AppCoreAuthTypeOidcJobLoginInput(returnUrl);
 
-        this.appAuthTypeOidcJobLogin.execute(logger, input);
+        this.appAuthTypeOidcJobLogin.execute(input, handler);
       }
         break;
     }
   }
 
-  /** @param {AppCoreLoggingService} logger Регистратор. */
+  /** @param {AppCoreExecutionHandler} handler */
   private removeCurrentUserAndTokens(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ) {
     this.appAuthStore.runActionCurrentUserSet();
 
@@ -178,7 +178,7 @@ export abstract class AppHostPartAuthService {
         this.removeCurrentUserAndTokensViaJwt();
         break;
       case AppCoreAuthEnumTypes.Oidc:
-        this.removeCurrentUserAndTokensViaOidc(logger);
+        this.removeCurrentUserAndTokensViaOidc(handler);
         break;
     }
   }
@@ -194,13 +194,15 @@ export abstract class AppHostPartAuthService {
     this.extRouter.navigate([logonUrl]).catch();
   }
 
-  /** @param {AppCoreLoggingService} logger Регистратор. */
-  private removeCurrentUserAndTokensViaOidc(logger: AppCoreLoggingService) {
+  /** @param {AppCoreExecutionHandler} handler */
+  private removeCurrentUserAndTokensViaOidc(
+    handler: AppCoreExecutionHandler
+  ) {
     this.appAuthTypeOidcStore.getState$(
       this.removeCurrentUserAndTokensViaOidcUnsubscribe$
     ).pipe(
       switchMap(state => of({
-        logger,
+        handler,
         state
       }))
     ).subscribe(
@@ -209,12 +211,12 @@ export abstract class AppHostPartAuthService {
   }
 
   /** @param {
-      logger: AppCoreLoggingService,
+      handler: AppCoreExecutionHandler,
       state: AppCoreAuthTypeOidcState
     } input */
   private onRemoveCurrentUserAndTokensViaOidcGetState(
     input: {
-      logger: AppCoreLoggingService,
+      handler: AppCoreExecutionHandler,
       state: AppCoreAuthTypeOidcState
     }
   ) {
@@ -231,10 +233,10 @@ export abstract class AppHostPartAuthService {
       this.removeCurrentUserAndTokensViaOidcUnsubscribe$.complete();
 
       const {
-        logger
+        handler
       } = input;
 
-      this.appAuthTypeOidcJobLogout.execute(logger);
+      this.appAuthTypeOidcJobLogout.execute(handler);
     }
   }
 }

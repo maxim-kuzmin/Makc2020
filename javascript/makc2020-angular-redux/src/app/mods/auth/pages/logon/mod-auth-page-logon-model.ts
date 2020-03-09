@@ -1,13 +1,14 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
@@ -29,6 +30,9 @@ import {AppModAuthPageLogonSettingErrors} from './settings/mod-auth-page-logon-s
 @Injectable()
 export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
 
+  /** @type {AppCoreExecutionHandler} */
+  private readonly executionHandlerOnLogout = new AppCoreExecutionHandler();
+
   /**
    * Ресурсы.
    * @type {AppModAuthPageLogonResources}
@@ -41,7 +45,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingService} appLogger Регистратор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
@@ -57,8 +61,8 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
     private appAuth: AppHostPartAuthService,
     private appAuthStore: AppHostPartAuthStore,
     appLocalizer: AppCoreLocalizationService,
-    private appLogger: AppCoreLoggingService,
-    appLoggerStore: AppCoreLoggingStore,
+    appLogger: AppCoreLoggingService,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
@@ -71,12 +75,14 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
     private extRouter: Router
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute
     );
+
+    this.executionHandlerOnLogout.logger = appLogger;
+    this.executionHandlerOnLogout.notification = appNotification;
 
     this.resources = new AppModAuthPageLogonResources(
       appLocalizer,
@@ -143,7 +149,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
 
   /** Выполнить действие "Выход из системы". */
   executeActionLogout() {
-    this.appAuth.logout(this.appLogger);
+    this.appAuth.logout(this.executionHandlerOnLogout);
 
     const {
       currentUser,

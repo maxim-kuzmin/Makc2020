@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
@@ -8,8 +8,8 @@ import {filter, switchMap, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
@@ -25,7 +25,6 @@ import {AppModDummyMainPageItemParameters} from './mod-dummy-main-page-item-para
 import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
 import {AppModDummyMainPageItemStore} from './mod-dummy-main-page-item-store';
 import {appModDummyMainPageItemConfigIndex} from './mod-dummy-main-page-item-config';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
 
 /** Мод "DummyMain". Страницы. Элемент. Модель. */
 @Injectable()
@@ -50,12 +49,11 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppCoreDialogService} appDialog Диалог.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModDummyMainPageItemStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -66,12 +64,11 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
   constructor(
     public appDialog: AppCoreDialogService,
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
     private appNavigation: AppCoreNavigationService,
-    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModDummyMainPageItemStore,
     appTitle: AppCoreTitleService,
@@ -80,8 +77,7 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
     private extRouter: Router
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute
@@ -257,7 +253,8 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
           this.unsubscribe$
         );
 
-        this.titleItemsCount = 2;      }
+        this.titleItemsCount = 2;
+      }
     }
   }
 

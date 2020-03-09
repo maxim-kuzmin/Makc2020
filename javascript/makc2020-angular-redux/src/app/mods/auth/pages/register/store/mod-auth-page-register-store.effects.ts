@@ -5,7 +5,9 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
+import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
 import {AppHostPartAuthService} from '@app/host/parts/auth/host-part-auth.service';
 import {AppModAuthPageRegisterEnumActions} from '../enums/mod-auth-page-register-enum-actions';
 import {AppModAuthPageRegisterStoreActionSaveSuccess} from './actions/mod-auth-page-register-store-action-save-success';
@@ -14,6 +16,9 @@ import {AppModAuthPageRegisterStoreActions} from './mod-auth-page-register-store
 /** Мод "Auth". Страницы. Вход в систему. Хранилище состояния. Эффекты. */
 @Injectable()
 export class AppModAuthPageRegisterStoreEffects {
+
+  /** @type {AppCoreExecutionHandler} */
+  private readonly executionHandlerOnSave = new AppCoreExecutionHandler();
 
   /**
    * Сохранение.
@@ -25,8 +30,8 @@ export class AppModAuthPageRegisterStoreEffects {
     switchMap(
       action =>
         this.appAuth.register$(
-          this.appLogger,
-          action.jobRegisterInput
+          action.jobRegisterInput,
+          this.executionHandlerOnSave
         ).pipe(
           map(
             result =>
@@ -40,11 +45,17 @@ export class AppModAuthPageRegisterStoreEffects {
    * Конструктор.
    * @param {AppHostPartAuthService} appAuth Аутентификация.
    * @param {AppCoreLoggingService} appLogger Регистратор.
+   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {Actions<AppModAuthPageRegisterStoreActions>} extActions$ Поток действий.
    */
   constructor(
     private appAuth: AppHostPartAuthService,
-    private appLogger: AppCoreLoggingService,
+    appLogger: AppCoreLoggingService,
+    appNotification: AppCoreNotificationService,
     private extActions$: Actions<AppModAuthPageRegisterStoreActions>
-  ) { }
+  ) {
+    this.executionHandlerOnSave.logger = appLogger;
+    this.executionHandlerOnSave.notification = appNotification;
+    this.executionHandlerOnSave.enableNotificationOnAll();
+  }
 }

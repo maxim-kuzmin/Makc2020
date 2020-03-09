@@ -7,9 +7,8 @@ import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method'
 import {AppCoreExecutionResult, appCoreExecutionResultCreate} from '@app/core/execution/core-execution-result';
 import {AppCoreAuthTypeOidcJobStartInput} from './core-auth-type-oidc-job-start-input';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
-import {AppCoreExecutionOptions} from '@app/core/execution/core-execution-options';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Запуск. Сервис. */
 @Injectable({
@@ -30,15 +29,13 @@ export class AppCoreAuthTypeOidcJobStartService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppCoreAuthTypeOidcJobStartInput} input Ввод.
-   * @param {AppCoreExecutionOptions} options Параметры.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService,
     input: AppCoreAuthTypeOidcJobStartInput,
-    options: AppCoreExecutionOptions
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult> {
     const url = 'AppCoreAuthTypeOidcService.start';
 
@@ -54,16 +51,14 @@ export class AppCoreAuthTypeOidcJobStartService {
         return this.appExecution.onSuccess(
           jobName,
           result,
-          logger,
-          options
+          handler
         );
       }),
       catchError(
         error => this.appExecution.onError$(
           jobName,
           error,
-          logger,
-          options
+          handler
         )
       )
     );

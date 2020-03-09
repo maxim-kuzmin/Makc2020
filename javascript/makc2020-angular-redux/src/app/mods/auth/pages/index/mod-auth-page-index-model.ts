@@ -1,12 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -30,12 +29,11 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageIndexService} appModAuthPageIndex Страница "ModAuthPageIndex".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageIndexStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -43,20 +41,18 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
    */
   constructor(
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageIndex: AppModAuthPageIndexService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
-    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageIndexStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute

@@ -1,10 +1,10 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
-import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Выход из системы. Сервис. */
 @Injectable({
@@ -25,10 +25,10 @@ export class AppCoreAuthTypeOidcJobLogoutService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    */
   execute(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ) {
     const url = 'AppCoreAuthTypeOidcService.logout';
 
@@ -40,7 +40,7 @@ export class AppCoreAuthTypeOidcJobLogoutService {
       this.appExecution.onError(
         jobName,
         error,
-        logger
+        handler
       );
     }
   }

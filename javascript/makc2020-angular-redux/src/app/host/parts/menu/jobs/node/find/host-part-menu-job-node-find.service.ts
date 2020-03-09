@@ -3,9 +3,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppHostPartMenuJobNodeFindResult} from './host-part-menu-job-node-find-result';
 import {AppHostPartMenuJobNodeFindInput} from './host-part-menu-job-node-find-input';
 import {AppHostPartMenuDataService} from '@app/host/parts/menu/data/host-part-menu-data.service';
@@ -29,13 +29,13 @@ export class AppHostPartMenuJobNodeFindService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppHostPartMenuJobNodeFindInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppHostPartMenuJobNodeFindResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService,
-    input: AppHostPartMenuJobNodeFindInput
+    input: AppHostPartMenuJobNodeFindInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppHostPartMenuJobNodeFindResult> {
     const jobName = this.appExecution.createJobName(
       appCoreExecutionMethod.get,
@@ -49,14 +49,14 @@ export class AppHostPartMenuJobNodeFindService {
           result => this.appExecution.onSuccess<AppHostPartMenuJobNodeFindResult>(
             jobName,
             result,
-            logger
+            handler
           )
         ),
         catchError(
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );

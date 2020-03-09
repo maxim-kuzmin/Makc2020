@@ -3,14 +3,14 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 // tslint:disable-next-line:max-line-length
 import {AppCoreAuthTypeOidcJobCurrentUserGetService} from '@app/core/auth/types/oidc/jobs/current-user/get/core-auth-type-oidc-job-current-user-get.service';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppHostPartAuthUser} from '@app/host/parts/auth/host-part-auth-user';
 // tslint:disable-next-line:max-line-length
@@ -47,18 +47,18 @@ export class AppHostPartAuthJobCurrentUserGetService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppHostPartAuthJobCurrentUserGetResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<AppHostPartAuthJobCurrentUserGetResult> {
     if (this.appAuthTypeOidc.isEnabled) {
       const url = 'AppCoreAuthTypeOidcJobCurrentUserGetService.execute$';
 
       const jobName = this.appExecution.createJobName(appCoreExecutionMethod.get, url);
 
-      return this.appAuthTypeOidcJobCurrentUserGet.execute$(logger).pipe(
+      return this.appAuthTypeOidcJobCurrentUserGet.execute$(handler).pipe(
         map(
           output => {
             const result = appHostAuthJobCurrentUserGetResultCreate();
@@ -72,7 +72,7 @@ export class AppHostPartAuthJobCurrentUserGetService {
             return this.appExecution.onSuccess<AppHostPartAuthJobCurrentUserGetResult>(
               jobName,
               result,
-              logger
+              handler
             );
           }
         ),
@@ -80,7 +80,7 @@ export class AppHostPartAuthJobCurrentUserGetService {
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );
@@ -95,14 +95,14 @@ export class AppHostPartAuthJobCurrentUserGetService {
             result => this.appExecution.onSuccess<AppHostPartAuthJobCurrentUserGetResult>(
               jobName,
               result,
-              logger
+              handler
             )
           ),
           catchError(
             error => this.appExecution.onError$(
               jobName,
               error,
-              logger
+              handler
             )
           )
         );

@@ -1,8 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
-import {appCoreLoggingEntryKind, AppCoreLoggingEntryKindValue} from '@app/core/logging/core-logging-entry-kind';
-import {AppCoreLoggingDefault} from '@app/core/logging/core-logging-default';
 import {Inject} from '@angular/core';
+import {AppCoreLoggingDefault} from '@app/core/logging/core-logging-default';
+import {appCoreLoggingEntryKind, AppCoreLoggingEntryKindValue} from '@app/core/logging/core-logging-entry-kind';
 import {appBaseDiTokenWindow} from '../base-di';
 
 /** Основа. Логирование. Умолчание. */
@@ -22,9 +22,9 @@ export class AppBaseLoggingDefault extends AppCoreLoggingDefault {
    * @inheritDoc
    * @param {string} entryKind Вид записи.
    * @param {string} message Сообщение.
-   * @param {any} data Данные.
+   * @param {?any} data Данные.
    */
-  log(entryKind: AppCoreLoggingEntryKindValue, message: string, data: any) {
+  log(entryKind: AppCoreLoggingEntryKindValue, message: string, data?: any) {
     /** @type {Function} */
     let func;
 

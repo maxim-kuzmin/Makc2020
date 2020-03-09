@@ -1,12 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -28,9 +27,8 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageErrorService} appRootPageError Страница "RootPageError".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageErrorStore} appStore Хранилище состояния.
@@ -39,9 +37,8 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
    */
   constructor(
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
-    appNotification: AppCoreNotificationService,
     private appRootPageError: AppRootPageErrorService,
     appRoute: AppHostPartRouteService,
     private appStore: AppRootPageErrorStore,
@@ -49,8 +46,7 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
     extRoute: ActivatedRoute
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute

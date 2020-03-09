@@ -1,11 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
-import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {Observable} from 'rxjs';
-import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {catchError, map} from 'rxjs/operators';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
+import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {
@@ -35,13 +35,13 @@ export class AppHostLayoutFooterJobContentLoadService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppHostLayoutFooterJobContentLoadInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppHostLayoutFooterJobContentLoadResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService,
-    input: AppHostLayoutFooterJobContentLoadInput
+    input: AppHostLayoutFooterJobContentLoadInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppHostLayoutFooterJobContentLoadResult> {
     const url = this.appNavigation.createAbsoluteUrlOfHost(
       `assets/host/layout/footer/content/asset-host-layout-footer.content.${input.languageKey}.html`
@@ -65,7 +65,7 @@ export class AppHostLayoutFooterJobContentLoadService {
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );

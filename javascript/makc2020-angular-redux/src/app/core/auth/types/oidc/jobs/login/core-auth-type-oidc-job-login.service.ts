@@ -1,11 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
-import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
-import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
-import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreAuthTypeOidcJobLoginInput} from './core-auth-type-oidc-job-login-input';
+import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
+import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
+import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Вход в систему. Сервис. */
 @Injectable({
@@ -26,12 +26,12 @@ export class AppCoreAuthTypeOidcJobLoginService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppCoreAuthTypeOidcJobLoginInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    */
   execute(
-    logger: AppCoreLoggingService,
-    input: AppCoreAuthTypeOidcJobLoginInput
+    input: AppCoreAuthTypeOidcJobLoginInput,
+    handler: AppCoreExecutionHandler
   ) {
     const url = 'AppCoreAuthTypeOidcService.login';
 
@@ -43,7 +43,7 @@ export class AppCoreAuthTypeOidcJobLoginService {
       this.appExecution.onError(
         jobName,
         error,
-        logger
+        handler
       );
     }
   }

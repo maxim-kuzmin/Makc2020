@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
@@ -8,8 +8,7 @@ import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
@@ -17,7 +16,6 @@ import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.servic
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModAuthPageLogonService} from '@app/mods/auth/pages/logon/mod-auth-page-logon.service';
 import {AppModAuthPageRegisterService} from '@app/mods/auth/pages/register/mod-auth-page-register.service';
-import {AppRootPageIndexService} from '@app/root/pages/index/root-page-index.service';
 import {AppModAuthPageRedirectResources} from './mod-auth-page-redirect-resources';
 import {AppModAuthPageRedirectService} from './mod-auth-page-redirect.service';
 import {AppModAuthPageRedirectState} from './mod-auth-page-redirect-state';
@@ -36,7 +34,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreAuthTypeOidcService} appAuthTypeOidc Аутентификация типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации типа OIDC.
@@ -44,8 +42,6 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRegisterService} appModAuthPageRegister Страница "ModAuthPageRegister".
-   * @param {AppCoreNotificationService} appNotification Извещение.
-   * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModAuthPageRedirectStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -54,7 +50,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    */
   constructor(
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appAuthStore: AppHostPartAuthStore,
     private appAuthTypeOidc: AppCoreAuthTypeOidcService,
     private appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
@@ -62,8 +58,6 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRegister: AppModAuthPageRegisterService,
-    appNotification: AppCoreNotificationService,
-    private appRootPageIndex: AppRootPageIndexService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModAuthPageRedirectStore,
     appTitle: AppCoreTitleService,
@@ -71,8 +65,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     private extRouter: Router
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute
@@ -116,19 +109,6 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     super.onDestroy();
 
     this.appStore.runActionClear();
-  }
-
-  /**
-   * @inheritDoc
-   * @param {string[]} errorMessages
-   * @param {any} errorData
-   */
-  onLogError(errorMessages: string[], errorData: any) {
-    if (errorData && errorData.type === 'invalid_nonce_in_state') {
-      this.executeActionRedirect(this.appRootPageIndex.settings.path);
-    } else {
-      super.onLogError(errorMessages, errorData);
-    }
   }
 
   /**

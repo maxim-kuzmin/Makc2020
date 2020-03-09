@@ -3,10 +3,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppModDummyMainJobItemGetOutput} from '../get/mod-dummy-main-job-item-get-output';
 import {AppModDummyMainJobItemGetResult} from '../get/mod-dummy-main-job-item-get-result';
@@ -27,17 +27,18 @@ export class AppModDummyMainJobItemUpdateService {
     private appExecution: AppCoreExecutionService,
     private appHttp: AppCoreHttpService,
     private appNavigation: AppCoreNavigationService
-  ) { }
+  ) {
+  }
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppModDummyMainJobItemGetOutput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppModDummyMainJobItemGetResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService,
-    input: AppModDummyMainJobItemGetOutput
+    input: AppModDummyMainJobItemGetOutput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppModDummyMainJobItemGetResult> {
     const url = this.appNavigation.createAbsoluteUrlOfApi('dummy-main/item');
 
@@ -46,17 +47,17 @@ export class AppModDummyMainJobItemUpdateService {
     return this.appHttp.put<AppModDummyMainJobItemGetResult>(url, input)
       .pipe(
         map(
-        result => this.appExecution.onSuccess<AppModDummyMainJobItemGetResult>(
+          result => this.appExecution.onSuccess<AppModDummyMainJobItemGetResult>(
             jobName,
             result,
-            logger
+            handler
           )
         ),
         catchError(
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );

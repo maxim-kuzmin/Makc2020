@@ -3,10 +3,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppModDummyMainJobItemGetInput} from './mod-dummy-main-job-item-get-input';
 import {AppModDummyMainJobItemGetResult} from './mod-dummy-main-job-item-get-result';
@@ -27,17 +27,18 @@ export class AppModDummyMainJobItemGetService {
     private appExecution: AppCoreExecutionService,
     private appHttp: AppCoreHttpService,
     private appNavigation: AppCoreNavigationService
-  ) { }
+  ) {
+  }
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
    * @param {AppModDummyMainJobItemGetInput} input Ввод.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppModDummyMainJobItemGetResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService,
-    input: AppModDummyMainJobItemGetInput
+    input: AppModDummyMainJobItemGetInput,
+    handler: AppCoreExecutionHandler
   ): Observable<AppModDummyMainJobItemGetResult> {
     const url = this.appNavigation.createAbsoluteUrlOfApi('dummy-main/item');
 
@@ -49,14 +50,14 @@ export class AppModDummyMainJobItemGetService {
           result => this.appExecution.onSuccess<AppModDummyMainJobItemGetResult>(
             jobName,
             result,
-            logger
+            handler
           )
         ),
         catchError(
           error => this.appExecution.onError$(
             jobName,
             error,
-            logger
+            handler
           )
         )
       );

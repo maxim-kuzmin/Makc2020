@@ -3,11 +3,11 @@
 import {Injectable} from '@angular/core';
 import {EMPTY, from, Observable, of} from 'rxjs';
 import {catchError, map, take} from 'rxjs/operators';
+import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
+import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionResult, appCoreExecutionResultCreate} from '@app/core/execution/core-execution-result';
-import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
-import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 
 /** Ядро. Аутентификация. Типы. OIDC. Задания. Освежение токена. Сервис. */
 @Injectable({
@@ -28,11 +28,11 @@ export class AppCoreAuthTypeOidcJobRefreshTokenService {
 
   /**
    * Выполнить.
-   * @param {AppCoreLoggingService} logger Регистратор.
+   * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>} Результирующий поток.
    */
   execute$(
-    logger: AppCoreLoggingService
+    handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult> {
     if (this.appAuthTypeOidc.hasValidAccessToken()) {
       const result = appCoreExecutionResultCreate();
@@ -52,7 +52,11 @@ export class AppCoreAuthTypeOidcJobRefreshTokenService {
 
           result.isOk = this.appAuthTypeOidc.hasValidAccessToken();
 
-          return result;
+          return this.appExecution.onSuccess(
+            jobName,
+            result,
+            handler
+          );
         }),
         catchError(
           error => {
@@ -63,7 +67,7 @@ export class AppCoreAuthTypeOidcJobRefreshTokenService {
             return this.appExecution.onError$(
               jobName,
               error,
-              logger
+              handler
             );
           }
         )

@@ -1,12 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
-import {AppCoreLoggingStore} from '@app/core/logging/core-logging-store';
-import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
+import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
@@ -31,12 +30,11 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
-   * @param {AppCoreLoggingStore} appLoggerStore Хранилище состояния регистратора.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
-   * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppModDummyMainPageIndexStore} appStore Хранилище состояния.
    * @param {AppCoreTitleService} appTitle Заголовок.
@@ -44,20 +42,18 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
    */
   constructor(
     appLocalizer: AppCoreLocalizationService,
-    appLoggerStore: AppCoreLoggingStore,
+    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
-    appNotification: AppCoreNotificationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppModDummyMainPageIndexStore,
     appTitle: AppCoreTitleService,
     extRoute: ActivatedRoute
   ) {
     super(
-      appLoggerStore,
-      appNotification,
+      appExceptionStore,
       appRoute,
       appTitle,
       extRoute

@@ -6,30 +6,30 @@ import {AppCoreCommonDisposable} from '../common/core-common-disposable';
 export abstract class AppCoreNotificationService {
 
   /**
-   * Показать сообщения об ошибках.
+   * Показать ошибку.
    * @param {string[]} messages Сообщения.
    * @returns {AppCoreCommonDisposable} То, что позволит удалить показанное.
    */
   abstract showError(messages: string[]): AppCoreCommonDisposable;
 
   /**
-   * Показать информационные сообщения.
+   * Показать информацию.
    * @param {string[]} messages Сообщения.
    * @returns {AppCoreCommonDisposable} То, что позволит удалить показанное.
    */
   abstract showInfo(messages: string[]): AppCoreCommonDisposable;
 
   /**
-   * Показать сообщения об успехе.
+   * Показать успех.
    * @param {string[]} messages Сообщения.
    * @returns {AppCoreCommonDisposable} То, что позволит удалить показанное.
    */
   abstract showSuccess(messages: string[]): AppCoreCommonDisposable;
 
   /**
-   * Показать предупреждающие сообщения.
+   * Показать предупреждение.
    * @param {string[]} messages Сообщения.
    * @returns {AppCoreCommonDisposable} То, что позволит удалить показанное.
    */
-  abstract showWarn(messages: string[]): AppCoreCommonDisposable;
+  abstract showWarning(messages: string[]): AppCoreCommonDisposable;
 }
