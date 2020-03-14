@@ -2,7 +2,7 @@
 
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Objects;
-using Makc2020.Data.Entity.Schema;
+using Makc2020.Data.Entity.Schemas;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

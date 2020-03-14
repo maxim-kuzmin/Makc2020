@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq;
 
-namespace Makc2020.Data.Entity.Schema
+namespace Makc2020.Data.Entity.Schemas
 {
     /// <summary>
     /// Данные. Entity Framework. Схемы. Сущность "DummyMain".

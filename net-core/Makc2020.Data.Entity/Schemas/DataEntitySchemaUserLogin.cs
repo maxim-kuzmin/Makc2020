@@ -5,7 +5,7 @@ using Makc2020.Data.Entity.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Makc2020.Data.Entity.Schema
+namespace Makc2020.Data.Entity.Schemas
 {
     /// <summary>
     /// Данные. Entity Framework. Схемы. Сущность "UserLogin".

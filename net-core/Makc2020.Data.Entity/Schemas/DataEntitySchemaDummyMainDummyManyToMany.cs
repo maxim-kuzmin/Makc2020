@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Makc2020.Data.Entity.Schema
+namespace Makc2020.Data.Entity.Schemas
 {
     /// <summary>
     /// Данные. Entity Framework. Схемы. Сущность "DummyMainDummyManyToMany".
