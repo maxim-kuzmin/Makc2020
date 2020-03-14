@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EffectsModule} from '@ngrx/effects';
-import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {StoreRouterConnectingModule, DefaultRouterStateSerializer} from '@ngrx/router-store';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -46,7 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
     OAuthModule.forRoot(appCoreConfigAuthTypeOidcModule),
     StoreModule.forRoot(appCoreStoreReducers),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     TranslateModule.forRoot({
       loader: {
