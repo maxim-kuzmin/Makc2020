@@ -37,10 +37,10 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.ParentId);
             builder.Property(x => x.ChildCount).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.DescendantCount).IsRequired().HasDefaultValue(0);
+            builder.Property(x => x.ObjectDummyMainId).IsRequired().HasColumnName(setting.DbColumnForDummyMainId);
 
-            builder.Property(x => x.ObjectDummyMainId)
-                .IsRequired()
-                .HasColumnName(setting.DbColumnForDummyMainId);
+            builder.HasIndex(x => new { x.Id, x.ParentId }).IsUnique().HasName(setting.DbUniqueIndexForIdAndParentId);
+            builder.HasIndex(x => x.ObjectDummyMainId).HasName(setting.DbIndexForDummyMainId);
 
             builder.HasOne(x => x.ObjectDummyMain)
                 .WithMany(x => x.ObjectsDummyTree)
@@ -51,13 +51,6 @@ namespace Makc2020.Data.Entity.Schemas
                 .WithMany(x => x.ObjectsDummyTreeChild)
                 .HasForeignKey(x => x.ParentId)
                 .HasConstraintName(setting.DbForeignKeyToParentDummyTree);
-
-            builder.HasIndex(x => new { x.Id, x.ParentId })
-                .IsUnique()
-                .HasName(setting.DbUniqueIndexForIdAndParentId);
-
-            builder.HasIndex(x => x.ObjectDummyMainId)
-                .HasName(setting.DbIndexForDummyMainId);
         }
 
         #endregion Public methods

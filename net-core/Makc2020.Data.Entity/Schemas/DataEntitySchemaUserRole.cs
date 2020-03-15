@@ -33,13 +33,10 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => new { x.UserId, x.RoleId }).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.UserId)
-                .IsRequired()
-                .HasColumnName(setting.DbColumnForUserId);
+            builder.Property(x => x.UserId).IsRequired().HasColumnName(setting.DbColumnForUserId);
+            builder.Property(x => x.RoleId).IsRequired().HasColumnName(setting.DbColumnForRoleId);
 
-            builder.Property(x => x.RoleId)
-                .IsRequired()
-                .HasColumnName(setting.DbColumnForRoleId);
+            builder.HasIndex(x => x.RoleId).HasName(setting.DbIndexForRoleId);
 
             builder.HasOne(x => x.ObjectUser)
                 .WithMany(x => x.ObjectsUserRole)
@@ -49,10 +46,7 @@ namespace Makc2020.Data.Entity.Schemas
             builder.HasOne(x => x.ObjectRole)
                 .WithMany(x => x.ObjectsUserRole)
                 .HasForeignKey(x => x.RoleId)
-                .HasConstraintName(setting.DbForeignKeyToRole);
-
-            builder.HasIndex(x => x.RoleId)
-                .HasName(setting.DbIndexForRoleId);
+                .HasConstraintName(setting.DbForeignKeyToRole);            
         }
 
         #endregion Public methods

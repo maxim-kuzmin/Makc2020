@@ -33,9 +33,7 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);            
 
-            builder.HasIndex(x => x.RoleId)
-                .IsUnique()
-                .HasName(setting.DbIndexForRoleId);
+            builder.HasIndex(x => x.RoleId).IsUnique().HasName(setting.DbIndexForRoleId);
 
             builder.HasOne(x => x.ObjectRole)
                 .WithMany(x => x.ObjectsRoleClaim)

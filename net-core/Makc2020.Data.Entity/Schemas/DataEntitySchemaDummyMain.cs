@@ -51,14 +51,9 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.PropInt64Nullable);
             builder.Property(x => x.PropString).IsRequired().IsUnicode();
             builder.Property(x => x.PropStringNullable).IsUnicode();
+            builder.Property(x => x.ObjectDummyOneToManyId).IsRequired().HasColumnName(setting.DbColumnForDummyOneToManyId);
 
-            builder.Property(x => x.ObjectDummyOneToManyId)
-                .IsRequired()
-                .HasColumnName(setting.DbColumnForDummyOneToManyId);
-
-            builder.HasIndex(x => x.Name)
-                .IsUnique()
-                .HasName(setting.DbUniqueIndexForName);
+            builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
 
             builder.HasOne(x => x.ObjectDummyOneToMany)
                 .WithMany(x => x.ObjectsDummyMain)
