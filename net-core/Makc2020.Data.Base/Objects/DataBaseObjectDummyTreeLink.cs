@@ -3,9 +3,9 @@
 namespace Makc2020.Data.Base.Objects
 {
     /// <summary>
-    /// Данные. Основа. Объекты. Сущность "DummyTree".
+    /// Данные. Основа. Объекты. Сущность "DummyTreeLink".
     /// </summary>
-    public class DataBaseObjectDummyTree
+    public class DataBaseObjectDummyTreeLink
     {
         #region Properties
 
@@ -15,24 +15,9 @@ namespace Makc2020.Data.Base.Objects
         public long Id { get; set; }
 
         /// <summary>
-        /// Имя.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Идентификатор родительского узла.
         /// </summary>
-        public long? ParentId { get; set; }
-
-        /// <summary>
-        /// Число дочерних узлов.
-        /// </summary>
-        public long ChildCount { get; set; }
-
-        /// <summary>
-        /// Число узлов-потомков.
-        /// </summary>
-        public long DescendantCount { get; set; }
+        public long ParentId { get; set; }
 
         /// <summary>
         /// Уровень узла в дереве.

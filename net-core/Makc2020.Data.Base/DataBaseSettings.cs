@@ -55,6 +55,11 @@ namespace Makc2020.Data.Base
         public DataBaseSettingDummyTree DummyTree { get; private set; }
 
         /// <summary>
+        /// Сущность "DummyTreeLink".
+        /// </summary>
+        public DataBaseSettingDummyTreeLink DummyTreeLink { get; private set; }
+
+        /// <summary>
         /// Сущность "Role".
         /// </summary>
         public DataBaseSettingRole Role { get; private set; }
@@ -100,6 +105,7 @@ namespace Makc2020.Data.Base
             DummyManyToMany = new DataBaseSettingDummyManyToMany();
             DummyOneToMany = new DataBaseSettingDummyOneToMany();
             DummyTree = new DataBaseSettingDummyTree();
+            DummyTreeLink = new DataBaseSettingDummyTreeLink();
             Role = new DataBaseSettingRole();
             RoleClaim = new DataBaseSettingRoleClaim();
             User = new DataBaseSettingUser();

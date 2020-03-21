@@ -5,7 +5,7 @@ namespace Makc2020.Data.Base.Objects
     /// <summary>
     /// Данные. Основа. Объекты. Сущность "DummyOneToMany".
     /// </summary>
-    public partial class DataBaseObjectDummyOneToMany
+    public class DataBaseObjectDummyOneToMany
     {
         #region Properties
 

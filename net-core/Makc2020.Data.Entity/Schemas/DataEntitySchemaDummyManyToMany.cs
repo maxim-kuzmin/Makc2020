@@ -35,7 +35,7 @@ namespace Makc2020.Data.Entity.Schemas
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Name).IsRequired().IsFixedLength(false).IsUnicode().HasMaxLength(50);
+            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(50);
 
             builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
         }

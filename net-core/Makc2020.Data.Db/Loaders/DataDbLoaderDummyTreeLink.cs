@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 namespace Makc2020.Data.Db.Loaders
 {
     /// <summary>
-    /// Данные. База данных. Загрузчики. Сущность "DummyTree".
+    /// Данные. База данных. Загрузчики. Сущность "DummyTreeLink".
     /// </summary>
-    public class DataDbLoaderDummyTree : DataBaseLoaderDummyTree, ICoreBaseDataDbLoader
+    public class DataDbLoaderDummyTreeLink : DataBaseLoaderDummyTreeLink, ICoreBaseDataDbLoader
     {
         #region Constructors
 
@@ -21,8 +21,8 @@ namespace Makc2020.Data.Db.Loaders
         /// Конструктор.
         /// </summary>
         /// <param name="data">Данные.</param>
-        public DataDbLoaderDummyTree(DataBaseObjectDummyTree data = null)
-            : base(data ?? new DataBaseObjectDummyTree())
+        public DataDbLoaderDummyTreeLink(DataBaseObjectDummyTreeLink data = null)
+            : base(data ?? new DataBaseObjectDummyTreeLink())
         {
         }
 
@@ -49,21 +49,6 @@ namespace Makc2020.Data.Db.Loaders
             if (props.Contains(nameof(Data.ParentId)))
             {
                 Data.ParentId = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-
-            if (props.Contains(nameof(Data.ChildCount)))
-            {
-                Data.ChildCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-
-            if (props.Contains(nameof(Data.DescendantCount)))
-            {
-                Data.DescendantCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-
-            if (props.Contains(nameof(Data.Name)))
-            {
-                Data.Name = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             if (props.Contains(nameof(Data.Level)))

@@ -52,6 +52,11 @@ namespace Makc2020.Data.Entity.Db
         /// </summary>
         public DbSet<DataEntityObjectDummyTree> DummyTree { get; set; }
 
+        /// <summary>
+        /// Данные сущности "DummyTreeLink".
+        /// </summary>
+        public DbSet<DataEntityObjectDummyTreeLink> DummyTreeLink { get; set; }
+
         #endregion Properties
 
         #region Constructors
@@ -90,6 +95,7 @@ namespace Makc2020.Data.Entity.Db
             modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMainDummyManyToMany(DataBaseSettings));
             modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyOneToMany(DataBaseSettings));
             modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTree(DataBaseSettings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTreeLink(DataBaseSettings));
 
             modelBuilder.ApplyConfiguration(new DataEntitySchemaRole(DataBaseSettings));
             modelBuilder.ApplyConfiguration(new DataEntitySchemaRoleClaim(DataBaseSettings));

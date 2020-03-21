@@ -7,9 +7,9 @@ using System.Collections.Generic;
 namespace Makc2020.Data.Base.Loaders
 {
     /// <summary>
-    /// Данные. Основа. Загрузчики. Сущность "DummyTree".
+    /// Данные. Основа. Загрузчики. Сущность "DummyTreeLink".
     /// </summary>
-    public class DataBaseLoaderDummyTree : CoreBaseDataLoader<DataBaseObjectDummyTree>
+    public class DataBaseLoaderDummyTreeLink : CoreBaseDataLoader<DataBaseObjectDummyTreeLink>
     {
         #region Constructors
 
@@ -17,8 +17,8 @@ namespace Makc2020.Data.Base.Loaders
         /// Конструктор.
         /// </summary>
         /// <param name="data">Данные.</param>
-        public DataBaseLoaderDummyTree(DataBaseObjectDummyTree data = null)
-            : base(data ?? new DataBaseObjectDummyTree())
+        public DataBaseLoaderDummyTreeLink(DataBaseObjectDummyTreeLink data = null)
+            : base(data ?? new DataBaseObjectDummyTreeLink())
         {
         }
 
@@ -31,7 +31,7 @@ namespace Makc2020.Data.Base.Loaders
         /// </summary>
         /// <param name="source">Источник данных.</param>
         /// <param name="props">Загружаемые свойства.</param>
-        public void LoadDataFrom(DataBaseObjectDummyTree source, HashSet<string> props = null)
+        public void LoadDataFrom(DataBaseObjectDummyTreeLink source, HashSet<string> props = null)
         {
             props = EnsureNotNullValue(props);
 
@@ -40,24 +40,9 @@ namespace Makc2020.Data.Base.Loaders
                 Data.Id = source.Id;
             }
 
-            if (props.Contains(nameof(Data.Name)))
-            {
-                Data.Name = source.Name;
-            }
-
             if (props.Contains(nameof(Data.ParentId)))
             {
                 Data.ParentId = source.ParentId;
-            }
-
-            if (props.Contains(nameof(Data.ChildCount)))
-            {
-                Data.ChildCount = source.ChildCount;
-            }
-
-            if (props.Contains(nameof(Data.DescendantCount)))
-            {
-                Data.DescendantCount = source.DescendantCount;
             }
 
             if (props.Contains(nameof(Data.Level)))
@@ -76,10 +61,7 @@ namespace Makc2020.Data.Base.Loaders
             return new HashSet<string>
             {
                 nameof(Data.Id),
-                nameof(Data.Name),
                 nameof(Data.ParentId),
-                nameof(Data.ChildCount),
-                nameof(Data.DescendantCount),                
                 nameof(Data.Level)
             };
         }

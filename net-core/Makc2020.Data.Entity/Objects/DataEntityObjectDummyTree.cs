@@ -14,11 +14,6 @@ namespace Makc2020.Data.Entity.Objects
         #region Properties
 
         /// <summary>
-        /// Объект, где хранятся данные сущности "DummyMain".
-        /// </summary>
-        public DataEntityObjectDummyMain ObjectDummyMain { get; set; }
-
-        /// <summary>
         /// Объект, где хранятся данные родительской сущности "DummyTree".
         /// </summary>
         public DataEntityObjectDummyTree ObjectDummyTreeParent { get; set; }
@@ -27,6 +22,11 @@ namespace Makc2020.Data.Entity.Objects
         /// Объекты, где хранятся данные дочерней сущности "DummyTree".
         /// </summary>
         public virtual List<DataEntityObjectDummyTree> ObjectsDummyTreeChild { get; set; }
+
+        /// <summary>
+        /// Объекты, где хранятся данные сущности "DummyTreeLink".
+        /// </summary>
+        public virtual List<DataEntityObjectDummyTreeLink> ObjectsDummyTreeLink { get; set; }
 
         #endregion Properties
 
@@ -38,6 +38,7 @@ namespace Makc2020.Data.Entity.Objects
         public DataEntityObjectDummyTree()
         {
             ObjectsDummyTreeChild = new List<DataEntityObjectDummyTree>();
+            ObjectsDummyTreeLink = new List<DataEntityObjectDummyTreeLink>();
         }
 
         #endregion Constructors

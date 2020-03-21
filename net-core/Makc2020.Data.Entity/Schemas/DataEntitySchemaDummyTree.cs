@@ -34,18 +34,13 @@ namespace Makc2020.Data.Entity.Schemas
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(50);
             builder.Property(x => x.ParentId);
             builder.Property(x => x.ChildCount).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.DescendantCount).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.ObjectDummyMainId).IsRequired().HasColumnName(setting.DbColumnForDummyMainId);
 
             builder.HasIndex(x => new { x.Id, x.ParentId }).IsUnique().HasName(setting.DbUniqueIndexForIdAndParentId);
-            builder.HasIndex(x => x.ObjectDummyMainId).HasName(setting.DbIndexForDummyMainId);
-
-            builder.HasOne(x => x.ObjectDummyMain)
-                .WithMany(x => x.ObjectsDummyTree)
-                .HasForeignKey(x => x.ObjectDummyMainId)
-                .HasConstraintName(setting.DbForeignKeyToDummyMain);
+            builder.HasIndex(x => new { x.ParentId, x.Name }).IsUnique().HasName(setting.DbUniqueIndexForParentIdAndName);
 
             builder.HasOne(x => x.ObjectDummyTreeParent)
                 .WithMany(x => x.ObjectsDummyTreeChild)

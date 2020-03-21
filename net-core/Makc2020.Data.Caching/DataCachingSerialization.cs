@@ -26,6 +26,7 @@ namespace Makc2020.Data.Caching
             InitDummyManyToMany(model);
             InitDummyOneToMany(model);
             InitDummyTree(model);
+            InitDummyTreeLink(model);
             InitRole(model);
             InitRoleClaim(model);
             InitUser(model);
@@ -102,7 +103,18 @@ namespace Makc2020.Data.Caching
                 nameof(obj.ChildCount),
                 nameof(obj.DescendantCount),
                 nameof(obj.Level),
-                nameof(obj.ObjectDummyMainId),
+                nameof(obj.Name),
+                nameof(obj.ParentId)
+                );
+        }
+
+        private static void InitDummyTreeLink(ProtoBuf.Meta.RuntimeTypeModel model)
+        {
+            DataBaseObjectDummyTreeLink obj;
+
+            model.Add(typeof(DataBaseObjectDummyTreeLink), false).Add(
+                nameof(obj.Id),
+                nameof(obj.Level),
                 nameof(obj.ParentId)
                 );
         }

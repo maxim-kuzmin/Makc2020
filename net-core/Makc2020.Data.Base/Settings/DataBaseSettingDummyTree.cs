@@ -41,11 +41,6 @@ namespace Makc2020.Data.Base.Settings
         public string DbPrimaryKey => CreateNameOfPrimaryKey(DbTable);
 
         /// <summary>
-        /// Внешний ключ в базе данных к сущности "DummyMain".
-        /// </summary>
-        public string DbForeignKeyToDummyMain => CreateNameOfForeignKey(DbTable, DataBaseSettingDummyMain.DB_TABLE);
-
-        /// <summary>
         /// Внешний ключ в базе данных к родительской сущности "DummyTree".
         /// </summary>
         public string DbForeignKeyToParentDummyTree => CreateNameOfForeignKey(DbTable, DbTable, nameof(DataBaseObjectDummyTree.ParentId));
@@ -61,9 +56,9 @@ namespace Makc2020.Data.Base.Settings
         public string DbUniqueIndexForIdAndParentId => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.Id), nameof(DataBaseObjectDummyTree.ParentId));
 
         /// <summary>
-        /// Наименование индекса в базе данных для поля "DummyMainId".
+        /// Наименование уникального индекса в базе данных для полуй "ParentId" и "Name".
         /// </summary>
-        public string DbIndexForDummyMainId => CreateNameOfIndex(DbTable, DbColumnForDummyMainId);
+        public string DbUniqueIndexForParentIdAndName => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.ParentId), nameof(DataBaseObjectDummyOneToMany.Name));
 
         #endregion Properties
     }
