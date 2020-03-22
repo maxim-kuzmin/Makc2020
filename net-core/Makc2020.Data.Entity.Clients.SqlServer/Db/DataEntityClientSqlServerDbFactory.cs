@@ -3,27 +3,27 @@
 using Makc2020.Core.Base;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Db;
-using Makc2020.Data.Entity.SqlServer.Config;
+using Makc2020.Data.Entity.Clients.SqlServer.Config;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Makc2020.Data.Entity.SqlServer.Db
+namespace Makc2020.Data.Entity.Clients.SqlServer.Db
 {
     /// <summary>
-    /// Данные. Entity Framework. SQL Server. База данных. Фабрика.
+    /// Данные. Entity Framework. Клиенты. SQL Server. База данных. Фабрика.
     /// </summary>
-    public class DataEntitySqlServerDbFactory : DataEntityDbFactory
+    public class DataEntityClientSqlServerDbFactory : DataEntityDbFactory
     {
         #region Constructors
 
         /// <inheritdoc/>
-        public DataEntitySqlServerDbFactory()
+        public DataEntityClientSqlServerDbFactory()
             : base()
         {
         }
 
         /// <inheritdoc/>
-        public DataEntitySqlServerDbFactory(
+        public DataEntityClientSqlServerDbFactory(
             string connectionString,
             DataBaseSettings dataBaseSettings,
             CoreBaseEnvironment environment
@@ -40,9 +40,9 @@ namespace Makc2020.Data.Entity.SqlServer.Db
         /// <inheritdoc/>
         protected sealed override string CreateConnectionString()
         {
-            var configFilePath = DataEntitySqlServerConfig.CreateFilePath();
+            var configFilePath = DataEntityClientSqlServerConfig.CreateFilePath();
 
-            var configSettings = DataEntitySqlServerConfigSettings.Create(configFilePath, Environment);
+            var configSettings = DataEntityClientSqlServerConfigSettings.Create(configFilePath, Environment);
 
             return configSettings.ConnectionString;
         }

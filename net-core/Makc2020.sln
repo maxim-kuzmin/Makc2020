@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Mods.DummyMain.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Apps.Api.Base", "Makc2020.Apps.Api.Base\Makc2020.Apps.Api.Base.csproj", "{01962C04-A999-4BAD-9015-0B905471D3A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Data.Entity.SqlServer", "Makc2020.Data.Entity.SqlServer\Makc2020.Data.Entity.SqlServer.csproj", "{6F4A4B85-63C8-4675-9900-289C430C8AE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Data.Entity.Clients.SqlServer", "Makc2020.Data.Entity.Clients.SqlServer\Makc2020.Data.Entity.Clients.SqlServer.csproj", "{6F4A4B85-63C8-4675-9900-289C430C8AE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Apps.Api.Web", "Makc2020.Apps.Api.Web\Makc2020.Apps.Api.Web.csproj", "{7B2BF374-41D3-4692-9B02-E75A931A6ED8}"
 EndProject
@@ -62,7 +62,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{1EE58849-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Base", "Makc2020.Root.Base\Makc2020.Root.Base.csproj", "{DB6A3283-E35B-4C14-827D-869B79D046C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.SqlServer", "Makc2020.Core.Data.SqlServer\Makc2020.Core.Data.SqlServer.csproj", "{F60ADF28-D18C-4421-89FF-CE46C27FDA0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.Clients.SqlServer", "Makc2020.Core.Data.Clients.SqlServer\Makc2020.Core.Data.Clients.SqlServer.csproj", "{F60ADF28-D18C-4421-89FF-CE46C27FDA0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Web", "Makc2020.Root.Web\Makc2020.Root.Web.csproj", "{89016674-D54D-4B5D-BA73-3C24954E6CFA}"
 EndProject

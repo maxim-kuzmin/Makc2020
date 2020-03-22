@@ -18,7 +18,7 @@ namespace Makc2020.Core.Base.Data
 
         #endregion Properties
 
-        #region Controllers
+        #region Constructors
 
         /// <summary>
         /// Конструктор обёртки для данных.
@@ -36,6 +36,6 @@ namespace Makc2020.Core.Base.Data
             Data = data;
         }
 
-        #endregion Controllers
+        #endregion Constructors
     }
 }

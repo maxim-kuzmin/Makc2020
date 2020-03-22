@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Makc2020.Core.Data.SqlServer\Makc2020.Core.Data.SqlServer.csproj" />
-    <ProjectReference Include="..\Makc2020.Data.Entity.SqlServer\Makc2020.Data.Entity.SqlServer.csproj" />
+    <ProjectReference Include="..\Makc2020.Core.Data.Clients.SqlServer\Makc2020.Core.Data.Clients.SqlServer.csproj" />
+    <ProjectReference Include="..\Makc2020.Data.Entity.Clients.SqlServer\Makc2020.Data.Entity.Clients.SqlServer.csproj" />
     <ProjectReference Include="..\Makc2020.Host.Base\Makc2020.Host.Base.csproj" />
   </ItemGroup>
 

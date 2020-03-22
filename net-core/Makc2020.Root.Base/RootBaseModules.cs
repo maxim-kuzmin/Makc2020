@@ -4,10 +4,10 @@ using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Resources.Converting;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Core.Data.SqlServer;
+using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
-using Makc2020.Data.Entity.SqlServer;
+using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
 using Makc2020.Host.Base.Parts.Auth.Resources.Errors;
 using Makc2020.Host.Base.Parts.Auth.Resources.Successes;
@@ -35,9 +35,9 @@ namespace Makc2020.Root.Base
         public CoreBaseModule CoreBase { get; set; }
 
         /// <summary>
-        /// Ядро. Данные. SQL Server.
+        /// Ядро. Данные. Клиенты. SQL Server.
         /// </summary>
-        public CoreDataSqlServerModule CoreDataSqlServer { get; set; }
+        public CoreDataClientSqlServerModule CoreDataClientSqlServer { get; set; }
 
         /// <summary>
         /// Данные. Основа.
@@ -50,9 +50,9 @@ namespace Makc2020.Root.Base
         public DataEntityModule DataEntity { get; set; }
 
         /// <summary>
-        /// Данные. Entity Framework. SQL Server.
+        /// Данные. Entity Framework. Клиенты. SQL Server.
         /// </summary>
-        public DataEntitySqlServerModule DataEntitySqlServer { get; set; }
+        public DataEntityClientSqlServerModule DataEntityClientSqlServer { get; set; }
 
         /// <summary>
         /// Хост. Основа.
@@ -90,9 +90,9 @@ namespace Makc2020.Root.Base
         {
             CoreBase?.ConfigureServices(services);
             DataBase?.ConfigureServices(services);
-            CoreDataSqlServer?.ConfigureServices(services);
+            CoreDataClientSqlServer?.ConfigureServices(services);
             DataEntity?.ConfigureServices(services);
-            DataEntitySqlServer?.ConfigureServices(services);
+            DataEntityClientSqlServer?.ConfigureServices(services);
             HostBase?.ConfigureServices(services);
         }
 
@@ -102,7 +102,7 @@ namespace Makc2020.Root.Base
         /// <param name="environment">Окружение.</param>
         public virtual void InitConfig(CoreBaseEnvironment environment)
         {
-            DataEntitySqlServer?.InitConfig(environment);
+            DataEntityClientSqlServer?.InitConfig(environment);
             HostBase?.InitConfig(environment);
         }
 
@@ -119,7 +119,7 @@ namespace Makc2020.Root.Base
                 ResourceErrorsLocalizer = GetLocalizer<CoreBaseResourceErrors>(serviceProvider)
             });
 
-            DataEntitySqlServer?.InitContext(new DataEntitySqlServerExternals
+            DataEntityClientSqlServer?.InitContext(new DataEntityClientSqlServerExternals
             {
                 DataBaseSettings = DataBase?.Context.Settings,
                 Environment = environment
@@ -128,7 +128,7 @@ namespace Makc2020.Root.Base
             DataEntity?.InitContext(new DataEntityExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                DataEntityDbFactory = DataEntitySqlServer?.Context.DbFactory
+                DataEntityDbFactory = DataEntityClientSqlServer?.Context.DbFactory
             });
 
             HostBase?.InitContext(new HostBaseExternals
@@ -178,10 +178,10 @@ namespace Makc2020.Root.Base
         protected virtual bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
             if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
-            if (TrySet<CoreDataSqlServerModule>(x => CoreDataSqlServer = x, commonModule)) return true;
+            if (TrySet<CoreDataClientSqlServerModule>(x => CoreDataClientSqlServer = x, commonModule)) return true;
             if (TrySet<DataBaseModule>(x => DataBase = x, commonModule)) return true;
             if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
-            if (TrySet<DataEntitySqlServerModule>(x => DataEntitySqlServer = x, commonModule)) return true;
+            if (TrySet<DataEntityClientSqlServerModule>(x => DataEntityClientSqlServer = x, commonModule)) return true;
             if (TrySet<HostBaseModule>(x => HostBase = x, commonModule)) return true;
 
             return false;

@@ -1,11 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-namespace Makc2020.Data.Entity.SqlServer.Config
+namespace Makc2020.Data.Entity.Clients.SqlServer.Config
 {
     /// <summary>
-    /// Данные. Entity Framework. База данных MS SQL Server. Конфигурация. Настройки. Интерфейс.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Конфигурация. Настройки. Интерфейс.
     /// </summary>
-    public interface IDataEntitySqlServerConfigSettings
+    public interface IDataEntityClientSqlServerConfigSettings
     {
         #region Properties
 

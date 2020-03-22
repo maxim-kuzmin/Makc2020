@@ -1,15 +1,15 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
-using Makc2020.Data.Entity.SqlServer.Config;
+using Makc2020.Data.Entity.Clients.SqlServer.Config;
 using System.IO;
 
-namespace Makc2020.Data.Entity.SqlServer
+namespace Makc2020.Data.Entity.Clients.SqlServer
 {
     /// <summary>
-    /// Данные. Entity Framework. SQL Server. Конфигурация.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Конфигурация.
     /// </summary>
-    public sealed class DataEntitySqlServerConfig
+    public sealed class DataEntityClientSqlServerConfig
     {
         #region Properties
 
@@ -20,7 +20,7 @@ namespace Makc2020.Data.Entity.SqlServer
         /// <summary>
         /// Настройки.
         /// </summary>
-        public IDataEntitySqlServerConfigSettings Settings { get; private set; }
+        public IDataEntityClientSqlServerConfigSettings Settings { get; private set; }
 
         #endregion Properties
 
@@ -30,13 +30,13 @@ namespace Makc2020.Data.Entity.SqlServer
         /// Конструктор.
         /// </summary>
         /// <param name="environment">Окружение.</param>
-        public DataEntitySqlServerConfig(CoreBaseEnvironment environment)
+        public DataEntityClientSqlServerConfig(CoreBaseEnvironment environment)
         {
             Environment = environment;
 
             FilePath = CreateFilePath();
 
-            Settings = DataEntitySqlServerConfigSettings.Create(FilePath, Environment);
+            Settings = DataEntityClientSqlServerConfigSettings.Create(FilePath, Environment);
         }
 
         #endregion Constructors
@@ -60,9 +60,9 @@ namespace Makc2020.Data.Entity.SqlServer
         /// Создать поставщика.
         /// </summary>
         /// <param name="settings">Настройки.</param>
-        public DataEntitySqlServerConfigProvider CreateProvider(DataEntitySqlServerConfigSettings settings)
+        public DataEntityClientSqlServerConfigProvider CreateProvider(DataEntityClientSqlServerConfigSettings settings)
         {
-            return new DataEntitySqlServerConfigProvider(settings, FilePath, Environment);
+            return new DataEntityClientSqlServerConfigProvider(settings, FilePath, Environment);
         }
 
         #endregion Рublic methods

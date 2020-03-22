@@ -5,24 +5,24 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Data.Entity.SqlServer
+namespace Makc2020.Data.Entity.Clients.SqlServer
 {
     /// <summary>
-    /// Данные. Entity Framework. SQL Server. Модуль.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Модуль.
     /// </summary>
-    public class DataEntitySqlServerModule : ICoreBaseCommonModule
+    public class DataEntityClientSqlServerModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Конфигурация.
         /// </summary>
-        public DataEntitySqlServerConfig Config { get; private set; }
+        public DataEntityClientSqlServerConfig Config { get; private set; }
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public DataEntitySqlServerContext Context { get; private set; }
+        public DataEntityClientSqlServerContext Context { get; private set; }
 
         #endregion Properties
 
@@ -45,25 +45,25 @@ namespace Makc2020.Data.Entity.SqlServer
         /// <param name="environment">Окружение.</param>
         public void InitConfig(CoreBaseEnvironment environment)
         {
-            Config = new DataEntitySqlServerConfig(environment);
+            Config = new DataEntityClientSqlServerConfig(environment);
         }
 
         /// <summary>
         /// Инициализировать контекст.
         /// </summary>
         /// <param name="externals">Внешнее.</param>
-        public void InitContext(DataEntitySqlServerExternals externals)
+        public void InitContext(DataEntityClientSqlServerExternals externals)
         {
-            Context = new DataEntitySqlServerContext(Config, externals);
+            Context = new DataEntityClientSqlServerContext(Config, externals);
         }
 
         #endregion Public methods
 
         #region Private methods
 
-        private DataEntitySqlServerContext GetContext(IServiceProvider serviceProvider)
+        private DataEntityClientSqlServerContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<DataEntitySqlServerContext>();
+            return serviceProvider.GetService<DataEntityClientSqlServerContext>();
         }
 
         #endregion Private methods

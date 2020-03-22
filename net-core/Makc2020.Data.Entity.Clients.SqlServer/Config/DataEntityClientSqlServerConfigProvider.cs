@@ -3,12 +3,12 @@
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common.Config.Providers;
 
-namespace Makc2020.Data.Entity.SqlServer.Config
+namespace Makc2020.Data.Entity.Clients.SqlServer.Config
 {
     /// <summary>
-    /// Данные. Entity Framework. База данных MS SQL Server. Конфигурация. Поставщик.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Конфигурация. Поставщик.
     /// </summary>
-    public class DataEntitySqlServerConfigProvider : CoreBaseCommonConfigProviderJson<DataEntitySqlServerConfigSettings>
+    public class DataEntityClientSqlServerConfigProvider : CoreBaseCommonConfigProviderJson<DataEntityClientSqlServerConfigSettings>
     {
         #region Constructors
 
@@ -18,8 +18,8 @@ namespace Makc2020.Data.Entity.SqlServer.Config
         /// <param name="settings">Настройки.</param>
         /// <param name="filePath">Путь к файлу.</param>
         /// <param name="environment">Окружение.</param>
-        public DataEntitySqlServerConfigProvider(
-            DataEntitySqlServerConfigSettings settings,
+        public DataEntityClientSqlServerConfigProvider(
+            DataEntityClientSqlServerConfigSettings settings,
             string filePath,
             CoreBaseEnvironment environment
             )

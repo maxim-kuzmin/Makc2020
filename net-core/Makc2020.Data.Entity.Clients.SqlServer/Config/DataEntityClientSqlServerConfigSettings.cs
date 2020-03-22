@@ -2,12 +2,12 @@
 
 using Makc2020.Core.Base;
 
-namespace Makc2020.Data.Entity.SqlServer.Config
+namespace Makc2020.Data.Entity.Clients.SqlServer.Config
 {
     /// <summary>
-    /// Данные. Entity Framework. База данных MS SQL Server. Конфигурация. Настройки.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Конфигурация. Настройки.
     /// </summary>
-    public class DataEntitySqlServerConfigSettings : IDataEntitySqlServerConfigSettings
+    public class DataEntityClientSqlServerConfigSettings : IDataEntityClientSqlServerConfigSettings
     {
         #region Properties
 
@@ -24,14 +24,14 @@ namespace Makc2020.Data.Entity.SqlServer.Config
         /// <param name="configFilePath">Путь к файлу конфигурации.</param>
         /// <param name="environment">Окружение.</param>
         /// <returns>Конфигурационные настройки.</returns>
-        internal static IDataEntitySqlServerConfigSettings Create(
+        internal static IDataEntityClientSqlServerConfigSettings Create(
             string configFilePath,
             CoreBaseEnvironment environment
             )
         {
-            var result = new DataEntitySqlServerConfigSettings();
+            var result = new DataEntityClientSqlServerConfigSettings();
 
-            var configProvider = new DataEntitySqlServerConfigProvider(result, configFilePath, environment);
+            var configProvider = new DataEntityClientSqlServerConfigProvider(result, configFilePath, environment);
 
             configProvider.Load();
 

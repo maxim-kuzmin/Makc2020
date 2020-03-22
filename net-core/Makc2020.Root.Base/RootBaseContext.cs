@@ -3,7 +3,7 @@
 using Makc2020.Core.Base;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
-using Makc2020.Data.Entity.SqlServer;
+using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
 using Microsoft.Extensions.Logging;
 using System;
@@ -50,9 +50,9 @@ namespace Makc2020.Root.Base
         public DataEntityContext DataEntity => Modules.DataEntity.Context;
 
         /// <summary>
-        /// Данные. Entity Framework. SQL Server.
+        /// Данные. Entity Framework. Клиенты. SQL Server.
         /// </summary>
-        public DataEntitySqlServerContext DataEntitySqlServer => Modules.DataEntitySqlServer.Context;
+        public DataEntityClientSqlServerContext DataEntityClientSqlServer => Modules.DataEntityClientSqlServer.Context;
 
         /// <summary>
         /// Хост. Основа.

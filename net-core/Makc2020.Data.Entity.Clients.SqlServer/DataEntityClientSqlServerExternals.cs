@@ -3,12 +3,12 @@
 using Makc2020.Core.Base;
 using Makc2020.Data.Base;
 
-namespace Makc2020.Data.Entity.SqlServer
+namespace Makc2020.Data.Entity.Clients.SqlServer
 {
     /// <summary>
-    /// Данные. Entity Framework. SQL Server. Внешнее.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Внешнее.
     /// </summary>
-    public class DataEntitySqlServerExternals
+    public class DataEntityClientSqlServerExternals
     {
         #region Properties
 

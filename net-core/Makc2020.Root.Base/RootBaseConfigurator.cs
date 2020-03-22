@@ -2,12 +2,12 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
-using Makc2020.Core.Data.SqlServer;
+using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Ext;
-using Makc2020.Data.Entity.SqlServer;
+using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -57,7 +57,7 @@ namespace Makc2020.Root.Base
             services.AddTransient(x => GetContext(x).CoreBase);
             services.AddTransient(x => GetContext(x).DataBase);
             services.AddTransient(x => GetContext(x).DataEntity);
-            services.AddTransient(x => GetContext(x).DataEntitySqlServer);
+            services.AddTransient(x => GetContext(x).DataEntityClientSqlServer);
             services.AddTransient(x => GetContext(x).HostBase);
 
             if (LocalizationIsEnabled)
@@ -87,10 +87,10 @@ namespace Makc2020.Root.Base
             var modules = new ICoreBaseCommonModule[]
             {
                 new CoreBaseModule(),
-                new CoreDataSqlServerModule(),
+                new CoreDataClientSqlServerModule(),
                 new DataBaseModule(),
                 new DataEntityModule(),
-                new DataEntitySqlServerModule(),
+                new DataEntityClientSqlServerModule(),
                 new HostBaseModule()
             };
 

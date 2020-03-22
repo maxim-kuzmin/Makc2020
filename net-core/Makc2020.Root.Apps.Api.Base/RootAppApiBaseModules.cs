@@ -82,9 +82,9 @@ namespace Makc2020.Root.Apps.Api.Base
             ModDummyMainBase?.InitContext(new ModDummyMainBaseExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = CoreDataSqlServer?.Context.Provider,
+                CoreBaseDataProvider = CoreDataClientSqlServer?.Context.Provider,
                 DataBaseSettings = DataBase?.Context.Settings,
-                DataEntityDbFactory = DataEntitySqlServer?.Context.DbFactory,
+                DataEntityDbFactory = DataEntityClientSqlServer?.Context.DbFactory,
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyMainBaseResourceErrors>(serviceProvider),
                 ResourceSuccessesLocalizer = GetLocalizer<ModDummyMainBaseResourceSuccesses>(serviceProvider)
             });

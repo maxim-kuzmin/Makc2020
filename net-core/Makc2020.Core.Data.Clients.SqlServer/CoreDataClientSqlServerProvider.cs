@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Data;
-using Makc2020.Core.Data.SqlServer.Enums;
+using Makc2020.Core.Data.Clients.SqlServer.Enums;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Data;
@@ -9,12 +9,12 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 
-namespace Makc2020.Core.Data.SqlServer
+namespace Makc2020.Core.Data.Clients.SqlServer
 {
     /// <summary>
-    /// Ядро. Данные. SQL Server. Поставщик.
+    /// Ядро. Данные. Клиенты. SQL Server. Поставщик.
     /// </summary>
-    public class CoreDataSqlServerProvider : ICoreBaseDataProvider
+    public class CoreDataClientSqlServerProvider : ICoreBaseDataProvider
     {
         #region Public methods
 
@@ -107,7 +107,7 @@ namespace Makc2020.Core.Data.SqlServer
         /// <returns>Указатель на файловый поток базы данных SQL Server.</returns>
         public static SafeFileHandle GetSqlFilestreamHandle(
             string filePath,
-            CoreDataSqlServerEnumFilestreamAccess access,
+            CoreDataClientSqlServerEnumFilestreamAccess access,
             byte[] txnToken
             )
         {

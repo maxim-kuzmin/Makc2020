@@ -19,13 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigFiles\Data.Entity.SqlServer.config.m.mkuzmin-n.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.mkuzmin-n.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigFiles\Data.Entity.SqlServer.config.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigFiles\Data.Entity.SqlServer.config.m.MAKC2.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.MAKC2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

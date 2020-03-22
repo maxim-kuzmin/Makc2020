@@ -1,21 +1,21 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Data.Entity.Db;
-using Makc2020.Data.Entity.SqlServer.Db;
+using Makc2020.Data.Entity.Clients.SqlServer.Db;
 
-namespace Makc2020.Data.Entity.SqlServer
+namespace Makc2020.Data.Entity.Clients.SqlServer
 {
     /// <summary>
-    /// Данные. Entity Framework. SQL Server. Контекст.
+    /// Данные. Entity Framework. Клиенты. SQL Server. Контекст.
     /// </summary>
-    public class DataEntitySqlServerContext
+    public class DataEntityClientSqlServerContext
     {
         #region Properties
 
         /// <summary>
         /// Конфигурация.
         /// </summary>
-        public DataEntitySqlServerConfig Config { get; private set; }
+        public DataEntityClientSqlServerConfig Config { get; private set; }
 
         /// <summary>
         /// Фабрика базы данных.
@@ -31,14 +31,14 @@ namespace Makc2020.Data.Entity.SqlServer
         /// </summary>
         /// <param name="config">Конфигурация.</param>
         /// <param name="externals">Внешнее.</param>
-        public DataEntitySqlServerContext(
-            DataEntitySqlServerConfig config,
-            DataEntitySqlServerExternals externals
+        public DataEntityClientSqlServerContext(
+            DataEntityClientSqlServerConfig config,
+            DataEntityClientSqlServerExternals externals
             )
         {
             Config = config;
 
-            DbFactory = new DataEntitySqlServerDbFactory(
+            DbFactory = new DataEntityClientSqlServerDbFactory(
                 Config.Settings.ConnectionString,
                 externals.DataBaseSettings,
                 externals.Environment
