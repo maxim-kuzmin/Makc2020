@@ -2,6 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Makc2020.Data.Base;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Mods.Auth.Base;
 using Makc2020.Mods.Auth.Base.Settings.Errors;
 using Makc2020.Mods.Auth.Base.Settings.Successes;
@@ -83,8 +85,8 @@ namespace Makc2020.Root.Apps.Api.Base
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
                 CoreBaseDataProvider = CoreDataClientSqlServer?.Context.Provider,
-                DataBaseSettings = DataBase?.Context.Settings,
-                DataEntityDbFactory = DataEntityClientSqlServer?.Context.DbFactory,
+                DataBaseSettings = GetDataBaseSettings(),
+                DataEntityDbFactory = GetDataEntityDbFactory(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyMainBaseResourceErrors>(serviceProvider),
                 ResourceSuccessesLocalizer = GetLocalizer<ModDummyMainBaseResourceSuccesses>(serviceProvider)
             });
@@ -93,6 +95,24 @@ namespace Makc2020.Root.Apps.Api.Base
         #endregion Public methods
 
         #region Protected methods
+
+        /// <summary>
+        /// Получить основные настройки данных.
+        /// </summary>
+        /// <returns>Основные настройки данных.</returns>
+        protected DataBaseSettings GetDataBaseSettings()
+        {
+            return DataEntityClientSqlServer?.Context.Settings;
+        }
+
+        /// <summary>
+        /// Получить Entity Framework фабрику базы данных.
+        /// </summary>
+        /// <returns>Entity Framework фабрика базы данных..</returns>
+        protected DataEntityDbFactory GetDataEntityDbFactory()
+        {
+            return DataEntityClientSqlServer?.Context.DbFactory;
+        }
 
         /// <inheritdoc/>
         protected override bool TrySetModule(ICoreBaseCommonModule commonModule)

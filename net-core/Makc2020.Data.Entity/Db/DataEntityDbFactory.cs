@@ -16,7 +16,7 @@ namespace Makc2020.Data.Entity.Db
 
         private DbContextOptions<DataEntityDbContext> Options { get; set; }
 
-        private DataBaseSettings DataBaseSettings { get; set; }
+        private DataBaseSettings Settings { get; set; }
 
         /// <summary>
         /// Строка подключения.
@@ -26,7 +26,7 @@ namespace Makc2020.Data.Entity.Db
         /// <summary>
         /// Окружение.
         /// </summary>
-        protected CoreBaseEnvironment Environment { get; set; }
+        protected CoreBaseEnvironment Environment { get; private set; }
 
         #endregion Properties
 
@@ -44,15 +44,15 @@ namespace Makc2020.Data.Entity.Db
         /// Конструктор.
         /// </summary>
         /// <param name="connectionString">Строка подключения.</param>
-        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
+        /// <param name="settings">Настройки.</param>
         /// <param name="environment">Окружение.</param>
         public DataEntityDbFactory(
             string connectionString,
-            DataBaseSettings dataBaseSettings,
+            DataBaseSettings settings,
             CoreBaseEnvironment environment
             )
         {
-            Initialize(connectionString, dataBaseSettings, environment);
+            Initialize(connectionString, settings, environment);
         }
 
         #endregion Constructors
@@ -75,7 +75,7 @@ namespace Makc2020.Data.Entity.Db
         /// <returns>Контекст базы данных.</returns>
         public DataEntityDbContext CreateDbContext()
         {
-            return new DataEntityDbContext(Options, DataBaseSettings);
+            return new DataEntityDbContext(Options, Settings);
         }
 
         #endregion Public methods
@@ -89,6 +89,12 @@ namespace Makc2020.Data.Entity.Db
         protected abstract string CreateConnectionString();
 
         /// <summary>
+        /// Создать настройки.
+        /// </summary>
+        /// <returns>Настройки.</returns>
+        protected abstract DataBaseSettings CreateSettings();
+
+        /// <summary>
         /// Построить опции контекста базы данных.
         /// </summary>
         /// <param name="builder">Построитель.</param>
@@ -100,7 +106,7 @@ namespace Makc2020.Data.Entity.Db
 
         private void Initialize(
             string connectionString,
-            DataBaseSettings dataBaseSettings,
+            DataBaseSettings settings,
             CoreBaseEnvironment environment
             )
         {
@@ -109,7 +115,7 @@ namespace Makc2020.Data.Entity.Db
                 BasePath = System.AppContext.BaseDirectory
             };
 
-            DataBaseSettings = dataBaseSettings ?? DataBaseSettings.Instance;
+            Settings = settings ?? CreateSettings();
             ConnectionString = connectionString ?? CreateConnectionString();
             Options = CreateDbContextOptions();
         }

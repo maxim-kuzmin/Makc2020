@@ -49,7 +49,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
         /// <returns>Путь к файлу.</returns>
         internal static string CreateFilePath()
         {
-            return Path.Combine("ConfigFiles", "Data.Entity.SqlServer.config");
+            return Path.Combine("ConfigFiles", "Data.Entity.Clients.SqlServer.config");
         }
 
         #endregion Internal methods

@@ -1,120 +1,81 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Data.Base.Settings;
-using System;
 
 namespace Makc2020.Data.Base
 {
     /// <summary>
     /// Данные. Основа. Настройки.
     /// </summary>
-    public sealed class DataBaseSettings
+    public abstract class DataBaseSettings
     {
-        #region Fields
-
-        private static readonly Lazy<DataBaseSettings> lazy = new Lazy<DataBaseSettings>(() => new DataBaseSettings());
-
-        #endregion Fields
-
         #region Properties
-
-        /// <summary>
-        /// Экземпляр.
-        /// </summary>
-        public static DataBaseSettings Instance
-        {
-            get
-            {
-                return lazy.Value;
-            }
-        }
 
         /// <summary>
         /// Сущность "DummyMain".
         /// </summary>
-        public DataBaseSettingDummyMain DummyMain { get; private set; }
+        public DataBaseSettingDummyMain DummyMain { get; protected set; }
 
         /// <summary>
         /// Сущность "DummyMainDummyManyToMany".
         /// </summary>
-        public DataBaseSettingDummyMainDummyManyToMany DummyMainDummyManyToMany { get; private set; }
+        public DataBaseSettingDummyMainDummyManyToMany DummyMainDummyManyToMany { get; protected set; }
 
         /// <summary>
         /// Сущность "DummyManyToMany".
         /// </summary>
-        public DataBaseSettingDummyManyToMany DummyManyToMany { get; private set; }
+        public DataBaseSettingDummyManyToMany DummyManyToMany { get; protected set; }
 
         /// <summary>
         /// Сущность "DummyOneToMany".
         /// </summary>
-        public DataBaseSettingDummyOneToMany DummyOneToMany { get; private set; }
+        public DataBaseSettingDummyOneToMany DummyOneToMany { get; protected set; }
 
         /// <summary>
         /// Сущность "DummyTree".
         /// </summary>
-        public DataBaseSettingDummyTree DummyTree { get; private set; }
+        public DataBaseSettingDummyTree DummyTree { get; protected set; }
 
         /// <summary>
         /// Сущность "DummyTreeLink".
         /// </summary>
-        public DataBaseSettingDummyTreeLink DummyTreeLink { get; private set; }
+        public DataBaseSettingDummyTreeLink DummyTreeLink { get; protected set; }
 
         /// <summary>
         /// Сущность "Role".
         /// </summary>
-        public DataBaseSettingRole Role { get; private set; }
+        public DataBaseSettingRole Role { get; protected set; }
 
         /// <summary>
         /// Сущность "RoleClaim".
         /// </summary>
-        public DataBaseSettingRoleClaim RoleClaim { get; private set; }
+        public DataBaseSettingRoleClaim RoleClaim { get; protected set; }
 
         /// <summary>
         /// Сущность "User".
         /// </summary>
-        public DataBaseSettingUser User { get; private set; }
+        public DataBaseSettingUser User { get; protected set; }
 
         /// <summary>
         /// Сущность "UserClaim".
         /// </summary>
-        public DataBaseSettingUserClaim UserClaim { get; private set; }
+        public DataBaseSettingUserClaim UserClaim { get; protected set; }
 
         /// <summary>
         /// Сущность "UserLogin".
         /// </summary>
-        public DataBaseSettingUserLogin UserLogin { get; private set; }
+        public DataBaseSettingUserLogin UserLogin { get; protected set; }
 
         /// <summary>
         /// Сущность "UserRole".
         /// </summary>
-        public DataBaseSettingUserRole UserRole { get; private set; }
+        public DataBaseSettingUserRole UserRole { get; protected set; }
 
         /// <summary>
         /// Сущность "UserToken".
         /// </summary>
-        public DataBaseSettingUserToken UserToken { get; private set; }
+        public DataBaseSettingUserToken UserToken { get; protected set; }
 
         #endregion Properties
-
-        #region Constructors
-
-        private DataBaseSettings()
-        {
-            DummyMain = new DataBaseSettingDummyMain();
-            DummyMainDummyManyToMany = new DataBaseSettingDummyMainDummyManyToMany();
-            DummyManyToMany = new DataBaseSettingDummyManyToMany();
-            DummyOneToMany = new DataBaseSettingDummyOneToMany();
-            DummyTree = new DataBaseSettingDummyTree();
-            DummyTreeLink = new DataBaseSettingDummyTreeLink();
-            Role = new DataBaseSettingRole();
-            RoleClaim = new DataBaseSettingRoleClaim();
-            User = new DataBaseSettingUser();
-            UserClaim = new DataBaseSettingUserClaim();
-            UserLogin = new DataBaseSettingUserLogin();
-            UserRole = new DataBaseSettingUserRole();
-            UserToken = new DataBaseSettingUserToken();
-        }
-
-        #endregion Constructors     
     }
 }

@@ -1,7 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Entity.Db;
+using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Clients.SqlServer.Db;
+using Makc2020.Data.Entity.Db;
 
 namespace Makc2020.Data.Entity.Clients.SqlServer
 {
@@ -22,6 +23,11 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
         /// </summary>
         public DataEntityDbFactory DbFactory { get; private set; }
 
+        /// <summary>
+        /// Настройки.
+        /// </summary>
+        public DataBaseSettings Settings => DataEntityClientSqlServerSettings.Instance;
+
         #endregion Properties
 
         #region Constructor
@@ -40,7 +46,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
 
             DbFactory = new DataEntityClientSqlServerDbFactory(
                 Config.Settings.ConnectionString,
-                externals.DataBaseSettings,
+                Settings,
                 externals.Environment
                 );
         }

@@ -5,7 +5,6 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Resources.Converting;
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Core.Data.Clients.SqlServer;
-using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
@@ -38,11 +37,6 @@ namespace Makc2020.Root.Base
         /// Ядро. Данные. Клиенты. SQL Server.
         /// </summary>
         public CoreDataClientSqlServerModule CoreDataClientSqlServer { get; set; }
-
-        /// <summary>
-        /// Данные. Основа.
-        /// </summary>
-        public DataBaseModule DataBase { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework.
@@ -89,7 +83,6 @@ namespace Makc2020.Root.Base
         public virtual void ConfigureServices(IServiceCollection services)
         {
             CoreBase?.ConfigureServices(services);
-            DataBase?.ConfigureServices(services);
             CoreDataClientSqlServer?.ConfigureServices(services);
             DataEntity?.ConfigureServices(services);
             DataEntityClientSqlServer?.ConfigureServices(services);
@@ -121,7 +114,6 @@ namespace Makc2020.Root.Base
 
             DataEntityClientSqlServer?.InitContext(new DataEntityClientSqlServerExternals
             {
-                DataBaseSettings = DataBase?.Context.Settings,
                 Environment = environment
             });
 
@@ -179,7 +171,6 @@ namespace Makc2020.Root.Base
         {
             if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
             if (TrySet<CoreDataClientSqlServerModule>(x => CoreDataClientSqlServer = x, commonModule)) return true;
-            if (TrySet<DataBaseModule>(x => DataBase = x, commonModule)) return true;
             if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
             if (TrySet<DataEntityClientSqlServerModule>(x => DataEntityClientSqlServer = x, commonModule)) return true;
             if (TrySet<HostBaseModule>(x => HostBase = x, commonModule)) return true;

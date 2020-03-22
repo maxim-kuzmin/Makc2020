@@ -2,8 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Data.Base;
-using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Clients.SqlServer.Config;
+using Makc2020.Data.Entity.Db;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -25,12 +25,11 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         /// <inheritdoc/>
         public DataEntityClientSqlServerDbFactory(
             string connectionString,
-            DataBaseSettings dataBaseSettings,
+            DataBaseSettings settings,
             CoreBaseEnvironment environment
             )
-            : base(connectionString, dataBaseSettings, environment)
+            : base(connectionString, settings, environment)
         {
-            Environment = environment;
         }
 
         #endregion Constructors
@@ -45,6 +44,12 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
             var configSettings = DataEntityClientSqlServerConfigSettings.Create(configFilePath, Environment);
 
             return configSettings.ConnectionString;
+        }
+
+        /// <inheritdoc/>
+        protected sealed override DataBaseSettings CreateSettings()
+        {
+            return DataEntityClientSqlServerSettings.Instance;
         }
 
         /// <inheritdoc/>

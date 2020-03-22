@@ -1,7 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
-using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
@@ -38,11 +37,6 @@ namespace Makc2020.Root.Base
         /// Ядро. Основа.
         /// </summary>
         public CoreBaseContext CoreBase => Modules.CoreBase.Context;
-
-        /// <summary>
-        /// Данные. Основа.
-        /// </summary>
-        public DataBaseContext DataBase => Modules.DataBase.Context;
 
         /// <summary>
         /// Данные. Entity Framework.

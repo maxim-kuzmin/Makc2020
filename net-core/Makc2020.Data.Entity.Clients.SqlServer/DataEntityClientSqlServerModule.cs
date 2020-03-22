@@ -37,6 +37,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
             services.AddTransient(x => GetContext(x).DbFactory);
+            services.AddTransient(x => GetContext(x).Settings);
         }
 
         /// <summary>

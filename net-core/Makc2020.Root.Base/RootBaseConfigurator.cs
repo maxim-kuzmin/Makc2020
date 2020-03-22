@@ -3,11 +3,10 @@
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Data.Clients.SqlServer;
-using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
+using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Ext;
-using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -55,7 +54,6 @@ namespace Makc2020.Root.Base
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient(x => GetContext(x).CoreBase);
-            services.AddTransient(x => GetContext(x).DataBase);
             services.AddTransient(x => GetContext(x).DataEntity);
             services.AddTransient(x => GetContext(x).DataEntityClientSqlServer);
             services.AddTransient(x => GetContext(x).HostBase);
@@ -88,7 +86,6 @@ namespace Makc2020.Root.Base
             {
                 new CoreBaseModule(),
                 new CoreDataClientSqlServerModule(),
-                new DataBaseModule(),
                 new DataEntityModule(),
                 new DataEntityClientSqlServerModule(),
                 new HostBaseModule()
