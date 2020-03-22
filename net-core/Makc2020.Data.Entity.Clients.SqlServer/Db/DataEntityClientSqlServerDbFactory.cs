@@ -34,6 +34,16 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
 
         #endregion Constructors
 
+        #region Public methods
+
+        /// <inheritdoc/>
+        public sealed override DataEntityDbContext CreateDbContext()
+        {
+            return new DataEntityClientSqlServerDbContext(Options, Settings);
+        }
+
+        #endregion Public methods
+
         #region Protected methods
 
         /// <inheritdoc/>

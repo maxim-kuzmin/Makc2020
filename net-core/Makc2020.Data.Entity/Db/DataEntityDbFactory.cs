@@ -14,10 +14,6 @@ namespace Makc2020.Data.Entity.Db
     {
         #region Properties
 
-        private DbContextOptions<DataEntityDbContext> Options { get; set; }
-
-        private DataBaseSettings Settings { get; set; }
-
         /// <summary>
         /// Строка подключения.
         /// </summary>
@@ -27,6 +23,16 @@ namespace Makc2020.Data.Entity.Db
         /// Окружение.
         /// </summary>
         protected CoreBaseEnvironment Environment { get; private set; }
+
+        /// <summary>
+        /// Опции.
+        /// </summary>
+        protected DbContextOptions<DataEntityDbContext> Options { get; private set; }
+
+        /// <summary>
+        /// Настройки.
+        /// </summary>
+        protected DataBaseSettings Settings { get; private set; }
 
         #endregion Properties
 
@@ -73,10 +79,7 @@ namespace Makc2020.Data.Entity.Db
         /// Создать контекст базы данных.
         /// </summary>
         /// <returns>Контекст базы данных.</returns>
-        public DataEntityDbContext CreateDbContext()
-        {
-            return new DataEntityDbContext(Options, Settings);
-        }
+        public abstract DataEntityDbContext CreateDbContext();
 
         #endregion Public methods
 

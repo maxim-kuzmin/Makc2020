@@ -1,6 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Data.Entity.Schemas;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,7 +10,7 @@ namespace Makc2020.Data.Entity.Db
     /// <summary>
     /// Данные. Entity Framework. База данных. Контекст.
     /// </summary>
-    public class DataEntityDbContext : IdentityDbContext
+    public abstract class DataEntityDbContext : IdentityDbContext
         <
             DataEntityObjectUser,
             DataEntityObjectRole,
@@ -23,9 +22,7 @@ namespace Makc2020.Data.Entity.Db
             DataEntityObjectUserToken
         >
     {
-        #region Properties
-
-        private DataBaseSettings DataBaseSettings { get; set; }
+        #region Properties        
 
         /// <summary>
         /// Данные сущности "DummyMain".
@@ -63,19 +60,8 @@ namespace Makc2020.Data.Entity.Db
 
         /// <inheritdoc/>
         public DataEntityDbContext(DbContextOptions<DataEntityDbContext> options)
-            : this(options, null)
-        {
-        }
-
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="options">Опции.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
-        public DataEntityDbContext(DbContextOptions<DataEntityDbContext> options, DataBaseSettings dataBaseSettings)
             : base(options)
         {
-            DataBaseSettings = dataBaseSettings;
         }
 
         #endregion Constructors
@@ -83,34 +69,15 @@ namespace Makc2020.Data.Entity.Db
         #region Protected methods
 
         /// <summary>
-        /// Обработать событие создания модели.
+        /// Засеять тестовые данные.
         /// </summary>
         /// <param name="modelBuilder">Построитель модели.</param>
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected void SeedTestData(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMain(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyManyToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMainDummyManyToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyOneToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTree(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTreeLink(DataBaseSettings));
-
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaRole(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaRoleClaim(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUser(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserClaim(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserLogin(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserRole(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserToken(DataBaseSettings));
-
-#if TEST || DEBUG
             DataEntitySchemaDummyOneToMany.SeedTestData(modelBuilder);
             DataEntitySchemaDummyMain.SeedTestData(modelBuilder);
             DataEntitySchemaDummyManyToMany.SeedTestData(modelBuilder);
             DataEntitySchemaDummyMainDummyManyToMany.SeedTestData(modelBuilder);
-#endif
         }
 
         #endregion Protected methods
