@@ -25,32 +25,32 @@ namespace Makc2020.Data.Entity.Db
         #region Properties        
 
         /// <summary>
-        /// Данные сущности "DummyMain".
+        /// Сущность "DummyMain".
         /// </summary>
         public DbSet<DataEntityObjectDummyMain> DummyMain { get; set; }
 
         /// <summary>
-        /// Данные сущности "DummyManyToMany".
+        /// Сущность "DummyManyToMany".
         /// </summary>
         public DbSet<DataEntityObjectDummyManyToMany> DummyManyToMany { get; set; }
 
         /// <summary>
-        /// Данные сущности "DummyMainDummyManyToMany".
+        /// Сущность "DummyMainDummyManyToMany".
         /// </summary>
         public DbSet<DataEntityObjectDummyMainDummyManyToMany> DummyMainDummyManyToMany { get; set; }
 
         /// <summary>
-        /// Данные сущности "DummyOneToMany".
+        /// Сущность "DummyOneToMany".
         /// </summary>
         public DbSet<DataEntityObjectDummyOneToMany> DummyOneToMany { get; set; }
 
         /// <summary>
-        /// Данные сущности "DummyTree".
+        /// Сущность "DummyTree".
         /// </summary>
         public DbSet<DataEntityObjectDummyTree> DummyTree { get; set; }
 
         /// <summary>
-        /// Данные сущности "DummyTreeLink".
+        /// Сущность "DummyTreeLink".
         /// </summary>
         public DbSet<DataEntityObjectDummyTreeLink> DummyTreeLink { get; set; }
 
