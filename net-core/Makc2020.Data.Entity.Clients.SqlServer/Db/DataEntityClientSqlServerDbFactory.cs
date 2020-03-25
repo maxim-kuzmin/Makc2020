@@ -5,6 +5,7 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Clients.SqlServer.Config;
 using Makc2020.Data.Entity.Db;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection;
 
 namespace Makc2020.Data.Entity.Clients.SqlServer.Db
@@ -12,7 +13,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
     /// <summary>
     /// Данные. Entity Framework. Клиенты. SQL Server. База данных. Фабрика.
     /// </summary>
-    public class DataEntityClientSqlServerDbFactory : DataEntityDbFactory
+    public class DataEntityClientSqlServerDbFactory : DataEntityDbFactory, IDesignTimeDbContextFactory<DataEntityClientSqlServerDbContext>
     {
         #region Constructors
 
@@ -37,9 +38,15 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         #region Public methods
 
         /// <inheritdoc/>
-        public sealed override DataEntityDbContext CreateDbContext()
+        public DataEntityClientSqlServerDbContext CreateDbContext(string[] args)
         {
             return new DataEntityClientSqlServerDbContext(Options, Settings);
+        }
+
+        /// <inheritdoc/>
+        public sealed override DataEntityDbContext CreateDbContext()
+        {
+            return CreateDbContext(null);
         }
 
         #endregion Public methods

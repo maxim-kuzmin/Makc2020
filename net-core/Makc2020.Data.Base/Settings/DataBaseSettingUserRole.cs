@@ -51,14 +51,14 @@ namespace Makc2020.Data.Base.Settings
         public string DbForeignKeyToRole => CreateNameOfForeignKey(DbTable, DataBaseSettingRole.DB_TABLE);
 
         /// <summary>
-        /// Колонка в базе данных для поля идентификатора сущности "User".
+        /// Имя колонки в базе данных для поля идентификатора сущности "User".
         /// </summary>
-        public string DbColumnForUserId => CreateNameOfColumn(DataBaseSettingUser.DB_TABLE, nameof(DataBaseObjectUser.Id));
+        public string DbColumnNameForUserId => CreateNameOfColumn(DataBaseSettingUser.DB_TABLE, nameof(DataBaseObjectUser.Id));
 
         /// <summary>
-        /// Колонка в базе данных для поля идентификатора сущности "Role".
+        /// Имя колонки в базе данных для поля идентификатора сущности "Role".
         /// </summary>
-        public string DbColumnForRoleId => CreateNameOfColumn(DataBaseSettingRole.DB_TABLE, nameof(DataBaseObjectRole.Id));
+        public string DbColumnNameForRoleId => CreateNameOfColumn(DataBaseSettingRole.DB_TABLE, nameof(DataBaseObjectRole.Id));
 
         /// <summary>
         /// Наименование индекса в базе данных для поля "RoleId".

@@ -38,11 +38,11 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.Property(x => x.ObjectDummyMainId)
                 .IsRequired()
-                .HasColumnName(setting.DbColumnForDummyMainId);
+                .HasColumnName(setting.DbColumnNameForDummyMainId);
 
             builder.Property(x => x.ObjectDummyManyToManyId)
                 .IsRequired()
-                .HasColumnName(setting.DbColumnForDummyManyToManyId);
+                .HasColumnName(setting.DbColumnNameForDummyManyToManyId);
 
             builder.HasOne(x => x.ObjectDummyMain)
                 .WithMany(x => x.ObjectsDummyMainDummyManyToMany)

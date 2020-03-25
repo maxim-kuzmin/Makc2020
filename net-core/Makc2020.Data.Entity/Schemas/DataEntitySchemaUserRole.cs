@@ -33,8 +33,8 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => new { x.UserId, x.RoleId }).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.UserId).IsRequired().HasColumnName(setting.DbColumnForUserId);
-            builder.Property(x => x.RoleId).IsRequired().HasColumnName(setting.DbColumnForRoleId);
+            builder.Property(x => x.UserId).IsRequired().HasColumnName(setting.DbColumnNameForUserId);
+            builder.Property(x => x.RoleId).IsRequired().HasColumnName(setting.DbColumnNameForRoleId);
 
             builder.HasIndex(x => x.RoleId).HasName(setting.DbIndexForRoleId);
 

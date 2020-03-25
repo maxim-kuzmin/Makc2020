@@ -3,14 +3,13 @@
 using Makc2020.Core.Base;
 using Makc2020.Data.Base;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace Makc2020.Data.Entity.Db
 {
     /// <summary>
     /// Данные. Entity Framework. База данных. Фабрика.
     /// </summary>
-    public abstract class DataEntityDbFactory : IDesignTimeDbContextFactory<DataEntityDbContext>
+    public abstract class DataEntityDbFactory
     {
         #region Properties
 
@@ -64,16 +63,6 @@ namespace Makc2020.Data.Entity.Db
         #endregion Constructors
 
         #region Public methods
-
-        /// <summary>
-        /// Создать контекст базы данных.
-        /// </summary>
-        /// <param name="args">Аргументы.</param>
-        /// <returns>Контекст базы данных.</returns>
-        public DataEntityDbContext CreateDbContext(string[] args)
-        {
-            return CreateDbContext();
-        }
 
         /// <summary>
         /// Создать контекст базы данных.

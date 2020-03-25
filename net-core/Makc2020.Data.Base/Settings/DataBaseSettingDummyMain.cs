@@ -46,9 +46,9 @@ namespace Makc2020.Data.Base.Settings
         public string DbForeignKeyToDummyOneToMany => CreateNameOfForeignKey(DbTable, DataBaseSettingDummyOneToMany.DB_TABLE);
 
         /// <summary>
-        /// Колонка в базе данных для поля идентификатора сущности "DummyOneToMany".
+        /// Имя колонки в базе данных для поля идентификатора сущности "DummyOneToMany".
         /// </summary>
-        public string DbColumnForDummyOneToManyId => CreateNameOfColumn(DataBaseSettingDummyOneToMany.DB_TABLE, nameof(DataBaseObjectDummyOneToMany.Id));
+        public string DbColumnNameForDummyOneToManyId => CreateNameOfColumn(DataBaseSettingDummyOneToMany.DB_TABLE, nameof(DataBaseObjectDummyOneToMany.Id));
 
         /// <summary>
         /// Наименование уникального индекса в базе данных для поля "Name".

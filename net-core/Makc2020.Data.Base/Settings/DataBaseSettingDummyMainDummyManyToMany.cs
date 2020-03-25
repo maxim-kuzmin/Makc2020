@@ -51,14 +51,14 @@ namespace Makc2020.Data.Base.Settings
         public string DbForeignKeyToDummyManyToMany => CreateNameOfForeignKey(DbTable, DataBaseSettingDummyManyToMany.DB_TABLE);
 
         /// <summary>
-        /// Колонка в базе данных для поля идентификатора сущности "DummyMain".
+        /// Имя колонки в базе данных для поля идентификатора сущности "DummyMain".
         /// </summary>
-        public string DbColumnForDummyMainId => CreateNameOfColumn(DataBaseSettingDummyMain.DB_TABLE, nameof(DataBaseObjectDummyMain.Id));
+        public string DbColumnNameForDummyMainId => CreateNameOfColumn(DataBaseSettingDummyMain.DB_TABLE, nameof(DataBaseObjectDummyMain.Id));
 
         /// <summary>
-        /// Колонка в базе данных для поля идентификатора сущности "DummyManyToMany".
+        /// Имя колонки в базе данных для поля идентификатора сущности "DummyManyToMany".
         /// </summary>
-        public string DbColumnForDummyManyToManyId => CreateNameOfColumn(DataBaseSettingDummyManyToMany.DB_TABLE, nameof(DataBaseObjectDummyManyToMany.Id));
+        public string DbColumnNameForDummyManyToManyId => CreateNameOfColumn(DataBaseSettingDummyManyToMany.DB_TABLE, nameof(DataBaseObjectDummyManyToMany.Id));
 
         #endregion Properties
     }
