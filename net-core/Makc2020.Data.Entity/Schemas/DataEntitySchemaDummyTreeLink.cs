@@ -33,8 +33,9 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => new { x.Id, x.ParentId }).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).IsRequired();
             builder.Property(x => x.ParentId).IsRequired();
+
             builder.Property(x => x.Level).IsRequired();
 
             builder.HasOne(x => x.ObjectDummyTree)

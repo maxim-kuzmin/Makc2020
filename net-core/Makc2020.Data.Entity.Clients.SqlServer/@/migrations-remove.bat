@@ -4,7 +4,7 @@ echo Migrations remove start
 
 cd ..
 
-dotnet ef migrations remove
+dotnet ef migrations remove --configuration Debug
 
 cd @
 

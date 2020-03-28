@@ -4,7 +4,7 @@ echo Database update start
 
 cd ..
 
-dotnet ef database update
+dotnet ef database update --configuration Debug
 
 cd @
 
