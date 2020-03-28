@@ -37,7 +37,12 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(50);
+            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(256);
+
+            builder.Property(x => x.ObjectDummyOneToManyId)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForDummyOneToManyId);
+
             builder.Property(x => x.PropBoolean).IsRequired();
             builder.Property(x => x.PropBooleanNullable);
             builder.Property(x => x.PropDate).IsRequired();
@@ -52,10 +57,6 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.PropInt64Nullable);
             builder.Property(x => x.PropString).IsRequired().IsUnicode();
             builder.Property(x => x.PropStringNullable).IsUnicode();
-
-            builder.Property(x => x.ObjectDummyOneToManyId)
-                .IsRequired()
-                .HasColumnName(setting.DbColumnNameForDummyOneToManyId);
 
             builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
 

@@ -37,7 +37,7 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.Property(x => x.ChildCount).IsRequired().HasDefaultValue(0);
             builder.Property(x => x.DescendantCount).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(50);
+            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(256);
             builder.Property(x => x.ParentId);
 
             builder.HasIndex(x => new { x.Id, x.ParentId }).IsUnique().HasName(setting.DbUniqueIndexForIdAndParentId);
