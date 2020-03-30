@@ -113,6 +113,8 @@ namespace Makc2020.Root.Apps.Api.Web
         /// <inheritdoc/>
         public sealed override void OnAppStarted()
         {
+            base.OnAppStarted();
+
             DataCachingSerialization.Init();
             ModDummyMainCachingSerialization.Init();
         }

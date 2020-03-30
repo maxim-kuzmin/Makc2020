@@ -26,12 +26,12 @@ namespace Makc2020.Data.Entity.Db
         /// <summary>
         /// Опции.
         /// </summary>
-        protected DbContextOptions<DataEntityDbContext> Options { get; private set; }
+        public DbContextOptions<DataEntityDbContext> Options { get; private set; }
 
         /// <summary>
         /// Настройки.
         /// </summary>
-        protected DataBaseSettings Settings { get; private set; }
+        public DataBaseSettings Settings { get; private set; }
 
         #endregion Properties
 

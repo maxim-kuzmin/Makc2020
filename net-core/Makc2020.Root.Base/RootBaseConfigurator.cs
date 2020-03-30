@@ -5,6 +5,7 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.SqlServer;
+using Makc2020.Data.Entity.Clients.SqlServer.Db;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Ext;
 using Makc2020.Host.Base;
@@ -65,11 +66,13 @@ namespace Makc2020.Root.Base
 
             if (DataEntityDbContextIsEnabled)
             {
-                services.DataEntityExtConfigureDbContext(FuncGetDataEntityDbFactory);
+                services.DataEntityExtConfigureDbContext<DataEntityClientSqlServerDbContext>(
+                    FuncGetDataEntityDbFactory
+                    );
 
                 if (IdentityIsEnabled)
                 {
-                    services.DataEntityExtConfigureIdentity();
+                    services.DataEntityExtConfigureIdentity<DataEntityClientSqlServerDbContext>();
                 }
             }
         }

@@ -58,7 +58,7 @@ namespace Makc2020.Mods.DummyMain.Caching
         {
             ModDummyMainBaseCommonJobOptionItemGetOutput  obj;
 
-            model.Add(typeof(ModDummyMainBaseCommonJobOptionItemGetOutput ), false).Add(
+            model.Add(typeof(ModDummyMainBaseCommonJobOptionItemGetOutput), false).Add(
                 nameof(obj.Name),
                 nameof(obj.Value)
                 );

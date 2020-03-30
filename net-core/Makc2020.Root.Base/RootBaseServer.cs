@@ -146,13 +146,13 @@ namespace Makc2020.Root.Base
                 UseServiceProvider(services.BuildServiceProvider());
 
                 InitContext();
+
+                OnAfterInit(EventArgs.Empty);
             }
             finally
             {
                 locker.ExitWriteLock();
             }
-
-            OnAfterInit(EventArgs.Empty);
         }
 
         /// <summary>
@@ -181,9 +181,7 @@ namespace Makc2020.Root.Base
         {
             Logger.LogDebug("RootBaseServer.OnStarted begin");
 
-            Modules?.OnAppStarted();
-
-            InitContext();
+            EnsureContext();
 
             var context = GetContext();
 
@@ -250,6 +248,39 @@ namespace Makc2020.Root.Base
         /// </summary>
         /// <returns>Регистратор.</returns>
         protected abstract ILogger GetLogger();
+
+        /// <summary>
+        /// Обеспечить контекст.
+        /// </summary>
+        protected void EnsureContext()
+        {
+            locker.EnterUpgradeableReadLock();
+
+            try
+            {
+                if (Context == null)
+                {
+                    locker.EnterWriteLock();
+
+                    try
+                    {
+                        Modules?.OnAppStarted();
+
+                        InitContext();
+
+                        OnAfterInit(EventArgs.Empty);
+                    }
+                    finally
+                    {
+                        locker.ExitWriteLock();
+                    }
+                }
+            }
+            finally
+            {
+                locker.ExitUpgradeableReadLock();
+            }
+        }
 
         /// <summary>
         /// Обработчик события, возникающего после инициализации.

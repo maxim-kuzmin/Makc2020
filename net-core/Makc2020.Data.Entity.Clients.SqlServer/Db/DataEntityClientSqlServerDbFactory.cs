@@ -15,6 +15,15 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
     /// </summary>
     public class DataEntityClientSqlServerDbFactory : DataEntityDbFactory, IDesignTimeDbContextFactory<DataEntityClientSqlServerDbContext>
     {
+        #region Properties
+
+        /// <summary>
+        /// Экземпляр по-умолчанию.
+        /// </summary>
+        public static DataEntityClientSqlServerDbFactory Default { get; } = new DataEntityClientSqlServerDbFactory();
+
+        #endregion Properties
+
         #region Constructors
 
         /// <inheritdoc/>

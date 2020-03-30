@@ -21,8 +21,17 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         #region Constructors
 
         /// <inheritdoc/>
+        public DataEntityClientSqlServerDbContext()
+            : this(
+                  DataEntityClientSqlServerDbFactory.Default.Options,
+                  DataEntityClientSqlServerDbFactory.Default.Settings
+                  )
+        {
+        }
+
+        /// <inheritdoc/>
         public DataEntityClientSqlServerDbContext(DbContextOptions<DataEntityDbContext> options)
-            : this(options, null)
+            : this(options, DataEntityClientSqlServerDbFactory.Default.Settings)
         {
         }
 
@@ -31,7 +40,10 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         /// </summary>
         /// <param name="options">Опции.</param>
         /// <param name="dataBaseSettings">Настройки основы данных.</param>
-        public DataEntityClientSqlServerDbContext(DbContextOptions<DataEntityDbContext> options, DataBaseSettings dataBaseSettings)
+        public DataEntityClientSqlServerDbContext(
+            DbContextOptions<DataEntityDbContext> options,
+            DataBaseSettings dataBaseSettings
+            )
             : base(options)
         {
             DataBaseSettings = dataBaseSettings;

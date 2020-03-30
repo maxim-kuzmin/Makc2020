@@ -21,12 +21,14 @@ namespace Makc2020.Data.Entity.Ext
         /// <param name="services">Сервисы.</param>
         /// <param name="funcGetDataEntityDbFactory">Функция получения фабрики базы данных.</param>
         /// <returns>Сервисы.</returns>
-        public static IServiceCollection DataEntityExtConfigureDbContext(
+        /// <typeparam name="TDbContext">Тип контекста базы данных.</typeparam>
+        public static IServiceCollection DataEntityExtConfigureDbContext<TDbContext>(
             this IServiceCollection services,
             Func<DataEntityDbFactory> funcGetDataEntityDbFactory
             )
+            where TDbContext : DataEntityDbContext
         {
-            return services.AddDbContext<DataEntityDbContext>(
+            return services.AddDbContext<TDbContext>(
                 options => funcGetDataEntityDbFactory.Invoke()
                     .BuildDbContextOptions(options)
                 );
@@ -37,13 +39,15 @@ namespace Makc2020.Data.Entity.Ext
         /// </summary>
         /// <param name="services">Сервисы.</param>
         /// <returns>Построитель идентичности.</returns>
-        public static IdentityBuilder DataEntityExtConfigureIdentity(this IServiceCollection services)
+        /// <typeparam name="TDbContext">Тип контекста базы данных.</typeparam>
+        public static IdentityBuilder DataEntityExtConfigureIdentity<TDbContext>(this IServiceCollection services)
+            where TDbContext : DataEntityDbContext
         {
             return services.AddIdentity<DataEntityObjectUser, DataEntityObjectRole>(options =>
             {
                 options.User.AllowedUserNameCharacters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+\";
             })
-                .AddEntityFrameworkStores<DataEntityDbContext>()
+                .AddEntityFrameworkStores<TDbContext>()
                 .AddDefaultTokenProviders();
         }
 
