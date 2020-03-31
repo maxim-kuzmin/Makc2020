@@ -2,12 +2,12 @@
 
 using System.Data.Common;
 
-namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Get
+namespace Makc2020.Core.Base.Data.Queries.Tree.Get
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Запросы. Дерево. Получение. Параметры.
+    /// Ядро. Основа. Данные. Запросы. Дерево. Получение. Параметры.
     /// </summary>
-    public class DataEntityClientSqlServerQueryTreeGetParameters
+    public class CoreBaseDataQueryTreeGetParameters
     {
         #region Properties
 

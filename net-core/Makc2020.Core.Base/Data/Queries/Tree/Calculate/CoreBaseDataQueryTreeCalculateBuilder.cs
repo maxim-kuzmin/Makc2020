@@ -3,12 +3,12 @@
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Calculate
+namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Запросы. Дерево. Вычисление. Построитель.
+    /// Ядро. Основа. Данные. Запросы. Дерево. Вычисление. Построитель.
     /// </summary>
-    public class DataEntityClientSqlServerQueryTreeCalculateBuilder
+    public abstract class CoreBaseDataQueryTreeCalculateBuilder
     {
         #region Properties
 
@@ -35,8 +35,13 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Calculate
         /// <summary>
         /// Параметры.
         /// </summary>
-        public DataEntityClientSqlServerQueryTreeCalculateParameters Parameters { get; private set; }
-            = new DataEntityClientSqlServerQueryTreeCalculateParameters();
+        public CoreBaseDataQueryTreeCalculateParameters Parameters { get; private set; }
+            = new CoreBaseDataQueryTreeCalculateParameters();
+
+        /// <summary>
+        /// Префикс.
+        /// </summary>
+        public string Prefix { get; set; } = "TreeCalculate_";
 
         /// <summary>
         /// Имя поля таблицы дерева для числа детей.
@@ -72,37 +77,44 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Calculate
         /// </summary>
         public string GetResultSql()
         {
+            var aliasForLink = $"{Prefix}k";
+            var aliasForResult = $"{Prefix}r";
+            var aliasForTree = $"{Prefix}t";
+
+            var sqlForChildCount = CreateSqlForCount($"{aliasForTree}.{TreeTableFieldNameForId}", false);
+            var sqlForDescendantCount = CreateSqlForCount($"{aliasForTree}.{TreeTableFieldNameForId}", true);
+
             var result = new StringBuilder($@"
-update {TreeTableName} r
+update {TreeTableName} {aliasForResult}
 set
-	r.{TreeTableFieldNameForChildCount} =
+	{aliasForResult}.{TreeTableFieldNameForChildCount} =
 		(
 			select		
-				COUNT_BIG(t.{TreeTableFieldNameForId})
+				{sqlForChildCount}
 			from
-				{TreeTableName} t
+				{TreeTableName} {aliasForTree}
 			where
-				t.{TreeTableFieldNameForParentId} = r.{TreeTableFieldNameForId} 
+				{aliasForTree}.{TreeTableFieldNameForParentId} = {aliasForResult}.{TreeTableFieldNameForId} 
 		),
-	r.{TreeTableFieldNameForDescendantCount} =
+	{aliasForResult}.{TreeTableFieldNameForDescendantCount} =
 		(
-			select
-				COUNT_BIG(distinct t.{TreeTableFieldNameForId})
+			select                
+				{sqlForDescendantCount}
 			from
-				{LinkTableName} k
-				inner join {TreeTableName} t on t.{TreeTableFieldNameForId} = k.{LinkTableFieldNameForId}
+				{LinkTableName} {aliasForLink}
+				inner join {TreeTableName} {aliasForTree}
+                    on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForLink}.{LinkTableFieldNameForId}
 			where
-				k.{LinkTableFieldNameForParentId} = r.{TreeTableFieldNameForId}	
-				and t.{TreeTableFieldNameForId} <> r.{TreeTableFieldNameForId}
+				{aliasForLink}.{LinkTableFieldNameForParentId} = {aliasForResult}.{TreeTableFieldNameForId}
+				and {aliasForTree}.{TreeTableFieldNameForId} <> {aliasForResult}.{TreeTableFieldNameForId}
 		)
-"
-                );
+");
 
             var parIds = Parameters.Ids;
 
             if (parIds.Any() || !string.IsNullOrWhiteSpace(IdsSelectQuery))
             {
-                result.Append($"where r.{TreeTableFieldNameForId} in (");
+                result.Append($"where {aliasForResult}.{TreeTableFieldNameForId} in (");
 
                 if (parIds.Any())
                 {
@@ -120,5 +132,17 @@ set
         }
 
         #endregion Public methods
+
+        #region Potected methods
+
+        /// <summary>
+        /// Создать SQL для подсчёта.
+        /// </summary>
+        /// <param name="fieldName">Имя поля.</param>
+        /// <param name="isDistinct">Признак подсчёта только уникальных значений.</param>
+        /// <returns></returns>
+        protected abstract string CreateSqlForCount(string fieldName, bool isDistinct);
+
+        #endregion Potected methods
     }
 }

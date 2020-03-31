@@ -5,19 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Get
+namespace Makc2020.Core.Base.Data.Queries.Tree.Get
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Запросы. Дерево. Получение. Построитель.
+    /// Ядро. Основа. Данные. Запросы. Дерево. Получение. Построитель.
     /// </summary>
-    public class DataEntityClientSqlServerQueryTreeGetBuilder
+    public class CoreBaseDataQueryTreeGetBuilder
     {
         #region Properties
 
         /// <summary>
         /// Ось.
         /// </summary>
-        public CoreBaseCommonEnumAxis Axis { get; set; } = CoreBaseCommonEnumAxis.Descendant;
+        public CoreBaseCommonEnumTreeAxis Axis { get; set; }
 
         /// <summary>
         /// Имя поля таблицы связи для идентификатора родителя.
@@ -47,8 +47,14 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Get
         /// <summary>
         /// Параметры.
         /// </summary>
-        public DataEntityClientSqlServerQueryTreeGetParameters Parameters { get; private set; }
-            = new DataEntityClientSqlServerQueryTreeGetParameters();
+        public CoreBaseDataQueryTreeGetParameters Parameters { get; private set; }
+            = new CoreBaseDataQueryTreeGetParameters();
+
+        /// <summary>
+        /// Префикс.
+        /// </summary>
+        public string Prefix { get; set; } = "TreeGet_";
+
 
         /// <summary>
         /// Имя поля таблицы дерева для идентификатора.
@@ -84,49 +90,60 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Get
 
             if (TreeTableFiealdAliasesByNames.Any())
             {
-                result.Append(string.Join(", ", TreeTableFiealdAliasesByNames.Select(x => $"r.{x.Key} {x.Value}")));
+                result.Append(
+                    string.Join(", ", TreeTableFiealdAliasesByNames.Select(x => $"{Prefix}r.{x.Key} {x.Value}"))
+                    );
 
                 result.Append(", ");
             }
             
-            result.Append($"k.{LinkTableFieldNameForLevel}");
+            result.Append($"{Prefix}k.{LinkTableFieldNameForLevel}");
+
+            var aliasForLink = $"{Prefix}k";
+            var aliasForResult = $"{Prefix}r";
+            var aliasForTree = $"{Prefix}t";
 
             switch (Axis)
             {
-                case CoreBaseCommonEnumAxis.Ancestor:
+                case CoreBaseCommonEnumTreeAxis.Ancestor:
                     result.Append(
 $@"
- from {TreeTableName} t
-	inner join {LinkTableName} k on k.{LinkTableFieldNameForId} = t.{TreeTableFieldNameForId}
-	inner join {TreeTableName} r on r.{TreeTableFieldNameForId} = k.{LinkTableFieldNameForParentId}
-"
-                    );
+ from {TreeTableName} {aliasForTree}
+	inner join {LinkTableName} {aliasForLink}
+        on {aliasForLink}.{LinkTableFieldNameForId} = {aliasForTree}.{TreeTableFieldNameForId}
+	inner join {TreeTableName} {aliasForResult}
+        on {aliasForResult}.{TreeTableFieldNameForId} = {aliasForLink}.{LinkTableFieldNameForParentId}
+");
                     break;
-                case CoreBaseCommonEnumAxis.Child:
+                case CoreBaseCommonEnumTreeAxis.Child:
                     result.Append(
 $@"
- from {TreeTableName} t
-    inner join {TreeTableName} r on r.{TreeTableFieldNameForParentId} = t.{TreeTableFieldNameForId}
-	inner join {LinkTableName} k on k.{LinkTableFieldNameForId} = r.{TreeTableFieldNameForId} and k.{LinkTableFieldNameForParentId} = 0
-"
-                    );
+ from {TreeTableName} {aliasForTree}
+    inner join {TreeTableName} {aliasForResult}
+        on {aliasForResult}.{TreeTableFieldNameForParentId} = {aliasForTree}.{TreeTableFieldNameForId}
+	inner join {LinkTableName} {aliasForLink}
+        on {aliasForLink}.{LinkTableFieldNameForId} = {aliasForResult}.{TreeTableFieldNameForId}
+            and {aliasForLink}.{LinkTableFieldNameForParentId} = 0
+");
                     break;
-                case CoreBaseCommonEnumAxis.Descendant:
+                case CoreBaseCommonEnumTreeAxis.Descendant:
                     result.Append(
 $@"
- from {TreeTableName} t
-	inner join {LinkTableName} k on k.{LinkTableFieldNameForParentId} = t.{TreeTableFieldNameForId}
-	inner join {TreeTableName} r on r.{TreeTableFieldNameForId} = k.{LinkTableFieldNameForId}
-"
-                    );
+ from {TreeTableName} {aliasForTree}
+	inner join {LinkTableName} {aliasForLink}
+        on {aliasForLink}.{LinkTableFieldNameForParentId} = {aliasForTree}.{TreeTableFieldNameForId}
+	inner join {TreeTableName} {aliasForResult}
+        on {aliasForResult}.{TreeTableFieldNameForId} = {aliasForLink}.{LinkTableFieldNameForId}
+");
                     break;
-                case CoreBaseCommonEnumAxis.Self:
+                case CoreBaseCommonEnumTreeAxis.Self:
                     result.Append(
 $@"
-from {TreeTableName} r
-	inner join {LinkTableName} k on k.{LinkTableFieldNameForId} = r.{TreeTableFieldNameForId} and k.{LinkTableFieldNameForParentId} = 0
-"
-                    );
+from {TreeTableName} {aliasForResult}
+	inner join {LinkTableName} {aliasForLink}
+        on {aliasForLink}.{LinkTableFieldNameForId} = {aliasForResult}.{TreeTableFieldNameForId}
+            and {aliasForLink}.{LinkTableFieldNameForParentId} = 0
+");
                     break;
             }
 
@@ -141,12 +158,12 @@ from {TreeTableName} r
 
                 if (parId != null)
                 {
-                    whereCaluseParts.Add($"r.{TreeTableFieldNameForId} = {parId.ParameterName}");
+                    whereCaluseParts.Add($"{aliasForResult}.{TreeTableFieldNameForId} = {parId.ParameterName}");
                 }
 
                 if (parLevel != null)
                 {
-                    whereCaluseParts.Add($"k.{LinkTableFieldNameForLevel} <= {parLevel.ParameterName}");
+                    whereCaluseParts.Add($"{aliasForLink}.{LinkTableFieldNameForLevel} <= {parLevel.ParameterName}");
                 }
 
                 result.Append(string.Join("and ", whereCaluseParts));

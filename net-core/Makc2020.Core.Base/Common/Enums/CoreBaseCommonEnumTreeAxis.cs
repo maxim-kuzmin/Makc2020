@@ -3,9 +3,9 @@
 namespace Makc2020.Core.Base.Common.Enums
 {
     /// <summary>
-    /// Ядро. Основа. Общее. Перечисления. Оси.
+    /// Ядро. Основа. Общее. Перечисления. Оси дерева.
     /// </summary>
-    public enum CoreBaseCommonEnumAxis
+    public enum CoreBaseCommonEnumTreeAxis
     {
         /// <summary>
         /// Потомок.

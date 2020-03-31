@@ -3,12 +3,12 @@
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Makc2020.Data.Entity.Clients.SqlServer.Queries.Tree.Trigger
+namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Запросы. Дерево. Триггер. Параметры.
+    /// Ядро. Основа. Данные. Запросы. Дерево. Вычисление. Параметры.
     /// </summary>
-    public class DataEntityClientSqlServerQueryTreeTriggerParameters
+    public class CoreBaseDataQueryTreeCalculateParameters
     {
         #region Properties
 

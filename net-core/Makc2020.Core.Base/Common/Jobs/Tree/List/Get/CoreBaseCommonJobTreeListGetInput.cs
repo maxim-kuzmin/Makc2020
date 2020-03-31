@@ -17,7 +17,7 @@ namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
         /// <summary>
         /// Ось.
         /// </summary>
-        public CoreBaseCommonEnumAxis Axis { get; set; }
+        public CoreBaseCommonEnumTreeAxis Axis { get; set; }
 
         /// <summary>
         /// Идентификатор узла дерева.
