@@ -13,11 +13,6 @@ namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
         #region Properties
 
         /// <summary>
-        /// Запрос выборки идентификаторов.
-        /// </summary>
-        public string IdsSelectQuery { get; set; }
-
-        /// <summary>
         /// Имя поля таблицы связи для идентификатора родителя.
         /// </summary>
         public string LinkTableFieldNameForId { get; set; } = "Id";
@@ -42,6 +37,11 @@ namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
         /// Префикс.
         /// </summary>
         public string Prefix { get; set; } = "TreeCalculate_";
+
+        /// <summary>
+        /// SQL для запроса выборки идентификаторов.
+        /// </summary>
+        public string SqlForIdsSelectQuery { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для числа детей.
@@ -112,7 +112,7 @@ set
 
             var parIds = Parameters.Ids;
 
-            if (parIds.Any() || !string.IsNullOrWhiteSpace(IdsSelectQuery))
+            if (parIds.Any() || !string.IsNullOrWhiteSpace(SqlForIdsSelectQuery))
             {
                 result.Append($"where {aliasForResult}.{TreeTableFieldNameForId} in (");
 
@@ -122,7 +122,7 @@ set
                 }
                 else
                 {
-                    result.Append(IdsSelectQuery);
+                    result.Append(SqlForIdsSelectQuery);
                 }
 
                 result.Append(")");

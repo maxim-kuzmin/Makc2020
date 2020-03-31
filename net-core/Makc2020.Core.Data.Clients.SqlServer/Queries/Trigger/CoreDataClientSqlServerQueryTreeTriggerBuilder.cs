@@ -13,13 +13,13 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger
         #region Potected methods
 
         /// <inheritdoc/>
-        protected sealed override string CreateSqlForCalculate(string idsSelectQuery)
+        protected sealed override string CreateSqlForCalculate(string sqlForIdsSelectQuery)
         {
             return new CoreDataClientSqlServerQueryTreeCalculateBuilder
-            {
-                IdsSelectQuery = idsSelectQuery,
+            {                
                 LinkTableFieldNameForId = LinkTableFieldNameForId,
                 LinkTableFieldNameForParentId = LinkTableFieldNameForParentId,
+                SqlForIdsSelectQuery = sqlForIdsSelectQuery,
                 TreeTableFieldNameForChildCount = TreeTableFieldNameForChildCount,
                 TreeTableFieldNameForDescendantCount = TreeTableFieldNameForDescendantCount,
                 TreeTableFieldNameForId = TreeTableFieldNameForId,

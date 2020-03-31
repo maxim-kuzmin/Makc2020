@@ -28,6 +28,7 @@ namespace Makc2020.Core.Data.Clients.SqlServer
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(x => GetContext(x).Factory);
             services.AddTransient(x => GetContext(x).Provider);
         }
 
