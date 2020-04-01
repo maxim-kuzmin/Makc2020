@@ -14,19 +14,19 @@
       <div class="skin--css--core--form--fields">
         <div *ngIf="myView.fieldId.value">
           <div>
-            <label for="skin--id--mod--dummy--main--page--item--id">
+            <label for="skin--id--mod--dummy-main--page--item--id">
               {{myPresenter.resources.fields.fieldId.label}}
             </label>
           </div>
           <input pInputText
                  [formControl]="myView.fieldId"
                  type="text"
-                 id="skin--id--mod--dummy--main--page--item--id">
+                 id="skin--id--mod--dummy-main--page--item--id">
         </div>
         <div>
           <div>
             <div>
-              <label for="skin--id--mod--dummy--main--page--item--name">
+              <label for="skin--id--mod--dummy-main--page--item--name">
                 {{myPresenter.resources.fields.fieldName.label}}
               </label>
               <span *ngIf="myView.fieldNameErrorRequiredVisible"
@@ -38,7 +38,7 @@
                    required
                    maxLength="255"
                    type="text"
-                   id="skin--id--mod--dummy--main--page--item--name"
+                   id="skin--id--mod--dummy-main--page--item--name"
                    [placeholder]="myPresenter.resources.fields.fieldName.placeholder"
                    [formControl]="myView.fieldName">
           </div>
@@ -46,7 +46,7 @@
         <div>
           <div>
             <div>
-              <label for="skin--id--mod--dummy--main--page--item--object-dummy-one-to-many"
+              <label for="skin--id--mod--dummy-main--page--item--object-dummy-one-to-many"
                      class="input-label"
                      [ngClass]="{'input-label__required': myView.isDataChangeAllowed}">
                 {{myPresenter.resources.fields.fieldObjectDummyOneToMany.label}}
@@ -58,7 +58,7 @@
             </div>
             <p-dropdown [style]="{'width':'100%'}"
                         required
-                        id="skin--id--mod--dummy--main--page--item--object-dummy-one-to-many"
+                        id="skin--id--mod--dummy-main--page--item--object-dummy-one-to-many"
                         [placeholder]="myPresenter.resources.fields.fieldObjectDummyOneToMany.placeholder"
                         [formControl]="myView.fieldObjectDummyOneToMany"
                         [options]="myView.selectItemsDummyOneToMany"></p-dropdown>
@@ -68,7 +68,7 @@
       <div *ngIf="myView.isDataChangeAllowed" class="skin--css--core--form--actions">
         <button
           pButton
-          id="skin--id--mod--dummy--main--page--item--button"
+          id="skin--id--mod--dummy-main--page--item--button"
           type="submit"
           label="{{myPresenter.resources.buttons.buttonSubmit.title}}"
           class="btn btn_green"

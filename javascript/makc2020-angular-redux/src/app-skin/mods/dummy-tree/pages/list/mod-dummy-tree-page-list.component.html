@@ -1,0 +1,88 @@
+<!--mod--dummy-tree--page--list/-->
+<!--
+<app-skin-core-progress-spinner #ctrlLoading
+                                *ngIf="!myView.isDataLoaded"></app-skin-core-progress-spinner>
+-->
+<div #ctrlLoading="AppSkinCoreProgressSpinnerDirective"
+    #ctrlRefresh="AppSkinCoreProgressSpinnerDirective"
+     appSkinCoreProgressSpinner>
+  <p-table #ctrlTable
+           selectionMode="single"
+           [columns]="myView.displayedColumns"
+           [(selection)]="myView.selectedItem"
+           [dataKey]="myView.dataKey">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th>
+          <div class="p-grid p-justify-start">
+            <div class="p-col-fixed">
+              <button
+                pButton type="button"
+                icon="pi pi-plus"
+                [title]="myPresenter.resources.actions.actionAdd.title"
+                (click)="myPresenter.onItemInsert()"></button>
+            </div>
+          </div>
+        </th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th></th>
+        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+          <input *ngSwitchCase="'name'"
+                 pInputText
+                 class="skin--css--host--control--grid--filter"
+                 type="text"
+                 [formControl]="myView.fieldName">
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row let-columns="columns">
+      <tr [pSelectableRow]="row">
+        <td>
+          <div class="p-grid p-justify-start">
+            <div class="p-col-fixed">
+              <button
+                pButton type="button"
+                class="btn user-info__button"
+                icon="pi pi-eye"
+                [title]="myPresenter.resources.actions.actionView.title"
+                (click)="myPresenter.onItemView(row.id)"
+              ></button>
+            </div>
+            <div class="p-col-fixed">
+              <button
+                pButton type="button"
+                class="btn user-info__button"
+                icon="pi pi-pencil"
+                [title]="myPresenter.resources.actions.actionEdit.title"
+                (click)="myPresenter.onItemEdit(row.id)"
+              ></button>
+            </div>
+            <div class="p-col-fixed">
+              <button
+                pButton type="button"
+                class="btn user-info__button"
+                icon="pi pi-times"
+                [title]="myPresenter.resources.actions.actionDelete.title"
+                (click)="myPresenter.onItemDelete(row.id)"
+              ></button>
+            </div>
+          </div>
+        </td>
+        <td *ngFor="let col of columns">
+          {{row[col.field]}}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator #ctrlPaginator
+               [first]="0"
+               [rows]="myView.pageSize"
+               [totalRecords]="myView.totalCount"></p-paginator>
+</div>
+<!--/mod--dummy-tree--page--list-->

@@ -46,6 +46,28 @@ import {
   appModDummyMainPageListConfigKey,
   appModDummyMainPageListConfigTitleResourceKey
 } from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-config';
+
+import {
+  appModDummyTreePageIndexConfigFullPath,
+  appModDummyTreePageIndexConfigKey,
+  appModDummyTreePageIndexConfigTitleResourceKey
+} from '@app/mods/dummy-tree/pages/index/mod-dummy-tree-page-index-config';
+import {
+  appModDummyTreePageItemCreateConfigFullPath,
+  appModDummyTreePageItemCreateConfigKey,
+  appModDummyTreePageItemCreateConfigTitleResourceKey,
+  appModDummyTreePageItemEditConfigFullPath,
+  appModDummyTreePageItemEditConfigKey,
+  appModDummyTreePageItemEditConfigTitleResourceKey,
+  appModDummyTreePageItemViewConfigFullPath,
+  appModDummyTreePageItemViewConfigKey,
+  appModDummyTreePageItemViewConfigTitleResourceKey
+} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-config';
+import {
+  appModDummyTreePageListConfigFullPath,
+  appModDummyTreePageListConfigKey,
+  appModDummyTreePageListConfigTitleResourceKey
+} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-config';
 import {
   appRootPageAdministrationConfigFullPath,
   appRootPageAdministrationConfigKey,
@@ -119,6 +141,36 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
    * @type {AppHostPartMenuDataNode}
    */
   nodeModDummyMainPageList: AppHostPartMenuDataNode;
+
+  /**
+   * Элемент "ModDummyTreePageIndex".
+   * @type {AppHostPartMenuDataNode}
+   */
+  nodeModDummyTreePageIndex: AppHostPartMenuDataNode;
+
+  /**
+   * Элемент "ModDummyTreePageItemCreate".
+   * @type {AppHostPartMenuDataNode}
+   */
+  nodeModDummyTreePageItemCreate: AppHostPartMenuDataNode;
+
+  /**
+   * Элемент "ModDummyTreePageItemEdit".
+   * @type {AppHostPartMenuDataNode}
+   */
+  nodeModDummyTreePageItemEdit: AppHostPartMenuDataNode;
+
+  /**
+   * Элемент "ModDummyTreePageItemView".
+   * @type {AppHostPartMenuDataNode}
+   */
+  nodeModDummyTreePageItemView: AppHostPartMenuDataNode;
+
+  /**
+   * Элемент "ModDummyTreePageList".
+   * @type {AppHostPartMenuDataNode}
+   */
+  nodeModDummyTreePageList: AppHostPartMenuDataNode;
 
   /**
    * Элемент "RootPageAdministration".
@@ -223,6 +275,16 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       ''
     );
 
+    // Menu: 2: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex
+
+    this.nodeModDummyTreePageIndex = this.createNode(
+      appModDummyTreePageIndexConfigKey,
+      this.nodeRootPageAdministration,
+      appModDummyTreePageIndexConfigTitleResourceKey,
+      this.createRouterLinkByFullPath(appModDummyTreePageIndexConfigFullPath),
+      ''
+    );
+
     // Menu: 3: RootPageIndex / RootPageSite / ModAuthPageIndex / ModAuthPageRedirect
 
     this.nodeModAuthPageRedirect = this.createNode(
@@ -290,6 +352,46 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyMainPageIndex,
       appModDummyMainPageItemViewConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyMainPageItemViewConfigFullPath),
+      ''
+    );
+
+    // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageList
+
+    this.nodeModDummyTreePageList = this.createNode(
+      appModDummyTreePageListConfigKey,
+      this.nodeModDummyTreePageIndex,
+      appModDummyTreePageListConfigTitleResourceKey,
+      this.createRouterLinkByFullPath(appModDummyTreePageListConfigFullPath),
+      ''
+    );
+
+    // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemCreate
+
+    this.nodeModDummyTreePageItemCreate = this.createNode(
+      appModDummyTreePageItemCreateConfigKey,
+      this.nodeModDummyTreePageIndex,
+      appModDummyTreePageItemCreateConfigTitleResourceKey,
+      this.createRouterLinkByFullPath(appModDummyTreePageItemCreateConfigFullPath),
+      ''
+    );
+
+    // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemEdit
+
+    this.nodeModDummyTreePageItemEdit = this.createNode(
+      appModDummyTreePageItemEditConfigKey,
+      this.nodeModDummyTreePageIndex,
+      appModDummyTreePageItemEditConfigTitleResourceKey,
+      this.createRouterLinkByFullPath(appModDummyTreePageItemEditConfigFullPath),
+      ''
+    );
+
+    // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemView
+
+    this.nodeModDummyTreePageItemView = this.createNode(
+      appModDummyTreePageItemViewConfigKey,
+      this.nodeModDummyTreePageIndex,
+      appModDummyTreePageItemViewConfigTitleResourceKey,
+      this.createRouterLinkByFullPath(appModDummyTreePageItemViewConfigFullPath),
       ''
     );
   }
