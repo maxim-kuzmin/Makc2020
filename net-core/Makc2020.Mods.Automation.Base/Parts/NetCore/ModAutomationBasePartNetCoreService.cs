@@ -30,46 +30,49 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                 "obj"
             };
 
-            const string fileSearchPattern = "*.cs";
+            var fileSearchPatterns = new[] { "*.cs", "*.json" };
 
-            var (filesCount, foldersCount) = GetCounts(
-                input.SourcePath,
-                fileSearchPattern,
-                excludedFolderNames,
-                filePath => CheckIfFilePathIsHandleable(filePath, input.SourceEntityName)
-                );
-
-            if (filesCount > 0)
+            foreach (var fileSearchPattern in fileSearchPatterns)
             {
-                EnumerateFiles(
+                var (filesCount, foldersCount) = GetCounts(
                     input.SourcePath,
                     fileSearchPattern,
                     excludedFolderNames,
-                    (path, number) => HandleFile(
-                        input.FileHandleProgress,
-                        path,
-                        number,
-                        filesCount,
-                        new UTF8Encoding(true),
-                        input.SourceEntityName,
-                        input.SourceEntityName,
-                        input.SourcePath,
-                        input.TargetEntityName,
-                        input.TargetEntityName,
-                        input.TargetPath
-                        ),
-                    (path, number) => HandleFolder(
-                        input.FolderHandleProgress,
-                        path,
-                        number,                        
-                        foldersCount,                        
-                        input.SourceEntityName,
-                        input.SourcePath,
-                        input.TargetEntityName,
-                        input.TargetPath,
-                        fileSearchPattern
-                        )
+                    filePath => CheckIfFilePathIsHandleable(filePath, input.SourceEntityName)
                     );
+
+                if (filesCount > 0)
+                {
+                    EnumerateFiles(
+                        input.SourcePath,
+                        fileSearchPattern,
+                        excludedFolderNames,
+                        (path, number) => HandleFile(
+                            input.FileHandleProgress,
+                            path,
+                            number,
+                            filesCount,
+                            new UTF8Encoding(true),
+                            input.SourceEntityName,
+                            input.SourceEntityName,
+                            input.SourcePath,
+                            input.TargetEntityName,
+                            input.TargetEntityName,
+                            input.TargetPath
+                            ),
+                        (path, number) => HandleFolder(
+                            input.FolderHandleProgress,
+                            path,
+                            number,
+                            foldersCount,
+                            input.SourceEntityName,
+                            input.SourcePath,
+                            input.TargetEntityName,
+                            input.TargetPath,
+                            fileSearchPattern
+                            )
+                        );
+                }
             }
 
             return Task.CompletedTask;

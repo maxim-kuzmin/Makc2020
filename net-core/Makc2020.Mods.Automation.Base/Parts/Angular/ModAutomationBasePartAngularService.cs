@@ -28,50 +28,53 @@ namespace Makc2020.Mods.Automation.Base.Parts.Angular
                 "node_modules"
             };
 
-            const string fileSearchPattern = "*.ts";
+            var fileSearchPatterns = new[] { "*.ts", "*.css", "*.html" };
 
-            var sourceEntityFileName = GetFileNameFromEntityName(input.SourceEntityName);
+            foreach (var fileSearchPattern in fileSearchPatterns)
+            {
+                var sourceEntityFileName = GetFileNameFromEntityName(input.SourceEntityName);
 
-            var (filesCount, foldersCount) = GetCounts(
-                input.SourcePath,
-                fileSearchPattern,
-                excludedFolderNames,
-                filePath => CheckIfFilePathIsHandleable(filePath, sourceEntityFileName)
-                );
-
-            if (filesCount > 0)
-            {                
-                var targetEntityFileName = GetFileNameFromEntityName(input.TargetEntityName);
-
-                EnumerateFiles(
+                var (filesCount, foldersCount) = GetCounts(
                     input.SourcePath,
                     fileSearchPattern,
                     excludedFolderNames,
-                    (path, number) => HandleFile(
-                        input.FileHandleProgress,
-                        path,
-                        number,
-                        filesCount,
-                        new UTF8Encoding(false),
-                        input.SourceEntityName,
-                        sourceEntityFileName,
-                        input.SourcePath,
-                        input.TargetEntityName,
-                        targetEntityFileName,
-                        input.TargetPath
-                        ),
-                    (path, number) => HandleFolder(
-                        input.FolderHandleProgress,
-                        path,
-                        number,
-                        foldersCount,
-                        sourceEntityFileName,
-                        input.SourcePath,
-                        targetEntityFileName,
-                        input.TargetPath,
-                        fileSearchPattern
-                        )
+                    filePath => CheckIfFilePathIsHandleable(filePath, sourceEntityFileName)
                     );
+
+                if (filesCount > 0)
+                {
+                    var targetEntityFileName = GetFileNameFromEntityName(input.TargetEntityName);
+
+                    EnumerateFiles(
+                        input.SourcePath,
+                        fileSearchPattern,
+                        excludedFolderNames,
+                        (path, number) => HandleFile(
+                            input.FileHandleProgress,
+                            path,
+                            number,
+                            filesCount,
+                            new UTF8Encoding(false),
+                            input.SourceEntityName,
+                            sourceEntityFileName,
+                            input.SourcePath,
+                            input.TargetEntityName,
+                            targetEntityFileName,
+                            input.TargetPath
+                            ),
+                        (path, number) => HandleFolder(
+                            input.FolderHandleProgress,
+                            path,
+                            number,
+                            foldersCount,
+                            sourceEntityFileName,
+                            input.SourcePath,
+                            targetEntityFileName,
+                            input.TargetPath,
+                            fileSearchPattern
+                            )
+                        );
+                }
             }
 
             return Task.CompletedTask;

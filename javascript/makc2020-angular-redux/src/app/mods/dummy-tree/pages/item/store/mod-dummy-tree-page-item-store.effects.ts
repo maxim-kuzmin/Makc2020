@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
-import {forkJoin, Observable} from 'rxjs';
+import {EMPTY, forkJoin, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
@@ -37,31 +37,25 @@ export class AppModDummyTreePageItemStoreEffects {
     ofType(AppModDummyTreePageItemEnumActions.Load),
     switchMap(
       action => {
-        const results$: Observable<any>[] = [];
-
         const {
           jobItemGetInput: input
         } = action;
 
         if (input && input.isForUpdate) {
-          results$.push(this.appJobItemGet.execute$(input, this.executionHandlerOnLoad));
-        }
-
-        return forkJoin(results$).pipe(
-          map(
-            results => {
-              let jobItemGetResult: AppModDummyTreeJobItemGetResult;
-
-              if (results.length > 0) {
-                jobItemGetResult = results[0] as AppModDummyTreeJobItemGetResult;
+          this.appJobItemGet.execute$(input, this.executionHandlerOnLoad).pipe(
+            map(
+              result => {
+                return new AppModDummyTreePageItemStoreActionLoadSuccess(
+                  result
+                );
               }
+            )
+          );
+        } else {
+          const result = new AppModDummyTreePageItemStoreActionLoadSuccess(null);
 
-              return new AppModDummyTreePageItemStoreActionLoadSuccess(
-                jobItemGetResult
-              );
-            }
-          )
-        );
+          return of(result);
+        }
       }
     )
   );
