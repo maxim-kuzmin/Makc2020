@@ -2,6 +2,7 @@
 
 using Makc2020.Mods.Auth.Base;
 using Makc2020.Mods.DummyMain.Base;
+using Makc2020.Mods.DummyTree.Base;
 using Makc2020.Root.Base;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,11 @@ namespace Makc2020.Root.Apps.Api.Base
         /// Мод "DummyMain". Основа.
         /// </summary>
         public ModDummyMainBaseContext ModDummyMainBase => Modules.ModDummyMainBase.Context;
+
+        /// <summary>
+        /// Мод "DummyTree". Основа.
+        /// </summary>
+        public ModDummyTreeBaseContext ModDummyTreeBase => Modules.ModDummyTreeBase.Context;
 
         #endregion Properties
 

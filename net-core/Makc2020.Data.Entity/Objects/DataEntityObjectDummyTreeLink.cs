@@ -2,7 +2,6 @@
 
 using Makc2020.Data.Base.Loaders;
 using Makc2020.Data.Base.Objects;
-using System.Collections.Generic;
 
 namespace Makc2020.Data.Entity.Objects
 {

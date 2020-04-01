@@ -23,11 +23,6 @@ namespace Makc2020.Data.Entity.Objects
         /// </summary>
         public virtual List<DataEntityObjectDummyMainDummyManyToMany> ObjectsDummyMainDummyManyToMany { get; set; }
 
-        /// <summary>
-        /// Объекты, где хранятся данные сущности "DummyTree".
-        /// </summary>
-        public virtual List<DataEntityObjectDummyTree> ObjectsDummyTree { get; set; }
-
         #endregion Properties
 
         #region Constructors
@@ -38,7 +33,6 @@ namespace Makc2020.Data.Entity.Objects
         public DataEntityObjectDummyMain()
         {
             ObjectsDummyMainDummyManyToMany = new List<DataEntityObjectDummyMainDummyManyToMany>();
-            ObjectsDummyTree = new List<DataEntityObjectDummyTree>();
         }
 
         #endregion Constructors

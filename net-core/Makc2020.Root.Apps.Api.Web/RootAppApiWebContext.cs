@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Caching;
-using Makc2020.Core.Web;
 using Makc2020.Mods.DummyMain.Caching;
+using Makc2020.Mods.DummyTree.Caching;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.Logging;
 
@@ -26,6 +26,11 @@ namespace Makc2020.Root.Apps.Api.Web
         /// Мод "DummyMain". Кэширование.
         /// </summary>
         public ModDummyMainCachingContext ModDummyMainCaching => Modules.ModDummyMainCaching.Context;
+
+        /// <summary>
+        /// Мод "DummyTree". Кэширование.
+        /// </summary>
+        public ModDummyTreeCachingContext ModDummyTreeCaching => Modules.ModDummyTreeCaching.Context;
 
         #endregion Properties
 

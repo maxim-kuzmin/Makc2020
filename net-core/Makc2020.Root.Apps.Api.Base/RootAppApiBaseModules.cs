@@ -10,6 +10,9 @@ using Makc2020.Mods.Auth.Base.Settings.Successes;
 using Makc2020.Mods.DummyMain.Base;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
+using Makc2020.Mods.DummyTree.Base;
+using Makc2020.Mods.DummyTree.Base.Resources.Errors;
+using Makc2020.Mods.DummyTree.Base.Resources.Successes;
 using Makc2020.Root.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -33,6 +36,11 @@ namespace Makc2020.Root.Apps.Api.Base
         /// Мод "DummyMain". Основа.
         /// </summary>
         public ModDummyMainBaseModule ModDummyMainBase { get; set; }
+
+        /// <summary>
+        /// Мод "DummyTree". Основа.
+        /// </summary>
+        public ModDummyTreeBaseModule ModDummyTreeBase { get; set; }
 
         #endregion Properties
 
@@ -58,6 +66,7 @@ namespace Makc2020.Root.Apps.Api.Base
 
             ModAuthBase?.ConfigureServices(services);
             ModDummyMainBase?.ConfigureServices(services);
+            ModDummyTreeBase?.ConfigureServices(services);
         }
 
         /// <inheritdoc/>
@@ -67,6 +76,7 @@ namespace Makc2020.Root.Apps.Api.Base
 
             ModAuthBase?.InitConfig(environment);
             ModDummyMainBase?.InitConfig(environment);
+            ModDummyTreeBase?.InitConfig(environment);
         }
 
         /// <inheritdoc/>
@@ -89,6 +99,16 @@ namespace Makc2020.Root.Apps.Api.Base
                 DataEntityDbFactory = GetDataEntityDbFactory(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyMainBaseResourceErrors>(serviceProvider),
                 ResourceSuccessesLocalizer = GetLocalizer<ModDummyMainBaseResourceSuccesses>(serviceProvider)
+            });
+
+            ModDummyTreeBase?.InitContext(new ModDummyTreeBaseExternals
+            {
+                CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
+                CoreBaseDataProvider = CoreDataClientSqlServer?.Context.Provider,
+                DataBaseSettings = GetDataBaseSettings(),
+                DataEntityDbFactory = GetDataEntityDbFactory(),
+                ResourceErrorsLocalizer = GetLocalizer<ModDummyTreeBaseResourceErrors>(serviceProvider),
+                ResourceSuccessesLocalizer = GetLocalizer<ModDummyTreeBaseResourceSuccesses>(serviceProvider)
             });
         }
 
@@ -120,7 +140,8 @@ namespace Makc2020.Root.Apps.Api.Base
             base.TrySetModule(commonModule);
 
             if (TrySet<ModAuthBaseModule>(x => ModAuthBase = x, commonModule)) return true;
-            if (TrySet<ModDummyMainBaseModule>(x => ModDummyMainBase = x, commonModule)) return true;            
+            if (TrySet<ModDummyMainBaseModule>(x => ModDummyMainBase = x, commonModule)) return true;
+            if (TrySet<ModDummyTreeBaseModule>(x => ModDummyTreeBase = x, commonModule)) return true;
 
             return false;
         }

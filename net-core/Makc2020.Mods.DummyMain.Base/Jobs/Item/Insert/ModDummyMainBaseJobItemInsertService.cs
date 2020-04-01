@@ -3,6 +3,7 @@
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
+using Makc2020.Data.Base.Objects;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
@@ -83,11 +84,13 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
 
             if (msg.Contains(setting.DbUniqueIndexForName))
             {
+                DataBaseObjectDummyMain obj;
+
                 return new[]
                 {
                     string.Format(
-                        ResourceErrors.GetStringFormatFieldValueIsNotUnique(), 
-                        "Name"
+                        ResourceErrors.GetStringFormatFieldValueIsNotUnique(),
+                        nameof(obj.Name)
                         )
                 };
             }

@@ -78,6 +78,8 @@ namespace Makc2020.Data.Entity.Db
             DataEntitySchemaDummyMain.SeedTestData(modelBuilder);
             DataEntitySchemaDummyManyToMany.SeedTestData(modelBuilder);
             DataEntitySchemaDummyMainDummyManyToMany.SeedTestData(modelBuilder);
+            DataEntitySchemaDummyTree.SeedTestData(modelBuilder);
+            DataEntitySchemaDummyTreeLink.SeedTestData(modelBuilder);
         }
 
         #endregion Protected methods

@@ -9,6 +9,8 @@
     <ProjectReference Include="..\Makc2020.Data.Caching\Makc2020.Data.Caching.csproj" />
     <ProjectReference Include="..\Makc2020.Mods.Auth.Web\Makc2020.Mods.Auth.Web.csproj" />
     <ProjectReference Include="..\Makc2020.Mods.DummyMain.Web\Makc2020.Mods.DummyMain.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyTree.Caching\Makc2020.Mods.DummyTree.Caching.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyTree.Web\Makc2020.Mods.DummyTree.Web.csproj" />
     <ProjectReference Include="..\Makc2020.Root.Apps.Api.Base\Makc2020.Root.Apps.Api.Base.csproj" />
     <ProjectReference Include="..\Makc2020.Root.Web\Makc2020.Root.Web.csproj" />
   </ItemGroup>

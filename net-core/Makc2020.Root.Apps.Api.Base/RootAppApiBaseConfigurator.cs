@@ -3,6 +3,7 @@
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.Auth.Base;
 using Makc2020.Mods.DummyMain.Base;
+using Makc2020.Mods.DummyTree.Base;
 using Makc2020.Root.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace Makc2020.Root.Apps.Api.Base
 
             services.AddTransient(x => GetContext(x).ModAuthBase);
             services.AddTransient(x => GetContext(x).ModDummyMainBase);
+            services.AddTransient(x => GetContext(x).ModDummyTreeBase);
         }
 
         /// <inheritdoc/>
@@ -37,7 +39,8 @@ namespace Makc2020.Root.Apps.Api.Base
             var modules = new ICoreBaseCommonModule[]
             {
                 new ModAuthBaseModule(),
-                new ModDummyMainBaseModule()
+                new ModDummyMainBaseModule(),
+                new ModDummyTreeBaseModule()
             };
 
             result.AddRange(modules);

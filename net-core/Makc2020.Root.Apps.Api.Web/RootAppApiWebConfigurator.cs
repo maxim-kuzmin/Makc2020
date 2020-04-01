@@ -8,6 +8,8 @@ using Makc2020.Mods.Auth.Web.Api;
 using Makc2020.Mods.Auth.Web.Ext;
 using Makc2020.Mods.DummyMain.Caching;
 using Makc2020.Mods.DummyMain.Web.Api;
+using Makc2020.Mods.DummyTree.Caching;
+using Makc2020.Mods.DummyTree.Web.Api;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -46,6 +48,7 @@ namespace Makc2020.Root.Apps.Api.Web
 
             services.AddTransient(x => GetContext(x).CoreCaching);
             services.AddTransient(x => GetContext(x).ModDummyMainCaching);
+            services.AddTransient(x => GetContext(x).ModDummyTreeCaching);
 
             if (ModAuthWebAuthenticationIsEnabled)
             {
@@ -64,7 +67,9 @@ namespace Makc2020.Root.Apps.Api.Web
                 new HostWebApiPartAuthModule(),
                 new ModAuthWebApiModule(),
                 new ModDummyMainCachingModule(),
-                new ModDummyMainWebApiModule()
+                new ModDummyMainWebApiModule(),
+                new ModDummyTreeCachingModule(),
+                new ModDummyTreeWebApiModule()
             };
 
             result.AddRange(modules);

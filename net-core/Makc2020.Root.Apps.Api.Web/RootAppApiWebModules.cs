@@ -9,6 +9,8 @@ using Makc2020.Host.Web.Api.Parts.Auth;
 using Makc2020.Mods.Auth.Web.Api;
 using Makc2020.Mods.DummyMain.Caching;
 using Makc2020.Mods.DummyMain.Web.Api;
+using Makc2020.Mods.DummyTree.Caching;
+using Makc2020.Mods.DummyTree.Web.Api;
 using Makc2020.Root.Apps.Api.Base;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +51,16 @@ namespace Makc2020.Root.Apps.Api.Web
         /// </summary>
         public ModDummyMainWebApiModule ModDummyMainWebApi { get; set; }
 
+        /// <summary>
+        /// Мод "DummyTree". Кэширование.
+        /// </summary>
+        public ModDummyTreeCachingModule ModDummyTreeCaching { get; set; }
+
+        /// <summary>
+        /// Мод "DummyTree". Веб. API.
+        /// </summary>
+        public ModDummyTreeWebApiModule ModDummyTreeWebApi { get; set; }
+
         #endregion Properties
 
         #region Constructors
@@ -76,6 +88,8 @@ namespace Makc2020.Root.Apps.Api.Web
             ModAuthWebApi?.ConfigureServices(services);
             ModDummyMainCaching?.ConfigureServices(services);
             ModDummyMainWebApi?.ConfigureServices(services);
+            ModDummyTreeCaching?.ConfigureServices(services);
+            ModDummyTreeWebApi?.ConfigureServices(services);
         }
 
         /// <inheritdoc/>
@@ -85,6 +99,7 @@ namespace Makc2020.Root.Apps.Api.Web
 
             CoreCaching?.InitConfig(environment);
             ModDummyMainCaching?.InitConfig(environment);
+            ModDummyTreeCaching?.InitConfig(environment);
         }
 
         /// <inheritdoc/>
@@ -108,6 +123,17 @@ namespace Makc2020.Root.Apps.Api.Web
                 ResourceSuccesses = ModDummyMainBase.Context.Resources.Successes,
                 Service = ModDummyMainBase.Context.Service
             });
+
+            ModDummyTreeCaching?.InitContext(new ModDummyTreeCachingExternals
+            {
+                Cache = CoreCaching.Context.Cache,
+                CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
+                CoreCachingResourceErrors = CoreCaching.Context.Resources.Errors,
+                DataBaseSettings = GetDataBaseSettings(),
+                ResourceErrors = ModDummyTreeBase.Context.Resources.Errors,
+                ResourceSuccesses = ModDummyTreeBase.Context.Resources.Successes,
+                Service = ModDummyTreeBase.Context.Service
+            });
         }
 
         /// <inheritdoc/>
@@ -117,6 +143,7 @@ namespace Makc2020.Root.Apps.Api.Web
 
             DataCachingSerialization.Init();
             ModDummyMainCachingSerialization.Init();
+            ModDummyTreeCachingSerialization.Init();
         }
 
         #endregion Public methods
@@ -133,6 +160,8 @@ namespace Makc2020.Root.Apps.Api.Web
             if (TrySet<ModAuthWebApiModule>(x => ModAuthWebApi = x, commonModule)) return true;
             if (TrySet<ModDummyMainCachingModule>(x => ModDummyMainCaching = x, commonModule)) return true;
             if (TrySet<ModDummyMainWebApiModule>(x => ModDummyMainWebApi = x, commonModule)) return true;
+            if (TrySet<ModDummyTreeCachingModule>(x => ModDummyTreeCaching = x, commonModule)) return true;
+            if (TrySet<ModDummyTreeWebApiModule>(x => ModDummyTreeWebApi = x, commonModule)) return true;
 
             return false;
         }

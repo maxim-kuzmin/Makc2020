@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Makc2020.Mods.Auth.Base\Makc2020.Mods.Auth.Base.csproj" />
     <ProjectReference Include="..\Makc2020.Mods.DummyMain.Base\Makc2020.Mods.DummyMain.Base.csproj" />
+    <ProjectReference Include="..\Makc2020.Mods.DummyTree.Base\Makc2020.Mods.DummyTree.Base.csproj" />
     <ProjectReference Include="..\Makc2020.Root.Base\Makc2020.Root.Base.csproj" />
   </ItemGroup>
 
