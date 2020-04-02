@@ -51,9 +51,9 @@ namespace Makc2020.Data.Base.Settings
         public string DbUniqueIndexForIdAndParentId => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.Id), nameof(DataBaseObjectDummyTree.ParentId));
 
         /// <summary>
-        /// Наименование уникального индекса в базе данных для полуй "ParentId" и "Name".
+        /// Наименование уникального индекса в базе данных для полей "ParentId" и "Name".
         /// </summary>
-        public string DbUniqueIndexForParentIdAndName => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.ParentId), nameof(DataBaseObjectDummyOneToMany.Name));
+        public string DbUniqueIndexForParentIdAndName => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.ParentId), nameof(DataBaseObjectDummyTree.Name));
 
         #endregion Properties
     }

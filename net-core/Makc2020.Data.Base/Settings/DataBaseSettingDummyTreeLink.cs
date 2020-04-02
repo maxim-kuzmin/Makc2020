@@ -43,7 +43,7 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Внешний ключ в базе данных к сущности "DummyTree".
         /// </summary>
-        public string DbForeignKeyToDummyTree => CreateNameOfForeignKey(DbTable, DataBaseSettingDummyMain.DB_TABLE, nameof(DataBaseObjectDummyTree.Id));
+        public string DbForeignKeyToDummyTree => CreateNameOfForeignKey(DbTable, DataBaseSettingDummyTree.DB_TABLE, nameof(DataBaseObjectDummyTree.Id));
 
         #endregion Properties
     }

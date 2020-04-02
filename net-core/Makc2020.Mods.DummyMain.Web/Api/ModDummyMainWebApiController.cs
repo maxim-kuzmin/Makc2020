@@ -67,7 +67,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <summary>
         /// Получить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpGet]
         public async Task<IActionResult> Get([FromQuery] ModDummyMainBaseJobItemGetInput input)
@@ -143,7 +143,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <summary>
         /// Добавить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpPost]
         public async Task<IActionResult> Post([FromBody] ModDummyMainBaseJobItemGetOutput input)
@@ -169,7 +169,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <summary>
         /// Обновить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpPut]
         public async Task<IActionResult> Put([FromBody] ModDummyMainBaseJobItemGetOutput input)

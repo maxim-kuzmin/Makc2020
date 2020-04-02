@@ -3,6 +3,7 @@
 using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Base.Common.Jobs.List.Get;
 using System.Linq;
+using Makc2020.Core.Base.Common.Enums;
 
 namespace Makc2020.Mods.DummyTree.Base.Jobs.List.Get
 {
@@ -14,9 +15,9 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.List.Get
         #region Properties
 
         /// <summary>
-        /// Имя данных.
+        /// Ось.
         /// </summary>
-        public string DataName { get; set; }
+        public CoreBaseCommonEnumTreeAxis Axis { get; set; }
 
         /// <summary>
         /// Строка идентификаторов данных.
@@ -29,9 +30,14 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.List.Get
         public long[] DataIds { get; set; }
 
         /// <summary>
-        /// Сортировка данных.
+        /// Уровень данных.
         /// </summary>
-        public int DataSorting { get; set; }
+        public long? DataLevel { get; set; }
+
+        /// <summary>
+        /// Имя данных.
+        /// </summary>
+        public string DataName { get; set; }
 
         #endregion Properties
 

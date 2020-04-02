@@ -66,7 +66,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <summary>
         /// Получить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpGet]
         public async Task<IActionResult> Get([FromQuery] ModDummyTreeBaseJobItemGetInput input)
@@ -92,7 +92,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <summary>
         /// Добавить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpPost]
         public async Task<IActionResult> Post([FromBody] ModDummyTreeBaseJobItemGetOutput input)
@@ -118,7 +118,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <summary>
         /// Обновить элемент.
         /// </summary>
-        /// <param name="intput">Ввод.</param>
+        /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpPut]
         public async Task<IActionResult> Put([FromBody] ModDummyTreeBaseJobItemGetOutput input)

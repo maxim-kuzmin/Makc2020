@@ -59,9 +59,9 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Get
             return input;
         }
 
-        private ModDummyMainBaseJobItemGetOutput TransformOutput(ModDummyMainBaseJobItemGetOutput input)
+        private ModDummyMainBaseJobItemGetOutput TransformOutput(ModDummyMainBaseJobItemGetOutput output)
         {
-            return input.ObjectDummyMain != null ? input : null;
+            return output.ObjectDummyMain != null ? output : null;
         }
 
         private IEnumerable<string> GetErrorMessages(Exception ex)

@@ -48,11 +48,6 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
         /// </summary>
         public long[] DataIds { get; set; }
 
-        /// <summary>
-        /// Сортировка данных.
-        /// </summary>
-        public int DataSorting { get; set; }
-
         #endregion Properties
 
         #region Public methods

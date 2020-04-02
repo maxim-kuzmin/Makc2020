@@ -56,7 +56,16 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
 
             if (input.DataIds != null && input.DataIds.Any())
             {
-                query = query.Where(x => input.DataIds.Contains(x.Id));
+                if (input.DataIds.Count() > 1)
+                {
+                    query = query.Where(x => input.DataIds.Contains(x.Id));
+                }
+                else
+                {
+                    var dataId = input.DataIds[0];
+
+                    query = query.Where(x => x.Id == dataId);
+                }
             }
 
             if (input.DataObjectDummyOneToManyId > 0)
@@ -66,7 +75,17 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
 
             if (input.DataObjectDummyOneToManyIds != null && input.DataObjectDummyOneToManyIds.Any())
             {
-                query = query.Where(x => input.DataObjectDummyOneToManyIds.Contains(x.ObjectDummyOneToManyId));
+                if (input.DataObjectDummyOneToManyIds.Count() > 1)
+                {
+                    query = query.Where(x => input.DataObjectDummyOneToManyIds.Contains(x.ObjectDummyOneToManyId));
+                }
+                else
+                {
+                    var dataObjectDummyOneToManyId = input.DataObjectDummyOneToManyIds[0];
+
+                    query = query.Where(x => x.ObjectDummyOneToManyId == dataObjectDummyOneToManyId);
+
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(input.DataObjectDummyOneToManyName))

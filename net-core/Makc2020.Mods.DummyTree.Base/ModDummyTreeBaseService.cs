@@ -68,7 +68,19 @@ namespace Makc2020.Mods.DummyTree.Base
             
             using (var source = CreateDbContext())
             {
-                var entityDummy = await source.DummyTree
+                var entityDummy = await (
+                    from r in source.DummyTree
+                    join k in source.DummyTreeLink
+                    on new { r.Id, ParentId = 0L } equals new { k.Id, k.ParentId }
+                    select new DataEntityObjectDummyTree
+                    {
+                        ChildCount = r.ChildCount,
+                        DescendantCount = r.DescendantCount,
+                        Id = r.Id,
+                        Level = k.Level,
+                        Name = r.Name,
+                        ParentId = r.ParentId
+                    })
                     .ModDummyTreeBaseExtApplyFiltering(input)
                     .FirstOrDefaultAsync()
                     .CoreBaseExtTaskWithCurrentCulture(false);
