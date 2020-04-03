@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Makc2020.Data.Base\Makc2020.Data.Base.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ConfigFiles\Data.Entity.config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

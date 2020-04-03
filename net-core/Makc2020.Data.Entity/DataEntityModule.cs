@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,6 +13,11 @@ namespace Makc2020.Data.Entity
     public class DataEntityModule : ICoreBaseCommonModule
     {
         #region Properties
+
+        /// <summary>
+        /// Конфигурация.
+        /// </summary>
+        public DataEntityConfig Config { get; private set; }
 
         /// <summary>
         /// Контекст.
@@ -28,8 +34,19 @@ namespace Makc2020.Data.Entity
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(x => GetContext(x).Config);
+            services.AddTransient(x => GetContext(x).Config.Settings);
             services.AddTransient(x => GetContext(x).Jobs.JobDatabaseMigrate);
             services.AddTransient(x => GetContext(x).Service);
+        }
+
+        /// <summary>
+        /// Инициализировать конфигурацию.
+        /// </summary>
+        /// <param name="environment">Окружение.</param>
+        public void InitConfig(CoreBaseEnvironment environment)
+        {
+            Config = new DataEntityConfig(environment);
         }
 
         /// <summary>
@@ -38,7 +55,7 @@ namespace Makc2020.Data.Entity
         /// <param name="externals">Внешнее.</param>
         public void InitContext(DataEntityExternals externals)
         {
-            Context = new DataEntityContext(externals);
+            Context = new DataEntityContext(Config, externals);
         }
 
         #endregion Public methods

@@ -10,6 +10,11 @@ namespace Makc2020.Data.Entity
         #region Properties        
 
         /// <summary>
+        /// Конфигурация.
+        /// </summary>
+        public DataEntityConfig Config { get; private set; }
+
+        /// <summary>
         /// Задания.
         /// </summary>
         public DataEntityJobs Jobs { get; private set; }
@@ -26,10 +31,16 @@ namespace Makc2020.Data.Entity
         /// <summary>
         /// Конструктор.
         /// </summary>
+        /// <param name="config">Конфигурация.</param>
         /// <param name="externals">Внешнее.</param>
-        public DataEntityContext(DataEntityExternals externals)
+        public DataEntityContext(DataEntityConfig config, DataEntityExternals externals)
         {
-            Service = new DataEntityService(externals.DataEntityDbFactory);
+            Config = config;
+
+            Service = new DataEntityService(
+                Config.Settings,
+                externals.DataEntityDbFactory
+                );
 
             Jobs = new DataEntityJobs(
                 externals.CoreBaseResourceErrors,

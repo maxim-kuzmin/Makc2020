@@ -95,6 +95,7 @@ namespace Makc2020.Root.Base
         /// <param name="environment">Окружение.</param>
         public virtual void InitConfig(CoreBaseEnvironment environment)
         {
+            DataEntity?.InitConfig(environment);
             DataEntityClientSqlServer?.InitConfig(environment);
             HostBase?.InitConfig(environment);
         }
