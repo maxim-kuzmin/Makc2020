@@ -100,11 +100,13 @@ namespace Makc2020.Data.Caching
 
             model.Add(typeof(DataBaseObjectDummyTree), false).Add(
                 nameof(obj.Id),
-                nameof(obj.ChildCount),
-                nameof(obj.DescendantCount),
-                nameof(obj.Level),
                 nameof(obj.Name),
-                nameof(obj.ParentId)
+                nameof(obj.ParentId),
+                nameof(obj.TreeChildCount),
+                nameof(obj.TreeDescendantCount),
+                nameof(obj.TreeLevel),
+                nameof(obj.TreePath),
+                nameof(obj.TreeSort)
                 );
         }
 
@@ -114,7 +116,6 @@ namespace Makc2020.Data.Caching
 
             model.Add(typeof(DataBaseObjectDummyTreeLink), false).Add(
                 nameof(obj.Id),
-                nameof(obj.Level),
                 nameof(obj.ParentId)
                 );
         }

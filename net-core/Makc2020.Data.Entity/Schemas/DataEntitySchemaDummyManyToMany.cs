@@ -4,7 +4,6 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Linq;
 
 namespace Makc2020.Data.Entity.Schemas
 {
@@ -41,30 +40,6 @@ namespace Makc2020.Data.Entity.Schemas
             builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
         }
 
-        /// <summary>
-        /// Засеять тестовые данные.
-        /// </summary>
-        /// <param name="modelBuilder">Построитель модели.</param>
-        public static void SeedTestData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DataEntityObjectDummyManyToMany>().HasData(
-                Enumerable.Range(1, 10).Select(id => CreateTestDataItem(id)).ToArray()
-                );
-        }
-
         #endregion Public methods
-
-        #region Private methods
-
-        private static DataEntityObjectDummyManyToMany CreateTestDataItem(long id)
-        {
-            return new DataEntityObjectDummyManyToMany
-            {
-                Id = id,
-                Name = $"Name-{id}"
-            };
-        }
-
-        #endregion Private methods
     }
 }

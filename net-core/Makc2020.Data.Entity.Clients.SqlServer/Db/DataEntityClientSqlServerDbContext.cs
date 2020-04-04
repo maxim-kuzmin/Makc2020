@@ -76,10 +76,6 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
             modelBuilder.ApplyConfiguration(new DataEntitySchemaUserLogin(DataBaseSettings));
             modelBuilder.ApplyConfiguration(new DataEntitySchemaUserRole(DataBaseSettings));
             modelBuilder.ApplyConfiguration(new DataEntitySchemaUserToken(DataBaseSettings));
-
-#if TEST || DEBUG
-            SeedTestData(modelBuilder);
-#endif
         }
 
         #endregion Protected methods

@@ -4,9 +4,6 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Makc2020.Data.Entity.Schemas
 {
@@ -55,43 +52,6 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasConstraintName(setting.DbForeignKeyToDummyManyToMany);
         }
 
-        /// <summary>
-        /// Засеять тестовые данные.
-        /// </summary>
-        /// <param name="modelBuilder">Построитель модели.</param>
-        public static void SeedTestData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DataEntityObjectDummyMainDummyManyToMany>().HasData(
-                Enumerable.Range(1, 100).SelectMany(id => CreateTestDataItem(id)).ToArray()
-                );
-        }
-
         #endregion Public methods
-
-        #region Private methods
-
-        private static List<DataEntityObjectDummyMainDummyManyToMany> CreateTestDataItem(long id)
-        {
-            var result = new List<DataEntityObjectDummyMainDummyManyToMany>();
-
-            foreach (var linkedId in Enumerable.Range(1, 10))
-            {
-                var isEven = new Random(Guid.NewGuid().GetHashCode()).Next(1, 10) % 2 == 0;
-
-                if (isEven) continue;
-
-                var item = new DataEntityObjectDummyMainDummyManyToMany
-                {
-                    ObjectDummyMainId = id,
-                    ObjectDummyManyToManyId = linkedId,
-                };
-
-                result.Add(item);
-            }
-
-            return result;
-        }
-
-        #endregion Private methods
     }
 }

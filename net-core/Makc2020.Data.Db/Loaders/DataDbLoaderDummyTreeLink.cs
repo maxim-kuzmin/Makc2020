@@ -51,11 +51,6 @@ namespace Makc2020.Data.Db.Loaders
                 Data.ParentId = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
-            if (props.Contains(nameof(Data.Level)))
-            {
-                Data.Level = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-
             return ordinal;
         }
 

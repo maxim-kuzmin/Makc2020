@@ -25,19 +25,29 @@ namespace Makc2020.Data.Base.Objects
         public long? ParentId { get; set; }
 
         /// <summary>
-        /// Число дочерних узлов.
+        /// Число дочерних узлов в дереве.
         /// </summary>
-        public long ChildCount { get; set; }
+        public long TreeChildCount { get; set; }
 
         /// <summary>
-        /// Число узлов-потомков.
+        /// Число узлов-потомков в дереве.
         /// </summary>
-        public long DescendantCount { get; set; }
+        public long TreeDescendantCount { get; set; }
 
         /// <summary>
         /// Уровень узла в дереве.
         /// </summary>
-        public long Level { get; set; }
+        public long TreeLevel { get; set; }
+
+        /// <summary>
+        /// Путь к узлу в дереве.
+        /// </summary>
+        public string TreePath { get; set; }
+
+        /// <summary>
+        /// Сортировка узла в дереве.
+        /// </summary>
+        public string TreeSort { get; set; }
 
         #endregion Properties
     }

@@ -68,37 +68,36 @@ namespace Makc2020.Mods.DummyMain.Base
             )
         {
             ModDummyMainBaseJobItemGetOutput result = null;
-            
-            using (var source = CreateDbContext())
+
+            using var dbContext = CreateDbContext();
+
+            var entityDummy = await dbContext.DummyMain
+                .Include(x => x.ObjectDummyOneToMany)
+                .Include(x => x.ObjectsDummyMainDummyManyToMany)
+                .ModDummyMainBaseExtApplyFiltering(input)
+                .FirstOrDefaultAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            if (entityDummy != null)
             {
-                var entityDummy = await source.DummyMain
-                    .Include(x => x.ObjectDummyOneToMany)
-                    .Include(x => x.ObjectsDummyMainDummyManyToMany)
-                    .ModDummyMainBaseExtApplyFiltering(input)
-                    .FirstOrDefaultAsync()
-                    .CoreBaseExtTaskWithCurrentCulture(false);
+                result = CreateItem(entityDummy);
 
-                if (entityDummy != null)
+                if (result.ObjectsDummyMainDummyManyToMany != null)
                 {
-                    result = CreateItem(entityDummy);
+                    var idsOfDummyManyToMany = result.ObjectsDummyMainDummyManyToMany
+                        .Select(x => x.ObjectDummyManyToManyId)
+                        .ToArray();
 
-                    if (result.ObjectsDummyMainDummyManyToMany != null)
+                    if (idsOfDummyManyToMany.Any())
                     {
-                        var idsOfDummyManyToMany = result.ObjectsDummyMainDummyManyToMany
-                            .Select(x => x.ObjectDummyManyToManyId)
-                            .ToArray();
+                        var enities = await dbContext.DummyManyToMany
+                            .Where(x => idsOfDummyManyToMany.Contains(x.Id))
+                            .ToArrayAsync()
+                            .CoreBaseExtTaskWithCurrentCulture(false);
 
-                        if (idsOfDummyManyToMany.Any())
+                        if (enities.Any())
                         {
-                            var enities = await source.DummyManyToMany
-                                .Where(x => idsOfDummyManyToMany.Contains(x.Id))
-                                .ToArrayAsync()
-                                .CoreBaseExtTaskWithCurrentCulture(false);
-
-                            if (enities.Any())
-                            {
-                                InitItemDummyManyToMany(result, enities);
-                            }
+                            InitItemDummyManyToMany(result, enities);
                         }
                     }
                 }
@@ -118,51 +117,50 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             var result = new ModDummyMainBaseJobListGetOutput();
 
-            using (var source = CreateDbContext())
-            using (var sourceOfTotalCount = CreateDbContext())
+            using var dbContext = CreateDbContext();
+            using var dbContextForTotalCount = CreateDbContext();
+
+            var queryOfItems = dbContext.DummyMain
+                .Include(x => x.ObjectDummyOneToMany)
+                .Include(x => x.ObjectsDummyMainDummyManyToMany)
+                .ModDummyMainBaseExtApplyFiltering(input)
+                .ModDummyMainBaseExtApplySorting(input)
+                .CoreBaseCommonModExtApplyPagination(input);
+
+            var queryOfTotalCount = dbContextForTotalCount.DummyMain
+                .ModDummyMainBaseExtApplyFiltering(input);
+
+            var taskOfItems = queryOfItems.ToArrayAsync();
+            var taskOfTotalCount = queryOfTotalCount.CountAsync();
+
+            await Task.WhenAll(taskOfItems, taskOfTotalCount).CoreBaseExtTaskWithCurrentCulture(false);
+
+            result.Items = taskOfItems.Result.Select(x => CreateItem(x)).ToArray();
+            result.TotalCount = taskOfTotalCount.Result;
+
+            if (result.Items.Any())
             {
-                var queryOfItems = source.DummyMain
-                    .Include(x => x.ObjectDummyOneToMany)
-                    .Include(x => x.ObjectsDummyMainDummyManyToMany)
-                    .ModDummyMainBaseExtApplyFiltering(input)
-                    .ModDummyMainBaseExtApplySorting(input)
-                    .CoreBaseCommonModExtApplyPagination(input);
+                var idsDummyManyToMany = result.Items
+                    .Where(x => x.ObjectsDummyMainDummyManyToMany != null)
+                    .SelectMany(x => x.ObjectsDummyMainDummyManyToMany)
+                    .Select(x => x.ObjectDummyManyToManyId)
+                    .Distinct()
+                    .ToArray();
 
-                var queryOfTotalCount = sourceOfTotalCount.DummyMain
-                    .ModDummyMainBaseExtApplyFiltering(input);
-
-                var taskOfItems = queryOfItems.ToArrayAsync();
-                var taskOfTotalCount = queryOfTotalCount.CountAsync();
-
-                await Task.WhenAll(taskOfItems, taskOfTotalCount).CoreBaseExtTaskWithCurrentCulture(false);
-
-                result.Items = taskOfItems.Result.Select(x => CreateItem(x)).ToArray();
-                result.TotalCount = taskOfTotalCount.Result;
-
-                if (result.Items.Any())
+                if (idsDummyManyToMany.Any())
                 {
-                    var idsDummyManyToMany = result.Items
-                        .Where(x => x.ObjectsDummyMainDummyManyToMany != null)
-                        .SelectMany(x => x.ObjectsDummyMainDummyManyToMany)                        
-                        .Select(x => x.ObjectDummyManyToManyId)
-                        .Distinct()
-                        .ToArray();
+                    var lookupOfDummyManyToMany = await dbContext.DummyManyToMany
+                        .Where(x => idsDummyManyToMany.Contains(x.Id))
+                        .ToDictionaryAsync(x => x.Id)
+                        .CoreBaseExtTaskWithCurrentCulture(false);
 
-                    if (idsDummyManyToMany.Any())
+                    if (lookupOfDummyManyToMany.Any())
                     {
-                        var lookupOfDummyManyToMany = await source.DummyManyToMany
-                            .Where(x => idsDummyManyToMany.Contains(x.Id))
-                            .ToDictionaryAsync(x => x.Id)
-                            .CoreBaseExtTaskWithCurrentCulture(false);
-
-                        if (lookupOfDummyManyToMany.Any())
+                        foreach (var item in result.Items)
                         {
-                            foreach (var item in result.Items)
+                            if (item.ObjectsDummyMainDummyManyToMany != null)
                             {
-                                if (item.ObjectsDummyMainDummyManyToMany != null)
-                                {
-                                    InitItemDummyManyToMany(item, lookupOfDummyManyToMany);
-                                }
+                                InitItemDummyManyToMany(item, lookupOfDummyManyToMany);
                             }
                         }
                     }
@@ -180,12 +178,11 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             var result = new ModDummyMainBaseCommonJobOptionListGetOutput();
 
-            using (var source = CreateDbContext())
-            {
-                var entities = await source.DummyManyToMany.ToArrayAsync();
+            using var dbContext = CreateDbContext();
 
-                result.Items = entities.Select(x => CreateOptionDummyManyToMany(x)).ToArray();
-            }
+            var entities = await dbContext.DummyManyToMany.ToArrayAsync();
+
+            result.Items = entities.Select(x => CreateOptionDummyManyToMany(x)).ToArray();
 
             return result;
         }
@@ -198,12 +195,11 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             var result = new ModDummyMainBaseCommonJobOptionListGetOutput();
 
-            using (var source = CreateDbContext())
-            {
-                var entities = await source.DummyOneToMany.ToArrayAsync();
+            var dbContext = CreateDbContext();
 
-                result.Items = entities.Select(x => CreateOptionDummyOneToMany(x)).ToArray();
-            }
+            var entities = await dbContext.DummyOneToMany.ToArrayAsync();
+
+            result.Items = entities.Select(x => CreateOptionDummyOneToMany(x)).ToArray();
 
             return result;
         }
@@ -219,7 +215,7 @@ namespace Makc2020.Mods.DummyMain.Base
 
             if (data.ObjectDummyMain != null)
             {
-                result.ObjectDummyMain = await SaveObjectDummy(
+                result.ObjectDummyMain = await SaveObjectDummyMain(
                     data.ObjectDummyMain
                     ).CoreBaseExtTaskWithCurrentCulture(false);
             }
@@ -260,15 +256,15 @@ namespace Makc2020.Mods.DummyMain.Base
         /// <returns>Задача.</returns>
         public async Task DeleteItem(ModDummyMainBaseJobItemGetInput input)
         {
-            using var source = CreateDbContext();
+            using var dbContext = CreateDbContext();
 
-            var obj = await source.DummyMain.FirstAsync(
+            var obj = await dbContext.DummyMain.FirstAsync(
                 x => x.Id == input.DataId
                 ).CoreBaseExtTaskWithCurrentCulture(false);
 
-            source.DummyMain.Remove(obj);
+            dbContext.DummyMain.Remove(obj);
 
-            await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods
@@ -293,22 +289,22 @@ namespace Makc2020.Mods.DummyMain.Base
             return result;
         }
 
-        private ModDummyMainBaseCommonJobOptionItemGetOutput  CreateOptionDummyManyToMany(
+        private ModDummyMainBaseCommonJobOptionItemGetOutput CreateOptionDummyManyToMany(
             DataEntityObjectDummyManyToMany entity
             )
         {
-            return new ModDummyMainBaseCommonJobOptionItemGetOutput 
+            return new ModDummyMainBaseCommonJobOptionItemGetOutput
             {
                 Name = entity.Name,
                 Value = entity.Id
             };
         }
 
-        private ModDummyMainBaseCommonJobOptionItemGetOutput  CreateOptionDummyOneToMany(
+        private ModDummyMainBaseCommonJobOptionItemGetOutput CreateOptionDummyOneToMany(
             DataEntityObjectDummyOneToMany entity
             )
         {
-            return new ModDummyMainBaseCommonJobOptionItemGetOutput 
+            return new ModDummyMainBaseCommonJobOptionItemGetOutput
             {
                 Name = entity.Name,
                 Value = entity.Id
@@ -352,35 +348,34 @@ namespace Makc2020.Mods.DummyMain.Base
             }
         }
 
-        private async Task<DataBaseObjectDummyMain> SaveObjectDummy(
+        private async Task<DataBaseObjectDummyMain> SaveObjectDummyMain(
             DataBaseObjectDummyMain obj
             )
         {
             DataBaseObjectDummyMain result = null;
 
-            using (var source = CreateDbContext())
+            using var dbContext = CreateDbContext();
+
+            if (obj.Id > 0)
             {
-                if (obj.Id > 0)
-                {
-                    result = await source.DummyMain
-                        .FirstAsync(x => x.Id == obj.Id)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
+                result = await dbContext.DummyMain
+                    .FirstAsync(x => x.Id == obj.Id)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
 
-                    var loader = new DataBaseLoaderDummyMain(result);
+                var loader = new DataBaseLoaderDummyMain(result);
 
-                    loader.LoadDataFrom(obj);
-                }
-                else
-                {
-                    var entity = DataEntityObjectDummyMain.Create(obj);
-
-                    var entry = source.DummyMain.Add(entity);
-
-                    result = entry.Entity;
-                }
-
-                await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+                loader.LoadDataFrom(obj);
             }
+            else
+            {
+                var entity = DataEntityObjectDummyMain.Create(obj);
+
+                var entry = dbContext.DummyMain.Add(entity);
+
+                result = entry.Entity;
+            }
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
@@ -391,29 +386,28 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             DataBaseObjectDummyOneToMany result = null;
 
-            using (var source = CreateDbContext())
+            using var dbContext = CreateDbContext();
+
+            if (obj.Id > 0)
             {
-                if (obj.Id > 0)
-                {
-                    result = await source.DummyOneToMany
-                        .FirstAsync(x => x.Id == obj.Id)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
+                result = await dbContext.DummyOneToMany
+                    .FirstAsync(x => x.Id == obj.Id)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
 
-                    var loader = new DataBaseLoaderDummyOneToMany(result);
+                var loader = new DataBaseLoaderDummyOneToMany(result);
 
-                    loader.LoadDataFrom(obj);
-                }
-                else
-                {
-                    var entity = DataEntityObjectDummyOneToMany.Create(obj);
-
-                    var entry = source.DummyOneToMany.Add(entity);
-
-                    result = entry.Entity;
-                }
-
-                await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+                loader.LoadDataFrom(obj);
             }
+            else
+            {
+                var entity = DataEntityObjectDummyOneToMany.Create(obj);
+
+                var entry = dbContext.DummyOneToMany.Add(entity);
+
+                result = entry.Entity;
+            }
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
@@ -438,29 +432,28 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             DataBaseObjectDummyManyToMany result = null;
 
-            using (var source = CreateDbContext())
+            using var dbContext = CreateDbContext();
+
+            if (obj.Id > 0)
             {
-                if (obj.Id > 0)
-                {
-                    result = await source.DummyManyToMany
-                        .FirstAsync(x => x.Id == obj.Id)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
+                result = await dbContext.DummyManyToMany
+                    .FirstAsync(x => x.Id == obj.Id)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
 
-                    var loader = new DataBaseLoaderDummyManyToMany(result);
+                var loader = new DataBaseLoaderDummyManyToMany(result);
 
-                    loader.LoadDataFrom(obj);
-                }
-                else
-                {
-                    var entity = DataEntityObjectDummyManyToMany.Create(obj);
-
-                    var entry = source.DummyManyToMany.Add(DataEntityObjectDummyManyToMany.Create(obj));
-
-                    result = entry.Entity;
-                }
-
-                await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+                loader.LoadDataFrom(obj);
             }
+            else
+            {
+                var entity = DataEntityObjectDummyManyToMany.Create(obj);
+
+                var entry = dbContext.DummyManyToMany.Add(DataEntityObjectDummyManyToMany.Create(obj));
+
+                result = entry.Entity;
+            }
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
@@ -485,27 +478,26 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             DataBaseObjectDummyMainDummyManyToMany result = null;
 
-            using (var source = CreateDbContext())
+            using var dbContext = CreateDbContext();
+
+            result = await dbContext.DummyMainDummyManyToMany.FirstOrDefaultAsync(
+                x =>
+                    x.ObjectDummyMainId == obj.ObjectDummyMainId
+                    &&
+                    x.ObjectDummyManyToManyId == obj.ObjectDummyManyToManyId
+                )
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            if (result == null)
             {
-                result = await source.DummyMainDummyManyToMany.FirstOrDefaultAsync(
-                    x =>
-                        x.ObjectDummyMainId == obj.ObjectDummyMainId
-                        &&
-                        x.ObjectDummyManyToManyId == obj.ObjectDummyManyToManyId
-                    )
-                    .CoreBaseExtTaskWithCurrentCulture(false);
+                var entity = DataEntityObjectDummyMainDummyManyToMany.Create(obj);
 
-                if (result == null)
-                {
-                    var entity = DataEntityObjectDummyMainDummyManyToMany.Create(obj);
+                var entry = dbContext.DummyMainDummyManyToMany.Add(entity);
 
-                    var entry = source.DummyMainDummyManyToMany.Add(entity);
-
-                    result = entry.Entity;
-                }
-
-                await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+                result = entry.Entity;
             }
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
@@ -514,7 +506,14 @@ namespace Makc2020.Mods.DummyMain.Base
         {
             var result = DbFactory.CreateDbContext();
 
-            result.Database.SetCommandTimeout(ConfigSettings.DbCommandTimeout);
+            var dbCommandTimeout = ConfigSettings.DbCommandTimeout;
+
+            if (dbCommandTimeout < 1)
+            {
+                dbCommandTimeout = 3600;
+            }
+
+            result.Database.SetCommandTimeout(dbCommandTimeout);
 
             return result;
         }

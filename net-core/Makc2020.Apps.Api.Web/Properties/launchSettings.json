@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/dummy-tree/item?dataId=15",
+      "launchUrl": "api/dummy-main/list",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -28,7 +28,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/dummy-main/list",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/dummy-tree/item?dataId=15",
       "publishAllPorts": true
     }
   }

@@ -50,19 +50,29 @@ namespace Makc2020.Data.Base.Loaders
                 Data.ParentId = source.ParentId;
             }
 
-            if (props.Contains(nameof(Data.ChildCount)))
+            if (props.Contains(nameof(Data.TreeChildCount)))
             {
-                Data.ChildCount = source.ChildCount;
+                Data.TreeChildCount = source.TreeChildCount;
             }
 
-            if (props.Contains(nameof(Data.DescendantCount)))
+            if (props.Contains(nameof(Data.TreeDescendantCount)))
             {
-                Data.DescendantCount = source.DescendantCount;
+                Data.TreeDescendantCount = source.TreeDescendantCount;
             }
 
-            if (props.Contains(nameof(Data.Level)))
+            if (props.Contains(nameof(Data.TreeLevel)))
             {
-                Data.Level = source.Level;
+                Data.TreeLevel = source.TreeLevel;
+            }
+
+            if (props.Contains(nameof(Data.TreePath)))
+            {
+                Data.TreePath = source.TreePath;
+            }
+
+            if (props.Contains(nameof(Data.TreeSort)))
+            {
+                Data.TreeSort = source.TreeSort;
             }
         }
 
@@ -78,9 +88,11 @@ namespace Makc2020.Data.Base.Loaders
                 nameof(Data.Id),
                 nameof(Data.Name),
                 nameof(Data.ParentId),
-                nameof(Data.ChildCount),
-                nameof(Data.DescendantCount),                
-                nameof(Data.Level)
+                nameof(Data.TreeChildCount),
+                nameof(Data.TreeDescendantCount),                
+                nameof(Data.TreeLevel),
+                nameof(Data.TreePath),
+                nameof(Data.TreeSort)
             };
         }
 

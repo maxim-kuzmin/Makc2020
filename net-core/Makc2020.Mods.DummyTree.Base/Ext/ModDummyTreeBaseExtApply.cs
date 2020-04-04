@@ -51,7 +51,7 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
         {
             if (input.DataLevel.HasValue && input.DataLevel.Value > -1)
             {
-                query = query.Where(x => x.Level <= input.DataLevel.Value);
+                query = query.Where(x => x.TreeLevel <= input.DataLevel.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(input.DataName))

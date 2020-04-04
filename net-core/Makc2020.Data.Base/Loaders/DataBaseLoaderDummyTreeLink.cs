@@ -44,11 +44,6 @@ namespace Makc2020.Data.Base.Loaders
             {
                 Data.ParentId = source.ParentId;
             }
-
-            if (props.Contains(nameof(Data.Level)))
-            {
-                Data.Level = source.Level;
-            }
         }
 
         #endregion Public methods
@@ -61,8 +56,7 @@ namespace Makc2020.Data.Base.Loaders
             return new HashSet<string>
             {
                 nameof(Data.Id),
-                nameof(Data.ParentId),
-                nameof(Data.Level)
+                nameof(Data.ParentId)
             };
         }
 

@@ -6,6 +6,7 @@ using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Jobs.Database.Migrate;
+using Makc2020.Data.Entity.Jobs.TestData.Seed;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.Seed;
 using Microsoft.AspNetCore.Identity;
@@ -41,7 +42,8 @@ namespace Makc2020.Root.Base
 
         #region Fields
 
-        private readonly ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim contextLocker = new ReaderWriterLockSlim();
+        private readonly ReaderWriterLockSlim databaseLocker = new ReaderWriterLockSlim();
 
         #endregion Fields
 
@@ -56,6 +58,8 @@ namespace Makc2020.Root.Base
 
         private TContext Context { get; set; }
 
+        private bool IsDatabaseInitialized { get; set; }
+
         private IServiceProvider ServiceProvider { get; set; }
 
         private IServiceScope ServiceScope { get; set; }
@@ -69,6 +73,11 @@ namespace Makc2020.Root.Base
         /// Признак необходимости добавления пользователей и ролей по-умолчанию.
         /// </summary>
         protected bool IsSeedAuthEnabled { get; set; }
+
+        /// <summary>
+        /// Признак необходимости добавления тестовых данных.
+        /// </summary>
+        protected bool IsSeedTestDataEnabled { get; set; }
 
         /// <summary>
         /// Модули.
@@ -122,7 +131,7 @@ namespace Makc2020.Root.Base
         /// </summary>
         public TContext GetContext()
         {
-            locker.EnterReadLock();
+            contextLocker.EnterReadLock();
 
             try
             {
@@ -130,14 +139,14 @@ namespace Makc2020.Root.Base
             }
             finally
             {
-                locker.ExitReadLock();
+                contextLocker.ExitReadLock();
             }
         }
 
         /// <inheritdoc/>
         public void Init()
         {
-            locker.EnterWriteLock();
+            contextLocker.EnterWriteLock();
 
             try
             {
@@ -151,7 +160,7 @@ namespace Makc2020.Root.Base
             }
             finally
             {
-                locker.ExitWriteLock();
+                contextLocker.ExitWriteLock();
             }
         }
 
@@ -181,21 +190,11 @@ namespace Makc2020.Root.Base
         {
             Logger.LogDebug("RootBaseServer.OnStarted begin");
 
-            EnsureContext();
+            EnsureInitialization();
 
             var context = GetContext();
 
             context.InitCurrentCulture(CULTURE_NAME);
-
-            if (IsMigrateDatabaseEnabled)
-            {
-                MigrateDatabase();
-            }
-
-            if (IsSeedAuthEnabled)
-            {
-                SeedAuth();
-            }
 
             Logger.LogDebug("RootBaseServer.OnStarted end");
         }
@@ -244,43 +243,19 @@ namespace Makc2020.Root.Base
         protected abstract TModules CreateModules(IEnumerable<ICoreBaseCommonModule> commonModules);
 
         /// <summary>
+        /// Обеспечить инициализацию.
+        /// </summary>
+        protected virtual void EnsureInitialization()
+        {
+            EnsureContextInitialization();
+            EnsureDatabaseInitialization();
+        }
+
+        /// <summary>
         /// Получить регистратор.
         /// </summary>
         /// <returns>Регистратор.</returns>
         protected abstract ILogger GetLogger();
-
-        /// <summary>
-        /// Обеспечить контекст.
-        /// </summary>
-        protected void EnsureContext()
-        {
-            locker.EnterUpgradeableReadLock();
-
-            try
-            {
-                if (Context == null)
-                {
-                    locker.EnterWriteLock();
-
-                    try
-                    {
-                        Modules?.OnAppStarted();
-
-                        InitContext();
-
-                        OnAfterInit(EventArgs.Empty);
-                    }
-                    finally
-                    {
-                        locker.ExitWriteLock();
-                    }
-                }
-            }
-            finally
-            {
-                locker.ExitUpgradeableReadLock();
-            }
-        }
 
         /// <summary>
         /// Обработчик события, возникающего после инициализации.
@@ -312,9 +287,15 @@ namespace Makc2020.Root.Base
             configurator.LocalizationEnable();
 
             configurator.DataEntityDbContextEnable(GetService<DataEntityDbFactory>);
+
             IsMigrateDatabaseEnabled = true;
 
+#if TEST || DEBUG
+            IsSeedTestDataEnabled = true;
+#endif
+
             configurator.IdentityEnable();
+            
             IsSeedAuthEnabled = true;
         }
 
@@ -334,6 +315,77 @@ namespace Makc2020.Root.Base
         #endregion Protected methods
 
         #region Private methods
+
+        private void EnsureContextInitialization()
+        {
+            contextLocker.EnterUpgradeableReadLock();
+
+            try
+            {
+                if (Context == null)
+                {
+                    contextLocker.EnterWriteLock();
+
+                    try
+                    {
+                        Modules?.OnAppStarted();
+
+                        InitContext();
+
+                        OnAfterInit(EventArgs.Empty);
+                    }
+                    finally
+                    {
+                        contextLocker.ExitWriteLock();
+                    }
+                }
+            }
+            finally
+            {
+                contextLocker.ExitUpgradeableReadLock();
+            }
+        }
+
+        private void EnsureDatabaseInitialization()
+        {
+            databaseLocker.EnterUpgradeableReadLock();
+
+            try
+            {
+                if (!IsDatabaseInitialized)
+                {
+                    databaseLocker.EnterWriteLock();
+
+                    try
+                    {
+                        if (IsMigrateDatabaseEnabled)
+                        {
+                            MigrateDatabase();
+                        }
+
+                        if (IsSeedTestDataEnabled)
+                        {
+                            SeedTestData();
+                        }
+
+                        if (IsSeedAuthEnabled)
+                        {
+                            SeedAuth();
+                        }
+
+                        IsDatabaseInitialized = true;
+                    }
+                    finally
+                    {
+                        databaseLocker.ExitWriteLock();
+                    }
+                }
+            }
+            finally
+            {
+                databaseLocker.ExitUpgradeableReadLock();
+            }
+        }
 
         private void InitContext()
         {
@@ -382,6 +434,27 @@ namespace Makc2020.Root.Base
                     job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false).GetResult();
 
                     job.OnSuccess(Logger, result, input);
+                }
+                catch (Exception ex)
+                {
+                    job.OnError(ex, Logger, result);
+                }
+            }
+        }
+
+        private void SeedTestData()
+        {
+            var job = GetService<DataEntityJobTestDataSeedService>();
+
+            if (job != null)
+            {
+                var result = new CoreBaseExecutionResult();
+
+                try
+                {
+                    job.Execute().CoreBaseExtTaskWithCurrentCulture(false).GetResult();
+
+                    job.OnSuccess(Logger, result);
                 }
                 catch (Exception ex)
                 {

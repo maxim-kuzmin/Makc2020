@@ -51,14 +51,14 @@ namespace Makc2020.Data.Db.Loaders
                 Data.ParentId = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
-            if (props.Contains(nameof(Data.ChildCount)))
+            if (props.Contains(nameof(Data.TreeChildCount)))
             {
-                Data.ChildCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+                Data.TreeChildCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
-            if (props.Contains(nameof(Data.DescendantCount)))
+            if (props.Contains(nameof(Data.TreeDescendantCount)))
             {
-                Data.DescendantCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+                Data.TreeDescendantCount = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             if (props.Contains(nameof(Data.Name)))
@@ -66,9 +66,19 @@ namespace Makc2020.Data.Db.Loaders
                 Data.Name = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
-            if (props.Contains(nameof(Data.Level)))
+            if (props.Contains(nameof(Data.TreeLevel)))
             {
-                Data.Level = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+                Data.TreeLevel = await source.GetFieldValueAsync<long>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+
+            if (props.Contains(nameof(Data.TreePath)))
+            {
+                Data.TreePath = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+
+            if (props.Contains(nameof(Data.TreeSort)))
+            {
+                Data.TreeSort = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             return ordinal;

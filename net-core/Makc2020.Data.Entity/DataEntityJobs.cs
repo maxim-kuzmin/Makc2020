@@ -2,6 +2,7 @@
 
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Entity.Jobs.Database.Migrate;
+using Makc2020.Data.Entity.Jobs.TestData.Seed;
 
 namespace Makc2020.Data.Entity
 {
@@ -16,6 +17,11 @@ namespace Makc2020.Data.Entity
         /// Задание на миграцию базы данных.
         /// </summary>
         public DataEntityJobDatabaseMigrateService JobDatabaseMigrate { get; private set; }
+
+        /// <summary>
+        /// Задание на засеивание тестовых данных.
+        /// </summary>
+        public DataEntityJobTestDataSeedService JobTestDataSeed { get; private set; }
 
         #endregion Properties
 
@@ -33,6 +39,11 @@ namespace Makc2020.Data.Entity
         {
             JobDatabaseMigrate = new DataEntityJobDatabaseMigrateService(
                 service.MigrateDatabase,
+                coreBaseResourceErrors
+                );
+
+            JobTestDataSeed = new DataEntityJobTestDataSeedService(
+                service.SeedTestData,
                 coreBaseResourceErrors
                 );
         }

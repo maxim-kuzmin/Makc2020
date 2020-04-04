@@ -19,11 +19,6 @@ namespace Makc2020.Data.Base.Objects
         /// </summary>
         public long ParentId { get; set; }
 
-        /// <summary>
-        /// Уровень узла в дереве.
-        /// </summary>
-        public long Level { get; set; }
-
         #endregion Properties
     }
 }

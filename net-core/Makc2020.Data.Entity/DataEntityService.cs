@@ -6,6 +6,7 @@ using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -50,26 +51,24 @@ namespace Makc2020.Data.Entity
         /// </summary>
         public async Task SeedTestData()
         {
-            using var source = CreateDbContext();
-
-            var isOk = await source.DummyMain.AnyAsync().CoreBaseExtTaskWithCurrentCulture(false);
-
-            if (isOk)
-            {
-                return;
-            }
-
             using var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            var itemsOfDummyOneToMany = await SeedTestDataForDummyOneToMany(source)
-                .CoreBaseExtTaskWithCurrentCulture(false);
+            using var dbContext = CreateDbContext();
 
-            var itemsOfDummyMain = await SeedTestDataForDummyMain(source)
-                .CoreBaseExtTaskWithCurrentCulture(false);
+            var isOk = await dbContext.DummyMain.AnyAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
-            if (itemsOfDummyMain == null)
+            if (!isOk)
             {
-                return;
+                var itemsOfDummyOneToMany = await SeedTestDataForDummyOneToMany(dbContext)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                var itemsOfDummyMain = await SeedTestDataForDummyMain(dbContext, itemsOfDummyOneToMany)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                var itemsOfDummyManyToMany = await SeedTestDataForDummyManyToMany(dbContext)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                await SeedTestDataForDummyMainDummyManyToMany(dbContext, itemsOfDummyMain, itemsOfDummyManyToMany);
             }
 
             ts.Complete();
@@ -80,9 +79,9 @@ namespace Makc2020.Data.Entity
         /// </summary>
         public async Task MigrateDatabase()
         {
-            using var source = CreateDbContext();
+            using var dbContext = CreateDbContext();
 
-            await source.Database.MigrateAsync().CoreBaseExtTaskWithCurrentCulture(false);
+            await dbContext.Database.MigrateAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods
@@ -93,14 +92,21 @@ namespace Makc2020.Data.Entity
         {
             var result = DbFactory.CreateDbContext();
 
-            result.Database.SetCommandTimeout(ConfigSettings.DbCommandTimeout);
+            var dbCommandTimeout = ConfigSettings.DbCommandTimeout;
+
+            if (dbCommandTimeout < 1)
+            {
+                dbCommandTimeout = 3600;
+            }
+
+            result.Database.SetCommandTimeout(dbCommandTimeout);
 
             return result;
         }
 
         private DataEntityObjectDummyMain CreateTestDataItemForDummyMain(
             long index,
-            DataEntityObjectDummyOneToMany[] itemsOfDummyOneToMany
+            IEnumerable<DataEntityObjectDummyOneToMany> itemsOfDummyOneToMany
             )
         {
             var isEven = index % 2 == 0;
@@ -114,14 +120,12 @@ namespace Makc2020.Data.Entity
                 TimeZoneInfo.Local.GetUtcOffset(localTime)
                 );
 
-            var indexOfDummyOneToMany =  new Random(
-                Guid.NewGuid().GetHashCode()
-                ).Next(0, itemsOfDummyOneToMany.Length);
+            var indexOfDummyOneToMany = GetRandomIndex(itemsOfDummyOneToMany);
 
             return new DataEntityObjectDummyMain
             {
                 Name = $"Name-{index}",
-                ObjectDummyOneToManyId = itemsOfDummyOneToMany[indexOfDummyOneToMany].Id,
+                ObjectDummyOneToManyId = itemsOfDummyOneToMany.ElementAt(indexOfDummyOneToMany).Id,
                 PropBoolean = isEven,
                 PropBooleanNullable = isEven ? new bool?(!isEven) : null,
                 PropDate = new DateTime(2018, 01, day),
@@ -139,40 +143,135 @@ namespace Makc2020.Data.Entity
             };
         }
 
-        private DataEntityObjectDummyOneToMany CreateTestDataItemForDummyOneToMany(long index)
+        private List<DataEntityObjectDummyMainDummyManyToMany> CreateTestDataItemsForDummyMainDummyManyToMany(
+            DataEntityObjectDummyMain itemOfDummyMain,
+            IEnumerable<DataEntityObjectDummyManyToMany> itemsOfDummyManyToMany
+            )
         {
-            return new DataEntityObjectDummyOneToMany
+            var result = new List<DataEntityObjectDummyMainDummyManyToMany>();
+
+            foreach (var itemOfDummyManyToMany in itemsOfDummyManyToMany)
             {
-                Id = index,
+                var isEven = GetRandomIndex(itemsOfDummyManyToMany) % 2 == 0;
+
+                if (isEven) continue;
+
+                var item = new DataEntityObjectDummyMainDummyManyToMany
+                {
+                    ObjectDummyMainId = itemOfDummyMain.Id,
+                    ObjectDummyManyToManyId = itemOfDummyManyToMany.Id
+                };
+
+                result.Add(item);
+            }
+
+            if (!result.Any())
+            {
+                var index = GetRandomIndex(itemsOfDummyManyToMany);
+
+                var item = new DataEntityObjectDummyMainDummyManyToMany
+                {
+                    ObjectDummyMainId = itemOfDummyMain.Id,
+                    ObjectDummyManyToManyId = itemsOfDummyManyToMany.ElementAt(index).Id
+                };
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+
+        private DataEntityObjectDummyManyToMany CreateTestDataItemForDummyManyToMany(long index)
+        {
+            return new DataEntityObjectDummyManyToMany
+            {
                 Name = $"Name-{index}"
             };
         }
 
-        private async Task<DataEntityObjectDummyMain[]> SeedTestDataForDummyMain(
-            DataEntityDbContext source,
-            DataEntityObjectDummyOneToMany[] itemsOfDummyOneToMany
+        private DataEntityObjectDummyOneToMany CreateTestDataItemForDummyOneToMany(long index)
+        {
+            return new DataEntityObjectDummyOneToMany
+            {
+                Name = $"Name-{index}"
+            };
+        }
+
+        private int GetRandomIndex<T>(IEnumerable<T> items)
+        {
+            return new Random(Guid.NewGuid().GetHashCode()).Next(0, items.Count());
+        }
+
+        private async Task<IEnumerable<DataEntityObjectDummyMain>> SeedTestDataForDummyMain(
+            DataEntityDbContext dbContext,
+            IEnumerable<DataEntityObjectDummyOneToMany> itemsOfDummyOneToMany
             )
         {
             var result = Enumerable.Range(1, 100)
                 .Select(index => CreateTestDataItemForDummyMain(index, itemsOfDummyOneToMany))
                 .ToArray();
 
-            source.DummyMain.AddRange(result);
+            dbContext.DummyMain.AddRange(result);
 
-            await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
 
-        private async Task<DataEntityObjectDummyOneToMany[]> SeedTestDataForDummyOneToMany(DataEntityDbContext source)
+        private async Task<IEnumerable<DataEntityObjectDummyMainDummyManyToMany>> SeedTestDataForDummyMainDummyManyToMany(
+            DataEntityDbContext dbContext,
+            IEnumerable<DataEntityObjectDummyMain> itemsOfDummyMain,
+            IEnumerable<DataEntityObjectDummyManyToMany> itemsOfDummyManyToMany
+            )
+        {
+            var result = new List<DataEntityObjectDummyMainDummyManyToMany>();
+
+            foreach (var itemOfDummyMain in itemsOfDummyMain)
+            {
+                var itemsOfDummyMainDummyManyToMany = CreateTestDataItemsForDummyMainDummyManyToMany(
+                    itemOfDummyMain,
+                    itemsOfDummyManyToMany
+                    );
+
+                if (itemsOfDummyMainDummyManyToMany.Any())
+                {
+                    result.AddRange(itemsOfDummyMainDummyManyToMany);
+                }
+            }
+
+            dbContext.AddRange(result);
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+            return result;
+        }
+
+        private async Task<IEnumerable<DataEntityObjectDummyManyToMany>> SeedTestDataForDummyManyToMany(
+            DataEntityDbContext dbContext
+            )
+        {
+            var result = Enumerable.Range(1, 10)
+                .Select(index => CreateTestDataItemForDummyManyToMany(index))
+                .ToArray();
+
+            dbContext.DummyManyToMany.AddRange(result);
+
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+            return result;
+        }
+
+        private async Task<IEnumerable<DataEntityObjectDummyOneToMany>> SeedTestDataForDummyOneToMany(
+            DataEntityDbContext dbContext
+            )
         {
             var result = Enumerable.Range(1, 10)
                 .Select(index => CreateTestDataItemForDummyOneToMany(index))
                 .ToArray();
 
-            source.DummyOneToMany.AddRange(result);
+            dbContext.DummyOneToMany.AddRange(result);
 
-            await source.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }

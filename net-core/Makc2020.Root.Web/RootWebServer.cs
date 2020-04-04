@@ -42,7 +42,7 @@ namespace Makc2020.Root.Web
                 cultureName = httpContext.Request.Query[CULTURE_PARAMETER_NAME];
             }
 
-            EnsureContext();
+            EnsureInitialization();
 
             var context = GetContext();
 

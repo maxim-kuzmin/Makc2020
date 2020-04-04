@@ -4,8 +4,6 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Entity.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Linq;
 
 namespace Makc2020.Data.Entity.Schemas
 {
@@ -66,56 +64,6 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasConstraintName(setting.DbForeignKeyToDummyOneToMany);
         }
 
-        /// <summary>
-        /// Засеять тестовые данные.
-        /// </summary>
-        /// <param name="modelBuilder">Построитель модели.</param>
-        public static void SeedTestData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DataEntityObjectDummyMain>().HasData(
-                Enumerable.Range(1, 100).Select(id => CreateTestDataItem(id)).ToArray()
-                );
-        }
-
         #endregion Public methods
-
-        #region Private methods
-
-        private static DataEntityObjectDummyMain CreateTestDataItem(long id)
-        {
-            var isEven = id % 2 == 0;
-
-            var day = isEven ? 2 : 1;
-
-            var localTime = new DateTime(2018, 03, day, 06, 32, 00);
-
-            var dateAndOffsetLocal = new DateTimeOffset(
-                localTime, 
-                TimeZoneInfo.Local.GetUtcOffset(localTime)
-                );
-
-            return new DataEntityObjectDummyMain
-            {
-                Id = id,
-                Name = $"Name-{id}",
-                ObjectDummyOneToManyId = new Random(Guid.NewGuid().GetHashCode()).Next(1, 10),
-                PropBoolean = isEven,
-                PropBooleanNullable = isEven ? new bool?(!isEven) : null,
-                PropDate = new DateTime(2018, 01, day),
-                PropDateNullable = isEven ? new DateTime?(new DateTime(2018, 02, day)) : null,
-                PropDateTimeOffset = dateAndOffsetLocal,
-                PropDateTimeOffsetNullable = isEven ? new DateTimeOffset?(dateAndOffsetLocal) : null,
-                PropDecimal = 1000M + id + (id / 100M),
-                PropDecimalNullable = isEven ? new decimal?(2000M + id + (id / 200M)) : null,
-                PropInt32 = 1000 + (int)id,
-                PropInt32Nullable = isEven ? new int?(1000 + (int)id) : null,
-                PropInt64 = 3000 + id,
-                PropInt64Nullable = isEven ? new long?(3000 + id) : null,
-                PropString = $"PropString-{id}",
-                PropStringNullable = isEven ? $"PropStringNullable-{id}" : null
-            };
-        }
-
-        #endregion Private methods
     }
 }

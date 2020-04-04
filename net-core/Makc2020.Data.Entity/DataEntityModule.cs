@@ -37,6 +37,7 @@ namespace Makc2020.Data.Entity
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
             services.AddTransient(x => GetContext(x).Jobs.JobDatabaseMigrate);
+            services.AddTransient(x => GetContext(x).Jobs.JobTestDataSeed);
             services.AddTransient(x => GetContext(x).Service);
         }
 
