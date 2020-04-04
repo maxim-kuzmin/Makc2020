@@ -29,6 +29,7 @@ namespace Makc2020.Root.Web
         /// <summary>
         /// Обработать событие начала запроса.
         /// </summary>
+        /// <param name="httpContext">HTTP-контекст.</param>
         protected virtual void OnBeginRequest(HttpContext httpContext)
         {
             Logger.LogDebug("RootWebServer.OnBeginRequest begin");
