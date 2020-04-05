@@ -70,6 +70,11 @@ namespace Makc2020.Data.Base.Loaders
                 Data.TreePath = source.TreePath;
             }
 
+            if (props.Contains(nameof(Data.TreePosition)))
+            {
+                Data.TreePosition = source.TreePosition;
+            }
+
             if (props.Contains(nameof(Data.TreeSort)))
             {
                 Data.TreeSort = source.TreeSort;

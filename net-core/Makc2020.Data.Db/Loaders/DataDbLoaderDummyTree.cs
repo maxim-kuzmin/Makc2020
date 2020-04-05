@@ -76,6 +76,11 @@ namespace Makc2020.Data.Db.Loaders
                 Data.TreePath = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
+            if (props.Contains(nameof(Data.TreePosition)))
+            {
+                Data.TreePosition = await source.GetFieldValueAsync<int>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+
             if (props.Contains(nameof(Data.TreeSort)))
             {
                 Data.TreeSort = await source.GetFieldValueAsync<string>(ordinal++).CoreBaseExtTaskWithCurrentCulture(false);

@@ -1,14 +1,15 @@
-use Test
+use Test;
 
 CREATE TABLE [dbo].[DummyTree](
 	[Id] [bigint] NOT NULL,
 	[ParentId] [bigint],
 	[Name] [nvarchar](256) NOT NULL,
-	[TreeChildCount] [bigint] NOT NULL,
-	[TreeDescendantCount] [bigint] NOT NULL,
-	[TreeLevel] [bigint] NOT NULL,
-	[TreePath] nvarchar(max) NOT NULL,
-	[TreeSort] nvarchar(max) NOT NULL,
+	[TreeChildCount] [bigint] NOT NULL DEFAULT (0),
+	[TreeDescendantCount] [bigint] NOT NULL DEFAULT (0),
+	[TreeLevel] [bigint] NOT NULL DEFAULT (0),
+	[TreePath] nvarchar(max) NOT NULL DEFAULT (N''),
+	[TreePosition] [int] NOT NULL DEFAULT (0),
+	[TreeSort] nvarchar(max) NOT NULL DEFAULT (N''),
  CONSTRAINT [PK_DummyTree] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

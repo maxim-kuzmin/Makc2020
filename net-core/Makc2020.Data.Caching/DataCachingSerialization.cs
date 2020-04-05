@@ -106,6 +106,7 @@ namespace Makc2020.Data.Caching
                 nameof(obj.TreeDescendantCount),
                 nameof(obj.TreeLevel),
                 nameof(obj.TreePath),
+                nameof(obj.TreePosition),
                 nameof(obj.TreeSort)
                 );
         }

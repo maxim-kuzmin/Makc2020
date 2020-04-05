@@ -1,5 +1,36 @@
 use Test;
 
+update dbo.DummyTree set TreePosition = 0;
+
+while 1 = 1
+begin;
+	with cte as
+	(
+		select top 1
+			Id,
+			ParentId,
+			TreePosition
+		from
+			dbo.DummyTree
+		where
+			TreePosition = 0
+	)
+	update cte set
+		TreePosition = 
+		(
+			select
+				MAX(TreePosition) + 10
+			from
+				dbo.DummyTree k
+			where
+				COALESCE(k.ParentId, 0) = COALESCE(cte.ParentId, 0)
+		)
+	;
+
+	if @@ROWCOUNT < 1 break;
+end;
+
+--return;
 with cte as
 (
 	select
@@ -87,9 +118,10 @@ update cte set
 				(
 					(
 						select
-							'.' + RIGHT('0000000000' + CONVERT(varchar(max), t2.ParentId), 10)
+							'.' + RIGHT('0000000000' + CONVERT(varchar(max), t3.TreePosition), 10)
 						from
 							dbo.DummyTreeLink t2
+							inner join dbo.DummyTree t3 on t3.Id = t2.ParentId
 						where
 							t1.Id = t2.Id
 							and t2.ParentId > 0

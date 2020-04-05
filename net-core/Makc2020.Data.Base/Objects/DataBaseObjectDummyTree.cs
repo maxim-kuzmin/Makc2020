@@ -45,6 +45,11 @@ namespace Makc2020.Data.Base.Objects
         public string TreePath { get; set; }
 
         /// <summary>
+        /// Позиция узла в дереве.
+        /// </summary>
+        public int TreePosition { get; set; }
+
+        /// <summary>
         /// Сортировка узла в дереве.
         /// </summary>
         public string TreeSort { get; set; }
