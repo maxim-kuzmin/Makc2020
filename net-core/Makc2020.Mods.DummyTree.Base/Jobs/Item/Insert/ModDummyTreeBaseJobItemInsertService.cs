@@ -3,7 +3,6 @@
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
-using Makc2020.Data.Base.Objects;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Resources.Errors;
 using Makc2020.Mods.DummyTree.Base.Resources.Successes;
@@ -63,40 +62,12 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
             ResourceErrors = resourceErrors;
             DataBaseSettings = dataBaseSettings;
 
-            Execution.FuncGetErrorMessages = GetErrorMessages;
             Execution.FuncGetSuccessMessages = GetSuccessMessages;
         }
 
         #endregion Constructors
 
         #region Protected methods
-
-        /// <summary>
-        /// Получить сообщения об ошибках.
-        /// </summary>
-        /// <param name="ex">Исключение.</param>
-        /// <returns>Сообщения.</returns>
-        protected virtual IEnumerable<string> GetErrorMessages(Exception ex)
-        {
-            var msg = ex.ToString();
-
-            var setting = DataBaseSettings.DummyTree;
-
-            if (msg.Contains(setting.DbUniqueIndexForParentIdAndName))
-            {
-                DataBaseObjectDummyTree obj;
-
-                return new[]
-                {
-                    string.Format(
-                        ResourceErrors.GetStringFormatFieldValueIsNotUnique(),
-                        nameof(obj.Name)
-                        )
-                };
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// Получить сообщения об успехах.

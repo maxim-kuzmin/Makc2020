@@ -45,16 +45,6 @@ namespace Makc2020.Data.Base.Settings
         /// </summary>
         public string DbForeignKeyToParentDummyTree => CreateNameOfForeignKey(DbTable, DbTable, nameof(DataBaseObjectDummyTree.ParentId));
 
-        /// <summary>
-        /// Наименование уникального индекса в базе данных для полей "Id" и "ParentId".
-        /// </summary>
-        public string DbUniqueIndexForIdAndParentId => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.Id), nameof(DataBaseObjectDummyTree.ParentId));
-
-        /// <summary>
-        /// Наименование уникального индекса в базе данных для полей "ParentId" и "Name".
-        /// </summary>
-        public string DbUniqueIndexForParentIdAndName => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectDummyTree.ParentId), nameof(DataBaseObjectDummyTree.Name));
-
         #endregion Properties
     }
 }

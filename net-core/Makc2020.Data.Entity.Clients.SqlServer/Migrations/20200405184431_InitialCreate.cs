@@ -51,6 +51,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                     TreeDescendantCount = table.Column<long>(nullable: false, defaultValue: 0L),
                     TreeLevel = table.Column<long>(nullable: false, defaultValue: 0L),
                     TreePath = table.Column<string>(nullable: false, defaultValue: ""),
+                    TreePosition = table.Column<int>(nullable: false, defaultValue: 0),
                     TreeSort = table.Column<string>(nullable: false, defaultValue: "")
                 },
                 constraints: table =>
@@ -343,20 +344,10 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "UX_DummyTree_Id_ParentId",
+                name: "IX_DummyTree_ParentId",
                 schema: "dbo",
                 table: "DummyTree",
-                columns: new[] { "Id", "ParentId" },
-                unique: true,
-                filter: "[ParentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "UX_DummyTree_ParentId_Name",
-                schema: "dbo",
-                table: "DummyTree",
-                columns: new[] { "ParentId", "Name" },
-                unique: true,
-                filter: "[ParentId] IS NOT NULL");
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "UX_Role_NormalizedName",

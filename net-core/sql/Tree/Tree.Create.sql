@@ -21,9 +21,6 @@ ALTER TABLE [dbo].[DummyTree]  WITH CHECK ADD  CONSTRAINT [FK_DummyTree_DummyTre
 REFERENCES [dbo].[DummyTree] ([Id])
 GO
 
-ALTER TABLE [dbo].[DummyTree] CHECK CONSTRAINT [FK_DummyTree_DummyTree_ParentId]
-GO
-
 -----------------------------------------------
 
 CREATE TABLE [dbo].[DummyTreeLink](

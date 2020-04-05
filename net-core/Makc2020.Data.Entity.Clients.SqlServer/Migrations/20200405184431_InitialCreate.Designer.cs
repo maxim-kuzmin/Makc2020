@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
 {
     [DbContext(typeof(DataEntityClientSqlServerDbContext))]
-    [Migration("20200404114948_InitialCreate")]
+    [Migration("20200405184431_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -196,6 +196,11 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
+                    b.Property<int>("TreePosition")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<string>("TreeSort")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -205,15 +210,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                     b.HasKey("Id")
                         .HasName("PK_DummyTree");
 
-                    b.HasIndex("Id", "ParentId")
-                        .IsUnique()
-                        .HasName("UX_DummyTree_Id_ParentId")
-                        .HasFilter("[ParentId] IS NOT NULL");
-
-                    b.HasIndex("ParentId", "Name")
-                        .IsUnique()
-                        .HasName("UX_DummyTree_ParentId_Name")
-                        .HasFilter("[ParentId] IS NOT NULL");
+                    b.HasIndex("ParentId");
 
                     b.ToTable("DummyTree","dbo");
                 });

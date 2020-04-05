@@ -1,6 +1,6 @@
 use Test;
 
-update dbo.DummyTree set TreePosition = 0;
+--update dbo.DummyTree set TreePosition = 0;
 
 while 1 = 1
 begin;
