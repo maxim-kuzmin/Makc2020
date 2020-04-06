@@ -180,7 +180,8 @@ namespace Makc2020.Mods.DummyMain.Base
 
             using var dbContext = CreateDbContext();
 
-            var entities = await dbContext.DummyManyToMany.ToArrayAsync();
+            var entities = await dbContext.DummyManyToMany.ToArrayAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             result.Items = entities.Select(x => CreateOptionDummyManyToMany(x)).ToArray();
 
@@ -197,7 +198,8 @@ namespace Makc2020.Mods.DummyMain.Base
 
             var dbContext = CreateDbContext();
 
-            var entities = await dbContext.DummyOneToMany.ToArrayAsync();
+            var entities = await dbContext.DummyOneToMany.ToArrayAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             result.Items = entities.Select(x => CreateOptionDummyOneToMany(x)).ToArray();
 
@@ -466,7 +468,8 @@ namespace Makc2020.Mods.DummyMain.Base
 
             for (int i = 0; i < objects.Length; i++)
             {
-                result[i] = await SaveObjectDummyMainDummyManyToMany(objects[i]).CoreBaseExtTaskWithCurrentCulture(false);
+                result[i] = await SaveObjectDummyMainDummyManyToMany(objects[i])
+                    .CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             return result;

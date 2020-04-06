@@ -118,7 +118,7 @@ update cte set
 				(
 					(
 						select
-							'.' + RIGHT('0000000000' + CONVERT(varchar(max), t3.TreePosition), 10)
+							',' + RIGHT('0000000000' + CONVERT(varchar(max), t3.TreePosition) + '.' + CONVERT(varchar(max), t2.ParentId), 10)
 						from
 							dbo.DummyTreeLink t2
 							inner join dbo.DummyTree t3 on t3.Id = t2.ParentId
