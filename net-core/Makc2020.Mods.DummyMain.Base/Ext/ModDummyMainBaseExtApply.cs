@@ -107,8 +107,8 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
             ModDummyMainBaseJobListGetInput input
             )
         {
-            var sortField = input.DataSortField.ToLower();
-            var sortDirection = input.DataSortDirection.ToLower();
+            var sortField = input.SortField.ToLower();
+            var sortDirection = input.SortDirection.ToLower();
 
             switch (sortField)
             {

@@ -4,7 +4,7 @@
 export class AppCoreCommonModJobItemGetInput {
 
   /**
-   * Идентификатор данных.
+   * Данные: идентификатор.
    * @type {?number}
    */
   dataId?: number;

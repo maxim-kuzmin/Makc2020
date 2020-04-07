@@ -10,24 +10,24 @@ namespace Makc2020.Core.Base.Common.Jobs.List.Get
         #region Properties
 
         /// <summary>
-        /// Номер страницы данных.
+        /// Номер страницы.
         /// </summary>
-        public int DataPageNumber { get; set; }
+        public int PageNumber { get; set; }
 
         /// <summary>
-        /// Размер страницы данных.
+        /// Размер страницы.
         /// </summary>
-        public int DataPageSize { get; set; }
+        public int PageSize { get; set; }
 
         /// <summary>
-        /// Поле сортировки данных.
+        /// Поле сортировки.
         /// </summary>
-        public string DataSortField { get; set; }
+        public string SortField { get; set; }
 
         /// <summary>
-        /// Направление сортировки данных.
+        /// Направление сортировки.
         /// </summary>
-        public string DataSortDirection { get; set; }
+        public string SortDirection { get; set; }
 
         #endregion Properties
 
@@ -38,14 +38,14 @@ namespace Makc2020.Core.Base.Common.Jobs.List.Get
         /// </summary>
         public virtual void Normalize()
         {
-            if (DataPageNumber < 1)
+            if (PageNumber < 1)
             {
-                DataPageNumber = 1;
+                PageNumber = 1;
             }
 
-            if (DataPageSize < 1)
+            if (PageSize < 1)
             {
-                DataPageSize = int.MaxValue;
+                PageSize = int.MaxValue;
             }
         }
 

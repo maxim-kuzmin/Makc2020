@@ -1,17 +1,23 @@
 use Test;
 
-declare @Ids TABLE (Val bigint);
-declare @IdsAncestor TABLE (Val bigint);
-declare @IdsBroken TABLE (Val bigint);
-declare @IdsCalculated TABLE (Val bigint);
-declare @IdsDescendant TABLE (Val bigint);
-declare @IdsLinked TABLE (Val bigint);		
+declare @Ids table (Val bigint);
+declare @IdsAncestor table (Val bigint);
+declare @IdsBroken table (Val bigint);
+declare @IdsCalculated table (Val bigint);
+declare @IdsDescendant table (Val bigint);
+declare @IdsLinked table (Val bigint);		
 
 --declare @Action char = 'D';
 --insert into @Ids (Val) values (4);
 --delete from dbo.DummyTree where Id in (select Val from @Ids);
 declare @Action char = '';
-insert into @Ids (Val) select Id from dbo.DummyTree;
+
+insert into @Ids
+(
+	Val
+)
+select Id from dbo.DummyTree
+;
 
 -- Добавляем узлы к разрушенным узлам.
 insert into @IdsBroken
@@ -19,6 +25,7 @@ insert into @IdsBroken
 	Val
 )
 select Val from @Ids
+;
 
 -- Удаление или обновление.
 if @Action <> 'I'
@@ -34,8 +41,10 @@ begin;
 		dbo.DummyTreeLink
 	where
 		ParentId > 0
-		and Id <> ParentId
-		and Id in (select Val from @Ids)
+		and
+		Id <> ParentId
+		and
+		Id in (select Val from @Ids)
 	;
 end;
 
@@ -53,7 +62,8 @@ begin;
 		dbo.DummyTreeLink
 	where
 		Id <> ParentId
-		and ParentId in (select Val from @Ids)
+		and 
+		ParentId in (select Val from @Ids)
 	;
 
 	-- Добавляем потомков обновлённых узлов к разрушенным узлам.
@@ -61,7 +71,10 @@ begin;
 	(
 		Val
 	)
-	select Val from @IdsDescendant
+	select
+		Val
+	from
+		@IdsDescendant
 	;
 
 	-- Добавляем потомков обновлённых узлов к связываемым узлам.
@@ -69,7 +82,10 @@ begin;
 	(
 		Val
 	)
-	select Val from @IdsDescendant
+	select
+		Val
+	from
+		@IdsDescendant
 	;
 end;
 
@@ -81,7 +97,11 @@ begin;
 	(
 		Val
 	)
-	select Val from @Ids
+	select
+		Val
+	from
+		@Ids
+	;
 
 	-- Добавляем родителей вставленных или обновлённых узлов к вычисляемым узлам.
 	insert into @IdsCalculated
@@ -117,7 +137,11 @@ begin;
 	(
 		Val
 	)
-	select Val from @Ids
+	select
+		Val
+	from
+		@Ids
+	;
 end;
 
 -- Добавляем предков к вычисляемым узлам.
@@ -125,9 +149,13 @@ insert into @IdsCalculated
 (
 	Val
 )
-select Val from @IdsAncestor
+select
+	Val
+from
+	@IdsAncestor
 ;
 
+-- Обновление.
 if @Action = 'U'
 begin;
 	-- Добавляем потомков обновлённых узлов к вычисляемым узлам.
@@ -135,7 +163,10 @@ begin;
 	(
 		Val
 	)
-	select Val from @IdsDescendant
+	select
+		Val
+	from
+		@IdsDescendant
 	;
 end;
 

@@ -1,9 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Base.Common.Enums;
 using Makc2020.Core.Base.Common.Jobs.List.Get;
-using System.Linq;
 
 namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
 {
@@ -20,24 +18,19 @@ namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
         public CoreBaseCommonEnumTreeAxis Axis { get; set; }
 
         /// <summary>
-        /// Идентификатор узла дерева.
+        /// Данные: максимальный уровень узла дерева.
         /// </summary>
-        public long TreeId { get; set; }
+        public long DataTreeLevelMax { get; set; }
 
         /// <summary>
-        /// Список идентификаторов узлов дерева.
+        /// Данные: минимальный уровень узла дерева.
         /// </summary>
-        public long[] TreeIds { get; set; }
+        public long DataTreeLevelMin { get; set; }
 
         /// <summary>
-        /// Строка идентификаторов узлов дерева.
+        /// Идентификатор корневого узла дерева.
         /// </summary>
-        public string TreeIdsString { get; set; }
-
-        /// <summary>
-        /// Уровень узла дерева.
-        /// </summary>
-        public long TreeLevel { get; set; }
+        public long RootId { get; set; }
 
         #endregion Properties
 
@@ -50,19 +43,19 @@ namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
         {
             base.Normalize();
 
-            if (TreeId < 0)
+            if (RootId < 0)
             {
-                TreeId = 0;
+                RootId = 0;
             }
 
-            if (TreeLevel < 0)
+            if (DataTreeLevelMax < 0)
             {
-                TreeLevel = 0;
+                DataTreeLevelMax = 0;
             }
 
-            if (!string.IsNullOrWhiteSpace(TreeIdsString) && (TreeIds == null || !TreeIds.Any()))
+            if (DataTreeLevelMin < 0)
             {
-                TreeIds = TreeIdsString.CoreBaseExtConvertToNumericInt64Array();
+                DataTreeLevelMin = 0;
             }
         }
 

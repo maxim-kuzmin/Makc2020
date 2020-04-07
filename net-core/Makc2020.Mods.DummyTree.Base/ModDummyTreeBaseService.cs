@@ -68,6 +68,11 @@ namespace Makc2020.Mods.DummyTree.Base
 
             var dbContext = CreateDbContext();
 
+            var entityDummyTree = await dbContext.DummyTree
+                .ModDummyTreeBaseExtApplyFiltering(input)
+                .FirstOrDefaultAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
             //var entityDummy = await (
             //    from r in dbContext.DummyTree
             //    join k in dbContext.DummyTreeLink
@@ -85,10 +90,10 @@ namespace Makc2020.Mods.DummyTree.Base
             //    .FirstOrDefaultAsync()
             //    .CoreBaseExtTaskWithCurrentCulture(false);
 
-            //if (entityDummy != null)
-            //{
-            //    result = CreateItem(entityDummy);
-            //}
+            if (entityDummyTree != null)
+            {
+                result = CreateItem(entityDummyTree);
+            }
 
             return result;
         }

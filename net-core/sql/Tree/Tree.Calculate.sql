@@ -70,7 +70,8 @@ update cte set
 			dbo.DummyTreeLink aliasForLink
 		where
 			aliasForLink.ParentId = cte.Id
-			and aliasForLink.Id <> aliasForLink.ParentId
+			and
+			aliasForLink.ParentId <> aliasForLink.Id
 	),
 	TreeLevel = 
 	(
@@ -98,8 +99,10 @@ update cte set
 							dbo.DummyTreeLink aliasForLink2
 						where
 							aliasForLink1.Id = aliasForLink2.Id
-							and aliasForLink2.ParentId > 0
-							and aliasForLink2.ParentId <> aliasForLink1.Id
+							and
+							aliasForLink2.ParentId > 0
+							and
+							aliasForLink2.ParentId <> aliasForLink2.Id
 							for xml path(''), type
 					).value('.', 'varchar(max)'),
 					1,
@@ -129,10 +132,12 @@ update cte set
 							',' + RIGHT('0000000000' + CONVERT(varchar(max), aliasForTree.TreePosition) + '.' + CONVERT(varchar(max), aliasForLink2.ParentId), 10)
 						from
 							dbo.DummyTreeLink aliasForLink2
-							inner join dbo.DummyTree aliasForTree on aliasForTree.Id = aliasForLink2.ParentId
+							inner join dbo.DummyTree aliasForTree
+								on aliasForTree.Id = aliasForLink2.ParentId
 						where
 							aliasForLink1.Id = aliasForLink2.Id
-							and aliasForLink2.ParentId > 0
+							and
+							aliasForLink2.ParentId > 0
 							for xml path(''), type
 					).value('.', 'varchar(max)'),
 					1,

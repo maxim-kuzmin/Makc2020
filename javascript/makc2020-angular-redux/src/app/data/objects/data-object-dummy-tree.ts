@@ -4,18 +4,6 @@
 export interface AppDataObjectDummyTree {
 
   /**
-   * Число детей.
-   * @type {number}
-   */
-  childCount: number;
-
-  /**
-   * Число потомков.
-   * @type {number}
-   */
-  descendantCount: number;
-
-  /**
    * Идентификатор.
    * @type {number}
    */
@@ -28,16 +16,46 @@ export interface AppDataObjectDummyTree {
   name: string;
 
   /**
-   * Уровень.
-   * @type {number}
-   */
-  level: number;
-
-  /**
    * Идентификатор родителя.
    * @type {?number}
    */
   parentId?: number;
+
+  /**
+   * Число детей узла дерева.
+   * @type {number}
+   */
+  treeChildCount: number;
+
+  /**
+   * Число потомков узла дерева.
+   * @type {number}
+   */
+  treeDescendantCount: number;
+
+  /**
+   * Уровень узла в дереве.
+   * @type {number}
+   */
+  treeLevel: number;
+
+  /**
+   * Путь узла в дереве.
+   * @type {string}
+   */
+  treePath: string;
+
+  /**
+   * Позиция узла в дереве.
+   * @type {number}
+   */
+  treePosition: number;
+
+  /**
+   * Сортировка узла в дереве.
+   * @type {string}
+   */
+  treeSort: string;
 }
 
 /** Данные. Объекты. Сущность "DummyTree". Создать. */

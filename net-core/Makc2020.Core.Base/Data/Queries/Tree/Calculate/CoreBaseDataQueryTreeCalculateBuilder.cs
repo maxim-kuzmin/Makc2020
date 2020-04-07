@@ -1,8 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using System.Linq;
-using System.Text;
-
 namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
 {
     /// <summary>
@@ -44,24 +41,44 @@ namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
         public string SqlForIdsSelectQuery { get; set; }
 
         /// <summary>
-        /// Имя поля таблицы дерева для числа детей.
-        /// </summary>
-        public string TreeTableFieldNameForChildCount{ get; set; } = "ChildCount";
-
-        /// <summary>
-        /// Имя поля таблицы дерева для числа потомков.
-        /// </summary>
-        public string TreeTableFieldNameForDescendantCount { get; set; } = "DescendantCount";
-
-        /// <summary>
         /// Имя поля таблицы дерева для идентификатора.
         /// </summary>
-        public string TreeTableFieldNameForId { get; set; } = "Id";
+        public string TreeTableFieldNameForId { get; set; } = CoreBaseDataSettings.FIELD_NAME_Id;
 
         /// <summary>
         /// Имя поля таблицы дерева для идентификатора родителя.
         /// </summary>
-        public string TreeTableFieldNameForParentId { get; set; } = "ParentId";
+        public string TreeTableFieldNameForParentId { get; set; } = CoreBaseDataSettings.FIELD_NAME_ParentId;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для числа детей узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreeChildCount { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeChildCount;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для числа потомков узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreeDescendantCount { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeDescendantCount;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для уровня узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreeLevel { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeLevel;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для пути узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreePath { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreePath;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для позиции узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreePosition { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreePosition;
+
+        /// <summary>
+        /// Имя поля таблицы дерева для сортировки узла в дереве.
+        /// </summary>
+        public string TreeTableFieldNameForTreeSort { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeSort;
 
         /// <summary>
         /// Имя таблицы дерева.
@@ -75,74 +92,8 @@ namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
         /// <summary>
         /// Получить результирующий SQL.
         /// </summary>
-        public string GetResultSql()
-        {
-            var aliasForLink = $"{Prefix}k";
-            var aliasForResult = $"{Prefix}r";
-            var aliasForTree = $"{Prefix}t";
-
-            var sqlForChildCount = CreateSqlForCount($"{aliasForTree}.{TreeTableFieldNameForId}", false);
-            var sqlForDescendantCount = CreateSqlForCount($"{aliasForTree}.{TreeTableFieldNameForId}", true);
-
-            var result = new StringBuilder($@"
-update {TreeTableName} {aliasForResult}
-set
-	{aliasForResult}.{TreeTableFieldNameForChildCount} =
-		(
-			select		
-				{sqlForChildCount}
-			from
-				{TreeTableName} {aliasForTree}
-			where
-				{aliasForTree}.{TreeTableFieldNameForParentId} = {aliasForResult}.{TreeTableFieldNameForId} 
-		),
-	{aliasForResult}.{TreeTableFieldNameForDescendantCount} =
-		(
-			select                
-				{sqlForDescendantCount}
-			from
-				{LinkTableName} {aliasForLink}
-				inner join {TreeTableName} {aliasForTree}
-                    on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForLink}.{LinkTableFieldNameForId}
-			where
-				{aliasForLink}.{LinkTableFieldNameForParentId} = {aliasForResult}.{TreeTableFieldNameForId}
-				and {aliasForTree}.{TreeTableFieldNameForId} <> {aliasForResult}.{TreeTableFieldNameForId}
-		)
-");
-
-            var parIds = Parameters.Ids;
-
-            if (parIds.Any() || !string.IsNullOrWhiteSpace(SqlForIdsSelectQuery))
-            {
-                result.Append($"where {aliasForResult}.{TreeTableFieldNameForId} in (");
-
-                if (parIds.Any())
-                {
-                    result.Append(string.Join(", ", parIds.Select(x => x.ParameterName)));
-                }
-                else
-                {
-                    result.Append(SqlForIdsSelectQuery);
-                }
-
-                result.Append(")");
-            }
-
-            return result.ToString();
-        }
+        public abstract string GetResultSql();
 
         #endregion Public methods
-
-        #region Potected methods
-
-        /// <summary>
-        /// Создать SQL для подсчёта.
-        /// </summary>
-        /// <param name="fieldName">Имя поля.</param>
-        /// <param name="isDistinct">Признак подсчёта только уникальных значений.</param>
-        /// <returns></returns>
-        protected abstract string CreateSqlForCount(string fieldName, bool isDistinct);
-
-        #endregion Potected methods
     }
 }

@@ -55,12 +55,10 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.List.Get
                 {
                     var keys = new object[]
                     {
-                        input.DataName,
-                        input.DataIds,
-                        input.DataPageNumber,
-                        input.DataPageSize,
-                        input.DataSortField,
-                        input.DataSortDirection
+                        input.PageNumber,
+                        input.PageSize,
+                        input.SortField,
+                        input.SortDirection
                     };
 
                     return client.Read(() => executable.Invoke(input), keys, tags);

@@ -14,7 +14,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Get
         #region Properties
 
         /// <summary>
-        /// Имя данных.
+        /// Данные: имя.
         /// </summary>
         public string DataName { get; set; }
 

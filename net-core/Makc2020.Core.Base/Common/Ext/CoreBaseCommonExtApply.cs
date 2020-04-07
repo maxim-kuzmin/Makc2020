@@ -24,7 +24,7 @@ namespace Makc2020.Core.Base.Common.Ext
             CoreBaseCommonJobListGetInput input
             )
         {
-            return query.Skip((input.DataPageNumber - 1) * input.DataPageSize).Take(input.DataPageSize);
+            return query.Skip((input.PageNumber - 1) * input.PageSize).Take(input.PageSize);
         }
 
         #endregion Public methods

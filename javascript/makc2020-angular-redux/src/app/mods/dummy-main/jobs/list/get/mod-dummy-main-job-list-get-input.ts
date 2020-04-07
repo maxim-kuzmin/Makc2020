@@ -98,9 +98,9 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
       && this.dataObjectDummyOneToManyId === other.dataObjectDummyOneToManyId
       && this.dataObjectDummyOneToManyIdsString === other.dataObjectDummyOneToManyIdsString
       && this.dataObjectDummyOneToManyName === other.dataObjectDummyOneToManyName
-      && this.dataPageNumber === other.dataPageNumber
-      && this.dataPageSize === other.dataPageSize
-      && this.dataSortDirection === other.dataSortDirection
-      && this.dataSortField === other.dataSortField;
+      && this.pageNumber === other.pageNumber
+      && this.pageSize === other.pageSize
+      && this.sortDirection === other.sortDirection
+      && this.sortField === other.sortField;
   }
 }

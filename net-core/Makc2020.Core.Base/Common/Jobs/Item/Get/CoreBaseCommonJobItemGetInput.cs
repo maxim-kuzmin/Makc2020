@@ -12,7 +12,7 @@ namespace Makc2020.Core.Base.Common.Jobs.Item.Get.Item
         #region Properties
 
         /// <summary>
-        /// Идентификатор данных.
+        /// Данные: идентификатор.
         /// </summary>
         public long DataId { get; set; }
 

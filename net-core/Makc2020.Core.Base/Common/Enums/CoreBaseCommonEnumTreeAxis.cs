@@ -12,16 +12,24 @@ namespace Makc2020.Core.Base.Common.Enums
         /// </summary>
         Descendant = 0,
         /// <summary>
+        /// Потомок или корневой узел.
+        /// </summary>
+        DescendantOrSelf = 1,
+        /// <summary>
         /// Предок.
         /// </summary>
-        Ancestor = 1,
+        Ancestor = 2,
+        /// <summary>
+        /// Предок или корневой узел.
+        /// </summary>
+        AncestorOrSelf = 3,
         /// <summary>
         /// Ребёнок.
         /// </summary>
-        Child = 2,
+        Child = 4,
         /// <summary>
         /// Сам.
         /// </summary>
-        Self = 3
+        Self = 5
     }
 }

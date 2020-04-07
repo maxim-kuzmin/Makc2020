@@ -146,7 +146,7 @@ export class AppModDummyTreePageListPresenter extends AppCoreCommonPagePresenter
     } = this.model.getState();
 
     this.view.pageSize = jobListGetInput
-      ? this.model.getRealPageSize(jobListGetInput.dataPageSize)
+      ? this.model.getRealPageSize(jobListGetInput.pageSize)
       : this.model.getRealPageSize();
 
     let totalCount = 0;

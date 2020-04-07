@@ -44,8 +44,8 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get
         {
             var input = new ModDummyMainBaseJobListGetInput
             {
-                DataPageNumber = 2,
-                DataPageSize = 3
+                PageNumber = 2,
+                PageSize = 3
             };
 
             var result = new CoreBaseExecutionResultWithData<ModDummyMainBaseJobListGetOutput>();

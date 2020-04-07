@@ -14,17 +14,32 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
         #region Properties
 
         /// <summary>
-        /// Имя объекта, где хранятся данные сущности "DummyOneToMany".
+        /// Данные: идентификаторы.
+        /// </summary>
+        public long[] DataIds { get; set; }
+
+        /// <summary>
+        /// Данные: строка идентификаторов.
+        /// </summary>
+        public string DataIdsString { get; set; }
+
+        /// <summary>
+        /// Данные: имя.
+        /// </summary>
+        public string DataName { get; set; }
+
+        /// <summary>
+        /// Данные: имя объекта, где хранятся данные сущности "DummyOneToMany".
         /// </summary>
         public string DataObjectDummyOneToManyName { get; set; }
 
         /// <summary>
-        /// Идентификатор объекта, где хранятся данные сущности "DummyOneToMany".
+        /// Данные: идентификатор объекта, где хранятся данные сущности "DummyOneToMany".
         /// </summary>
         public long DataObjectDummyOneToManyId { get; set; }
 
         /// <summary>
-        /// Строка идентификаторов объектов, где хранятся данные сущности "DummyOneToMany".
+        /// Данные: строка идентификаторов объектов, где хранятся данные сущности "DummyOneToMany".
         /// </summary>
         public string DataObjectDummyOneToManyIdsString { get; set; }
 
@@ -32,21 +47,6 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
         /// Идентификаторы объектов, где хранятся данные сущности "DummyOneToMany".
         /// </summary>
         public long[] DataObjectDummyOneToManyIds { get; set; }
-
-        /// <summary>
-        /// Имя данных.
-        /// </summary>
-        public string DataName { get; set; }
-
-        /// <summary>
-        /// Строка идентификаторов данных.
-        /// </summary>
-        public string DataIdsString { get; set; }
-
-        /// <summary>
-        /// Идентификаторы данных.
-        /// </summary>
-        public long[] DataIds { get; set; }
 
         #endregion Properties
 
@@ -59,14 +59,14 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
         {
             base.Normalize();
 
-            if (string.IsNullOrWhiteSpace(DataSortField))
+            if (string.IsNullOrWhiteSpace(SortField))
             {
-                DataSortField = "id";
+                SortField = "id";
             }
 
-            if (string.IsNullOrWhiteSpace(DataSortDirection))
+            if (string.IsNullOrWhiteSpace(SortDirection))
             {
-                DataSortDirection = "desc";
+                SortDirection = "desc";
             }
 
             if (!string.IsNullOrWhiteSpace(DataObjectDummyOneToManyIdsString) && (DataObjectDummyOneToManyIds == null || !DataObjectDummyOneToManyIds.Any()))

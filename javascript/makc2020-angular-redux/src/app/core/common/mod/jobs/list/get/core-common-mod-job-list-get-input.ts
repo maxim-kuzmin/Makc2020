@@ -4,56 +4,56 @@
 export class AppCoreCommonModJobListGetInput {
 
   /**
-   * Номер страницы данных.
+   * Номер страницы.
    * @type {?number}
    */
-  dataPageNumber?: number;
+  pageNumber?: number;
 
   /**
-   * Размер страницы данных.
+   * Размер страницы.
    * @type {?number}
    */
-  dataPageSize?: number;
+  pageSize?: number;
 
   /**
-   * Поле сортировки данных.
+   * Поле сортировки.
    * @type {?string}
    */
-  dataSortField?: string;
+  sortField?: string;
 
   /**
-   * Направление сортировки данных.
+   * Направление сортировки.
    * @type {?string}
    */
-  dataSortDirection?: string;
+  sortDirection?: string;
 
   /**
    * Конструктор.
-   * @param {?number} dataPageNumber Номер страницы данных.
-   * @param {?number} dataPageSize Размер страницы данных.
-   * @param {?string} dataSortField Поле сортировки данных.
-   * @param {?string} dataSortDirection Направление сортировки данных.
+   * @param {?number} pageNumber Номер страницы.
+   * @param {?number} pageSize Размер страницы.
+   * @param {?string} sortField Поле сортировки.
+   * @param {?string} sortDirection Направление сортировки.
    */
   constructor(
-    dataPageNumber?: number,
-    dataPageSize?: number,
-    dataSortField?: string,
-    dataSortDirection?: string
+    pageNumber?: number,
+    pageSize?: number,
+    sortField?: string,
+    sortDirection?: string
   ) {
-    if (dataPageNumber) {
-      this.dataPageNumber = dataPageNumber;
+    if (pageNumber) {
+      this.pageNumber = pageNumber;
     }
 
-    if (dataPageSize) {
-      this.dataPageSize = dataPageSize;
+    if (pageSize) {
+      this.pageSize = pageSize;
     }
 
-    if (dataSortField) {
-      this.dataSortField = dataSortField;
+    if (sortField) {
+      this.sortField = sortField;
     }
 
-    if (dataSortDirection) {
-      this.dataSortDirection = dataSortDirection;
+    if (sortDirection) {
+      this.sortDirection = sortDirection;
     }
   }
 }

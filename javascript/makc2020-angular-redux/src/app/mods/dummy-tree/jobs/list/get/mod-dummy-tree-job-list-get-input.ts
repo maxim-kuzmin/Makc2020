@@ -59,9 +59,9 @@ export class AppModDummyTreeJobListGetInput extends AppCoreCommonModJobListGetIn
     return other
       && this.dataIdsString === other.dataIdsString
       && this.dataName === other.dataName
-      && this.dataPageNumber === other.dataPageNumber
-      && this.dataPageSize === other.dataPageSize
-      && this.dataSortDirection === other.dataSortDirection
-      && this.dataSortField === other.dataSortField;
+      && this.pageNumber === other.pageNumber
+      && this.pageSize === other.pageSize
+      && this.sortDirection === other.sortDirection
+      && this.sortField === other.sortField;
   }
 }

@@ -30,11 +30,6 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
                 query = query.Where(x => x.Id == input.DataId);
             }
 
-            if (input.DataName != null)
-            {
-                query = query.Where(x => x.Name == input.DataName);
-            }
-
             return query;
         }
 
@@ -49,28 +44,14 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
             ModDummyTreeBaseJobListGetInput input
             )
         {
-            if (input.DataLevel.HasValue && input.DataLevel.Value > -1)
+            if (input.DataTreeLevelMax > 0)
             {
-                query = query.Where(x => x.TreeLevel <= input.DataLevel.Value);
+                query = query.Where(x => x.TreeLevel <= input.DataTreeLevelMax);
             }
 
-            if (!string.IsNullOrWhiteSpace(input.DataName))
+            if (input.DataTreeLevelMin > 0)
             {
-                query = query.Where(x => x.Name.Contains(input.DataName));
-            }
-
-            if (input.DataIds != null && input.DataIds.Any())
-            {
-                if (input.DataIds.Count() > 1)
-                {
-                    query = query.Where(x => input.DataIds.Contains(x.Id));
-                }
-                else
-                {
-                    var dataId = input.DataIds[0];
-
-                    query = query.Where(x => x.Id == dataId);
-                }
+                query = query.Where(x => x.TreeLevel >= input.DataTreeLevelMin);
             }
 
             return query;
@@ -87,8 +68,8 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
             ModDummyTreeBaseJobListGetInput input
             )
         {
-            var sortField = input.DataSortField.ToLower();
-            var sortDirection = input.DataSortDirection.ToLower();
+            var sortField = input.SortField.ToLower();
+            var sortDirection = input.SortDirection.ToLower();
 
             switch (sortField)
             {

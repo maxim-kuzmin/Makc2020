@@ -60,10 +60,10 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.List.Get
                         input.DataObjectDummyOneToManyId,
                         input.DataName,
                         input.DataIds,
-                        input.DataPageNumber,
-                        input.DataPageSize,
-                        input.DataSortField,
-                        input.DataSortDirection
+                        input.PageNumber,
+                        input.PageSize,
+                        input.SortField,
+                        input.SortDirection
                     };
 
                     return client.Read(() => executable.Invoke(input), keys, tags);

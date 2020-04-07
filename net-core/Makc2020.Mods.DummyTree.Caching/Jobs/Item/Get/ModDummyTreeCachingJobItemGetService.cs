@@ -55,8 +55,7 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.Item.Get
                 {
                     var keys = new object[]
                     {
-                        input.DataId,
-                        input.DataName
+                        input.DataId
                     };
 
                     return client.Read(() => executable.Invoke(input), keys, tags);

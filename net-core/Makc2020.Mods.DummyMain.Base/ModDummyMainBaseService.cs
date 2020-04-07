@@ -71,16 +71,16 @@ namespace Makc2020.Mods.DummyMain.Base
 
             using var dbContext = CreateDbContext();
 
-            var entityDummy = await dbContext.DummyMain
+            var entityDummyMain = await dbContext.DummyMain
                 .Include(x => x.ObjectDummyOneToMany)
                 .Include(x => x.ObjectsDummyMainDummyManyToMany)
                 .ModDummyMainBaseExtApplyFiltering(input)
                 .FirstOrDefaultAsync()
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            if (entityDummy != null)
+            if (entityDummyMain != null)
             {
-                result = CreateItem(entityDummy);
+                result = CreateItem(entityDummyMain);
 
                 if (result.ObjectsDummyMainDummyManyToMany != null)
                 {
