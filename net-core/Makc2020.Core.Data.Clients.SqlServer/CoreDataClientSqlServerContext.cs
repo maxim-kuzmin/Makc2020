@@ -12,11 +12,6 @@ namespace Makc2020.Core.Data.Clients.SqlServer
         #region Properties
 
         /// <summary>
-        /// Фабрика.
-        /// </summary>
-        public CoreDataClientSqlServerFactory Factory { get; private set; } = new CoreDataClientSqlServerFactory();
-
-        /// <summary>
         /// Поставщик.
         /// </summary>
         public ICoreBaseDataProvider Provider { get; private set; } = new CoreDataClientSqlServerProvider();

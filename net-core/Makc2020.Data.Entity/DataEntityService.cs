@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Makc2020.Data.Entity
 {
@@ -51,9 +50,10 @@ namespace Makc2020.Data.Entity
         /// </summary>
         public async Task SeedTestData()
         {
-            using var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
             using var dbContext = CreateDbContext();
+
+            using var transaction = await dbContext.Database.BeginTransactionAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
             var isOk = await dbContext.DummyMain.AnyAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
@@ -71,7 +71,7 @@ namespace Makc2020.Data.Entity
                 await SeedTestDataForDummyMainDummyManyToMany(dbContext, itemsOfDummyMain, itemsOfDummyManyToMany);
             }
 
-            ts.Complete();
+            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         /// <summary>

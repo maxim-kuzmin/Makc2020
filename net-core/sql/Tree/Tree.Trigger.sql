@@ -177,7 +177,7 @@ where
 ;		
 
 -- Добавляем связи разрушенных узлов.
-with cteForLink as
+with cteForAncestors as
 (
 	select
 		Id = aliasForTree.Id,
@@ -188,12 +188,12 @@ with cteForLink as
             on aliasForIds.Val = aliasForTree.Id
 	union all
 	select
-		Id = aliasForLink.Id,
+		Id = aliasForAncestors.Id,
 		ParentId = COALESCE(aliasForTree.ParentId, 0)
 	from 
 		dbo.DummyTree aliasForTree
-		inner join cteForLink aliasForLink
-            on aliasForLink.ParentId = aliasForTree.Id
+		inner join cteForAncestors aliasForAncestors
+            on aliasForAncestors.ParentId = aliasForTree.Id
 ),
 cteForAll as 
 (
@@ -209,7 +209,7 @@ cteForAll as
 		Id, 
 		ParentId
 	from 
-		cteForLink
+		cteForAncestors
 )
 insert into dbo.DummyTreeLink
 (

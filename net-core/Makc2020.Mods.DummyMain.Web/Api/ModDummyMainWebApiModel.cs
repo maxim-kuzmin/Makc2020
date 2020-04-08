@@ -84,26 +84,26 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         #region Public methods
 
         /// <summary>
-        /// Построить действие "Список. Получение".
+        /// Построить действие "Элемент. Удаление".
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Функции действия.</returns>
         public (
-            Func<Task<ModDummyMainBaseJobListGetOutput>> execute,
-            Action<ModDummyMainBaseJobListGetResult> onSuccess,
-            Action<Exception, ModDummyMainBaseJobListGetResult> onError
-            ) BuildActionListGet(ModDummyMainBaseJobListGetInput input)
+            Func<Task> execute,
+            Action<CoreBaseExecutionResult> onSuccess,
+            Action<Exception, CoreBaseExecutionResult> onError
+            ) BuildActionItemDelete(ModDummyMainBaseJobItemGetInput input)
         {
-            var job = AppJobListGet;
+            var job = AppJobItemDelete;
 
-            Task<ModDummyMainBaseJobListGetOutput> execute() => job.Execute(input);
+            Task execute() => job.Execute(input);
 
-            void onSuccess(ModDummyMainBaseJobListGetResult result)
+            void onSuccess(CoreBaseExecutionResult result)
             {
                 job.OnSuccess(ExtLogger, result, input);
             }
 
-            void onError(Exception ex, ModDummyMainBaseJobListGetResult result)
+            void onError(Exception ex, CoreBaseExecutionResult result)
             {
                 job.OnError(ex, ExtLogger, result);
             }
@@ -132,62 +132,6 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             }
 
             void onError(Exception ex, ModDummyMainBaseJobItemGetResult result)
-            {
-                job.OnError(ex, ExtLogger, result);
-            }
-
-            return (execute, onSuccess, onError);
-        }
-
-        /// <summary>
-        /// Построить действие "Вариант выбора. Сущность "DummyManyToMany". Список. Получение".
-        /// </summary>
-        /// <param name="input">Ввод.</param>
-        /// <returns>Функции действия.</returns>
-        public (
-            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
-            Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
-            Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
-            ) BuildActionOptionDummyManyToManyListGet()
-        {
-            var job = AppJobOptionDummyManyToManyListGet;
-
-            Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
-
-            void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
-            {
-                job.OnSuccess(ExtLogger, result);
-            }
-
-            void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
-            {
-                job.OnError(ex, ExtLogger, result);
-            }
-
-            return (execute, onSuccess, onError);
-        }
-
-        /// <summary>
-        /// Построить действие "Вариант выбора. Сущность "DummyOneToMany". Список. Получение".
-        /// </summary>
-        /// <param name="input">Ввод.</param>
-        /// <returns>Функции действия.</returns>
-        public (
-            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
-            Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
-            Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
-            ) BuildActionOptionDummyOneToManyListGet()
-        {
-            var job = AppJobOptionDummyOneToManyListGet;
-
-            Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
-
-            void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
-            {
-                job.OnSuccess(ExtLogger, result);
-            }
-
-            void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
             {
                 job.OnError(ex, ExtLogger, result);
             }
@@ -252,26 +196,82 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         }
 
         /// <summary>
-        /// Построить действие "Элемент. Удаление".
+        /// Построить действие "Список. Получение".
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Функции действия.</returns>
         public (
-            Func<Task> execute,
-            Action<CoreBaseExecutionResult> onSuccess,
-            Action<Exception, CoreBaseExecutionResult> onError
-            ) BuildActionItemDelete(ModDummyMainBaseJobItemGetInput input)
+            Func<Task<ModDummyMainBaseJobListGetOutput>> execute,
+            Action<ModDummyMainBaseJobListGetResult> onSuccess,
+            Action<Exception, ModDummyMainBaseJobListGetResult> onError
+            ) BuildActionListGet(ModDummyMainBaseJobListGetInput input)
         {
-            var job = AppJobItemDelete;
+            var job = AppJobListGet;
 
-            Task execute() => job.Execute(input);
+            Task<ModDummyMainBaseJobListGetOutput> execute() => job.Execute(input);
 
-            void onSuccess(CoreBaseExecutionResult result)
+            void onSuccess(ModDummyMainBaseJobListGetResult result)
             {
                 job.OnSuccess(ExtLogger, result, input);
             }
 
-            void onError(Exception ex, CoreBaseExecutionResult result)
+            void onError(Exception ex, ModDummyMainBaseJobListGetResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Вариант выбора. Сущность "DummyManyToMany". Список. Получение".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
+            Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
+            Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
+            ) BuildActionOptionDummyManyToManyListGet()
+        {
+            var job = AppJobOptionDummyManyToManyListGet;
+
+            Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
+
+            void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
+            {
+                job.OnSuccess(ExtLogger, result);
+            }
+
+            void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Вариант выбора. Сущность "DummyOneToMany". Список. Получение".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
+            Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
+            Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
+            ) BuildActionOptionDummyOneToManyListGet()
+        {
+            var job = AppJobOptionDummyOneToManyListGet;
+
+            Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
+
+            void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
+            {
+                job.OnSuccess(ExtLogger, result);
+            }
+
+            void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
             {
                 job.OnError(ex, ExtLogger, result);
             }

@@ -1,14 +1,21 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Data.Queries.Tree;
+using Makc2020.Core.Base.Common.Enums;
 using Makc2020.Core.Base.Common.Ext;
 using Makc2020.Core.Base.Data;
+using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
+using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Base;
 using Makc2020.Data.Base.Loaders;
 using Makc2020.Data.Base.Objects;
+using Makc2020.Data.Base.Settings;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.DummyTree.Base.Config;
 using Makc2020.Mods.DummyTree.Base.Ext;
+using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +33,9 @@ namespace Makc2020.Mods.DummyTree.Base
 
         private IModDummyTreeBaseConfigSettings ConfigSettings { get; set; }
 
-        private CoreBaseDataHelper DataHelper { get; set; }
+        private ICoreBaseDataProvider DataProvider { get; set; }
+
+        private DataBaseSettings DataSettings { get; set; }
 
         private DataEntityDbFactory DbFactory { get; set; }
 
@@ -39,15 +48,18 @@ namespace Makc2020.Mods.DummyTree.Base
         /// </summary>
         /// <param name="configSettings">Конфигурационные настройки.</param>
         /// <param name="dataProvider">Поставщик данных.</param>
+        /// <param name="dataSettings">Настройки данных.</param>
         /// <param name="dbFactory">Фабрика базы данных.</param>
         public ModDummyTreeBaseService(
             IModDummyTreeBaseConfigSettings configSettings,
             ICoreBaseDataProvider dataProvider,
-            DataEntityDbFactory dbFactory
+            DataBaseSettings dataSettings,
+            DataEntityDbFactory dbFactory          
             )
         {
             ConfigSettings = configSettings;
-            DataHelper = new CoreBaseDataHelper(dataProvider);
+            DataProvider = dataProvider;
+            DataSettings = dataSettings;
             DbFactory = dbFactory;
         }
 
@@ -56,39 +68,56 @@ namespace Makc2020.Mods.DummyTree.Base
         #region Public methods
 
         /// <summary>
+        /// Вычислить.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task Calculate(ModDummyTreeBaseJobCalculateInput input)
+        {
+            using var dbContext = CreateDbContext();
+
+            using var transaction = await dbContext.Database.BeginTransactionAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var queryTreeCalculateBuilder = CreateQueryTreeCalculateBuilder();
+
+            var paramIds = queryTreeCalculateBuilder.Parameters.Ids;
+
+            var dataIds = input.DataIds;
+
+            if (dataIds != null && dataIds.Length > 0)
+            {
+                for (var i = 0; i < dataIds.Length; i++)
+                {
+                    paramIds.Add(DataProvider.CreateDbParameter($"Id{i}", dataIds[i]));
+                }
+            }
+
+            var sql = queryTreeCalculateBuilder.GetResultSql();
+
+            await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
+
+            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
+        }
+
+        /// <summary>
         /// Получить элемент.
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с полученными данными.</returns>
         public async Task<ModDummyTreeBaseJobItemGetOutput> GetItem(
             ModDummyTreeBaseJobItemGetInput input
-            )
+        )
         {
             ModDummyTreeBaseJobItemGetOutput result = null;
 
             var dbContext = CreateDbContext();
 
-            var entityDummyTree = await dbContext.DummyTree
-                .ModDummyTreeBaseExtApplyFiltering(input)
+            var query = CreateQuery(dbContext, CoreBaseCommonEnumTreeAxis.Self, input.DataId);
+
+            var entityDummyTree = await query.ModDummyTreeBaseExtApplyFiltering(input)
                 .FirstOrDefaultAsync()
                 .CoreBaseExtTaskWithCurrentCulture(false);
-
-            //var entityDummy = await (
-            //    from r in dbContext.DummyTree
-            //    join k in dbContext.DummyTreeLink
-            //    on new { r.Id, ParentId = 0L } equals new { k.Id, k.ParentId }
-            //    select new DataEntityObjectDummyTree
-            //    {
-            //        TreeChildCount = r.TreeChildCount,
-            //        TreeDescendantCount = r.TreeDescendantCount,
-            //        Id = r.Id,
-            //        TreeLevel = k.Level,
-            //        Name = r.Name,
-            //        ParentId = r.ParentId
-            //    })
-            //    .ModDummyTreeBaseExtApplyFiltering(input)
-            //    .FirstOrDefaultAsync()
-            //    .CoreBaseExtTaskWithCurrentCulture(false);
 
             if (entityDummyTree != null)
             {
@@ -112,13 +141,13 @@ namespace Makc2020.Mods.DummyTree.Base
             using var dbContext = CreateDbContext();
             using var dbContextForTotalCount = CreateDbContext();
 
-            var queryOfItems = dbContext.DummyTree
-                .ModDummyTreeBaseExtApplyFiltering(input)
+            var query = CreateQuery(dbContext, input.Axis, input.RootId);
+
+            var queryOfItems = query.ModDummyTreeBaseExtApplyFiltering(input)
                 .ModDummyTreeBaseExtApplySorting(input)
                 .CoreBaseCommonModExtApplyPagination(input);
 
-            var queryOfTotalCount = dbContextForTotalCount.DummyTree
-                .ModDummyTreeBaseExtApplyFiltering(input);
+            var queryOfTotalCount = query.ModDummyTreeBaseExtApplyFiltering(input);
 
             var taskOfItems = queryOfItems.ToArrayAsync();
             var taskOfTotalCount = queryOfTotalCount.CountAsync();
@@ -164,6 +193,9 @@ namespace Makc2020.Mods.DummyTree.Base
         {
             using var dbContext = CreateDbContext();
 
+            using var transaction = await dbContext.Database.BeginTransactionAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
             var obj = await dbContext.DummyTree.FirstAsync(
                 x => x.Id == input.DataId
                 ).CoreBaseExtTaskWithCurrentCulture(false);
@@ -171,6 +203,18 @@ namespace Makc2020.Mods.DummyTree.Base
             dbContext.DummyTree.Remove(obj);
 
             await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+            var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.Delete);
+
+            var paramIds = queryTreeTriggerBuilder.Parameters.Ids;
+
+            paramIds.Add(DataProvider.CreateDbParameter("Id", input.DataId));
+
+            var sql = queryTreeTriggerBuilder.GetResultSql();
+
+            await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
+
+            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods
@@ -187,6 +231,102 @@ namespace Makc2020.Mods.DummyTree.Base
             return result;
         }
 
+        private IQueryable<DataEntityObjectDummyTree> CreateQuery(
+            DataEntityDbContext dbContext,
+            CoreBaseCommonEnumTreeAxis axis,
+            long rootId
+            )
+        {
+            return axis switch
+            {
+                CoreBaseCommonEnumTreeAxis.All =>
+                    from t in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t.Id equals k.Id
+                    where
+                        k.ParentId == 0
+                    orderby
+                        t.TreeSort
+                    select t,
+                CoreBaseCommonEnumTreeAxis.Ancestor =>
+                    from t in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t.Id equals k.ParentId
+                    where
+                        k.Id == rootId
+                        &&
+                        k.Id != k.ParentId
+                    select t,
+                CoreBaseCommonEnumTreeAxis.AncestorOrSelf =>
+                    from t in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t.Id equals k.ParentId
+                    where
+                        k.Id == rootId
+                    select t,
+                CoreBaseCommonEnumTreeAxis.Child =>
+                    from t in dbContext.DummyTree
+                    where
+                        t.ParentId == rootId
+                    select t,
+                CoreBaseCommonEnumTreeAxis.ChildOrSelf =>
+                    from t in dbContext.DummyTree
+                    where
+                        t.ParentId == rootId
+                        ||
+                        t.Id == rootId
+                    select t,
+                CoreBaseCommonEnumTreeAxis.Descendant =>
+                    from t in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t.Id equals k.Id
+                    where
+                        k.ParentId == rootId
+                        &&
+                        k.Id != k.ParentId
+                    orderby
+                        t.TreeSort
+                    select t,
+                CoreBaseCommonEnumTreeAxis.DescendantOrSelf =>
+                    from t in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t.Id equals k.Id
+                    where
+                        k.ParentId == rootId
+                    orderby
+                        t.TreeSort
+                    select t,
+                CoreBaseCommonEnumTreeAxis.Parent =>
+                    from t1 in dbContext.DummyTree
+                    join t2 in dbContext.DummyTree
+                        on t1.Id equals t2.ParentId
+                    where
+                        t2.Id == rootId
+                    select t1,
+                CoreBaseCommonEnumTreeAxis.ParentOrSelf =>
+                    from t1 in dbContext.DummyTree
+                    join k in dbContext.DummyTreeLink
+                        on t1.Id equals k.ParentId
+                    join t2 in dbContext.DummyTree
+                        on k.Id equals t2.Id
+                    where
+                        k.Id == rootId
+                        &&
+                        (
+                            t1.TreeLevel == t2.TreeLevel
+                            ||
+                            t1.TreeLevel == t2.TreeLevel - 1
+                        )
+                    select t1,
+                CoreBaseCommonEnumTreeAxis.Self =>
+                    from t in dbContext.DummyTree
+                    where
+                        t.Id == rootId
+                    select t,
+                _ => throw new System.NotImplementedException()
+            };
+        }
+
         private async Task<DataBaseObjectDummyTree> SaveObjectDummyTree(
             DataBaseObjectDummyTree obj
             )
@@ -195,11 +335,21 @@ namespace Makc2020.Mods.DummyTree.Base
 
             using var dbContext = CreateDbContext();
 
+            using var transaction = await dbContext.Database.BeginTransactionAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var sqlTriggerAction = CoreBaseCommonEnumSqlTriggerActions.None;
+
             if (obj.Id > 0)
             {
                 result = await dbContext.DummyTree
                     .FirstAsync(x => x.Id == obj.Id)
                     .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (result.ParentId != obj.ParentId)
+                {
+                    sqlTriggerAction = CoreBaseCommonEnumSqlTriggerActions.Update;
+                }                
 
                 var loader = new DataBaseLoaderDummyTree(result);
 
@@ -207,6 +357,8 @@ namespace Makc2020.Mods.DummyTree.Base
             }
             else
             {
+                sqlTriggerAction = CoreBaseCommonEnumSqlTriggerActions.Insert;
+
                 var entity = DataEntityObjectDummyTree.Create(obj);
 
                 var entry = dbContext.DummyTree.Add(entity);
@@ -215,6 +367,21 @@ namespace Makc2020.Mods.DummyTree.Base
             }
 
             await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+            if (sqlTriggerAction != CoreBaseCommonEnumSqlTriggerActions.None)
+            {
+                var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(sqlTriggerAction);
+
+                var paramIds = queryTreeTriggerBuilder.Parameters.Ids;
+
+                paramIds.Add(DataProvider.CreateDbParameter("Id", result.Id));
+
+                var sql = queryTreeTriggerBuilder.GetResultSql();
+
+                await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+
+            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
@@ -233,6 +400,49 @@ namespace Makc2020.Mods.DummyTree.Base
             result.Database.SetCommandTimeout(dbCommandTimeout);
 
             return result;
+        }
+
+        private CoreBaseDataQueryTreeCalculateBuilder CreateQueryTreeCalculateBuilder()
+        {
+            var result = DataProvider.CreateQueryTreeCalculateBuilder();
+
+            InitQueryBuilder(result, DataSettings.DummyTreeLink, DataSettings.DummyTree);
+
+            return result;
+        }
+
+        private CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder(
+            CoreBaseCommonEnumSqlTriggerActions action
+            )
+        {
+            var result = DataProvider.CreateQueryTreeTriggerBuilder();
+
+            result.Action = action;
+
+            InitQueryBuilder(result, DataSettings.DummyTreeLink, DataSettings.DummyTree);
+
+            return result;
+        }
+
+        private void InitQueryBuilder(
+            CoreBaseCommonDataQueryTreeBuilder builder,
+            DataBaseSettingDummyTreeLink linkSettings,
+            DataBaseSettingDummyTree treeSettings            
+            )
+        {
+            builder.LinkTableFieldNameForId = linkSettings.DbColumnNameForId;
+            builder.LinkTableFieldNameForParentId = linkSettings.DbColumnNameForParentId;
+            builder.LinkTableName = linkSettings.DbTableWithSchema;
+
+            builder.TreeTableFieldNameForId = treeSettings.DbColumnNameForId;
+            builder.TreeTableFieldNameForParentId = treeSettings.DbColumnNameForParentId;
+            builder.TreeTableFieldNameForTreeChildCount = treeSettings.DbColumnNameForTreeChildCount;
+            builder.TreeTableFieldNameForTreeDescendantCount = treeSettings.DbColumnNameForTreeDescendantCount;
+            builder.TreeTableFieldNameForTreeLevel = treeSettings.DbColumnNameForTreeLevel;
+            builder.TreeTableFieldNameForTreePath = treeSettings.DbColumnNameForTreePath;
+            builder.TreeTableFieldNameForTreePosition = treeSettings.DbColumnNameForTreePosition;
+            builder.TreeTableFieldNameForTreeSort = treeSettings.DbColumnNameForTreeSort;
+            builder.TreeTableName = treeSettings.DbTableWithSchema;
         }
 
         #endregion Private methods

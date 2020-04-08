@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Base.Objects;
+using Makc2020.Core.Base.Data;
 
 namespace Makc2020.Data.Base.Settings
 {
@@ -39,6 +39,16 @@ namespace Makc2020.Data.Base.Settings
         /// Первичный ключ в базе данных.
         /// </summary>
         public string DbPrimaryKey => CreateNameOfPrimaryKey(DbTable);
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Id".
+        /// </summary>
+        public string DbColumnNameForId => CoreBaseDataSettings.FIELD_NAME_Id;
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "ParentId".
+        /// </summary>
+        public string DbColumnNameForParentId => CoreBaseDataSettings.FIELD_NAME_ParentId;
 
         #endregion Properties
     }

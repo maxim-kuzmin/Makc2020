@@ -50,6 +50,7 @@ namespace Makc2020.Mods.DummyTree.Base
             Service = new ModDummyTreeBaseService(
                 Config.Settings,
                 externals.CoreBaseDataProvider,
+                externals.DataBaseSettings,
                 externals.DataEntityDbFactory
                 );
 

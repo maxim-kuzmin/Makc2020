@@ -15,6 +15,11 @@ namespace Makc2020.Core.Base.Data
         public const string FIELD_NAME_Id = "Id";
 
         /// <summary>
+        /// Имя поля "Имя".
+        /// </summary>
+        public const string FIELD_NAME_Name = "Name";
+
+        /// <summary>
         /// Имя поля "Идентификатор родителя".
         /// </summary>
         public const string FIELD_NAME_ParentId = "ParentId";

@@ -2,6 +2,7 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Web;
+using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using Makc2020.Mods.DummyTree.Caching.Jobs.Item.Delete;
@@ -22,6 +23,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
     {
         #region Properties
 
+        private ModDummyTreeBaseJobCalculateService AppJobCalculate { get; set; }
+
         private ModDummyTreeCachingJobItemDeleteService AppJobItemDelete { get; set; }
 
         private ModDummyTreeCachingJobItemGetService AppJobItemGet { get; set; }
@@ -38,7 +41,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
         /// <summary>
         /// Конструктор.
-        /// </summary>        
+        /// </summary>
+        /// <param name="appJobCalculate">Задание на вычисление.</param>
         /// <param name="appJobItemDelete">Задание на удаление элемента.</param>
         /// <param name="appJobItemGet">Задание на получение элемента.</param>
         /// <param name="appJobItemInsert">Задание на вставку элемента.</param>
@@ -46,6 +50,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <param name="appJobListGet">Задание на получение списка.</param>
         /// <param name="extLogger">Регистратор.</param>
         public ModDummyTreeWebApiModel(
+            ModDummyTreeBaseJobCalculateService appJobCalculate,
             ModDummyTreeCachingJobItemDeleteService appJobItemDelete,
             ModDummyTreeCachingJobItemGetService appJobItemGet,
             ModDummyTreeCachingJobItemInsertService appJobItemInsert,
@@ -55,6 +60,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             )
             : base(extLogger)
         {
+            AppJobCalculate = appJobCalculate;
             AppJobItemDelete = appJobItemDelete;
             AppJobItemGet = appJobItemGet;
             AppJobItemInsert = appJobItemInsert;
@@ -65,6 +71,62 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         #endregion Constructors
 
         #region Public methods
+
+        /// <summary>
+        /// Построить действие "Вычисление".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task> execute,
+            Action<CoreBaseExecutionResult> onSuccess,
+            Action<Exception, CoreBaseExecutionResult> onError
+            ) BuildActionCalculate(ModDummyTreeBaseJobCalculateInput input)
+        {
+            var job = AppJobCalculate;
+
+            Task execute() => job.Execute(input);
+
+            void onSuccess(CoreBaseExecutionResult result)
+            {
+                job.OnSuccess(ExtLogger, result, input);
+            }
+
+            void onError(Exception ex, CoreBaseExecutionResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Элемент. Удаление".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task> execute,
+            Action<CoreBaseExecutionResult> onSuccess,
+            Action<Exception, CoreBaseExecutionResult> onError
+            ) BuildActionItemDelete(ModDummyTreeBaseJobItemGetInput input)
+        {
+            var job = AppJobItemDelete;
+
+            Task execute() => job.Execute(input);
+
+            void onSuccess(CoreBaseExecutionResult result)
+            {
+                job.OnSuccess(ExtLogger, result, input);
+            }
+
+            void onError(Exception ex, CoreBaseExecutionResult result)
+            {
+                job.OnError(ex, ExtLogger, result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
 
         /// <summary>
         /// Построить действие "Список. Получение".
@@ -171,34 +233,6 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             }
 
             void onError(Exception ex, ModDummyTreeBaseJobItemGetResult result)
-            {
-                job.OnError(ex, ExtLogger, result);
-            }
-
-            return (execute, onSuccess, onError);
-        }
-
-        /// <summary>
-        /// Построить действие "Элемент. Удаление".
-        /// </summary>
-        /// <param name="input">Ввод.</param>
-        /// <returns>Функции действия.</returns>
-        public (
-            Func<Task> execute,
-            Action<CoreBaseExecutionResult> onSuccess,
-            Action<Exception, CoreBaseExecutionResult> onError
-            ) BuildActionItemDelete(ModDummyTreeBaseJobItemGetInput input)
-        {
-            var job = AppJobItemDelete;
-
-            Task execute() => job.Execute(input);
-
-            void onSuccess(CoreBaseExecutionResult result)
-            {
-                job.OnSuccess(ExtLogger, result, input);
-            }
-
-            void onError(Exception ex, CoreBaseExecutionResult result)
             {
                 job.OnError(ex, ExtLogger, result);
             }

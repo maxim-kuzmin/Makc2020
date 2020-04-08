@@ -3,12 +3,12 @@
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Makc2020.Core.Base.Data.Queries.Tree.Calculate
+namespace Makc2020.Core.Base.Common.Data.Queries.Tree
 {
     /// <summary>
-    /// Ядро. Основа. Данные. Запросы. Дерево. Вычисление. Параметры.
+    /// Ядро. Основа. Общее. Данные. Запросы. Дерево. Параметры.
     /// </summary>
-    public class CoreBaseDataQueryTreeCalculateParameters
+    public class CoreBaseCommonDataQueryTreeParameters
     {
         #region Properties
 

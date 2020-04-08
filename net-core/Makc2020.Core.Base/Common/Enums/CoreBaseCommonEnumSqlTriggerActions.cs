@@ -8,16 +8,20 @@ namespace Makc2020.Core.Base.Common.Enums
     public enum CoreBaseCommonEnumSqlTriggerActions
     {
         /// <summary>
+        /// Отсутствует.
+        /// </summary>
+        None = 0,
+        /// <summary>
         /// Удаление.
         /// </summary>
-        Delete = 0,
+        Delete = 1,
         /// <summary>
         /// Вставка.
         /// </summary>
-        Insert = 1,
+        Insert = 2,
         /// <summary>
         /// Обновление.
         /// </summary>
-        Update = 2
+        Update = 3
     }
 }

@@ -1,4 +1,4 @@
--- Ancestor
+-- AncestorOrSelf
 
 declare @RootId bigint = 7;
 
@@ -10,6 +10,4 @@ from
 		on t.Id = k.ParentId
 where
 	k.Id = @RootId
-	and
-	k.Id <> k.ParentId
 ;

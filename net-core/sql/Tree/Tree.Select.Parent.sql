@@ -1,12 +1,13 @@
-use Test;
+-- Parent
 
--- Корень: Id = 7
+declare @RootId bigint = 7;
 
 select
-	t.*
+	t1.*
 from
-	dbo.DummyTree t
-	inner join dbo.DummyTree k on k.ParentId = t.Id
+	dbo.DummyTree t1
+	inner join dbo.DummyTree t2
+		on t1.Id = t2.ParentId
 where
-	k.Id = 7
+	t2.Id = @RootId
 ;

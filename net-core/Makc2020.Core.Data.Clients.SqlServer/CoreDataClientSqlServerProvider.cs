@@ -1,7 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Data;
+using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
+using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using Makc2020.Core.Data.Clients.SqlServer.Enums;
+using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate;
+using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Data;
@@ -18,23 +22,13 @@ namespace Makc2020.Core.Data.Clients.SqlServer
     {
         #region Public methods
 
-        /// <summary>
-        /// Создать параметр команды базы данных.
-        /// </summary>
-        /// <param name="name">Имя параметра.</param>
-        /// <param name="value">Значение параметра.</param>
-        /// <returns>Параметр команды базы данных.</returns>
+        /// <inheritdoc/>
         public DbParameter CreateDbParameter(string name, object value)
         {
             return new SqlParameter(name, value);
         }
 
-        /// <summary>
-        /// Создать команду базы данных.
-        /// </summary>
-        /// <param name="connection">Подключение к базе данных.</param>
-        /// <param name="parameters">Параметры команды.</param>
-        /// <returns>Команда базы данных.</returns>
+        /// <inheritdoc/>
         public DbCommand CreateDbCommand(DbConnection connection, DbParameter[] parameters)
         {
             SqlCommand result = null;
@@ -82,12 +76,7 @@ namespace Makc2020.Core.Data.Clients.SqlServer
             return result;
         }
 
-        /// <summary>
-        /// Создать подключение к базе данных.
-        /// </summary>
-        /// <param name="connectionString">Строка подключения к базе данных.</param>
-        /// <param name="transformConnectionString">Функция преобразования строки подключения.</param>
-        /// <returns>Подключение к базе данных.</returns>        
+        /// <inheritdoc/>   
         public DbConnection CreateDbConnection(string connectionString, Func<string, string> transformConnectionString = null)
         {
             if (transformConnectionString != null)
@@ -96,6 +85,18 @@ namespace Makc2020.Core.Data.Clients.SqlServer
             }
 
             return new SqlConnection(connectionString);
+        }
+
+        /// <inheritdoc/>
+        public CoreBaseDataQueryTreeCalculateBuilder CreateQueryTreeCalculateBuilder()
+        {
+            return new CoreDataClientSqlServerQueryTreeCalculateBuilder();
+        }
+
+        /// <inheritdoc/>
+        public CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder()
+        {
+            return new CoreDataClientSqlServerQueryTreeTriggerBuilder();
         }
 
         /// <summary>

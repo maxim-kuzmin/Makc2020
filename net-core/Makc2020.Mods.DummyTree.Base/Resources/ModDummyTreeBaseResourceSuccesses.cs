@@ -31,6 +31,15 @@ namespace Makc2020.Mods.DummyTree.Base.Resources.Successes
         #region Public methods
 
         /// <summary>
+        /// Получить строку форматирования "Вычисление завершено".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringCalculationIsCompleted()
+        {
+            return Localizer["Вычисление завершено"];
+        }
+
+        /// <summary>
         /// Получить строку форматирования "Объект с Id = {0} удалён".
         /// </summary>
         /// <returns>Строка.</returns>

@@ -2,6 +2,7 @@
 
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
+using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert;
@@ -18,6 +19,11 @@ namespace Makc2020.Mods.DummyTree.Base
     public class ModDummyTreeBaseJobs
     {
         #region Properties
+
+        /// <summary>
+        /// Задание на вычисление.
+        /// </summary>
+        public ModDummyTreeBaseJobCalculateService JobCalculate { get; private set; }
 
         /// <summary>
         /// Задание на удаление элемента.
@@ -64,6 +70,12 @@ namespace Makc2020.Mods.DummyTree.Base
             ModDummyTreeBaseService service
             )
         {
+            JobCalculate = new ModDummyTreeBaseJobCalculateService(
+                service.Calculate,
+                coreBaseResourceErrors,
+                resourceSuccesses
+                );
+
             JobItemDelete = new ModDummyTreeBaseJobItemDeleteService(
                 service.DeleteItem,
                 coreBaseResourceErrors,

@@ -1,5 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
+using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using System;
 using System.Data.Common;
 
@@ -26,7 +28,6 @@ namespace Makc2020.Core.Base.Data
         /// <returns>Команда базы данных.</returns>
         DbCommand CreateDbCommand(DbConnection connection, DbParameter[] parameters);
 
-
         /// <summary>
         /// Создать подключение к базе данных.
         /// </summary>
@@ -34,5 +35,17 @@ namespace Makc2020.Core.Base.Data
         /// <param name="transformConnectionString">Функция преобразования строки подключения.</param>
         /// <returns>Подключение к базе данных.</returns>        
         DbConnection CreateDbConnection(string connectionString, Func<string, string> transformConnectionString = null);
+
+        /// <summary>
+        /// Создать построитель запроса вычисления дерева.
+        /// </summary>
+        /// <returns>Построитель запроса/</returns>
+        CoreBaseDataQueryTreeCalculateBuilder CreateQueryTreeCalculateBuilder();
+
+        /// <summary>
+        /// Создать построитель запроса триггера дерева.
+        /// </summary>
+        /// <returns>Построитель запроса/</returns>
+        CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder();
     }
 }

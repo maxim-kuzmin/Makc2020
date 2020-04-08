@@ -1,4 +1,4 @@
--- Child
+-- Self
 
 declare @RootId bigint = 2;
 
@@ -7,5 +7,5 @@ select
 from
 	dbo.DummyTree t
 where
-	t.ParentId = @RootId
+	t.Id = @RootId
 ;

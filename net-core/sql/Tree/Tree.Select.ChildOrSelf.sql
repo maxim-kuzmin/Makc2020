@@ -1,4 +1,4 @@
--- Child
+-- ChildOrSelf
 
 declare @RootId bigint = 2;
 
@@ -8,4 +8,6 @@ from
 	dbo.DummyTree t
 where
 	t.ParentId = @RootId
+	or
+	t.Id = @RootId
 ;

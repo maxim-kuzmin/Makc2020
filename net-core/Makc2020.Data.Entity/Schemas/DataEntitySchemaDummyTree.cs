@@ -33,16 +33,45 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnName(setting.DbColumnNameForId);
 
-            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(256);
-            builder.Property(x => x.ParentId);
-            builder.Property(x => x.TreeChildCount).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.TreeDescendantCount).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.TreeLevel).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.TreePath).IsRequired().HasDefaultValue(string.Empty);
-            builder.Property(x => x.TreePosition).IsRequired().HasDefaultValue(0);
-            builder.Property(x => x.TreeSort).IsRequired().HasDefaultValue(string.Empty);
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .IsUnicode()
+                .HasMaxLength(256)
+                .HasColumnName(setting.DbColumnNameForName);
+
+            builder.Property(x => x.ParentId).HasColumnName(setting.DbColumnNameForParentId);
+
+            builder.Property(x => x.TreeChildCount)
+                .IsRequired()
+                .HasDefaultValue(0)
+                .HasColumnName(setting.DbColumnNameForTreeChildCount);
+            
+            builder.Property(x => x.TreeDescendantCount)
+                .IsRequired()
+                .HasDefaultValue(0)
+                .HasColumnName(setting.DbColumnNameForTreeDescendantCount);
+
+            builder.Property(x => x.TreeLevel)
+                .IsRequired()
+                .HasDefaultValue(0)
+                .HasColumnName(setting.DbColumnNameForTreeLevel);
+
+            builder.Property(x => x.TreePath)
+                .IsRequired()
+                .HasDefaultValue(string.Empty)
+                .HasColumnName(setting.DbColumnNameForTreePath);
+
+            builder.Property(x => x.TreePosition)
+                .IsRequired()
+                .HasDefaultValue(0)
+                .HasColumnName(setting.DbColumnNameForTreePosition);
+
+            builder.Property(x => x.TreeSort)
+                .IsRequired()
+                .HasDefaultValue(string.Empty)
+                .HasColumnName(setting.DbColumnNameForTreeSort);
 
             builder.HasOne(x => x.ObjectDummyTreeParent)
                 .WithMany(x => x.ObjectsDummyTreeChild)
