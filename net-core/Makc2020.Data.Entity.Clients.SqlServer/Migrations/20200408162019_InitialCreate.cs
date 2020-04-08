@@ -152,18 +152,19 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
-                    ParentId = table.Column<long>(nullable: false)
+                    ParentId = table.Column<long>(nullable: false),
+                    ObjectDummyTreeId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DummyTreeLink", x => new { x.Id, x.ParentId });
                     table.ForeignKey(
-                        name: "FK_DummyTreeLink_DummyTree_Id",
-                        column: x => x.Id,
+                        name: "FK_DummyTreeLink_DummyTree_ObjectDummyTreeId",
+                        column: x => x.ObjectDummyTreeId,
                         principalSchema: "dbo",
                         principalTable: "DummyTree",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,6 +349,12 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 schema: "dbo",
                 table: "DummyTree",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DummyTreeLink_ObjectDummyTreeId",
+                schema: "dbo",
+                table: "DummyTreeLink",
+                column: "ObjectDummyTreeId");
 
             migrationBuilder.CreateIndex(
                 name: "UX_Role_NormalizedName",

@@ -161,47 +161,56 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnName("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256)
                         .IsUnicode(true);
 
                     b.Property<long?>("ParentId")
+                        .HasColumnName("ParentId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("TreeChildCount")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreeChildCount")
                         .HasColumnType("bigint")
                         .HasDefaultValue(0L);
 
                     b.Property<long>("TreeDescendantCount")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreeDescendantCount")
                         .HasColumnType("bigint")
                         .HasDefaultValue(0L);
 
                     b.Property<long>("TreeLevel")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreeLevel")
                         .HasColumnType("bigint")
                         .HasDefaultValue(0L);
 
                     b.Property<string>("TreePath")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreePath")
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
                     b.Property<int>("TreePosition")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreePosition")
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
                     b.Property<string>("TreeSort")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("TreeSort")
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
@@ -216,13 +225,20 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
             modelBuilder.Entity("Makc2020.Data.Entity.Objects.DataEntityObjectDummyTreeLink", b =>
                 {
                     b.Property<long>("Id")
+                        .HasColumnName("Id")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ParentId")
+                        .HasColumnName("ParentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ObjectDummyTreeId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id", "ParentId")
                         .HasName("PK_DummyTreeLink");
+
+                    b.HasIndex("ObjectDummyTreeId");
 
                     b.ToTable("DummyTreeLink","dbo");
                 });
@@ -482,10 +498,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 {
                     b.HasOne("Makc2020.Data.Entity.Objects.DataEntityObjectDummyTree", "ObjectDummyTree")
                         .WithMany("ObjectsDummyTreeLink")
-                        .HasForeignKey("Id")
-                        .HasConstraintName("FK_DummyTreeLink_DummyTree_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ObjectDummyTreeId");
                 });
 
             modelBuilder.Entity("Makc2020.Data.Entity.Objects.DataEntityObjectRoleClaim", b =>
