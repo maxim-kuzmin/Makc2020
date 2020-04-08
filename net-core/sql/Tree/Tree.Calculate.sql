@@ -133,7 +133,7 @@ update cte set
 						from
 							dbo.DummyTreeLink aliasForLink2
 							inner join dbo.DummyTree aliasForTree
-								on aliasForTree.Id = aliasForLink2.ParentId
+								on aliasForLink2.ParentId = aliasForTree.Id
 						where
 							aliasForLink1.Id = aliasForLink2.Id
 							and

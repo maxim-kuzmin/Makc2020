@@ -261,7 +261,7 @@ with {cteForAncestors} as
 	from
 		{TreeTableName} {aliasForTree}
 		inner join {tableNameForIdsLinked} {aliasForIds}
-            on {aliasForIds}.Val = {aliasForTree}.{TreeTableFieldNameForId}
+            on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForIds}.Val
 	union all
 	select
 		{TreeTableFieldNameForId} = {aliasForAncestors}.{TreeTableFieldNameForId},
@@ -269,7 +269,7 @@ with {cteForAncestors} as
 	from 
 		{TreeTableName} {aliasForTree}
 		inner join {cteForAncestors} {aliasForAncestors}
-            on {aliasForAncestors}.{TreeTableFieldNameForParentId} = {aliasForTree}.{TreeTableFieldNameForId}
+            on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForAncestors}.{TreeTableFieldNameForParentId}
 ),
 {cteForAll} as 
 (
@@ -279,7 +279,7 @@ with {cteForAncestors} as
 	from
 		{TreeTableName} {aliasForTree}
 		inner join {tableNameForIdsLinked} {aliasForIds}
-			on {aliasForIds}.Val = {aliasForTree}.{TreeTableFieldNameForId}
+			on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForIds}.Val
 	union all
 	select
 		{TreeTableFieldNameForId}, 

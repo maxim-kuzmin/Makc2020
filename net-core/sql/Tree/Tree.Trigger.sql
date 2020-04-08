@@ -185,7 +185,7 @@ with cteForAncestors as
 	from
 		dbo.DummyTree aliasForTree
 		inner join @IdsLinked aliasForIds
-            on aliasForIds.Val = aliasForTree.Id
+            on aliasForTree.Id = aliasForIds.Val
 	union all
 	select
 		Id = aliasForAncestors.Id,
@@ -193,7 +193,7 @@ with cteForAncestors as
 	from 
 		dbo.DummyTree aliasForTree
 		inner join cteForAncestors aliasForAncestors
-            on aliasForAncestors.ParentId = aliasForTree.Id
+            on aliasForTree.Id = aliasForAncestors.ParentId
 ),
 cteForAll as 
 (
@@ -203,7 +203,7 @@ cteForAll as
 	from
 		dbo.DummyTree aliasForTree
 		inner join @IdsLinked aliasForIds
-			on aliasForIds.Val = aliasForTree.Id
+			on aliasForTree.Id = aliasForIds.Val
 	union all
 	select
 		Id, 

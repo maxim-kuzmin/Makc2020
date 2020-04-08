@@ -144,7 +144,7 @@ update cte set
 						from
 							{LinkTableName} {aliasForLink2}
 							inner join {TreeTableName} {aliasForTree}
-								on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForLink2}.{LinkTableFieldNameForParentId}
+								on {aliasForLink2}.{LinkTableFieldNameForParentId} = {aliasForTree}.{TreeTableFieldNameForId}
 						where
 							{aliasForLink1}.{LinkTableFieldNameForId} = {aliasForLink2}.{LinkTableFieldNameForId}
 							and
