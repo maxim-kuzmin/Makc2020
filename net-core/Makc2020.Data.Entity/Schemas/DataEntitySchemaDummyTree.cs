@@ -38,7 +38,7 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.Name)
                 .IsRequired()
                 .IsUnicode()
-                .HasMaxLength(256)
+                .HasMaxLength(setting.DbMaxLengthForName)
                 .HasColumnName(setting.DbColumnNameForName);
 
             builder.Property(x => x.ParentId).HasColumnName(setting.DbColumnNameForParentId);
@@ -60,6 +60,8 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.Property(x => x.TreePath)
                 .IsRequired()
+                .IsUnicode(false)
+                .HasMaxLength(setting.DbMaxLengthForTreePath)
                 .HasDefaultValue(string.Empty)
                 .HasColumnName(setting.DbColumnNameForTreePath);
 
@@ -70,8 +72,13 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.Property(x => x.TreeSort)
                 .IsRequired()
+                .IsUnicode(false)
+                .HasMaxLength(setting.DbMaxLengthForTreeSort)
                 .HasDefaultValue(string.Empty)
                 .HasColumnName(setting.DbColumnNameForTreeSort);
+
+            builder.HasIndex(x => x.Name).HasName(setting.DbIndexForName);
+            builder.HasIndex(x => x.TreeSort).HasName(setting.DbIndexForTreeSort);
 
             builder.HasOne(x => x.ObjectDummyTreeParent)
                 .WithMany(x => x.ObjectsDummyTreeChild)

@@ -22,8 +22,8 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger
 			var aliasForAncestors = $"{Prefix}k";
 			var aliasForTree = $"{Prefix}t";
 
-			var cteForAll = $"@{Prefix}cte_All";
-			var cteForAncestors = $"@{Prefix}cte_Link";
+			var cteForAll = $"{Prefix}cte_All";
+			var cteForAncestors = $"{Prefix}cte_Link";
 
 			var tableNameForIds = $"@{Prefix}Ids";
             var tableNameForIdsAncestor = $"@{Prefix}IdsAncestor";

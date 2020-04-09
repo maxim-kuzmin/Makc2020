@@ -1,4 +1,4 @@
--- Self
+-- Select Self
 
 declare @RootId bigint = 2;
 

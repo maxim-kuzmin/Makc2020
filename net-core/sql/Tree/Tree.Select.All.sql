@@ -1,6 +1,4 @@
-use Test;
-
--- All
+-- Select All
 
 select
 	t.*

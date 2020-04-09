@@ -1,4 +1,4 @@
--- Ancestor
+-- Select Ancestor
 
 declare @RootId bigint = 7;
 

@@ -1,6 +1,12 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Data.Queries.Tree;
+using Makc2020.Core.Base.Common.Enums;
+using Makc2020.Core.Base.Data;
+using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Base;
+using Makc2020.Data.Base.Settings;
 using Makc2020.Data.Entity.Config;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
@@ -21,6 +27,10 @@ namespace Makc2020.Data.Entity
 
         private IDataEntityConfigSettings ConfigSettings { get; set; }
 
+        private ICoreBaseDataProvider DataProvider { get; set; }
+
+        private DataBaseSettings DataSettings { get; set; }
+
         private DataEntityDbFactory DbFactory { get; set; }
 
         #endregion Properties
@@ -31,19 +41,35 @@ namespace Makc2020.Data.Entity
         /// Конструктор.
         /// </summary>
         /// <param name="configSettings">Конфигурационные настройки.</param>
+        /// <param name="dataProvider">Поставщик данных.</param>
+        /// <param name="dataSettings">Настройки данных.</param>
         /// <param name="dbFactory">Фабрика базы данных.</param>
         public DataEntityService(
             IDataEntityConfigSettings configSettings,
+            ICoreBaseDataProvider dataProvider,
+            DataBaseSettings dataSettings,
             DataEntityDbFactory dbFactory
             )
         {
             ConfigSettings = configSettings;
+            DataProvider = dataProvider;
+            DataSettings = dataSettings;
             DbFactory = dbFactory;
         }
 
         #endregion Constructors
 
         #region Public methods
+
+        /// <summary>
+        /// Мигрировать базу данных.
+        /// </summary>
+        public async Task MigrateDatabase()
+        {
+            using var dbContext = CreateDbContext();
+
+            await dbContext.Database.MigrateAsync().CoreBaseExtTaskWithCurrentCulture(false);
+        }
 
         /// <summary>
         /// Засеять тестовые данные.
@@ -68,20 +94,13 @@ namespace Makc2020.Data.Entity
                 var itemsOfDummyManyToMany = await SeedTestDataForDummyManyToMany(dbContext)
                     .CoreBaseExtTaskWithCurrentCulture(false);
 
-                await SeedTestDataForDummyMainDummyManyToMany(dbContext, itemsOfDummyMain, itemsOfDummyManyToMany);
+                await SeedTestDataForDummyMainDummyManyToMany(dbContext, itemsOfDummyMain, itemsOfDummyManyToMany)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                await SeedTestDataForDummyTree(dbContext).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
-        }
-
-        /// <summary>
-        /// Мигрировать базу данных.
-        /// </summary>
-        public async Task MigrateDatabase()
-        {
-            using var dbContext = CreateDbContext();
-
-            await dbContext.Database.MigrateAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods
@@ -102,6 +121,40 @@ namespace Makc2020.Data.Entity
             result.Database.SetCommandTimeout(dbCommandTimeout);
 
             return result;
+        }
+
+        private CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder(
+            CoreBaseCommonEnumSqlTriggerActions action
+            )
+        {
+            var result = DataProvider.CreateQueryTreeTriggerBuilder();
+
+            result.Action = action;
+
+            InitQueryBuilder(result, DataSettings.DummyTreeLink, DataSettings.DummyTree);
+
+            return result;
+        }
+
+        private void InitQueryBuilder(
+            CoreBaseCommonDataQueryTreeBuilder builder,
+            DataBaseSettingDummyTreeLink linkSettings,
+            DataBaseSettingDummyTree treeSettings
+            )
+        {
+            builder.LinkTableFieldNameForId = linkSettings.DbColumnNameForId;
+            builder.LinkTableFieldNameForParentId = linkSettings.DbColumnNameForParentId;
+            builder.LinkTableName = linkSettings.DbTableWithSchema;
+
+            builder.TreeTableFieldNameForId = treeSettings.DbColumnNameForId;
+            builder.TreeTableFieldNameForParentId = treeSettings.DbColumnNameForParentId;
+            builder.TreeTableFieldNameForTreeChildCount = treeSettings.DbColumnNameForTreeChildCount;
+            builder.TreeTableFieldNameForTreeDescendantCount = treeSettings.DbColumnNameForTreeDescendantCount;
+            builder.TreeTableFieldNameForTreeLevel = treeSettings.DbColumnNameForTreeLevel;
+            builder.TreeTableFieldNameForTreePath = treeSettings.DbColumnNameForTreePath;
+            builder.TreeTableFieldNameForTreePosition = treeSettings.DbColumnNameForTreePosition;
+            builder.TreeTableFieldNameForTreeSort = treeSettings.DbColumnNameForTreeSort;
+            builder.TreeTableName = treeSettings.DbTableWithSchema;
         }
 
         private DataEntityObjectDummyMain CreateTestDataItemForDummyMain(
@@ -197,9 +250,58 @@ namespace Makc2020.Data.Entity
             };
         }
 
+        private DataEntityObjectDummyTree CreateTestDataItemForDummyTree(IEnumerable<int> indexes, long? parentId)
+        {
+            var suffix = indexes.Any() ? "-" + string.Join("-", indexes) : string.Empty;
+
+            return new DataEntityObjectDummyTree
+            {
+                Name = $"Name{suffix}",
+                ParentId = parentId
+            };
+        }
+
         private int GetRandomIndex<T>(IEnumerable<T> items)
         {
             return new Random(Guid.NewGuid().GetHashCode()).Next(0, items.Count());
+        }
+
+        private async Task SaveTestDataListForDummyTree(
+            DataEntityDbContext dbContext,
+            List<DataEntityObjectDummyTree> list,
+            List<int> parentIndexes,
+            long? parentId
+            )
+        {
+            if (parentIndexes.Count == 5)
+            {
+                return;
+            }
+
+            var indexes = new List<int>();
+
+            if (parentIndexes.Any())
+            {
+                indexes.AddRange(parentIndexes);
+            }
+
+            for (var index = 1; index < 4; index++)
+            {
+                indexes.Add(index);
+
+                var item = CreateTestDataItemForDummyTree(indexes, parentId);
+
+                list.Add(item);
+
+                dbContext.DummyTree.Add(item);
+
+                await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+                await SaveTestDataListForDummyTree(dbContext, list, indexes, item.Id)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                indexes.RemoveAt(indexes.Count - 1);
+            }
         }
 
         private async Task<IEnumerable<DataEntityObjectDummyMain>> SeedTestDataForDummyMain(
@@ -272,6 +374,24 @@ namespace Makc2020.Data.Entity
             dbContext.DummyOneToMany.AddRange(result);
 
             await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+            return result;
+        }
+
+        private async Task<IEnumerable<DataEntityObjectDummyTree>> SeedTestDataForDummyTree(
+            DataEntityDbContext dbContext
+            )
+        {
+            var result = new List<DataEntityObjectDummyTree>();
+
+            await SaveTestDataListForDummyTree(dbContext, result, new List<int>(), null)
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.None);
+
+            var sql = queryTreeTriggerBuilder.GetResultSql();
+
+            await dbContext.Database.ExecuteSqlRawAsync(sql).CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }

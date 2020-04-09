@@ -39,6 +39,8 @@ namespace Makc2020.Data.Entity
 
             Service = new DataEntityService(
                 Config.Settings,
+                externals.CoreBaseDataProvider,
+                externals.DataBaseSettings,
                 externals.DataEntityDbFactory
                 );
 

@@ -1,4 +1,4 @@
-use Test;
+-- Trigger
 
 declare @Ids table (Val bigint);
 declare @IdsAncestor table (Val bigint);

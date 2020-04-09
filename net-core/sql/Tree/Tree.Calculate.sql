@@ -1,4 +1,4 @@
-use Test;
+-- Calculate
 
 update dbo.DummyTree set	
 	TreeChildCount = 0,

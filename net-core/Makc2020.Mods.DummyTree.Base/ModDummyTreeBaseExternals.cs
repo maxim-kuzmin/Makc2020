@@ -23,14 +23,14 @@ namespace Makc2020.Mods.DummyTree.Base
         public CoreBaseResourceErrors CoreBaseResourceErrors { get; set; }
 
         /// <summary>
-        /// Данные. Основа. Настройки.
-        /// </summary>
-        public DataBaseSettings DataBaseSettings { get; set; }
-
-        /// <summary>
         /// Ядро. Основа. Данные. Поставщик.
         /// </summary>
         public ICoreBaseDataProvider CoreBaseDataProvider { get; set; }
+
+        /// <summary>
+        /// Данные. Основа. Настройки.
+        /// </summary>
+        public DataBaseSettings DataBaseSettings { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework. База данных. Фабрика.

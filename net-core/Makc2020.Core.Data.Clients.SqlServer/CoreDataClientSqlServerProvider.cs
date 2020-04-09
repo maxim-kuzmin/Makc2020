@@ -1,9 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Data;
+using Makc2020.Core.Base.Data.Queries.Identity.Reseed;
 using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using Makc2020.Core.Data.Clients.SqlServer.Enums;
+using Makc2020.Core.Data.Clients.SqlServer.Queries.Identity.Reseed;
 using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate;
 using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger;
 using Microsoft.Win32.SafeHandles;
@@ -85,6 +87,12 @@ namespace Makc2020.Core.Data.Clients.SqlServer
             }
 
             return new SqlConnection(connectionString);
+        }
+
+        /// <inheritdoc/>
+        public CoreBaseDataQueryIdentityReseedBuilder CreateQueryIdentityReseedBuilder()
+        {
+            return new CoreDataClientSqlServerQueryIdentityReseedBuilder();
         }
 
         /// <inheritdoc/>

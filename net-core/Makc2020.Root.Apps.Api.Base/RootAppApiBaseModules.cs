@@ -116,24 +116,6 @@ namespace Makc2020.Root.Apps.Api.Base
 
         #region Protected methods
 
-        /// <summary>
-        /// Получить основные настройки данных.
-        /// </summary>
-        /// <returns>Основные настройки данных.</returns>
-        protected DataBaseSettings GetDataBaseSettings()
-        {
-            return DataEntityClientSqlServer?.Context.Settings;
-        }
-
-        /// <summary>
-        /// Получить Entity Framework фабрику базы данных.
-        /// </summary>
-        /// <returns>Entity Framework фабрика базы данных..</returns>
-        protected DataEntityDbFactory GetDataEntityDbFactory()
-        {
-            return DataEntityClientSqlServer?.Context.DbFactory;
-        }
-
         /// <inheritdoc/>
         protected override bool TrySetModule(ICoreBaseCommonModule commonModule)
         {

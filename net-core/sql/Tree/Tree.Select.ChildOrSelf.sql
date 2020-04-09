@@ -1,4 +1,4 @@
--- ChildOrSelf
+-- Select ChildOrSelf
 
 declare @RootId bigint = 2;
 

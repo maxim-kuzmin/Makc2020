@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Data.Queries.Identity.Reseed;
 using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
 using System;
@@ -37,15 +38,21 @@ namespace Makc2020.Core.Base.Data
         DbConnection CreateDbConnection(string connectionString, Func<string, string> transformConnectionString = null);
 
         /// <summary>
+        /// Создать построитель запроса перезаполнения идентичности.
+        /// </summary>
+        /// <returns>Построитель запроса.</returns>
+        CoreBaseDataQueryIdentityReseedBuilder CreateQueryIdentityReseedBuilder();
+
+        /// <summary>
         /// Создать построитель запроса вычисления дерева.
         /// </summary>
-        /// <returns>Построитель запроса/</returns>
+        /// <returns>Построитель запроса.</returns>
         CoreBaseDataQueryTreeCalculateBuilder CreateQueryTreeCalculateBuilder();
 
         /// <summary>
         /// Создать построитель запроса триггера дерева.
         /// </summary>
-        /// <returns>Построитель запроса/</returns>
+        /// <returns>Построитель запроса.</returns>
         CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder();
     }
 }

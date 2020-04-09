@@ -33,13 +33,17 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);            
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnName(setting.DbColumnNameForId);
 
-            builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(256);
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .IsUnicode()
+                .HasMaxLength(setting.DbMaxLengthForName)
+                .HasColumnName(setting.DbColumnNameForName);
 
             builder.Property(x => x.ObjectDummyOneToManyId)
                 .IsRequired()
-                .HasColumnName(setting.DbColumnNameForDummyOneToManyId);
+                .HasColumnName(setting.DbColumnNameForObjectDummyOneToManyId);
 
             builder.Property(x => x.PropBoolean).IsRequired();
             builder.Property(x => x.PropBooleanNullable);

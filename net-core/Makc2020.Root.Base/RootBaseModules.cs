@@ -2,11 +2,14 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Resources.Converting;
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Core.Data.Clients.SqlServer;
+using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.SqlServer;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Host.Base;
 using Makc2020.Host.Base.Parts.Auth.Resources.Errors;
 using Makc2020.Host.Base.Parts.Auth.Resources.Successes;
@@ -121,7 +124,9 @@ namespace Makc2020.Root.Base
             DataEntity?.InitContext(new DataEntityExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                DataEntityDbFactory = DataEntityClientSqlServer?.Context.DbFactory
+                CoreBaseDataProvider = GetCoreBaseDataProvider(),
+                DataBaseSettings = GetDataBaseSettings(),
+                DataEntityDbFactory = GetDataEntityDbFactory()
             });
 
             HostBase?.InitContext(new HostBaseExternals
@@ -151,6 +156,33 @@ namespace Makc2020.Root.Base
         #endregion Public methods
 
         #region Protected methods
+
+        /// <summary>
+        /// Получить поставщика данных.
+        /// </summary>
+        /// <returns>Поставщик данных.</returns>
+        protected ICoreBaseDataProvider GetCoreBaseDataProvider()
+        {
+            return CoreDataClientSqlServer?.Context.Provider;
+        }
+
+        /// <summary>
+        /// Получить основные настройки данных.
+        /// </summary>
+        /// <returns>Основные настройки данных.</returns>
+        protected DataBaseSettings GetDataBaseSettings()
+        {
+            return DataEntityClientSqlServer?.Context.Settings;
+        }
+
+        /// <summary>
+        /// Получить Entity Framework фабрику базы данных.
+        /// </summary>
+        /// <returns>Entity Framework фабрика базы данных..</returns>
+        protected DataEntityDbFactory GetDataEntityDbFactory()
+        {
+            return DataEntityClientSqlServer?.Context.DbFactory;
+        }
 
         /// <summary>
         /// Получить локализатор.

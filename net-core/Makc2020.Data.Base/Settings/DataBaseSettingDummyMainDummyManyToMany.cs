@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Base.Objects;
-
 namespace Makc2020.Data.Base.Settings
 {
     /// <summary>
@@ -53,12 +51,12 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Имя колонки в базе данных для поля идентификатора сущности "DummyMain".
         /// </summary>
-        public string DbColumnNameForDummyMainId => CreateNameOfColumn(DataBaseSettingDummyMain.DB_TABLE, nameof(DataBaseObjectDummyMain.Id));
+        public string DbColumnNameForDummyMainId => CreateNameOfColumn(DataBaseSettingDummyMain.DB_TABLE, DataBaseSettingDummyMain.DB_COLUMN_FOR_Id);
 
         /// <summary>
         /// Имя колонки в базе данных для поля идентификатора сущности "DummyManyToMany".
         /// </summary>
-        public string DbColumnNameForDummyManyToManyId => CreateNameOfColumn(DataBaseSettingDummyManyToMany.DB_TABLE, nameof(DataBaseObjectDummyManyToMany.Id));
+        public string DbColumnNameForDummyManyToManyId => CreateNameOfColumn(DataBaseSettingDummyManyToMany.DB_TABLE, DataBaseSettingDummyManyToMany.DB_COLUMN_FOR_Id);
 
         #endregion Properties
     }

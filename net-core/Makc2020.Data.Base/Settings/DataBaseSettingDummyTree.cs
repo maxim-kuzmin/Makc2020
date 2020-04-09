@@ -1,7 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Data;
-using Makc2020.Data.Base.Objects;
 
 namespace Makc2020.Data.Base.Settings
 {
@@ -44,7 +43,7 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Внешний ключ в базе данных к родительской сущности "DummyTree".
         /// </summary>
-        public string DbForeignKeyToParentDummyTree => CreateNameOfForeignKey(DbTable, DbTable, nameof(DataBaseObjectDummyTree.ParentId));
+        public string DbForeignKeyToParentDummyTree => CreateNameOfForeignKey(DbTable, DbTable, DbColumnNameForParentId);
 
         /// <summary>
         /// Имя колонки в базе данных для поля "Id".
@@ -90,6 +89,31 @@ namespace Makc2020.Data.Base.Settings
         /// Имя колонки в базе данных для поля "TreeSort".
         /// </summary>
         public string DbColumnNameForTreeSort => CoreBaseDataSettings.FIELD_NAME_TreeSort;
+
+        /// <summary>
+        /// Наименование индекса в базе данных для поля "Name".
+        /// </summary>
+        public string DbIndexForName => CreateNameOfIndex(DbTable, DbColumnNameForName);
+
+        /// <summary>
+        /// Наименование индекса в базе данных для поля "TreeSort".
+        /// </summary>
+        public string DbIndexForTreeSort => CreateNameOfIndex(DbTable, DbColumnNameForTreeSort);
+
+        /// <summary>
+        /// Максимальная длина в базе данных для поля "Name".
+        /// </summary>
+        public int DbMaxLengthForName => 256;
+
+        /// <summary>
+        /// Максимальная длина в базе данных для поля "TreePath".
+        /// </summary>
+        public int DbMaxLengthForTreePath => 900;
+
+        /// <summary>
+        /// Максимальная длина в базе данных для поля "TreeSort".
+        /// </summary>
+        public int DbMaxLengthForTreeSort => 900;
 
         #endregion Properties
     }
