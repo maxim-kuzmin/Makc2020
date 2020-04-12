@@ -2,7 +2,11 @@
 
 using Makc2020.Core.Base.Common.Data.Queries.Tree;
 using Makc2020.Core.Base.Common.Enums;
+using Makc2020.Core.Base.Common.Enums.Tree.Item;
+using Makc2020.Core.Base.Common.Enums.Tree.List;
 using Makc2020.Core.Base.Common.Ext;
+using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
+using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
@@ -19,6 +23,7 @@ using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,7 +59,7 @@ namespace Makc2020.Mods.DummyTree.Base
             IModDummyTreeBaseConfigSettings configSettings,
             ICoreBaseDataProvider dataProvider,
             DataBaseSettings dataSettings,
-            DataEntityDbFactory dbFactory          
+            DataEntityDbFactory dbFactory
             )
         {
             ConfigSettings = configSettings;
@@ -106,16 +111,14 @@ namespace Makc2020.Mods.DummyTree.Base
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с полученными данными.</returns>
         public async Task<ModDummyTreeBaseJobItemGetOutput> GetItem(
-            ModDummyTreeBaseJobItemGetInput input
+            CoreBaseCommonJobTreeItemGetInput input
         )
         {
             ModDummyTreeBaseJobItemGetOutput result = null;
 
             var dbContext = CreateDbContext();
 
-            var query = CreateQuery(dbContext, CoreBaseCommonEnumTreeAxis.Self, input.DataId);
-
-            var entityDummyTree = await query.ModDummyTreeBaseExtApplyFiltering(input)
+            var entityDummyTree = await CreateItemQuery(dbContext, input.Axis, input.RootId)
                 .FirstOrDefaultAsync()
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
@@ -141,13 +144,13 @@ namespace Makc2020.Mods.DummyTree.Base
             using var dbContext = CreateDbContext();
             using var dbContextForTotalCount = CreateDbContext();
 
-            var query = CreateQuery(dbContext, input.Axis, input.RootId);
-
-            var queryOfItems = query.ModDummyTreeBaseExtApplyFiltering(input)
+            var queryOfItems = CreateListQuery(dbContext, input.Axis, input.RootId, input.OpenIds)
+                .ModDummyTreeBaseExtApplyFiltering(input)
                 .ModDummyTreeBaseExtApplySorting(input)
                 .CoreBaseCommonModExtApplyPagination(input);
 
-            var queryOfTotalCount = query.ModDummyTreeBaseExtApplyFiltering(input);
+            var queryOfTotalCount = CreateListQuery(dbContextForTotalCount, input.Axis, input.RootId, input.OpenIds)
+                .ModDummyTreeBaseExtApplyFiltering(input);
 
             var taskOfItems = queryOfItems.ToArrayAsync();
             var taskOfTotalCount = queryOfTotalCount.CountAsync();
@@ -178,7 +181,12 @@ namespace Makc2020.Mods.DummyTree.Base
 
             if (result.ObjectDummyTree.Id > 0)
             {
-                result = await GetItem(new ModDummyTreeBaseJobItemGetInput { DataId = result.ObjectDummyTree.Id });
+                var input = new CoreBaseCommonJobTreeItemGetInput
+                {
+                    RootId = result.ObjectDummyTree.Id
+                };
+
+                result = await GetItem(input);
             }
 
             return result;
@@ -189,7 +197,7 @@ namespace Makc2020.Mods.DummyTree.Base
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача.</returns>
-        public async Task DeleteItem(ModDummyTreeBaseJobItemGetInput input)
+        public async Task DeleteItem(CoreBaseCommonJobItemGetInput input)
         {
             using var dbContext = CreateDbContext();
 
@@ -231,100 +239,192 @@ namespace Makc2020.Mods.DummyTree.Base
             return result;
         }
 
-        private IQueryable<DataEntityObjectDummyTree> CreateQuery(
+        private IQueryable<DataEntityObjectDummyTree> CreateItemQuery(
             DataEntityDbContext dbContext,
-            CoreBaseCommonEnumTreeAxis axis,
+            CoreBaseCommonEnumTreeItemAxis axis,
             long rootId
             )
         {
             return axis switch
             {
-                CoreBaseCommonEnumTreeAxis.All =>
-                    from t in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t.Id equals k.Id
-                    where
-                        k.ParentId == 0
-                    orderby
-                        t.TreeSort
-                    select t,
-                CoreBaseCommonEnumTreeAxis.Ancestor =>
-                    from t in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t.Id equals k.ParentId
-                    where
-                        k.Id == rootId
-                        &&
-                        k.Id != k.ParentId
-                    select t,
-                CoreBaseCommonEnumTreeAxis.AncestorOrSelf =>
-                    from t in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t.Id equals k.ParentId
-                    where
-                        k.Id == rootId
-                    select t,
-                CoreBaseCommonEnumTreeAxis.Child =>
-                    from t in dbContext.DummyTree
-                    where
-                        t.ParentId == rootId
-                    select t,
-                CoreBaseCommonEnumTreeAxis.ChildOrSelf =>
-                    from t in dbContext.DummyTree
-                    where
-                        t.ParentId == rootId
-                        ||
-                        t.Id == rootId
-                    select t,
-                CoreBaseCommonEnumTreeAxis.Descendant =>
-                    from t in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t.Id equals k.Id
-                    where
-                        k.ParentId == rootId
-                        &&
-                        k.Id != k.ParentId
-                    orderby
-                        t.TreeSort
-                    select t,
-                CoreBaseCommonEnumTreeAxis.DescendantOrSelf =>
-                    from t in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t.Id equals k.Id
-                    where
-                        k.ParentId == rootId
-                    orderby
-                        t.TreeSort
-                    select t,
-                CoreBaseCommonEnumTreeAxis.Parent =>
+                CoreBaseCommonEnumTreeItemAxis.Parent =>
                     from t1 in dbContext.DummyTree
                     join t2 in dbContext.DummyTree
                         on t1.Id equals t2.ParentId
                     where
                         t2.Id == rootId
                     select t1,
-                CoreBaseCommonEnumTreeAxis.ParentOrSelf =>
-                    from t1 in dbContext.DummyTree
-                    join k in dbContext.DummyTreeLink
-                        on t1.Id equals k.ParentId
-                    join t2 in dbContext.DummyTree
-                        on k.Id equals t2.Id
-                    where
-                        k.Id == rootId
-                        &&
-                        (
-                            t1.TreeLevel == t2.TreeLevel
-                            ||
-                            t1.TreeLevel == t2.TreeLevel - 1
-                        )
-                    select t1,
-                CoreBaseCommonEnumTreeAxis.Self =>
+                CoreBaseCommonEnumTreeItemAxis.Self =>
                     from t in dbContext.DummyTree
                     where
                         t.Id == rootId
                     select t,
-                _ => throw new System.NotImplementedException()
+                _ => throw new NotImplementedException()
             };
+        }
+
+        private IQueryable<DataEntityObjectDummyTree> CreateListQuery(
+            DataEntityDbContext dbContext,
+            CoreBaseCommonEnumTreeListAxis axis,
+            long rootId,
+            long[] openIds = null
+            )
+        {
+            if (openIds != null)
+            {
+                var qOpen = from t in dbContext.DummyTree
+                            where
+                               t.ParentId.HasValue && openIds.Contains(t.ParentId.Value)
+                               ||
+                               openIds.Contains(t.Id)
+                            select t;
+
+                return axis switch
+                {
+                    CoreBaseCommonEnumTreeListAxis.All =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.Id
+                        join o in qOpen
+                            on t.Id equals o.Id into oo
+                        from tOpen in oo.DefaultIfEmpty()
+                        where
+                            k.ParentId == 0
+                            &&
+                            (
+                                tOpen == null && t.TreeLevel == 1
+                                ||
+                                tOpen != null
+                            )
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.Descendant =>
+                        ((Func<IQueryable<DataEntityObjectDummyTree>>)(() =>
+                        {
+                            var qRoot = from t in dbContext.DummyTree
+                                        where
+                                            t.Id == rootId
+                                        select t;
+
+                            return from t in dbContext.DummyTree
+                                   join k in dbContext.DummyTreeLink
+                                       on t.Id equals k.Id
+                                   join o in qOpen
+                                       on t.Id equals o.Id into oo
+                                   from tOpen in oo.DefaultIfEmpty()
+                                   from tRoot in qRoot
+                                   where
+                                       k.ParentId == rootId
+                                       &&
+                                       k.Id != k.ParentId
+                                       &&
+                                       (
+                                           tOpen == null && t.TreeLevel == tRoot.TreeLevel
+                                           ||
+                                           tOpen != null
+                                       )
+                                   select t;
+                        }))(),
+                    CoreBaseCommonEnumTreeListAxis.DescendantOrSelf =>
+                        ((Func<IQueryable<DataEntityObjectDummyTree>>)(() =>
+                        {
+                            var qRoot = from t in dbContext.DummyTree
+                                        where
+                                            t.Id == rootId
+                                        select t;
+
+                            return from t in dbContext.DummyTree
+                                   join k in dbContext.DummyTreeLink
+                                       on t.Id equals k.Id
+                                   join o in qOpen
+                                       on t.Id equals o.Id into oo
+                                   from tOpen in oo.DefaultIfEmpty()
+                                   from tRoot in qRoot
+                                   where
+                                       k.ParentId == rootId
+                                       &&
+                                       (
+                                           tOpen == null && t.TreeLevel == tRoot.TreeLevel
+                                           ||
+                                           tOpen != null
+                                       )
+                                   select t;
+                        }))(),
+                    _ => throw new NotImplementedException()
+                };
+            }
+            else
+            {
+                return axis switch
+                {
+                    CoreBaseCommonEnumTreeListAxis.All =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.Id
+                        where
+                            k.ParentId == 0
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.Ancestor =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.ParentId
+                        where
+                            k.Id == rootId
+                            &&
+                            k.Id != k.ParentId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.AncestorOrSelf =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.ParentId
+                        where
+                            k.Id == rootId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.Child =>
+                        from t in dbContext.DummyTree
+                        where
+                            t.ParentId == rootId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.ChildOrSelf =>
+                        from t in dbContext.DummyTree
+                        where
+                            t.ParentId == rootId
+                            ||
+                            t.Id == rootId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.Descendant =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.Id
+                        where
+                            k.ParentId == rootId
+                            &&
+                            k.Id != k.ParentId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.DescendantOrSelf =>
+                        from t in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t.Id equals k.Id
+                        where
+                            k.ParentId == rootId
+                        select t,
+                    CoreBaseCommonEnumTreeListAxis.ParentOrSelf =>
+                        from t1 in dbContext.DummyTree
+                        join k in dbContext.DummyTreeLink
+                            on t1.Id equals k.ParentId
+                        join t2 in dbContext.DummyTree
+                            on k.Id equals t2.Id
+                        where
+                            k.Id == rootId
+                            &&
+                            (
+                                t1.TreeLevel == t2.TreeLevel
+                                ||
+                                t1.TreeLevel == t2.TreeLevel - 1
+                            )
+                        select t1,
+                    _ => throw new NotImplementedException()
+                };
+            }
         }
 
         private async Task<DataBaseObjectDummyTree> SaveObjectDummyTree(
@@ -349,7 +449,7 @@ namespace Makc2020.Mods.DummyTree.Base
                 if (result.ParentId != obj.ParentId)
                 {
                     sqlTriggerAction = CoreBaseCommonEnumSqlTriggerActions.Update;
-                }                
+                }
 
                 var loader = new DataBaseLoaderDummyTree(result);
 
@@ -427,7 +527,7 @@ namespace Makc2020.Mods.DummyTree.Base
         private void InitQueryBuilder(
             CoreBaseCommonDataQueryTreeBuilder builder,
             DataBaseSettingDummyTreeLink linkSettings,
-            DataBaseSettingDummyTree treeSettings            
+            DataBaseSettingDummyTree treeSettings
             )
         {
             builder.LinkTableFieldNameForId = linkSettings.DbColumnNameForId;

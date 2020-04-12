@@ -55,8 +55,14 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.List.Get
                 {
                     var keys = new object[]
                     {
+                        input.Axis,                        
+                        input.DataName,
+                        input.DataIds,
+                        input.DataTreeLevelMax,
+                        input.DataTreeLevelMin,
                         input.PageNumber,
                         input.PageSize,
+                        input.RootId,
                         input.SortField,
                         input.SortDirection
                     };

@@ -1,5 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
+using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
@@ -70,7 +72,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <param name="intputData">Ввод.</param>
         /// <returns>Результат выполнения.</returns>
         [Route("item"), HttpDelete]
-        public async Task<IActionResult> DeleteItem([FromQuery] ModDummyTreeBaseJobItemGetInput input)
+        public async Task<IActionResult> DeleteItem([FromQuery] CoreBaseCommonJobItemGetInput input)
         {
             var result = new CoreBaseExecutionResult();
 
@@ -96,7 +98,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <param name="input">Ввод.</param>
         /// <returns>Результат выполнения с данными элемента.</returns>
         [Route("item"), HttpGet]
-        public async Task<IActionResult> GetItem([FromQuery] ModDummyTreeBaseJobItemGetInput input)
+        public async Task<IActionResult> GetItem([FromQuery] CoreBaseCommonJobTreeItemGetInput input)
         {
             var result = new ModDummyTreeBaseJobItemGetResult();
 

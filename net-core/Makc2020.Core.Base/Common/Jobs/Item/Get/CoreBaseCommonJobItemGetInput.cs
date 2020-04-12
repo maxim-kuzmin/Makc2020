@@ -7,7 +7,7 @@ namespace Makc2020.Core.Base.Common.Jobs.Item.Get.Item
     /// <summary>
     /// Ядро. Основа. Общее. Задания. Элемент. Получить. Ввод.
     /// </summary>
-    public abstract class CoreBaseCommonJobItemGetInput
+    public class CoreBaseCommonJobItemGetInput
     {
         #region Properties
 

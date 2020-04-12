@@ -1,4 +1,4 @@
--- Select Ancestor
+-- Axis Ancestor
 
 declare @RootId bigint = 7;
 

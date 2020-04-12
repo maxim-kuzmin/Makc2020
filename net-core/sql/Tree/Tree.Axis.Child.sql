@@ -1,4 +1,4 @@
--- Select Child
+-- Axis Child
 
 declare @RootId bigint = 2;
 

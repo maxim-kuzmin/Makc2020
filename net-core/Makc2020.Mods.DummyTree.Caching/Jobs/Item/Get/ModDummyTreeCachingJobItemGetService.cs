@@ -9,6 +9,7 @@ using Makc2020.Data.Base;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using System;
 using System.Threading.Tasks;
+using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 
 namespace Makc2020.Mods.DummyTree.Caching.Jobs.Item.Get
 {
@@ -29,7 +30,7 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.Item.Get
         /// <param name="cache">Кэш.</param>    
         /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>        
         public ModDummyTreeCachingJobItemGetService(
-            Func<ModDummyTreeBaseJobItemGetInput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
+            Func<CoreBaseCommonJobTreeItemGetInput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             DataBaseSettings dataBaseSettings,
             ICoreCachingCommonClientConfigSettings cacheSettings,
@@ -55,7 +56,8 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.Item.Get
                 {
                     var keys = new object[]
                     {
-                        input.DataId
+                        input.Axis,
+                        input.RootId
                     };
 
                     return client.Read(() => executable.Invoke(input), keys, tags);

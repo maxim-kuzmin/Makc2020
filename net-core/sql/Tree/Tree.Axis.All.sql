@@ -1,4 +1,4 @@
--- Select All
+-- Axis All
 
 select
 	t.*
@@ -7,7 +7,7 @@ from
 	inner join dbo.DummyTreeLink k
 		on t.Id = k.Id
 where
-	k.ParentId = 0
+	k.ParentId = 0	
 order by
 	t.TreeSort
 ;

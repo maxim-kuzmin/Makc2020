@@ -1,4 +1,4 @@
--- Select Descendant
+-- Axis Descendant
 
 declare @RootId bigint = 2;
 

@@ -1,5 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
+using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Web;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
@@ -109,7 +111,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             Func<Task> execute,
             Action<CoreBaseExecutionResult> onSuccess,
             Action<Exception, CoreBaseExecutionResult> onError
-            ) BuildActionItemDelete(ModDummyTreeBaseJobItemGetInput input)
+            ) BuildActionItemDelete(CoreBaseCommonJobItemGetInput input)
         {
             var job = AppJobItemDelete;
 
@@ -165,7 +167,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             Func<Task<ModDummyTreeBaseJobItemGetOutput>> execute,
             Action<ModDummyTreeBaseJobItemGetResult> onSuccess,
             Action<Exception, ModDummyTreeBaseJobItemGetResult> onError
-            ) BuildActionItemGet(ModDummyTreeBaseJobItemGetInput input)
+            ) BuildActionItemGet(CoreBaseCommonJobTreeItemGetInput input)
         {
             var job = AppJobItemGet;
 

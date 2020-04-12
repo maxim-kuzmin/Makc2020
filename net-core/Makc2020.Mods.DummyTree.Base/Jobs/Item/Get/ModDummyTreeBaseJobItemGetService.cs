@@ -1,7 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Execution.Exceptions;
+using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Executable.Services.Async;
+using Makc2020.Core.Base.Execution.Exceptions;
 using Makc2020.Core.Base.Resources.Errors;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Get
     /// </summary>
     public class ModDummyTreeBaseJobItemGetService : CoreBaseExecutableServiceAsyncWithInputAndOutput
         <
-            ModDummyTreeBaseJobItemGetInput,
+            CoreBaseCommonJobTreeItemGetInput,
             ModDummyTreeBaseJobItemGetOutput
         >
     {
@@ -27,7 +28,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Get
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
         public ModDummyTreeBaseJobItemGetService(
-            Func<ModDummyTreeBaseJobItemGetInput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
+            Func<CoreBaseCommonJobTreeItemGetInput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors
             ) : base(executable, coreBaseResourceErrors)
         {
@@ -40,11 +41,11 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Get
 
         #region Private methods
 
-        private ModDummyTreeBaseJobItemGetInput TransformInput(ModDummyTreeBaseJobItemGetInput input)
+        private CoreBaseCommonJobTreeItemGetInput TransformInput(CoreBaseCommonJobTreeItemGetInput input)
         {
             if (input == null)
             {
-                input = new ModDummyTreeBaseJobItemGetInput();
+                input = new CoreBaseCommonJobTreeItemGetInput();
             }
 
             input.Normalize();
