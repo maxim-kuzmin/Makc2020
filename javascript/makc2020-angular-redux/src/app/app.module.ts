@@ -44,7 +44,15 @@ export function createTranslateLoader(http: HttpClient) {
     AppRootModule.forRoot(),
     AppSkinModule,
     OAuthModule.forRoot(appCoreConfigAuthTypeOidcModule),
-    StoreModule.forRoot(appCoreStoreReducers),
+    StoreModule.forRoot(appCoreStoreReducers, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+        strictStateSerializability: false,
+        strictActionSerializability: false,
+        strictActionWithinNgZone: false
+      }
+    }),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
