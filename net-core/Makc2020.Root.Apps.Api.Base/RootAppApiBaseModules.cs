@@ -94,7 +94,7 @@ namespace Makc2020.Root.Apps.Api.Base
             ModDummyMainBase?.InitContext(new ModDummyMainBaseExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = CoreDataClientSqlServer?.Context.Provider,
+                CoreBaseDataProvider = GetCoreBaseDataProvider(),
                 DataBaseSettings = GetDataBaseSettings(),
                 DataEntityDbFactory = GetDataEntityDbFactory(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyMainBaseResourceErrors>(serviceProvider),
@@ -104,7 +104,7 @@ namespace Makc2020.Root.Apps.Api.Base
             ModDummyTreeBase?.InitContext(new ModDummyTreeBaseExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = CoreDataClientSqlServer?.Context.Provider,
+                CoreBaseDataProvider = GetCoreBaseDataProvider(),
                 DataBaseSettings = GetDataBaseSettings(),
                 DataEntityDbFactory = GetDataEntityDbFactory(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyTreeBaseResourceErrors>(serviceProvider),
