@@ -25,16 +25,6 @@ namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
         public CoreBaseCommonEnumTreeListAxis Axis { get; set; }
 
         /// <summary>
-        /// Данные: максимальный уровень узла дерева.
-        /// </summary>
-        public long DataTreeLevelMax { get; set; }
-
-        /// <summary>
-        /// Данные: минимальный уровень узла дерева.
-        /// </summary>
-        public long DataTreeLevelMin { get; set; }
-
-        /// <summary>
         /// Идентификаторы раскрытых узлов.
         /// </summary>
         public long[] OpenIds { get; set; }
@@ -63,16 +53,6 @@ namespace Makc2020.Core.Base.Common.Jobs.Tree.List.Get
             if (RootId < 0)
             {
                 RootId = 0;
-            }
-
-            if (DataTreeLevelMax < 0)
-            {
-                DataTreeLevelMax = 0;
-            }
-
-            if (DataTreeLevelMin < 0)
-            {
-                DataTreeLevelMin = 0;
             }
 
             if (!string.IsNullOrWhiteSpace(OpenIdsString) && (OpenIds == null || !OpenIds.Any()))

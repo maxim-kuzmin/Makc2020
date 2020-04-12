@@ -58,8 +58,6 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.List.Get
                         input.Axis,                        
                         input.DataName,
                         input.DataIds,
-                        input.DataTreeLevelMax,
-                        input.DataTreeLevelMin,
                         input.PageNumber,
                         input.PageSize,
                         input.RootId,

@@ -24,14 +24,23 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
             ModDummyTreeBaseJobListGetInput input
             )
         {
-            if (input.DataTreeLevelMax > 0)
+            if (!string.IsNullOrWhiteSpace(input.DataName))
             {
-                query = query.Where(x => x.TreeLevel <= input.DataTreeLevelMax);
+                query = query.Where(x => x.Name.Contains(input.DataName));
             }
 
-            if (input.DataTreeLevelMin > 0)
+            if (input.DataIds != null && input.DataIds.Any())
             {
-                query = query.Where(x => x.TreeLevel >= input.DataTreeLevelMin);
+                if (input.DataIds.Count() > 1)
+                {
+                    query = query.Where(x => input.DataIds.Contains(x.Id));
+                }
+                else
+                {
+                    var dataId = input.DataIds[0];
+
+                    query = query.Where(x => x.Id == dataId);
+                }
             }
 
             return query;
