@@ -7,5 +7,5 @@ export class AppModDummyTreeSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Сущность';
+  titleResourceKey = 'Сущность Дерево';
 }

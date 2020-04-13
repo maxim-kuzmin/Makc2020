@@ -17,5 +17,6 @@ export class AppModDummyTreePageItemStoreActionSave implements Action {
    */
   constructor(
     public jobItemGetOutput: AppModDummyTreeJobItemGetOutput
-  ) { }
+  ) {
+  }
 }

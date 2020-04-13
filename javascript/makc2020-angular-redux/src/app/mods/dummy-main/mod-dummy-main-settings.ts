@@ -7,5 +7,5 @@ export class AppModDummyMainSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Сущность';
+  titleResourceKey = 'Сущность Главная';
 }

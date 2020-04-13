@@ -10,6 +10,7 @@ import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 import {AppModDummyMainPageIndexService} from '@app/mods/dummy-main/pages/index/mod-dummy-main-page-index.service';
+import {AppModDummyTreePageIndexService} from '@app/mods/dummy-tree/pages/index/mod-dummy-tree-page-index.service';
 import {AppRootPageAdministrationResources} from './root-page-administration-resources';
 import {AppRootPageAdministrationService} from './root-page-administration.service';
 import {AppRootPageAdministrationState} from './root-page-administration-state';
@@ -31,6 +32,7 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
+   * @param {AppModDummyTreePageIndexService} appModDummyTreePageIndex Страница "ModDummyTreePageIndex".
    * @param {AppRootPageAdministrationService} appRootPageAdministration Страница "RootPageAdministration".
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppRootPageAdministrationStore} appStore Хранилище состояния.
@@ -42,6 +44,7 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
     appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
+    private appModDummyTreePageIndex: AppModDummyTreePageIndexService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     appRoute: AppHostPartRouteService,
     private appStore: AppRootPageAdministrationStore,
@@ -68,6 +71,14 @@ export class AppRootPageAdministrationModel extends AppCoreCommonPageModel {
    */
   createRouterLinkToModDummyMainPageIndex(): any[] {
     return [this.appModDummyMainPageIndex.settings.path];
+  }
+
+  /**
+   * Создать ссылку маршрутизатора на страницу "ModDummyTreePageIndex".
+   * @returns {any[]} Ссылка маршрутизатора.
+   */
+  createRouterLinkToModDummyTreePageIndex(): any[] {
+    return [this.appModDummyTreePageIndex.settings.path];
   }
 
   /**

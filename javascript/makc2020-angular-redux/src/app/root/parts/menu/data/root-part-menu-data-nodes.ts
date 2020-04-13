@@ -46,7 +46,6 @@ import {
   appModDummyMainPageListConfigKey,
   appModDummyMainPageListConfigTitleResourceKey
 } from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-config';
-
 import {
   appModDummyTreePageIndexConfigFullPath,
   appModDummyTreePageIndexConfigKey,

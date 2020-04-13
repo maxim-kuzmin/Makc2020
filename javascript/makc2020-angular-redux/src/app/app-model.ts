@@ -24,6 +24,9 @@ import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.ser
 import {AppModDummyMainPageIndexService} from '@app/mods/dummy-main/pages/index/mod-dummy-main-page-index.service';
 import {AppModDummyMainPageItemService} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item.service';
 import {AppModDummyMainPageListService} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list.service';
+import {AppModDummyTreePageIndexService} from '@app/mods/dummy-tree/pages/index/mod-dummy-tree-page-index.service';
+import {AppModDummyTreePageItemService} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item.service';
+import {AppModDummyTreePageListService} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list.service';
 import {AppModAuthPageRedirectService} from '@app/mods/auth/pages/redirect/mod-auth-page-redirect.service';
 import {AppRootPageAdministrationService} from '@app/root/pages/administration/root-page-administration.service';
 import {AppRootPageIndexService} from '@app/root/pages/index/root-page-index.service';
@@ -60,6 +63,9 @@ export class AppModel extends AppCoreCommonTitlable {
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
+   * @param {AppModDummyTreePageIndexService} appModDummyTreePageIndex Страница "ModDummyTreePageIndex".
+   * @param {AppModDummyTreePageItemService} appModDummyTreePageItem Страница "ModDummyTreePageItem".
+   * @param {AppModDummyTreePageListService} appModDummyTreePageList Страница "ModDummyTreePageList".
    * @param {AppCoreNavigationService} appNavigation Навигация.
    * @param {AppCoreNotificationService} appNotification Извещение.
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
@@ -81,6 +87,9 @@ export class AppModel extends AppCoreCommonTitlable {
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
+    private appModDummyTreePageIndex: AppModDummyTreePageIndexService,
+    private appModDummyTreePageItem: AppModDummyTreePageItemService,
+    private appModDummyTreePageList: AppModDummyTreePageListService,
     private appNavigation: AppCoreNavigationService,
     appNotification: AppCoreNotificationService,
     private appRootPageIndex: AppRootPageIndexService,
@@ -178,6 +187,12 @@ export class AppModel extends AppCoreCommonTitlable {
         case this.appModDummyMainPageItem.settings.keys.keyEdit:
         case this.appModDummyMainPageItem.settings.keys.keyView:
         case this.appModDummyMainPageList.settings.key:
+        case this.appModDummyTreePageIndex.settings.key:
+        case this.appModDummyTreePageItem.settings.key:
+        case this.appModDummyTreePageItem.settings.keys.keyCreate:
+        case this.appModDummyTreePageItem.settings.keys.keyEdit:
+        case this.appModDummyTreePageItem.settings.keys.keyView:
+        case this.appModDummyTreePageList.settings.key:
         case this.appRootPageAdministration.settings.key:
           isAdminModeEnabled = true;
           break;

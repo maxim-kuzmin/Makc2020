@@ -79,24 +79,6 @@ export abstract class AppModDummyTreePageItemView {
   }
 
   /**
-   * Поле ввода объекта сущности "DummyOneToMany".
-   * @type {AbstractControl}
-   */
-  get fieldObjectDummyOneToMany(): AbstractControl {
-    return this.formGroup.get(this.settingFields.fieldObjectDummyOneToMany.name);
-  }
-
-  /**
-   * Признак того, что ошибка валидации обязательности ввода объекта сущности "DummyOneToMany" видима.
-   * @type {boolean}
-   */
-  get fieldObjectDummyOneToManyErrorRequiredVisible() {
-    const control = this.fieldObjectDummyOneToMany;
-
-    return control.dirty && control.hasError(this.settingErrors.errorRequired.code);
-  }
-
-  /**
    * Конструктор.
    * @param {AppModDummyTreePageItemSettingErrors} settingErrors Настройка ошибок.
    * @param {AppModDummyTreePageItemSettingFields} settingFields Настройка полей.

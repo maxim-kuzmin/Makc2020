@@ -6,7 +6,6 @@ import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinn
 import {AppModDummyTreePageItemView} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-view';
 import {AppModDummyTreePageItemSettingErrors} from '@app/mods/dummy-tree/pages/item/settings/mod-dummy-tree-page-item-setting-errors';
 import {AppModDummyTreePageItemSettingFields} from '@app/mods/dummy-tree/pages/item/settings/mod-dummy-tree-page-item-setting-fields';
-import {SelectItem} from 'primeng';
 
 /** Мод "DummyTree". Страницы. Элемент. Представление. */
 export class AppSkinModDummyTreePageItemView extends AppModDummyTreePageItemView {

@@ -41,6 +41,7 @@ export class AppRootPageAdministrationPresenter extends AppCoreCommonPagePresent
   /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModDummyMainPageIndex = this.model.createRouterLinkToModDummyMainPageIndex();
+    this.view.routerLinkToModDummyTreePageIndex = this.model.createRouterLinkToModDummyTreePageIndex();
 
     super.onInit();
   }

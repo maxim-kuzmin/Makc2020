@@ -8,4 +8,10 @@ export class AppRootPageAdministrationView {
    * @type {any[]}
    */
   routerLinkToModDummyMainPageIndex: any[];
+
+  /**
+   * Ссылка маршрутизатора на страницу "ModDummyTreePageIndex".
+   * @type {any[]}
+   */
+  routerLinkToModDummyTreePageIndex: any[];
 }

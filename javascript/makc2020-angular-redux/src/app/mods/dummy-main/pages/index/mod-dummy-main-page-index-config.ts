@@ -15,4 +15,4 @@ export const appModDummyMainPageIndexConfigFullPath = appModDummyMainConfigFullP
 export const appModDummyMainPageIndexConfigKey = 'ModDummyMainPageIndex';
 
 /** Мод "DummyMain". Страницы. Начало. Конфигурация. Заголовок. Ресурс. Ключ. */
-export const appModDummyMainPageIndexConfigTitleResourceKey = 'Сущность';
+export const appModDummyMainPageIndexConfigTitleResourceKey = 'Сущность Главная';

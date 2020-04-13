@@ -113,8 +113,7 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     } = this.view;
 
     const {
-      fieldName,
-      fieldObjectDummyOneToMany
+      fieldName
     } = this.view;
 
     if (!data) {
@@ -130,7 +129,6 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     } = input;
 
     objectDummyTree.name = fieldName.value;
-    objectDummyTree.parentId = fieldObjectDummyOneToMany.value;
 
     this.model.executeActionSave(input);
   }
@@ -183,14 +181,12 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
 
       const {
         fieldId,
-        fieldName,
-        fieldObjectDummyOneToMany
+        fieldName
       } = this.view;
 
       if (objectDummyTree) {
         fieldId.setValue(objectDummyTree.id, {emitEvent: false});
         fieldName.setValue(objectDummyTree.name, {emitEvent: false});
-        fieldObjectDummyOneToMany.setValue(objectDummyTree.parentId, {emitEvent: false});
       }
     } else {
       this.view.data = appModDummyTreeJobItemGetOutputCreate();
@@ -292,7 +288,6 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
 
     if (this.view.isDataChangeAllowed) {
       this.view.fieldName.enable();
-      this.view.fieldObjectDummyOneToMany.enable();
     }
   }
 

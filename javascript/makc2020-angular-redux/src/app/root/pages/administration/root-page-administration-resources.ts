@@ -21,6 +21,12 @@ export class AppRootPageAdministrationResources {
   titleOfModDummyMainPageIndex = '';
 
   /**
+   * Заголовок страницы "ModDummyTreePageIndex".
+   * @type {string}
+   */
+  titleOfModDummyTreePageIndex = '';
+
+  /**
    * Событие, возникающее после перевода заголовка.
    * @type {Subject<string>}
    */
@@ -39,7 +45,8 @@ export class AppRootPageAdministrationResources {
   ) {
     const {
       titleResourceKey,
-      titleOfModDummyMainPageIndexResourceKey
+      titleOfModDummyMainPageIndexResourceKey,
+      titleOfModDummyTreePageIndexResourceKey
     } = settings;
 
     appLocalizer.createTranslator(
@@ -53,6 +60,12 @@ export class AppRootPageAdministrationResources {
       titleOfModDummyMainPageIndexResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.titleOfModDummyMainPageIndex = s;
+    });
+
+    appLocalizer.createTranslator(
+      titleOfModDummyTreePageIndexResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.titleOfModDummyTreePageIndex = s;
     });
   }
 }
