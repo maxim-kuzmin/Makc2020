@@ -57,8 +57,8 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
             ModDummyTreeBaseJobListGetInput input
             )
         {
-            var sortField = input.SortField.ToLower();
-            var sortDirection = input.SortDirection.ToLower();
+            var sortField = input.SortField?.ToLower();
+            var sortDirection = input.SortDirection?.ToLower();
 
             switch (sortField)
             {

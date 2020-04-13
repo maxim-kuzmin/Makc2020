@@ -109,34 +109,38 @@ ConfigFiles, содержит настройку "Integrated Security=True", т�
 
       api/dummy-tree/item?axis=1&rootId=125
 
-- GET List => Axis=0(All)[default], OpenIdsString=2,3,4,123,124,125
+- GET List => Axis=0(None)[default], dataIdsString=1,2,3
+    
+      api/dummy-tree/list?dataIdsString=1,2,3
+
+- GET List => Axis=1(All), OpenIdsString=2,3,4,123,124,125
     
       api/dummy-tree/list?openIdsString=2,3,4,123,124,125
 
-- GET List => Axis=1(Ancestor), RootId=125
+- GET List => Axis=2(Ancestor), RootId=125
         
       api/dummy-tree/list?axis=1&rootId=125
 
-- GET List => Axis=2(AncestorOrSelf), RootId=125
+- GET List => Axis=33(AncestorOrSelf), RootId=125
         
       api/dummy-tree/list?axis=2&rootId=125
 
-- GET List => Axis=3(Child), RootId=1
+- GET List => Axis=4(Child), RootId=1
         
       api/dummy-tree/list?axis=3&rootId=1
 
-- GET List => Axis=4(ChildOrSelf), RootId=1
+- GET List => Axis=5(ChildOrSelf), RootId=1
         
       api/dummy-tree/list?axis=4&rootId=1
 
-- GET List => Axis=5(Descendant), RootId=1, OpenIdsString=2,3,4
+- GET List => Axis=6(Descendant), RootId=1, OpenIdsString=2,3,4
         
       api/dummy-tree/list?axis=5&rootId=1&openIdsString=2,3,4
 
-- GET List => Axis=6(DescendantOrSelf), RootId=1, OpenIdsString=2,3,4
+- GET List => Axis=7(DescendantOrSelf), RootId=1, OpenIdsString=2,3,4
         
       api/dummy-tree/list?axis=6&rootId=1&openIdsString=2,3,4
 
-- GET List => Axis=7(ParentOrSelf), RootId=125
+- GET List => Axis=8(ParentOrSelf), RootId=125
         
       api/dummy-tree/list?axis=7&rootId=125

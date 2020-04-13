@@ -356,6 +356,9 @@ namespace Makc2020.Mods.DummyTree.Base
             {
                 return axis switch
                 {
+                    CoreBaseCommonEnumTreeListAxis.None =>
+                        from t in dbContext.DummyTree
+                        select t,
                     CoreBaseCommonEnumTreeListAxis.All =>
                         from t in dbContext.DummyTree
                         join k in dbContext.DummyTreeLink

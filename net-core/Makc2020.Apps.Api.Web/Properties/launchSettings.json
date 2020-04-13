@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/dummy-tree/list?axis=6&rootId=1&openIdsString=2,3,4",
+      "launchUrl": "api/dummy-tree/list?dataIdsString=1,2,3",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

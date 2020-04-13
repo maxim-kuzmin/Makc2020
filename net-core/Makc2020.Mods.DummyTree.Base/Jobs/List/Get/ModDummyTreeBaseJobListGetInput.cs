@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Enums.Tree.List;
 using Makc2020.Core.Base.Common.Jobs.Tree.List.Get;
 using Makc2020.Core.Base.Ext;
 using System.Linq;
@@ -39,14 +40,17 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.List.Get
         {
             base.Normalize();
 
-            if (string.IsNullOrWhiteSpace(SortField))
+            if (Axis != CoreBaseCommonEnumTreeListAxis.None)
             {
-                SortField = "treesort";
-            }
+                if (string.IsNullOrWhiteSpace(SortField))
+                {
+                    SortField = "treesort";
+                }
 
-            if (string.IsNullOrWhiteSpace(SortDirection))
-            {
-                SortDirection = "asc";
+                if (string.IsNullOrWhiteSpace(SortDirection))
+                {
+                    SortDirection = "asc";
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(DataIdsString) && (DataIds == null || !DataIds.Any()))
