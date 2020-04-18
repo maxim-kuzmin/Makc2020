@@ -19,53 +19,6 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
         #region Public methods
 
         /// <summary>
-        /// Создать утверждения ролей из групп Windows.
-        /// </summary>
-        /// <param name="windowsGroups">Группы Windows.</param>
-        /// <returns>Утверждения ролей.</returns>
-        public static IEnumerable<Claim> HostBasePartAuthExtCreateRoleClaimsFromWindowsGroups(
-            this IdentityReferenceCollection windowsGroups
-            )
-        {
-            var result = new List<Claim>();
-
-            foreach (var windowsGroup in windowsGroups)
-            {
-                string roleName;
-
-                switch (windowsGroup.Value)
-                {
-                    case "Administrators":
-                        roleName = HostBasePartAuthSettings.ROLE_Administrator;
-                        break;
-                    default:
-                        continue;
-                }
-
-                var claim = new Claim(HostBasePartAuthSettings.CLAIM_Role, roleName);
-
-                result.Add(claim);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Создать имена ролей из групп Windows.
-        /// </summary>
-        /// <param name="windowsGroups">Группы Windows.</param>
-        /// <returns>Утверждения ролей.</returns>
-        public static IEnumerable<string> HostBasePartAuthExtCreateRoleNamesFromClaims(
-            this IEnumerable<Claim> claims
-            )
-        {
-            return claims
-                .Where(x => x.Type == HostBasePartAuthSettings.CLAIM_Role && !string.IsNullOrWhiteSpace(x.Value))
-                .Select(x => x.Value)
-                .Distinct();
-        }
-
-        /// <summary>
         /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
         /// </summary>
         /// <param name="user">Пользователь.</param>
@@ -85,20 +38,20 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
         /// <summary>
         /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
         /// </summary>
-        /// <param name="data">Данные.</param>
+        /// <param name="user">Пользователь.</param>
         /// <param name="roles">Роли.</param>
         /// <returns>Пользователь хоста.</returns>
         public static HostBasePartAuthUser HostBasePartAuthExtCreateUser(
-            this DataEntityObjectUser data,
+            this DataEntityObjectUser user,
             IEnumerable<string> roles
             )
         {
             var result = new HostBasePartAuthUser
             {
-                Id = data.Id,
-                UserName = data.UserName,
-                Email = data.Email,
-                FullName = data.FullName,
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
                 Roles = roles
             };
 
@@ -109,6 +62,7 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
         /// Хост. Основа. Часть "Auth". Расширение. Создать. Утверждения пользователя.
         /// </summary>
         /// <param name="user">Пользователь.</param>
+        /// <returns>Утверждения пользователя.</returns>
         public static IEnumerable<Claim> HostBasePartAuthExtCreateUserClaims(this HostBasePartAuthUser user)
         {
             var result = new List<Claim>()

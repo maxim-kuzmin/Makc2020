@@ -87,7 +87,7 @@ namespace Makc2020.Host.Base.Parts.Auth
 
                 if (result == null)
                 {
-                    result = await GetUserByName(principal.Identity.Name, input.UserManager, input.RoleManager)
+                    result = await GetUserByName(principal.Identity.Name, input.UserManager)
                         .CoreBaseExtTaskWithCurrentCulture(false);
                 }
             }

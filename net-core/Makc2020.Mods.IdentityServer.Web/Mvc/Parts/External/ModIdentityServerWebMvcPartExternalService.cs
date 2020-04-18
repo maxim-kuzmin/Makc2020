@@ -7,6 +7,7 @@ using IdentityServer4.Stores;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Data.Entity.Objects;
+using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Base.Parts.Auth.Ext;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
@@ -219,7 +220,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
                 ProviderDisplayName = provider,
                 ProviderKey = providerUserId,
                 RoleManager = roleManager,
-                RoleNames = claims.HostBasePartAuthExtGetRoleNamesFromClaims(),
+                RoleNames = GetRoleNamesFromExternalSchemeRoleClaims(claims),
                 UserManager = userManager,
                 UserName = name
             };
@@ -232,6 +233,20 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             }
 
             return execResult.Data;
+        }
+
+        private string ConvertFromWindowGroupToRoleName(string windowGroup)
+        {
+            var parts = windowGroup.Split('\\');
+
+            var value = parts.Length > 1 ? parts[1] : parts[0];
+
+            return value switch
+            {
+                HostBasePartAuthSettings.WINDOWS_GROUP_SiteAdministrator =>
+                    HostBasePartAuthSettings.ROLE_Administrator,
+                _ => null,
+            };
         }
 
         private async Task<CoreBaseExecutionResultWithData<DataEntityObjectUser>> CreateUserEntity(
@@ -254,6 +269,22 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             }
 
             return result;
+        }
+
+        private IEnumerable<Claim> GetExternalSchemeRoleClaimsFromWindowsGroups(IdentityReferenceCollection groups)
+        {
+            return groups
+                .Select(x => ConvertFromWindowGroupToRoleName(x.Value))
+                .Where(x => x != null)
+                .Select(x => new Claim(JwtClaimTypes.Role, x));
+        }
+
+        private IEnumerable<string> GetRoleNamesFromExternalSchemeRoleClaims(IEnumerable<Claim> claims)
+        {
+            return claims
+                .Where(x => x.Type == JwtClaimTypes.Role && !string.IsNullOrWhiteSpace(x.Value))
+                .Select(x => x.Value)
+                .Distinct();
         }
 
         private Task<ModIdentityServerWebMvcPartExternalJobChallengeGetEnumStatuses> ProcessChallengeGet(
@@ -308,7 +339,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
 
                     var groups = wi.Groups.Translate(typeof(NTAccount));
 
-                    var roles = groups.HostBasePartAuthExtGetRoleClaimsFromWindowsGroups();
+                    var roles = GetExternalSchemeRoleClaimsFromWindowsGroups(groups);
 
                     id.AddClaims(roles);
                 }
