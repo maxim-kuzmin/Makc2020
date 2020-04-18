@@ -18,6 +18,8 @@ namespace Makc2020.Host.Base.Parts.Auth
 
         /// <summary>
         /// Утверждение "User".
+        /// Используется для хранения в токене доступа сериализованной в формате JSON
+        /// информации о пользователе.        
         /// </summary>
         public const string CLAIM_User = "User";
 

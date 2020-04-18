@@ -83,10 +83,13 @@ namespace Makc2020.Host.Base.Parts.Auth
             }
             else
             {
-                var userManager = input.UserManager;
+                result = principal.HostBasePartAuthExtCreateUser();
 
-                result = await GetUserByName(principal.Identity.Name, userManager)
-                    .CoreBaseExtTaskWithCurrentCulture(false);
+                if (result == null)
+                {
+                    result = await GetUserByName(principal.Identity.Name, input.UserManager, input.RoleManager)
+                        .CoreBaseExtTaskWithCurrentCulture(false);
+                }
             }
 
             if (result == null)
@@ -252,12 +255,12 @@ namespace Makc2020.Host.Base.Parts.Auth
 
             if (!string.IsNullOrEmpty(name))
             {
-                var data = await userManager.FindByNameAsync(name)
+                var user = await userManager.FindByNameAsync(name)
                     .CoreBaseExtTaskWithCurrentCulture(false);
 
-                if (data != null)
+                if (user != null)
                 {
-                    result = await data.HostBasePartAuthExtCreateUser(userManager)
+                    result = await user.HostBasePartAuthExtCreateUser(userManager)
                         .CoreBaseExtTaskWithCurrentCulture(false);
                 }
             }

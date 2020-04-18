@@ -68,18 +68,18 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
         /// <summary>
         /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
         /// </summary>
-        /// <param name="data">Данные.</param>
+        /// <param name="user">Пользователь.</param>
         /// <param name="userManager">Менеджер пользователя.</param>
         /// <returns>Пользователь хоста.</returns>
         public static async Task<HostBasePartAuthUser> HostBasePartAuthExtCreateUser(
-            this DataEntityObjectUser data,
+            this DataEntityObjectUser user,
             UserManager<DataEntityObjectUser> userManager
             )
         {
-            var roles = await userManager.GetRolesAsync(data)
+            var roleNames = await userManager.GetRolesAsync(user)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            return data.HostBasePartAuthExtCreateUser(roles);
+            return user.HostBasePartAuthExtCreateUser(roleNames);
         }
 
         /// <summary>
@@ -116,14 +116,37 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
                 new Claim(HostBasePartAuthSettings.CLAIM_UserName, user.UserName)
             };
 
-            var roles = user.Roles;
+            var roleNames = user.Roles;
 
-            if (roles != null && roles.Any())
+            if (roleNames != null && roleNames.Any())
             {
-                foreach (var role in roles)
+                foreach (var roleName in roleNames)
                 {
-                    result.Add(new Claim(HostBasePartAuthSettings.CLAIM_Role, role));
+                    result.Add(new Claim(HostBasePartAuthSettings.CLAIM_Role, roleName));
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
+        /// </summary>
+        /// <param name="principal">Принципал.</param>
+        /// <returns>Пользователь хоста.</returns>
+        public static HostBasePartAuthUser HostBasePartAuthExtCreateUser(this IPrincipal principal)
+        {
+            HostBasePartAuthUser result = null;
+
+            var claims = (principal as ClaimsPrincipal)?.Claims;
+
+            var userClaim = claims?.FirstOrDefault(x => x.Type == HostBasePartAuthSettings.CLAIM_User);
+
+            if (userClaim != null)
+            {
+                result = userClaim.Value.CoreBaseExtJsonDeserialize<HostBasePartAuthUser>(
+                    CoreBaseExtJson.OptionsForJavaScript
+                    );
             }
 
             return result;
