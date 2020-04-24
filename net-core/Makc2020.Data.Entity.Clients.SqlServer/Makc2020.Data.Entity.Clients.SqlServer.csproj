@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.mkuzmin-n.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.MKUZMIN-N.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.json">
