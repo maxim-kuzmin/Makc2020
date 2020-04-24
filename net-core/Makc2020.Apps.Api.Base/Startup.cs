@@ -38,7 +38,7 @@ namespace Makc2020.Apps.Api.Base
 
             try
             {
-                logger.Debug("init main");
+                logger.Debug($"init main: {Environment.MachineName}");
 
                 await Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
                     .ConfigureHostConfiguration(configurationBuilder =>

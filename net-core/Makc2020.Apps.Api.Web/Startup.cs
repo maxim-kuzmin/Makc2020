@@ -50,7 +50,7 @@ namespace Makc2020.Apps.Api.Web
 
             try
             {
-                logger.Debug("init main");
+                logger.Debug($"init main: {Environment.MachineName}");
 
                 Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
                     .ConfigureWebHostDefaults(webHostBuilder =>

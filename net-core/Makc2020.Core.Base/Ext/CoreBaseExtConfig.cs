@@ -42,8 +42,10 @@ namespace Makc2020.Core.Base.Ext
                     );
             }
 
+            var machineName = Environment.MachineName.ToUpper();
+
             builder.AddJsonFile(
-                $"{absolutePathToFileWithoutExtension}.m.{Environment.MachineName}{fileExtension}",
+                $"{absolutePathToFileWithoutExtension}.m.{machineName}{fileExtension}",
                 true,
                 true
                 );
