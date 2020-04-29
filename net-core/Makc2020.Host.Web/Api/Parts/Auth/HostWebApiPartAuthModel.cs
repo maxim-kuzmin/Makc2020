@@ -1,6 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Web;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Base.Parts.Auth.Jobs.CurrentUser.Get;
@@ -14,7 +13,7 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
     /// <summary>
     /// Хост. Beб. API. Часть "Auth". API. Модель.
     /// </summary>
-    public class HostWebApiPartAuthModel : CoreWebModel
+    public class HostWebApiPartAuthModel : HostWebApiModel<HostWebState>
     {
         #region Properties
 

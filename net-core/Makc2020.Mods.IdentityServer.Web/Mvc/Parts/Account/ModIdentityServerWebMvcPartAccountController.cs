@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
+using Makc2020.Host.Web;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
@@ -54,6 +55,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         [HttpGet("Login")]
         public async Task<IActionResult> LoginGet(string returnUrl)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginResult();
 
             var input = new ModIdentityServerWebMvcPartAccountJobLoginGetInput
@@ -87,6 +90,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             string action
             )
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var processOutput = await GetLoginPostProcessOutput(model, action)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
@@ -117,6 +122,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         [HttpGet("Logout")]
         public async Task<IActionResult> LogoutGet(string logoutId)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModIdentityServerWebMvcPartAccountJobLogoutGetResult();
 
             var input = new ModIdentityServerWebMvcPartAccountJobLogoutGetInput
@@ -154,6 +161,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountViewLogoutModel model
             )
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var processOutput = await GetLogoutPostProcessOutput(model)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 

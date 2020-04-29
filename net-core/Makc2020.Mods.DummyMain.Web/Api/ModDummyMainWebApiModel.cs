@@ -1,7 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Execution;
-using Makc2020.Core.Web;
+using Makc2020.Host.Web;
+using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -21,7 +22,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
     /// <summary>
     /// Мод "DummyMain". Веб. API. Модель.
     /// </summary>
-    public class ModDummyMainWebApiModel : CoreWebModel
+    public class ModDummyMainWebApiModel : HostWebApiModel<HostWebState>
     {
         #region Properties
 

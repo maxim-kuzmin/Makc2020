@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
+using Makc2020.Host.Web;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Challenge.Get;
@@ -46,6 +47,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
         [HttpGet("Callback")]
         public async Task<IActionResult> CallbackGet()
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModIdentityServerWebMvcPartExternalJobCallbackGetResult();
 
             var input = new ModIdentityServerWebMvcPartExternalJobCallbackGetInput
@@ -87,6 +90,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
         [HttpGet("Challenge")]
         public async Task<IActionResult> ChallengeGet(string provider, string returnUrl)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModIdentityServerWebMvcPartExternalJobChallengeGetResult();
 
             var input = new ModIdentityServerWebMvcPartExternalJobChallengeGetInput

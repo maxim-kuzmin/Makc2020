@@ -4,6 +4,7 @@ using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
 using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Host.Web;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
@@ -48,6 +49,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("calculate"), HttpPut]
         public async Task<IActionResult> Calculate([FromBody] ModDummyTreeBaseJobCalculateInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new CoreBaseExecutionResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionCalculate(input);
@@ -74,6 +77,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpDelete]
         public async Task<IActionResult> DeleteItem([FromQuery] CoreBaseCommonJobItemGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new CoreBaseExecutionResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemDelete(input);
@@ -100,6 +105,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpGet]
         public async Task<IActionResult> GetItem([FromQuery] CoreBaseCommonJobTreeItemGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyTreeBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemGet(input);
@@ -126,6 +133,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("list"), HttpGet]
         public async Task<IActionResult> GetList([FromQuery] ModDummyTreeBaseJobListGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyTreeBaseJobListGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionListGet(input);
@@ -152,6 +161,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpPost]
         public async Task<IActionResult> InsertItem([FromBody] ModDummyTreeBaseJobItemGetOutput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyTreeBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemInsert(input);
@@ -178,6 +189,8 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpPut]
         public async Task<IActionResult> UpdateItem([FromBody] ModDummyTreeBaseJobItemGetOutput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyTreeBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemUpdate(input);

@@ -43,6 +43,8 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
         [Route("current-user"), HttpGet]
         public async Task<IActionResult> CurrentUserGet([FromQuery] HostBasePartAuthJobCurrentUserGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new HostBasePartAuthJobCurrentUserGetResult();
 
             input.Principal = User;

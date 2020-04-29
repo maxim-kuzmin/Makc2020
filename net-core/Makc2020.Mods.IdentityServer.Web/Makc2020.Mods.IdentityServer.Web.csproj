@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Makc2020.Core.Web\Makc2020.Core.Web.csproj" />
+    <ProjectReference Include="..\Makc2020.Host.Web\Makc2020.Host.Web.csproj" />
     <ProjectReference Include="..\Makc2020.Mods.IdentityServer.Base\Makc2020.Mods.IdentityServer.Base.csproj" />    
   </ItemGroup>
 

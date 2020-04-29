@@ -3,10 +3,11 @@
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Makc2020.Core.Web.Ext;
-using Makc2020.Core.Web.Mvc;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
+using Makc2020.Host.Web;
+using Makc2020.Host.Web.Mvc;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
@@ -26,7 +27,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
     /// <summary>
     /// Мод "IdentityServer". Веб. MVC. Часть "Account". Модель.
     /// </summary>
-    public class ModIdentityServerWebMvcPartAccountModel : CoreWebMvcModel
+    public class ModIdentityServerWebMvcPartAccountModel : HostWebMvcModel<HostWebState>
     {
         #region Properties
 

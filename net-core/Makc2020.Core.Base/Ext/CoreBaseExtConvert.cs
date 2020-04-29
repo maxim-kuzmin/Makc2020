@@ -4,6 +4,8 @@ using Makc2020.Core.Base.Resources.Converting;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
 namespace Makc2020.Core.Base.Ext
@@ -14,6 +16,28 @@ namespace Makc2020.Core.Base.Ext
     public static class CoreBaseExtConvert
     {
         #region Public methods
+
+        /// <summary>
+        /// Ядро. Основа. Расширение. Преобразовать. Из IP-адреса версии в строковое представление версии 4.
+        /// </summary>
+        /// <param name="value">IP-адрес.</param>
+        /// <returns>Строковое представление IP-адреса.</returns>
+        public static string CoreBaseExtConvertFromIPToV4String(this IPAddress value)
+        {
+            if (IPAddress.IsLoopback(value))
+            {
+                return "127.0.0.1";
+            }
+
+            // If we got an IPV6 address, then we need to ask the network for the IPV4 address 
+            // This usually only happens when the browser is on the same machine as the server.
+            if (value.AddressFamily == AddressFamily.InterNetworkV6)
+            {
+                value = Dns.GetHostEntry(value).AddressList.First(x => x.AddressFamily == AddressFamily.InterNetwork);
+            }
+
+            return value.ToString();
+        }
 
         /// <summary>
         /// Ядро. Основа. Расширение. Преобразовать. Из даты и времени в строку в формате ISO8601.

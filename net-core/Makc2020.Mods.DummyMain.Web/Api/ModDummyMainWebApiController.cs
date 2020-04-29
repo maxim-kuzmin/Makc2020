@@ -2,6 +2,7 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Host.Web;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -46,6 +47,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpDelete]
         public async Task<IActionResult> DeleteItem([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new CoreBaseExecutionResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemDelete(input);
@@ -72,6 +75,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("list"), HttpGet]
         public async Task<IActionResult> GetList([FromQuery] ModDummyMainBaseJobListGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseJobListGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionListGet(input);
@@ -98,6 +103,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpGet]
         public async Task<IActionResult> GetItem([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemGet(input);
@@ -123,6 +130,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-many-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyManyToMany()
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyManyToManyListGet();
@@ -148,6 +157,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("options/dummy-one-to-many"), HttpGet]
         public async Task<IActionResult> GetOptionsDummyOneToMany()
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyOneToManyListGet();
@@ -174,6 +185,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpPost]
         public async Task<IActionResult> InsertItem([FromBody] ModDummyMainBaseJobItemGetOutput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemInsert(input);
@@ -200,6 +213,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpPut]
         public async Task<IActionResult> UpdateItem([FromBody] ModDummyMainBaseJobItemGetOutput input)
         {
+            MyModel.Init(HostWebState.Create(HttpContext));
+
             var result = new ModDummyMainBaseJobItemGetResult();
 
             var (execute, onSuccess, onError) = MyModel.BuildActionItemUpdate(input);

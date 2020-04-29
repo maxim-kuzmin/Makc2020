@@ -3,7 +3,8 @@
 using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
 using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
-using Makc2020.Core.Web;
+using Makc2020.Host.Web;
+using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
@@ -21,7 +22,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
     /// <summary>
     /// Мод "DummyTree". Веб. API. Модель.
     /// </summary>
-    public class ModDummyTreeWebApiModel : CoreWebModel
+    public class ModDummyTreeWebApiModel : HostWebApiModel<HostWebState>
     {
         #region Properties
 
