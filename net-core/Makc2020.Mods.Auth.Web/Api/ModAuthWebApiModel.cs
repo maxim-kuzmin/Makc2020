@@ -1,15 +1,16 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Web;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth;
+using Makc2020.Host.Web;
+using Makc2020.Host.Web.Api;
 using Makc2020.Mod.Auth.Base.Common.Jobs.Login;
 using Makc2020.Mod.Auth.Base.Common.Jobs.Login.Jwt;
 using Makc2020.Mods.Auth.Base.Jobs.Login.Jwt;
 using Makc2020.Mods.Auth.Base.Jobs.Refresh.Jwt;
 using Makc2020.Mods.Auth.Base.Jobs.Register;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Makc2020.Mods.Auth.Web.Api
     /// <summary>
     /// Мод "Auth". Веб. API. Модель.
     /// </summary>
-    public class ModAuthWebApiModel : CoreWebModel
+    public class ModAuthWebApiModel : HostWebApiModel<HostWebState>
     {
         #region Properties
 
@@ -40,16 +41,16 @@ namespace Makc2020.Mods.Auth.Web.Api
         /// <param name="appJobLogin">Задание на вход в систему.</param>
         /// <param name="appJobRefresh">Задание на обновление.</param>
         /// <param name="appJobRegister">Задание на регистрацию.</param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         /// <param name="extUserManager">Менеджер пользователей.</param>
         public ModAuthWebApiModel(
             ModAuthBaseJobLoginJwtService appJobLogin,
             ModAuthBaseJobRefreshJwtService appJobRefresh,
             ModAuthBaseJobRegisterService appJobRegister,
-            ILogger<ModAuthWebApiController> extLogger,
+            CoreBaseLoggingServiceWithCategoryName<ModAuthWebApiController> appLogger,
             UserManager<DataEntityObjectUser> extUserManager
             )
-            : base(extLogger)
+            : base(appLogger)
         {            
             AppJobLogin = appJobLogin;
             AppJobRefresh = appJobRefresh;
@@ -80,12 +81,12 @@ namespace Makc2020.Mods.Auth.Web.Api
 
             void onSuccess(ModAuthBaseCommonJobLoginJwtResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModAuthBaseCommonJobLoginJwtResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -110,12 +111,12 @@ namespace Makc2020.Mods.Auth.Web.Api
 
             void onSuccess(ModAuthBaseCommonJobLoginJwtResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModAuthBaseCommonJobLoginJwtResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -140,12 +141,12 @@ namespace Makc2020.Mods.Auth.Web.Api
 
             void onSuccess(ModAuthBaseJobRegisterResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModAuthBaseJobRegisterResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);

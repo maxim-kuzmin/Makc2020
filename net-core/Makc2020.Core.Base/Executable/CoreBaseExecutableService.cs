@@ -2,8 +2,8 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Execution.Exceptions;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +13,7 @@ namespace Makc2020.Core.Base.Executable
     /// Ядро. Основа. Выполняемое. Сервис.
     /// </summary>
     /// <typeparam name="TExecutionService">Тип сервиса выполнения.</typeparam>
-    public class CoreBaseExecutableService<TExecutionService> where TExecutionService: CoreBaseExecutionService
+    public class CoreBaseExecutableService<TExecutionService> where TExecutionService : CoreBaseExecutionService
     {
         #region Properties
 
@@ -52,7 +52,7 @@ namespace Makc2020.Core.Base.Executable
         /// <param name="result">Результат выполнения задания с данными.</param>
         public void OnError(
             Exception ex,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             CoreBaseExecutionResult result
             )
         {

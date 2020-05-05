@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Host.Base;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Host.Web.Api
 {
@@ -17,9 +17,9 @@ namespace Makc2020.Host.Web.Api
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="extLogger">Регистратор.</param>
-        public HostWebApiModel(ILogger extLogger)
-            : base(extLogger)
+        /// <param name="appLogger">Регистратор.</param>
+        public HostWebApiModel(CoreBaseLoggingService appLogger)
+            : base(appLogger)
         {
         }
 

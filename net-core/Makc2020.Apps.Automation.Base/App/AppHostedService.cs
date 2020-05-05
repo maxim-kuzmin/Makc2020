@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Automation.Base.App.Common;
-using Makc2020.Apps.Automation.Base.App.Parts.Angular.Jobs.Code.Generate;
-using Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Parts.Angular.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Parts.NetCore.Code.Generate;
+using Makc2020.Core.Base.Common.App;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -45,10 +45,10 @@ namespace Makc2020.Apps.Automation.Base.App
         {
             Server.OnStarted();
 
-            var clients = new AppCommonClient[]
+            var clients = new CoreBaseCommonAppClient[]
             {
-                GetService<AppPartAngularJobCodeGenerateClient>(),
-                GetService<AppPartNetCoreJobCodeGenerateClient>()
+                GetService<AppPartAngularCodeGenerateClient>(),
+                GetService<AppPartNetCoreCodeGenerateClient>()
             };
 
             foreach (var client in clients)

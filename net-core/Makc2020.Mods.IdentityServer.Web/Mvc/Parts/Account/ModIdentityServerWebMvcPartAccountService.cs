@@ -9,6 +9,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Base.Parts.Ldap;
@@ -33,7 +34,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -337,7 +337,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             IClientStore clientStore,
             HttpContext httpContext,
             RoleManager<DataEntityObjectRole> roleManager,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartLdapJobLoginService jobLdapLogin,
             HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate
             )
@@ -469,7 +469,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         private async Task<DataEntityObjectUser> AutoProvisionUserAsync(
             HostBasePartLdapUser user,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
             RoleManager<DataEntityObjectRole> roleManager,
             UserManager<DataEntityObjectUser> userManager
@@ -494,7 +494,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         private async Task<CoreBaseExecutionResultWithData<DataEntityObjectUser>> CreateUserEntity(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService job,
             HostBasePartAuthJobUserEntityCreateInput input
         )
@@ -516,7 +516,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         private HostBasePartLdapUser LoginViaLdap(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartLdapJobLoginService job,
             string userName,
             string password

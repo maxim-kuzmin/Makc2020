@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.Api.Web;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Apps.Api.Web.App
 {
@@ -17,7 +17,7 @@ namespace Makc2020.Apps.Api.Web.App
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public AppContext(RootAppApiWebModules modules, ILogger logger)
+        public AppContext(RootAppApiWebModules modules, CoreBaseLoggingService logger)
             : base(modules, logger)
         {
         }

@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using IdentityServer4.Services;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process
@@ -51,7 +51,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Pro
         /// <summary>
         /// Регистратор.
         /// </summary>
-        public ILogger Logger { get; set; }
+        public CoreBaseLoggingService Logger { get; set; }
 
         /// <summary>
         /// Модель.

@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Common;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.Api.Base;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -66,7 +66,7 @@ namespace Makc2020.Apps.Api.Base.App
         /// <inheritdoc/>
         protected sealed override AppContext CreateContext()
         {
-            return new AppContext(Modules, GetService<ILogger<AppContext>>());
+            return new AppContext(Modules, GetLogger());
         }
 
         /// <inheritdoc/>
@@ -78,9 +78,9 @@ namespace Makc2020.Apps.Api.Base.App
         }
 
         /// <inheritdoc/>
-        protected sealed override ILogger GetLogger()
+        protected sealed override CoreBaseLoggingService GetLogger()
         {
-            return GetService<ILogger<AppServer>>();
+            return GetService<CoreBaseLoggingServiceWithCategoryName<AppServer>>();
         }
 
         #endregion Protected methods

@@ -4,6 +4,7 @@ using Makc2020.Core.Base.Ext;
 using Makc2020.Host.Base;
 using Makc2020.Host.Base.Parts.Auth.Ext;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Makc2020.Host.Web
 {
@@ -35,6 +36,14 @@ namespace Makc2020.Host.Web
                 User = httpContext.User.HostBasePartAuthExtCreateUser(),
                 IP = httpContext.Connection.RemoteIpAddress?.CoreBaseExtConvertFromIPToV4String()
             };
+        }
+
+        /// <inheritdoc/>
+        public override void FillLoggerState(List<KeyValuePair<string, object>> loggerState)
+        {
+            base.FillLoggerState(loggerState);
+
+            loggerState.Add(KeyValuePair.Create<string, object>("HostWebState.IP", IP));
         }
 
         #endregion Public methods

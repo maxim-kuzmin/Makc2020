@@ -2,6 +2,7 @@
 
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Web.Ext;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
@@ -18,7 +19,6 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Post.Produc
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -77,10 +77,10 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// <param name="appJobLogoutPostProcess">Задание на обработку отправки данных выхода из системы.</param>
         /// <param name="appJobLogoutPostProduce">Задание на создание отклика на отправку данных выхода из системы.</param>
         /// <param name="appJobUserEntityCreate">Задание на создание сущности пользователя.</param>
+        /// <param name="appLogger">Регистратор.</param>
         /// <param name="extClientStore">Хранилище клиентов.</param>
         /// <param name="extEvents">События.</param>
-        /// <param name="extInteraction">Взаимодействие.</param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="extInteraction">Взаимодействие.</param>        
         /// <param name="extRoleManager">Менеджер ролей.</param>
         /// <param name="extSchemeProvider">Поставщик схем.</param>
         /// <param name="extSignInManager">Менеджер входа в систему.</param>
@@ -95,17 +95,17 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountJobLogoutPostProcessService appJobLogoutPostProcess,
             ModIdentityServerWebMvcPartAccountJobLogoutPostProduceService appJobLogoutPostProduce,
             HostBasePartAuthJobUserEntityCreateService appJobUserEntityCreate,
+            CoreBaseLoggingServiceWithCategoryName<ModIdentityServerWebMvcPartAccountModel> appLogger,
             IClientStore extClientStore,
             IEventService extEvents,
-            IIdentityServerInteractionService extInteraction,
-            ILogger<ModIdentityServerWebMvcPartAccountModel> extLogger,
+            IIdentityServerInteractionService extInteraction,            
             RoleManager<DataEntityObjectRole> extRoleManager,
             IAuthenticationSchemeProvider extSchemeProvider,
             SignInManager<DataEntityObjectUser> extSignInManager,
             UserManager<DataEntityObjectUser> extUserManager,
             ICompositeViewEngine extViewEngine
         )
-            : base(extLogger, extViewEngine)
+            : base(appLogger, extViewEngine)
         {
             AppJobLdapLogin = appJobLdapLogin;
             AppJobLoginGet = appJobLoginGet;
@@ -149,12 +149,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountCommonJobLoginResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountCommonJobLoginResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -176,7 +176,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             input.Interaction = ExtInteraction;
             input.JobLdapLogin = AppJobLdapLogin;
             input.JobUserEntityCreate = AppJobUserEntityCreate;
-            input.Logger = ExtLogger;
+            input.Logger = AppLogger;
             input.RoleManager = ExtRoleManager;
             input.SchemeProvider = ExtSchemeProvider;
             input.SignInManager = ExtSignInManager;
@@ -188,12 +188,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLoginPostProcessResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
 
                 input.ModelState.CoreWebExtModelStateFill(result);
             }
@@ -222,12 +222,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountCommonJobLoginResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountCommonJobLoginResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
 
                 input.ModelState.CoreWebExtModelStateFill(result);
             }
@@ -254,12 +254,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -286,12 +286,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutPostProcessResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
 
                 input.ModelState.CoreWebExtModelStateFill(result);
             }
@@ -318,12 +318,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             void onSuccess(ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLogoutPostProduceResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
 
                 input.ModelState.CoreWebExtModelStateFill(result);
             }

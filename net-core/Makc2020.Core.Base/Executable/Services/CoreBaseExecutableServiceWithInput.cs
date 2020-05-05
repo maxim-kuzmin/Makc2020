@@ -2,8 +2,8 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Execution.Services;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Core.Base.Executable.Services
 {
@@ -37,7 +37,7 @@ namespace Makc2020.Core.Base.Executable.Services
         /// <param name="logger">Регистратор.</param>
         /// <param name="result">Результат выполнения.</param>
         /// <param name="input">Ввод.</param>
-        public void OnSuccess(ILogger logger, CoreBaseExecutionResult result, TInput input)
+        public void OnSuccess(CoreBaseLoggingService logger, CoreBaseExecutionResult result, TInput input)
         {
             Execution.OnSuccess(logger, result, input);
         }

@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -39,7 +39,7 @@ namespace Makc2020.Core.Base.Execution.Services
         /// </summary>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
         public CoreBaseExecutionServiceWithInput(CoreBaseResourceErrors coreBaseResourceErrors)
-            : base(coreBaseResourceErrors)            
+            : base(coreBaseResourceErrors)
         {
         }
 
@@ -54,7 +54,7 @@ namespace Makc2020.Core.Base.Execution.Services
         /// <param name="result">Результат выполнения.</param>
         /// <param name="input">Ввод.</param>
         public void OnSuccess(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             CoreBaseExecutionResult result,
             TInput input
             )

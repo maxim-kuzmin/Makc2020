@@ -3,12 +3,12 @@
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
 using System;
 
-namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
+namespace Makc2020.Apps.Automation.Base.App.Common.Code.Generate
 {
     /// <summary>
-    /// Приложение. Общее. Задания. Код. Генерация. Прогресс.
+    /// Приложение. Общее. Код. Генерация. Прогресс.
     /// </summary>
-    public class AppCommonJobCodeGenerateProgress : IProgress<ModAutomationBaseCommonJobCodeGenerateInfo>
+    public class AppCommonCodeGenerateProgress : IProgress<ModAutomationBaseCommonJobCodeGenerateInfo>
     {
         #region Properties
 
@@ -22,7 +22,7 @@ namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
         /// Конструктор.
         /// </summary>
         /// <param name="actionReport">Действие "Report"/</param>
-        public AppCommonJobCodeGenerateProgress(Action<ModAutomationBaseCommonJobCodeGenerateInfo> actionReport)
+        public AppCommonCodeGenerateProgress(Action<ModAutomationBaseCommonJobCodeGenerateInfo> actionReport)
         {
             ActionReport = actionReport;
         }

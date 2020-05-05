@@ -1,9 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Api.Base.App.Common;
 using Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors;
-using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.Item.Get;
-using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get;
+using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Item.Get;
+using Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.List.Get;
+using Makc2020.Core.Base.Common.App;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -46,11 +46,11 @@ namespace Makc2020.Apps.Api.Base.App
         {
             Server.OnStarted();
 
-            var clients = new AppCommonClient[]
+            var clients = new CoreBaseCommonAppClient[]
             {
                 GetService<AppPartCoreBaseResourceErrorsClient>(),
-                GetService<AppPartModDummyMainBaseJobItemGetClient>(),
-                GetService<AppPartModDummyMainBaseJobListGetClient>()
+                GetService<AppPartModDummyMainItemGetClient>(),
+                GetService<AppPartModDummyMainListGetClient>()
             };
 
             foreach (var client in clients)

@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.Automation.Base;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Apps.Automation.Base.App
 {
@@ -17,7 +17,7 @@ namespace Makc2020.Apps.Automation.Base.App
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public AppContext(RootAppAutomationBaseModules modules, ILogger logger)
+        public AppContext(RootAppAutomationBaseModules modules, CoreBaseLoggingService logger)
             : base(modules, logger)
         {
         }

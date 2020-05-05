@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Microsoft.Extensions.Logging;
+using Makc2020.Core.Base.Logging;
 
 namespace Makc2020.Core.Base
 {
@@ -14,7 +14,7 @@ namespace Makc2020.Core.Base
         /// <summary>
         /// Регистратор.
         /// </summary>
-        protected ILogger ExtLogger { get; private set; }
+        protected CoreBaseLoggingService AppLogger { get; private set; }
 
         #endregion Properties
 
@@ -23,10 +23,10 @@ namespace Makc2020.Core.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="extLogger">Регистратор.</param>
-        public CoreBaseModel(ILogger extLogger)
+        /// <param name="appLogger">Регистратор.</param>
+        public CoreBaseModel(CoreBaseLoggingService appLogger)
         {
-            ExtLogger = extLogger;
+            AppLogger = appLogger;
         }
 
         #endregion Constructors

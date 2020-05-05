@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Api.Base.App.Common;
+using Makc2020.Core.Base.Common.App;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 using System.Globalization;
 
 namespace Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors
@@ -10,7 +10,7 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors
     /// <summary>
     /// Приложение. Часть "Core". Ядро. Основа. Ресурсы. Ошибки. Клиент.
     /// </summary>
-    public class AppPartCoreBaseResourceErrorsClient : AppCommonClient
+    public class AppPartCoreBaseResourceErrorsClient : CoreBaseCommonAppClient
     {
         #region Properties
 
@@ -26,7 +26,7 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Core.Base.Resources.Errors
         /// <param name="logger">Регистратор.</param>
         /// <param name="resource">Ресурс.</param>
         public AppPartCoreBaseResourceErrorsClient(
-            ILogger<AppPartCoreBaseResourceErrorsClient> logger,
+            CoreBaseLoggingServiceWithCategoryName<AppPartCoreBaseResourceErrorsClient> logger,
             CoreBaseResourceErrors resource
             ) : base(logger)
         {

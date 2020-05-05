@@ -1,18 +1,18 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Microsoft.Extensions.Logging;
+using Makc2020.Core.Base.Logging;
 using System;
 
-namespace Makc2020.Apps.Automation.Base.App.Common
+namespace Makc2020.Core.Base.Common.App
 {
     /// <summary>
-    /// Приложение. Общее. Клиент.
+    /// Ядро. Основа. Общее. Приложение. Клиент.
     /// </summary>
-    public abstract class AppCommonClient
+    public abstract class CoreBaseCommonAppClient
     {
         #region Properties
 
-        protected ILogger Logger { get; }
+        protected CoreBaseLoggingService Logger { get; }
 
         #endregion Properties
 
@@ -22,7 +22,7 @@ namespace Makc2020.Apps.Automation.Base.App.Common
         /// Конструктор.
         /// </summary>
         /// <param name="logger">Регистратор.</param>
-        public AppCommonClient(ILogger logger)
+        public CoreBaseCommonAppClient(CoreBaseLoggingService logger)
         {
             Logger = logger;
         }

@@ -2,6 +2,7 @@
 
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Web;
@@ -10,7 +11,6 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Challenge.Get;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -54,7 +54,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
         /// <param name="extClientStore">Хранилище клиентов.</param>
         /// <param name="extEvents">События.</param>
         /// <param name="extInteraction">Взаимодействие.</param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         /// <param name="extRoleManager">Менеджер ролей.</param>
         /// <param name="extSignInManager">Менеджер входа в систему.</param>
         /// <param name="extUserManager">Менеджер пользователей.</param>
@@ -63,16 +63,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             ModIdentityServerWebMvcPartExternalJobCallbackGetService appJobCallbackGet,
             ModIdentityServerWebMvcPartExternalJobChallengeGetService appJobChallengeGet,
             HostBasePartAuthJobUserEntityCreateService appJobUserEntityCreate,
+            CoreBaseLoggingServiceWithCategoryName<ModIdentityServerWebMvcPartExternalModel> appLogger,
             IClientStore extClientStore,
             IEventService extEvents,
-            IIdentityServerInteractionService extInteraction,
-            ILogger<ModIdentityServerWebMvcPartExternalModel> extLogger,
+            IIdentityServerInteractionService extInteraction,            
             RoleManager<DataEntityObjectRole> extRoleManager,
             SignInManager<DataEntityObjectUser> extSignInManager,
             UserManager<DataEntityObjectUser> extUserManager,
             ICompositeViewEngine extViewEngine
             )
-            : base(extLogger, extViewEngine)
+            : base(appLogger, extViewEngine)
         {
             AppJobCallbackGet = appJobCallbackGet;
             AppJobChallengeGet = appJobChallengeGet;
@@ -104,7 +104,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             input.Events = ExtEvents;
             input.Interaction = ExtInteraction;
             input.JobUserEntityCreate = AppJobUserEntityCreate;
-            input.Logger = ExtLogger;
+            input.Logger = AppLogger;
             input.RoleManager = ExtRoleManager;
             input.SignInManager = ExtSignInManager;
             input.UserManager = ExtUserManager;            
@@ -115,12 +115,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
 
             void onSuccess(ModIdentityServerWebMvcPartExternalJobCallbackGetResult result)
             {                
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartExternalJobCallbackGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -145,12 +145,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
 
             void onSuccess(ModIdentityServerWebMvcPartExternalJobChallengeGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModIdentityServerWebMvcPartExternalJobChallengeGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);

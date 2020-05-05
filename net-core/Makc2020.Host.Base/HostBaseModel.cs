@@ -1,7 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
-using Microsoft.Extensions.Logging;
+using Makc2020.Core.Base.Logging;
+using System.Collections.Generic;
 
 namespace Makc2020.Host.Base
 {
@@ -10,7 +11,7 @@ namespace Makc2020.Host.Base
     /// </summary>
     /// <typeparam name="TState">Тип состояния.</typeparam>
     public class HostBaseModel<TState> : CoreBaseModel
-        where TState: HostBaseState
+        where TState : HostBaseState
     {
         #region Properties
 
@@ -26,9 +27,9 @@ namespace Makc2020.Host.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="extLogger">Регистратор.</param>
-        public HostBaseModel(ILogger extLogger)
-            : base(extLogger)
+        /// <param name="appLogger">Регистратор.</param>
+        public HostBaseModel(CoreBaseLoggingService appLogger)
+            : base(appLogger)
         {
         }
 
@@ -43,6 +44,12 @@ namespace Makc2020.Host.Base
         public void Init(TState state)
         {
             State = state;
+
+            var loggerState = new List<KeyValuePair<string, object>>();
+
+            State.FillLoggerState(loggerState);
+
+            AppLogger.Init(loggerState);
         }
 
         #endregion Public methods

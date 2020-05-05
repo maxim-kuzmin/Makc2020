@@ -1,26 +1,26 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Common.Code.Generate;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
-using Makc2020.Mods.Automation.Base.Parts.NetCore.Jobs.Code.Generate;
-using Microsoft.Extensions.Logging;
+using Makc2020.Mods.Automation.Base.Parts.Angular.Jobs.Code.Generate;
 using System;
 
-namespace Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate
+namespace Makc2020.Apps.Automation.Base.App.Parts.Angular.Code.Generate
 {
     /// <summary>
-    /// Приложение. Часть "NetCore". Задания. Код. Генерация. Клиент.
+    /// Приложение. Часть "Angular". Код. Генерация. Клиент.
     /// </summary>
-    public class AppPartNetCoreJobCodeGenerateClient : AppCommonJobCodeGenerateClient<ModAutomationBasePartNetCoreJobCodeGenerateService>
+    public class AppPartAngularCodeGenerateClient : AppCommonCodeGenerateClient<ModAutomationBasePartAngularJobCodeGenerateService>
     {
         #region Constructors
 
         /// <inheritdoc/>
-        public AppPartNetCoreJobCodeGenerateClient(
-            ILogger<AppPartNetCoreJobCodeGenerateClient> logger,
-            ModAutomationBasePartNetCoreJobCodeGenerateService job
+        public AppPartAngularCodeGenerateClient(
+            CoreBaseLoggingServiceWithCategoryName<AppPartAngularCodeGenerateClient> logger,
+            ModAutomationBasePartAngularJobCodeGenerateService job
             ) : base(logger, job)
         {
         }
@@ -34,10 +34,10 @@ namespace Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate
         {
             var input = new ModAutomationBaseCommonJobCodeGenerateInput
             {
-                FileHandleProgress = new AppCommonJobCodeGenerateProgress(HandleFileProgress),
-                FolderHandleProgress = new AppCommonJobCodeGenerateProgress(HandleFolderProgress)
+                FileHandleProgress = new AppCommonCodeGenerateProgress(HandleFileProgress),
+                FolderHandleProgress = new AppCommonCodeGenerateProgress(HandleFolderProgress)
             };
-
+            
             var result = new CoreBaseExecutionResult();
 
             try

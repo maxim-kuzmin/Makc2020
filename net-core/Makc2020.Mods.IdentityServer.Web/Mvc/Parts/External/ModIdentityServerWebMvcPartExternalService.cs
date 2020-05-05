@@ -6,9 +6,9 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth;
-using Makc2020.Host.Base.Parts.Auth.Ext;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
 using Makc2020.Mods.IdentityServer.Web.Ext;
@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,7 +168,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             string provider,
             string providerUserId,
             IEnumerable<Claim> claims,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
             RoleManager<DataEntityObjectRole> roleManager,
             UserManager<DataEntityObjectUser> userManager
@@ -250,7 +249,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
         }
 
         private async Task<CoreBaseExecutionResultWithData<DataEntityObjectUser>> CreateUserEntity(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService job,
             HostBasePartAuthJobUserEntityCreateInput input
             )
@@ -367,7 +366,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             HttpContext httpContext,
             IIdentityServerInteractionService interaction,
             HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             RoleManager<DataEntityObjectRole> roleManager,
             SignInManager<DataEntityObjectUser> signInManager,
             UserManager<DataEntityObjectUser> userManager

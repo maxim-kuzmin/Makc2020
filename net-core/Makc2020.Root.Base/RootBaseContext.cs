@@ -1,10 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 
@@ -31,7 +31,7 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Регистратор.
         /// </summary>
-        protected ILogger Logger { get; private set; }
+        protected CoreBaseLoggingService Logger { get; private set; }
 
         /// <summary>
         /// Ядро. Основа.
@@ -62,7 +62,7 @@ namespace Makc2020.Root.Base
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public RootBaseContext(TModules modules, ILogger logger)
+        public RootBaseContext(TModules modules, CoreBaseLoggingService logger)
         {
             Modules = modules;
             Logger = logger;

@@ -4,6 +4,7 @@ using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Jobs.Database.Migrate;
 using Makc2020.Data.Entity.Jobs.TestData.Seed;
@@ -12,7 +13,6 @@ using Makc2020.Host.Base.Parts.Auth.Jobs.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,7 +87,7 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Регистратор.
         /// </summary>
-        protected ILogger Logger { get; private set; }
+        protected CoreBaseLoggingService Logger { get; private set; }
 
         /// <summary>
         /// Окружение.
@@ -255,7 +255,7 @@ namespace Makc2020.Root.Base
         /// Получить регистратор.
         /// </summary>
         /// <returns>Регистратор.</returns>
-        protected abstract ILogger GetLogger();
+        protected abstract CoreBaseLoggingService GetLogger();
 
         /// <summary>
         /// Обработчик события, возникающего после инициализации.

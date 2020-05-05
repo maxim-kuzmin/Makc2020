@@ -20,7 +20,7 @@ namespace Makc2020.Mods.IdentityServer.Base.Parts.Profile
     {
         #region Properties
 
-        private UserManager<DataEntityObjectUser> UserManager { get; set; }
+        private UserManager<DataEntityObjectUser> ExtUserManager { get; set; }
 
         #endregion Properties
 
@@ -29,10 +29,10 @@ namespace Makc2020.Mods.IdentityServer.Base.Parts.Profile
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="userManager">Менеджер пользователей.</param>
-        public ModIdentityServerBasePartProfileService(UserManager<DataEntityObjectUser> userManager)
+        /// <param name="extUserManager">Менеджер пользователей.</param>
+        public ModIdentityServerBasePartProfileService(UserManager<DataEntityObjectUser> extUserManager)
         {
-            UserManager = userManager;
+            ExtUserManager = extUserManager;
         }
 
         #endregion Constructors
@@ -42,11 +42,11 @@ namespace Makc2020.Mods.IdentityServer.Base.Parts.Profile
         /// <inheritdoc/>
         public Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var user = UserManager.GetUserAsync(context.Subject).Result;
+            var user = ExtUserManager.GetUserAsync(context.Subject).Result;
 
             if (user != null)
             {
-                var roles = UserManager.GetRolesAsync(user).Result;
+                var roles = ExtUserManager.GetRolesAsync(user).Result;
 
                 var authUser = user.HostBasePartAuthExtCreateUser(roles);
 

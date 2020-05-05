@@ -2,11 +2,11 @@
 
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.Api.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -115,7 +115,7 @@ namespace Makc2020.Apps.Api.Web.App
         /// <inheritdoc/>
         protected sealed override AppContext CreateContext()
         {
-            return new AppContext(Modules, GetService<ILogger<AppContext>>());
+            return new AppContext(Modules, GetLogger());
         }
 
         /// <inheritdoc/>
@@ -127,9 +127,9 @@ namespace Makc2020.Apps.Api.Web.App
         }
 
         /// <inheritdoc/>
-        protected sealed override ILogger GetLogger()
+        protected sealed override CoreBaseLoggingService GetLogger()
         {
-            return GetService<ILogger<AppServer>>();
+            return GetService<CoreBaseLoggingServiceWithCategoryName<AppServer>>();
         }
 
         #endregion Protected methods

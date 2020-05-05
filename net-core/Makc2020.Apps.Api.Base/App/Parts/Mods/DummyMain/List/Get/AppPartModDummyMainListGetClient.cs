@@ -1,18 +1,18 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Api.Base.App.Common;
+using Makc2020.Core.Base.Common.App;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
-using Microsoft.Extensions.Logging;
 using System;
 
-namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get
+namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.List.Get
 {
     /// <summary>
     /// Приложение. Часть "Mods". Мод "DummyMain". Основа. Задания. Список. Получение. Клиент.
     /// </summary>
-    public class AppPartModDummyMainBaseJobListGetClient : AppCommonClient
+    public class AppPartModDummyMainListGetClient : CoreBaseCommonAppClient
     {
         #region Properties
 
@@ -27,8 +27,8 @@ namespace Makc2020.Apps.Api.Base.App.Parts.Mods.DummyMain.Base.Jobs.List.Get
         /// </summary>
         /// <param name="logger">Регистратор.</param>
         /// <param name="job">Задание.</param>
-        public AppPartModDummyMainBaseJobListGetClient(
-            ILogger<AppPartModDummyMainBaseJobListGetClient> logger,
+        public AppPartModDummyMainListGetClient(
+            CoreBaseLoggingServiceWithCategoryName<AppPartModDummyMainListGetClient> logger,
             ModDummyMainBaseJobListGetService job
             ) : base(logger)
         {

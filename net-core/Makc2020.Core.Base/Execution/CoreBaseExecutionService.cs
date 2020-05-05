@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +51,7 @@ namespace Makc2020.Core.Base.Execution
         /// <param name="funcGetSuccessMessages">Функция получения сообщений об успехах.</param>
         /// <param name="funcGetWarningMessages">Функция получения сообщений о предупреждениях.</param>
         protected void DoOnSuccess(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             CoreBaseExecutionResult result,
             Func<IEnumerable<string>> funcGetSuccessMessages,
             Func<IEnumerable<string>> funcGetWarningMessages
@@ -96,7 +96,7 @@ namespace Makc2020.Core.Base.Execution
         /// <param name="result">Результат выполнения задания с данными.</param>
         public void OnError(
             Exception ex,
-            ILogger logger,
+            CoreBaseLoggingService logger,
             CoreBaseExecutionResult result
             )
         {
@@ -164,7 +164,7 @@ namespace Makc2020.Core.Base.Execution
             return errorMessages;
         }
 
-        private void LogResultOnTestOrDebug(ILogger logger, CoreBaseExecutionResult result)
+        private void LogResultOnTestOrDebug(CoreBaseLoggingService logger, CoreBaseExecutionResult result)
         {
             if (logger != null)
             {

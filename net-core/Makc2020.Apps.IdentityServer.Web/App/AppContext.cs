@@ -1,6 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Microsoft.Extensions.Logging;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.IdentityServer.Web;
 
 namespace Makc2020.Apps.IdentityServer.Web.Root
@@ -17,7 +17,7 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public AppContext(RootAppIdentityServerWebModules modules, ILogger logger)
+        public AppContext(RootAppIdentityServerWebModules modules, CoreBaseLoggingService logger)
             : base(modules, logger)
         {
         }

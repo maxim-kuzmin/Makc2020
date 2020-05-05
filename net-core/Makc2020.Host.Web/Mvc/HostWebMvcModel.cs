@@ -1,11 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Host.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -29,10 +29,10 @@ namespace Makc2020.Host.Web.Mvc
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         /// <param name="extViewEngine">Средство создания представлений.</param>
-        public HostWebMvcModel(ILogger extLogger, ICompositeViewEngine extViewEngine) 
-            : base(extLogger)
+        public HostWebMvcModel(CoreBaseLoggingService appLogger, ICompositeViewEngine extViewEngine)
+            : base(appLogger)
         {
             ExtViewEngine = extViewEngine;
         }

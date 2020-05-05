@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Base.Resources.Errors;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -54,7 +54,7 @@ namespace Makc2020.Core.Base.Execution.Services
         /// <param name="result">Результат выполнения.</param>   
         /// <param name="output">Вывод.</param>
         public void OnSuccess(
-            ILogger logger,
+            CoreBaseLoggingService logger,
             CoreBaseExecutionResultWithData<TOutput> result
             )
         {

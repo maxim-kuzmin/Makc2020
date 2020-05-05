@@ -1,10 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Base.Parts.Auth.Jobs.CurrentUser.Get;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +12,8 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
 {
     /// <summary>
     /// Хост. Beб. API. Часть "Auth". API. Модель.
-    /// </summary>
+    /// </summary>ъ
+    /// <typeparam name="TState">Тип состояния.</typeparam>
     public class HostWebApiPartAuthModel : HostWebApiModel<HostWebState>
     {
         #region Properties
@@ -29,15 +30,15 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
         /// Конструктор.
         /// </summary>        
         /// <param name="appJobCurrentUserGet">Задание на получение текущего пользователя.</param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         /// <param name="extUserManager">Менеджер пользователей.</param>
         public HostWebApiPartAuthModel(
             HostBasePartAuthJobCurrentUserGetService appJobCurrentUserGet,
-            ILogger<HostWebApiPartAuthController> extLogger,
-            UserManager<DataEntityObjectUser> extUserManager         
-            )
-            : base(extLogger)
-        {            
+            CoreBaseLoggingServiceWithCategoryName<HostWebApiPartAuthController> appLogger,
+            UserManager<DataEntityObjectUser> extUserManager            
+        )
+            : base(appLogger)
+        {
             AppJobCurrentUserGet = appJobCurrentUserGet;
             ExtUserManager = extUserManager;
         }
@@ -65,12 +66,12 @@ namespace Makc2020.Host.Web.Api.Parts.Auth
 
             void onSuccess(HostBasePartAuthJobCurrentUserGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, HostBasePartAuthJobCurrentUserGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);

@@ -2,12 +2,12 @@
 
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get
@@ -47,7 +47,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External.Jobs.Callback.Get
         /// <summary>
         /// Регистратор.
         /// </summary>
-        public ILogger Logger { get; set; }
+        public CoreBaseLoggingService Logger { get; set; }
 
         /// <summary>
         /// Менеджер ролей.

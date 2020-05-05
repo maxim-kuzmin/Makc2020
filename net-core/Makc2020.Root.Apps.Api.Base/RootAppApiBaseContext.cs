@@ -1,10 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Mods.Auth.Base;
 using Makc2020.Mods.DummyMain.Base;
 using Makc2020.Mods.DummyTree.Base;
 using Makc2020.Root.Base;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Root.Apps.Api.Base
 {
@@ -41,7 +41,7 @@ namespace Makc2020.Root.Apps.Api.Base
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public RootAppApiBaseContext(TModules modules, ILogger logger)
+        public RootAppApiBaseContext(TModules modules, CoreBaseLoggingService logger)
             : base(modules, logger)
         {
         }

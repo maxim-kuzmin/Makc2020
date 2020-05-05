@@ -1,10 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Caching;
 using Makc2020.Mods.DummyMain.Caching;
 using Makc2020.Mods.DummyTree.Caching;
 using Makc2020.Root.Apps.Api.Base;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Root.Apps.Api.Web
 {
@@ -41,7 +41,7 @@ namespace Makc2020.Root.Apps.Api.Web
         /// </summary>
         /// <param name="modules">Модули.</param>
         /// <param name="logger">Регистратор.</param>
-        public RootAppApiWebContext(TModules modules, ILogger logger)
+        public RootAppApiWebContext(TModules modules, CoreBaseLoggingService logger)
             : base(modules, logger)
         {
         }

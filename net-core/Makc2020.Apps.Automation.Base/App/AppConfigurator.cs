@@ -1,7 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Apps.Automation.Base.App.Parts.Angular.Jobs.Code.Generate;
-using Makc2020.Apps.Automation.Base.App.Parts.NetCore.Jobs.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Parts.Angular.Code.Generate;
+using Makc2020.Apps.Automation.Base.App.Parts.NetCore.Code.Generate;
 using Makc2020.Root.Apps.Automation.Base;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,8 +21,8 @@ namespace Makc2020.Apps.Automation.Base.App
 
             services.AddTransient(x => AppServer.Instance.GetContext());
 
-            services.AddTransient<AppPartAngularJobCodeGenerateClient>();
-            services.AddTransient<AppPartNetCoreJobCodeGenerateClient>();
+            services.AddTransient<AppPartAngularCodeGenerateClient>();
+            services.AddTransient<AppPartNetCoreCodeGenerateClient>();
 
             services.AddHostedService<AppHostedService>();            
         }

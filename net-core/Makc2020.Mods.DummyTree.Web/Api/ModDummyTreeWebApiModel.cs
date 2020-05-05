@@ -3,6 +3,7 @@
 using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
 using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Host.Web;
 using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
@@ -13,7 +14,6 @@ using Makc2020.Mods.DummyTree.Caching.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Caching.Jobs.Item.Insert;
 using Makc2020.Mods.DummyTree.Caching.Jobs.Item.Update;
 using Makc2020.Mods.DummyTree.Caching.Jobs.List.Get;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -51,7 +51,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         /// <param name="appJobItemInsert">Задание на вставку элемента.</param>
         /// <param name="appJobItemUpdate">Задание на обновление элемента.</param>
         /// <param name="appJobListGet">Задание на получение списка.</param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         public ModDummyTreeWebApiModel(
             ModDummyTreeBaseJobCalculateService appJobCalculate,
             ModDummyTreeCachingJobItemDeleteService appJobItemDelete,
@@ -59,9 +59,9 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             ModDummyTreeCachingJobItemInsertService appJobItemInsert,
             ModDummyTreeCachingJobItemUpdateService appJobItemUpdate,
             ModDummyTreeCachingJobListGetService appJobListGet,
-            ILogger<ModDummyTreeWebApiController> extLogger
+            CoreBaseLoggingServiceWithCategoryName<ModDummyTreeWebApiController> appLogger
             )
-            : base(extLogger)
+            : base(appLogger)
         {
             AppJobCalculate = appJobCalculate;
             AppJobItemDelete = appJobItemDelete;
@@ -92,12 +92,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(CoreBaseExecutionResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, CoreBaseExecutionResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -120,12 +120,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(CoreBaseExecutionResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, CoreBaseExecutionResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -148,12 +148,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(ModDummyTreeBaseJobListGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyTreeBaseJobListGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -176,12 +176,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -204,12 +204,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -232,12 +232,12 @@ namespace Makc2020.Mods.DummyTree.Web.Api
 
             void onSuccess(ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyTreeBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);

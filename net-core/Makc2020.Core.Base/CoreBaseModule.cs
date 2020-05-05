@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Common;
+using Makc2020.Core.Base.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -30,6 +31,8 @@ namespace Makc2020.Core.Base
         {
             services.AddTransient(x => GetContext(x).Resources.Converting);
             services.AddTransient(x => GetContext(x).Resources.Errors);
+
+            services.AddScoped(typeof(CoreBaseLoggingServiceWithCategoryName<>));
         }
 
         /// <summary>

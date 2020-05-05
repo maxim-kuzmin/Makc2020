@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Execution;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Host.Web;
 using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
@@ -13,7 +14,6 @@ using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Update;
 using Makc2020.Mods.DummyMain.Caching.Jobs.List.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -58,7 +58,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="appJobOptionDummyOneToManyListGet">
         /// Задание на получение вариантов выбора сущности "DummyOneToMany".
         /// </param>
-        /// <param name="extLogger">Регистратор.</param>
+        /// <param name="appLogger">Регистратор.</param>
         public ModDummyMainWebApiModel(
             ModDummyMainCachingJobItemDeleteService appJobItemDelete,
             ModDummyMainCachingJobItemGetService appJobItemGet,
@@ -67,9 +67,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             ModDummyMainCachingJobListGetService appJobListGet,
             ModDummyMainCachingJobOptionsDummyManyToManyGetService appJobOptionDummyManyToManyListGet,
             ModDummyMainCachingJobOptionsDummyOneToManyGetService appJobOptionDummyOneToManyListGet,
-            ILogger<ModDummyMainWebApiController> extLogger
+            CoreBaseLoggingServiceWithCategoryName<ModDummyMainWebApiController> appLogger
             )
-            : base(extLogger)
+            : base(appLogger)
         {
             AppJobItemDelete = appJobItemDelete;
             AppJobItemGet = appJobItemGet;
@@ -101,12 +101,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(CoreBaseExecutionResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, CoreBaseExecutionResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -129,12 +129,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -157,12 +157,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -185,12 +185,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyMainBaseJobItemGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -213,12 +213,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseJobListGetResult result)
             {
-                job.OnSuccess(ExtLogger, result, input);
+                job.OnSuccess(AppLogger, result, input);
             }
 
             void onError(Exception ex, ModDummyMainBaseJobListGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -241,12 +241,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
             {
-                job.OnSuccess(ExtLogger, result);
+                job.OnSuccess(AppLogger, result);
             }
 
             void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);
@@ -269,12 +269,12 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             void onSuccess(ModDummyMainBaseCommonJobOptionListGetResult result)
             {
-                job.OnSuccess(ExtLogger, result);
+                job.OnSuccess(AppLogger, result);
             }
 
             void onError(Exception ex, ModDummyMainBaseCommonJobOptionListGetResult result)
             {
-                job.OnError(ex, ExtLogger, result);
+                job.OnError(ex, AppLogger, result);
             }
 
             return (execute, onSuccess, onError);

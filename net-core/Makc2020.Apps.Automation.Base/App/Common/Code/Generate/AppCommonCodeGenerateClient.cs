@@ -1,14 +1,15 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.App;
+using Makc2020.Core.Base.Logging;
 using Makc2020.Mods.Automation.Base.Common.Code.Generate;
-using Microsoft.Extensions.Logging;
 
-namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
+namespace Makc2020.Apps.Automation.Base.App.Common.Code.Generate
 {
     /// <summary>
-    /// Приложение. Общее. Задания. Код. Генерация. Клиент.
+    /// Приложение. Общее. Код. Генерация. Клиент.
     /// </summary>
-    public abstract class AppCommonJobCodeGenerateClient<TJob> : AppCommonClient
+    public abstract class AppCommonCodeGenerateClient<TJob> : CoreBaseCommonAppClient
         where TJob: ModAutomationBaseCommonJobCodeGenerateService
     {
         #region Properties
@@ -27,7 +28,7 @@ namespace Makc2020.Apps.Automation.Base.App.Common.Jobs.Code.Generate
         /// </summary>
         /// <param name="logger">Регистратор.</param>
         /// <param name="job">Задание.</param>
-        public AppCommonJobCodeGenerateClient(ILogger logger, TJob job) : base(logger)
+        public AppCommonCodeGenerateClient(CoreBaseLoggingService logger, TJob job) : base(logger)
         {
             Job = job;
         }
