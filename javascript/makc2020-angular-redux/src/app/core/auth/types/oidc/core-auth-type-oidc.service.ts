@@ -2,8 +2,10 @@
 
 import {Injectable} from '@angular/core';
 import {AuthConfig, JwksValidationHandler, OAuthService} from 'angular-oauth2-oidc';
-import {AppCoreAuthEnumTypes} from '../../enums/core-auth-enum-types';
+import {filter, map} from 'rxjs/operators';
 import {AppCoreSettings} from '@app/core/core-settings';
+import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
+import {AppCoreAuthEnumTypes} from '../../enums/core-auth-enum-types';
 
 /** Ядро. Аутентификация. Типы. OIDC. Сервис. */
 @Injectable({
@@ -20,22 +22,17 @@ export class AppCoreAuthTypeOidcService {
   }
 
   /**
-   * URL возврата.
-   * @type {string}
-   */
-  get returnUrl(): string {
-    return this.extOauthService.state;
-  }
-
-  /**
    * Конструктор.
-   * @param {OAuthService} extOauthService Авторизация OAuth 2.0.
+   * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreSettings} appSettings Настройки.
+   * @param {OAuthService} extOauthService Авторизация OAuth 2.0.
    */
   constructor(
-    private extOauthService: OAuthService,
-    private appSettings: AppCoreSettings
+    private appAuthStore: AppHostPartAuthStore,
+    private appSettings: AppCoreSettings,
+    private extOauthService: OAuthService
   ) {
+    this.onGetReturnUrl = this.onGetReturnUrl.bind(this);
   }
 
   /**
@@ -103,7 +100,7 @@ export class AppCoreAuthTypeOidcService {
       // such applications.
       // dummyClientSecret: 'secret',
 
-      responseType: 'code',
+      responseType: 'id_token token',
 
       // URL of the SPA to redirect the user after silent refresh
       silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
@@ -120,10 +117,25 @@ export class AppCoreAuthTypeOidcService {
       // disablePKCI: true,
     } as AuthConfig;
 
+    if (authConfig.issuer.toLowerCase().indexOf('http://') === 0) {
+      authConfig.requireHttps = false;
+    }
+
     this.extOauthService.configure(authConfig);
 
     this.extOauthService.tokenValidationHandler = new JwksValidationHandler();
 
+    this.extOauthService.events.pipe(
+      filter(e => e.type === 'token_received'),
+      map(_ => this.extOauthService.state)
+    ).subscribe(
+      this.onGetReturnUrl
+    );
+
     return this.extOauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  private onGetReturnUrl(returnUrl: string) {
+    this.appAuthStore.runActionReturnUrlSet(returnUrl);
   }
 }

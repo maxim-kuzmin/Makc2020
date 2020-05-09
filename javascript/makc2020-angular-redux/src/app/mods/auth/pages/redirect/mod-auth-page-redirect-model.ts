@@ -3,6 +3,7 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
 import {AppCoreAuthTypeOidcService} from '@app/core/auth/types/oidc/core-auth-type-oidc.service';
 import {AppCoreAuthTypeOidcState} from '@app/core/auth/types/oidc/core-auth-type-oidc-state';
 import {AppCoreAuthTypeOidcStore} from '@app/core/auth/types/oidc/core-auth-type-oidc-store';
@@ -10,7 +11,9 @@ import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-mod
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
+import {AppHostPartAuthState} from '@app/host/parts/auth/host-part-auth-state';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
+import {AppHostPartAuthEnumActions} from '@app/host/parts/auth/enums/host-part-auth-enum-actions';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
@@ -24,6 +27,8 @@ import {AppModAuthPageRedirectStore} from './mod-auth-page-redirect-store';
 /** Мод "Auth". Страницы. Перенаправление. Модель. */
 @Injectable()
 export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
+
+  private isLoaded = false;
 
   /**
    * Ресурсы.
@@ -72,6 +77,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     );
 
     this.onAuthTypeOidcGetState = this.onAuthTypeOidcGetState.bind(this);
+    this.onAuthStoreGetState = this.onAuthStoreGetState.bind(this);
 
     this.resources = new AppModAuthPageRedirectResources(
       appLocalizer,
@@ -129,14 +135,6 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     this.executeTitleActionItemAdd();
 
     if (this.appAuthTypeOidc.isEnabled) {
-      const {
-        returnUrl
-      } = this.appAuthTypeOidc;
-
-      if (returnUrl) {
-        this.appAuthStore.runActionReturnUrlSet(returnUrl);
-      }
-
       this.appAuthTypeOidcStore.getState$(
         this.unsubscribe$
       ).subscribe(
@@ -161,6 +159,19 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     } = state;
 
     if (isInitialized) {
+      this.appAuthStore.getState$(
+        this.unsubscribe$
+      ).pipe(
+        filter(authState => authState.action === AppHostPartAuthEnumActions.ReturnUrlSet)
+      ).subscribe(
+        this.onAuthStoreGetState
+      );
+    }
+  }
+
+  private onAuthStoreGetState(state: AppHostPartAuthState) {
+    if (!this.isLoaded) {
+      this.isLoaded = true;
       this.appStore.runActionLoad();
     }
   }
