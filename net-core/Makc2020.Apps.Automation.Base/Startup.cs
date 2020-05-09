@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Apps.Automation.Base.App;
+using Makc2020.Core.Base.Ext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,10 +32,11 @@ namespace Makc2020.Apps.Automation.Base
         {
             var basePath = System.AppContext.BaseDirectory;
 
-            var logConfigFilePath = Path.Combine(basePath, "ConfigFiles", "nlog.config");
-
             // NLog: setup the logger first to catch all errors
-            var logger = NLog.LogManager.LoadConfiguration(logConfigFilePath).GetCurrentClassLogger();
+            var logger = NLog.LogManager.LogFactory.CoreBaseExtNLogLoadConfiguration(
+                Path.Combine(basePath, "ConfigFiles", "nlog.config"),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                ).GetCurrentClassLogger();
 
             try
             {

@@ -1,12 +1,13 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Apps.IdentityServer.Web.Root;
+using Makc2020.Core.Base.Ext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Makc2020.Apps.IdentityServer.Web.Root;
 using System;
 using System.IO;
 
@@ -43,10 +44,11 @@ namespace Makc2020.Apps.IdentityServer.Web
         {
             var basePath = System.AppContext.BaseDirectory;
 
-            var logConfigFilePath = Path.Combine(basePath, "ConfigFiles", "nlog.config");
-
             // NLog: setup the logger first to catch all errors
-            var logger = NLog.LogManager.LoadConfiguration(logConfigFilePath).GetCurrentClassLogger();
+            var logger = NLog.LogManager.LogFactory.CoreBaseExtNLogLoadConfiguration(
+                Path.Combine(basePath, "ConfigFiles", "nlog.config"),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                ).GetCurrentClassLogger();
 
             try
             {

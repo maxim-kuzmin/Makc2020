@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Apps.Api.Web.App;
+using Makc2020.Core.Base.Ext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,10 +44,11 @@ namespace Makc2020.Apps.Api.Web
         {
             var basePath = System.AppContext.BaseDirectory;
 
-            var logConfigFilePath = Path.Combine(basePath, "ConfigFiles", "nlog.config");
-
             // NLog: setup the logger first to catch all errors
-            var logger = NLog.LogManager.LoadConfiguration(logConfigFilePath).GetCurrentClassLogger();
+            var logger = NLog.LogManager.LogFactory.CoreBaseExtNLogLoadConfiguration(
+                Path.Combine(basePath, "ConfigFiles", "nlog.config"),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                ).GetCurrentClassLogger();
 
             try
             {
