@@ -14,12 +14,12 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Колонка в базе данных для поля "Id".
         /// </summary>
-        internal const string DB_COLUMN_FOR_Id = CoreBaseDataSettings.FIELD_NAME_Id;
+        public const string DB_COLUMN_FOR_Id = CoreBaseDataSettings.FIELD_NAME_Id;
 
         /// <summary>
         /// Таблица в базе данных.
         /// </summary>
-        internal const string DB_TABLE = "DummyManyToMany";
+        public const string DB_TABLE = "DummyManyToMany";
 
         #endregion Constants
 

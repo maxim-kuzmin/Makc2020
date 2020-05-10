@@ -14,7 +14,7 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Таблица в базе данных.
         /// </summary>
-        internal const string DB_TABLE = "UserToken";
+        public const string DB_TABLE = "UserToken";
 
         #endregion Constants
 
