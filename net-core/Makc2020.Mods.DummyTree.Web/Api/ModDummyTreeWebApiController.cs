@@ -77,7 +77,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpDelete]
         public async Task<IActionResult> DeleteItem([FromQuery] CoreBaseCommonJobItemGetInput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.DataId)));
 
             var result = new CoreBaseExecutionResult();
 
@@ -105,7 +105,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpGet]
         public async Task<IActionResult> GetItem([FromQuery] CoreBaseCommonJobTreeItemGetInput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.RootId)));
 
             var result = new ModDummyTreeBaseJobItemGetResult();
 
@@ -189,7 +189,7 @@ namespace Makc2020.Mods.DummyTree.Web.Api
         [Route("item"), HttpPut]
         public async Task<IActionResult> UpdateItem([FromBody] ModDummyTreeBaseJobItemGetOutput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.ObjectDummyTree.Id)));
 
             var result = new ModDummyTreeBaseJobItemGetResult();
 

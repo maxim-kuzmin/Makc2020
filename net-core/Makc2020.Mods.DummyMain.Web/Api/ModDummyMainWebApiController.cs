@@ -47,7 +47,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpDelete]
         public async Task<IActionResult> DeleteItem([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.DataId)));
 
             var result = new CoreBaseExecutionResult();
 
@@ -103,7 +103,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpGet]
         public async Task<IActionResult> GetItem([FromQuery] ModDummyMainBaseJobItemGetInput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.DataId)));
 
             var result = new ModDummyMainBaseJobItemGetResult();
 
@@ -213,7 +213,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         [Route("item"), HttpPut]
         public async Task<IActionResult> UpdateItem([FromBody] ModDummyMainBaseJobItemGetOutput input)
         {
-            MyModel.Init(HostWebState.Create(HttpContext));
+            MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.ObjectDummyMain.Id)));
 
             var result = new ModDummyMainBaseJobItemGetResult();
 

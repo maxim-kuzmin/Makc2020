@@ -4,6 +4,7 @@ using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
 using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Logging;
+using Makc2020.Data.Base.Settings;
 using Makc2020.Host.Web;
 using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
@@ -241,6 +242,16 @@ namespace Makc2020.Mods.DummyTree.Web.Api
             }
 
             return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Создать ключ объекта.
+        /// </summary>
+        /// <param name="id">Идентификатор.</param>
+        /// <returns>Ключ объекта.</returns>
+        public string CreateObjectKey(long id)
+        {
+            return $"{DataBaseSettingDummyTree.DB_TABLE}-{id}";
         }
 
         #endregion Public methods    

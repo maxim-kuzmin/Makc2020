@@ -28,13 +28,15 @@ namespace Makc2020.Host.Web
         /// Создать.
         /// </summary>
         /// <param name="httpContext">HTTP-контекст.</param>
+        /// <param name="objectKey">Ключ объекта.</param>
         /// <returns>Состояние.</returns>
-        public static HostWebState Create(HttpContext httpContext)
+        public static HostWebState Create(HttpContext httpContext, string objectKey = null)
         {
             return new HostWebState
             {
-                User = httpContext.User.HostBasePartAuthExtCreateUser(),
-                IP = httpContext.Connection.RemoteIpAddress?.CoreBaseExtConvertFromIPToV4String()
+                IP = httpContext.Connection.RemoteIpAddress.CoreBaseExtConvertFromIPToV4String(),
+                ObjectKey = objectKey,
+                User = httpContext.User.HostBasePartAuthExtCreateUser()
             };
         }
 
@@ -43,7 +45,10 @@ namespace Makc2020.Host.Web
         {
             base.FillLoggerState(loggerState);
 
-            loggerState.Add(KeyValuePair.Create<string, object>("HostWebState.IP", IP));
+            if (!string.IsNullOrEmpty(IP))
+            {
+                loggerState.Add(KeyValuePair.Create<string, object>("HostWebState.IP", IP));
+            }
         }
 
         #endregion Public methods
