@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
 import {AppCoreAuthInterceptor} from './auth/core-auth-interceptor';
+import {AppCoreEmptyComponent} from './empty/core-empty.component';
 import {AppCoreHttpInterceptor} from './http/core-http-interceptor';
 import {appCoreLoggingDiTokenLoggerName} from './logging/core-logging-di';
 import {AppCoreLoggingService} from './logging/core-logging.service';
@@ -19,6 +20,7 @@ import {AppCoreViewComponent} from './view/core-view.component';
     AppCoreViewComponent
   ],
   declarations: [
+    AppCoreEmptyComponent,
     AppCoreViewComponent,
     AppCoreViewHostDirective
   ],
