@@ -3,12 +3,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {appCoreExecutionMethod} from '@app/core/execution/core-execution-method';
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
-import {AppModDummyTreeJobItemGetInput} from './mod-dummy-tree-job-item-get-input';
 import {AppModDummyTreeJobItemGetResult} from './mod-dummy-tree-job-item-get-result';
 
 /** Мод "DummyTree". Задания. Элемент. Получение. Сервис. */
@@ -32,12 +32,12 @@ export class AppModDummyTreeJobItemGetService {
 
   /**
    * Выполнить.
-   * @param {AppModDummyTreeJobItemGetInput} input Ввод.
+   * @param {AppCoreCommonModJobTreeItemGetInput} input Ввод.
    * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppModDummyTreeJobItemGetResult>} Результирующий поток.
    */
   execute$(
-    input: AppModDummyTreeJobItemGetInput,
+    input: AppCoreCommonModJobTreeItemGetInput,
     handler: AppCoreExecutionHandler
   ): Observable<AppModDummyTreeJobItemGetResult> {
     const url = this.appNavigation.createAbsoluteUrlOfApi('dummy-tree/item');

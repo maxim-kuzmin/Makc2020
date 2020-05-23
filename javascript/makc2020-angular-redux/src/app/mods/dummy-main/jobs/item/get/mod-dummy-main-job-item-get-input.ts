@@ -12,7 +12,7 @@ export class AppModDummyMainJobItemGetInput extends AppCoreCommonModJobItemGetIn
   dataName?: string;
 
   /**
-   * Признак предназначенности обновления.
+   * Признак предназначенности для обновления.
    * @type {boolean}
    */
   get isForUpdate(): boolean {

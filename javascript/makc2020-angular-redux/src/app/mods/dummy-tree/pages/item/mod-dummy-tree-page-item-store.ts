@@ -1,9 +1,10 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppModDummyTreeJobItemGetInput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-input';
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 import {AppModDummyTreeJobItemGetOutput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-output';
 import {AppModDummyTreeStoreState} from '../../store/mod-dummy-tree-store.state';
 import {AppModDummyTreePageItemState} from './mod-dummy-tree-page-item-state';
@@ -11,7 +12,6 @@ import {appModDummyTreePageItemStoreSelector} from './store/mod-dummy-tree-page-
 import {AppModDummyTreePageItemStoreActionClear} from './store/actions/mod-dummy-tree-page-item-store-action-clear';
 import {AppModDummyTreePageItemStoreActionLoad} from './store/actions/mod-dummy-tree-page-item-store-action-load';
 import {AppModDummyTreePageItemStoreActionSave} from './store/actions/mod-dummy-tree-page-item-store-action-save';
-import { Injectable } from '@angular/core';
 
 /** Мод "DummyTree". Страницы. Элемент. Хранилище состояния. */
 @Injectable()
@@ -58,9 +58,9 @@ export class AppModDummyTreePageItemStore {
 
   /**
    * Запустить действие "Загрузка".
-   * @param {AppModDummyTreeJobListGetInput} input Ввод.
+   * @param {AppCoreCommonModJobTreeItemGetInput} input Ввод.
    */
-  runActionLoad(input: AppModDummyTreeJobItemGetInput) {
+  runActionLoad(input: AppCoreCommonModJobTreeItemGetInput) {
     this.extStore.dispatch(new AppModDummyTreePageItemStoreActionLoad(input));
   }
 

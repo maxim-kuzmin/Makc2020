@@ -42,7 +42,7 @@ export class AppModDummyTreePageItemStoreEffects {
         } = action;
 
         if (input && input.isForUpdate) {
-          this.appJobItemGet.execute$(input, this.executionHandlerOnLoad).pipe(
+          return this.appJobItemGet.execute$(input, this.executionHandlerOnLoad).pipe(
             map(
               result => {
                 return new AppModDummyTreePageItemStoreActionLoadSuccess(

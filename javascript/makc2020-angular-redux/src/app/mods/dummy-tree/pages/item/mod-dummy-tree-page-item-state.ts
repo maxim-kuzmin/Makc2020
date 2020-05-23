@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 import {AppCoreCommonState} from '@app/core/common/core-common-state';
-import {AppModDummyTreeJobItemGetInput} from '../../jobs/item/get/mod-dummy-tree-job-item-get-input';
 import {AppModDummyTreeJobItemGetOutput} from '../../jobs/item/get/mod-dummy-tree-job-item-get-output';
 import {AppModDummyTreeJobItemGetResult} from '../../jobs/item/get/mod-dummy-tree-job-item-get-result';
 import {AppModDummyTreePageItemEnumActions} from './enums/mod-dummy-tree-page-item-enum-actions';
@@ -11,9 +11,9 @@ export class AppModDummyTreePageItemState extends AppCoreCommonState<AppModDummy
 
   /**
    * Ввод задания на получение элемента.
-   * @type {AppModDummyTreeJobItemGetInput}
+   * @type {AppCoreCommonModJobTreeItemGetInput}
    */
-  jobItemGetInput: AppModDummyTreeJobItemGetInput;
+  jobItemGetInput: AppCoreCommonModJobTreeItemGetInput;
 
   /**
    * Выход задания на получение элемента.

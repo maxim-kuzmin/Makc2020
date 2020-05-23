@@ -2,6 +2,7 @@
 
 import {Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
+import {AppCoreCommonEnumTreeItemAxis} from '@app/core/common/enums/tree/item/core-common-enum-tree-item-axis';
 import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {appDataObjectDummyTreeCreate} from '@app/data/objects/data-object-dummy-tree';
@@ -318,10 +319,12 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     const parameters = this.model.createParameters();
 
     const {
-      paramId
+      paramAxis,
+      paramRootId
     } = parameters;
 
-    paramId.value = this.view.fieldId.value;
+    paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
+    paramRootId.value = this.view.fieldId.value;
 
     this.model.executeActionRefresh(parameters);
   }

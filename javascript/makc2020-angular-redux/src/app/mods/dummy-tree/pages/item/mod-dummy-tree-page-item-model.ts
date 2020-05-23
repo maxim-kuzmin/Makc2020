@@ -5,6 +5,7 @@ import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
 import {filter, switchMap, takeUntil} from 'rxjs/operators';
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
@@ -14,9 +15,9 @@ import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppModDummyTreeJobItemGetInput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-input';
 import {AppModDummyTreeJobItemGetOutput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-output';
 import {AppModDummyTreePageListService} from '../list/mod-dummy-tree-page-list.service';
+import {appModDummyTreePageItemConfigIndex} from './mod-dummy-tree-page-item-config';
 import {AppModDummyTreePageItemResources} from './mod-dummy-tree-page-item-resources';
 import {AppModDummyTreePageItemSettingErrors} from './settings/mod-dummy-tree-page-item-setting-errors';
 import {AppModDummyTreePageItemSettingFields} from './settings/mod-dummy-tree-page-item-setting-fields';
@@ -24,7 +25,6 @@ import {AppModDummyTreePageItemService} from './mod-dummy-tree-page-item.service
 import {AppModDummyTreePageItemParameters} from './mod-dummy-tree-page-item-parameters';
 import {AppModDummyTreePageItemState} from './mod-dummy-tree-page-item-state';
 import {AppModDummyTreePageItemStore} from './mod-dummy-tree-page-item-store';
-import {appModDummyTreePageItemConfigIndex} from './mod-dummy-tree-page-item-config';
 
 /** Мод "DummyTree". Страницы. Элемент. Модель. */
 @Injectable()
@@ -34,7 +34,7 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
   private isDataChangeAllowedChanged$ = new Subject<boolean>();
 
   /** @type {AppModDummyTreeJobItemGetInput} */
-  private jobItemGetInput: AppModDummyTreeJobItemGetInput;
+  private jobItemGetInput: AppCoreCommonModJobTreeItemGetInput;
 
   /** @type {AppModDummyTreePageItemParameters} */
   private parameters: AppModDummyTreePageItemParameters;
@@ -258,8 +258,8 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
     }
   }
 
-  /** @param {AppModDummyTreeJobItemGetInput} input */
-  private onGetJobItemGetInput(input: AppModDummyTreeJobItemGetInput) {
+  /** @param {AppCoreCommonModJobTreeItemGetInput} input */
+  private onGetJobItemGetInput(input: AppCoreCommonModJobTreeItemGetInput) {
     if (this.pageKey) {
       const {
         settings
@@ -326,7 +326,7 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
    * @param {ParamMap} paramMap
    * @returns {Observable<AppModDummyTreeJobItemGetInput>}
    */
-  private onRouteParamMapSwitchMapToJobItemGetInput(paramMap: ParamMap): Observable<AppModDummyTreeJobItemGetInput> {
+  private onRouteParamMapSwitchMapToJobItemGetInput(paramMap: ParamMap): Observable<AppCoreCommonModJobTreeItemGetInput> {
     const {
       settings
     } = this.appModDummyTreePageItem;
@@ -361,18 +361,18 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
         break;
     }
 
-    let input: AppModDummyTreeJobItemGetInput;
+    let input: AppCoreCommonModJobTreeItemGetInput;
 
     if (isOk) {
       const parameters = this.createParameters();
 
       const {
-        paramId,
-        paramName
+        paramAxis,
+        paramRootId
       } = parameters;
 
-      paramId.value = +paramMap.get(paramId.name);
-      paramName.value = paramMap.get(paramName.name);
+      paramAxis.value = +paramMap.get(paramAxis.name);
+      paramRootId.value = +paramMap.get(paramRootId.name);
 
       const location = this.appModDummyTreePageItem.getLocation();
 

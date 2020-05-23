@@ -4,6 +4,8 @@ import {Injectable} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {merge, Observable, of, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
+import {AppCoreCommonEnumTreeItemAxis} from '@app/core/common/enums/tree/item/core-common-enum-tree-item-axis';
+import {AppCoreCommonModJobItemGetInput} from '@app/core/common/mod/jobs/item/get/core-common-mod-job-item-get-input';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
@@ -13,7 +15,6 @@ import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppModDummyTreeJobItemGetInput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-input';
 import {AppModDummyTreeJobListGetInput} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-input';
 import {AppModDummyTreePageItemLocation} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-location';
 import {AppModDummyTreePageItemService} from '../item/mod-dummy-tree-page-item.service';
@@ -119,7 +120,7 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
       if (isOk) {
         this.isItemDeleteStarted$.next();
 
-        this.appStore.runActionDelete(new AppModDummyTreeJobItemGetInput(id));
+        this.appStore.runActionDelete(new AppCoreCommonModJobItemGetInput(id));
       }
     });
   }
@@ -137,7 +138,8 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
     const parameters = this.appModDummyTreePageItem.createParameters(this.parameters.index);
 
-    parameters.paramId.value = id;
+    parameters.paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
+    parameters.paramRootId.value = id;
 
     const commands = this.appModDummyTreePageItem.createRouterLink(pathEdit, parameters);
 
@@ -168,7 +170,8 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
     const parameters = this.appModDummyTreePageItem.createParameters(this.parameters.index);
 
-    parameters.paramId.value = id;
+    parameters.paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
+    parameters.paramRootId.value = id;
 
     const commands = this.appModDummyTreePageItem.createRouterLink(pathView, parameters);
 

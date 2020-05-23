@@ -1,28 +1,28 @@
 // //Author Maxim Kuzmin//makc//
 
-/** Хост. Меню. Дерево. Перечисления. Оси для получения множества узлов. */
+/** Ядро. Дерево. Перечисления. Оси для получения множества узлов. */
 export enum AppCoreTreeEnumAxisMany {
 
   /**
    * Предки.
    * @type {number}
    */
-  Ancestors,
+  Ancestors = 0,
 
   /**
    * Предки с корнем.
    * @type {number}
    */
-  AncestorsWithRoot,
+  AncestorsWithRoot = 1,
   /**
    * Потомки.
    * @type {number}
    */
-  Descendants,
+  Descendants = 2,
 
   /**
    * Дети одного родителя.
    * @type {number}
    */
-  Siblings
+  Siblings = 3
 }

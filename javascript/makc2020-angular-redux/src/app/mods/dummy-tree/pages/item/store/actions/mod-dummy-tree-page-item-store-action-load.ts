@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Action} from '@ngrx/store';
-import {AppModDummyTreeJobItemGetInput} from '../../../../jobs/item/get/mod-dummy-tree-job-item-get-input';
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 import {AppModDummyTreePageItemEnumActions} from '../../enums/mod-dummy-tree-page-item-enum-actions';
 
 /** Мод "DummyTree". Страницы. Элемент. Хранилище состояния. Действия. Загрузка. */
@@ -12,11 +12,11 @@ export class AppModDummyTreePageItemStoreActionLoad implements Action {
 
   /**
    * Конструктор.
-   * @param {AppModDummyTreeJobItemGetInput} jobItemGetInput
+   * @param {AppCoreCommonModJobTreeItemGetInput} jobItemGetInput
    * Ввод задания на получение элемента.
    */
   constructor(
-    public jobItemGetInput: AppModDummyTreeJobItemGetInput
+    public jobItemGetInput: AppCoreCommonModJobTreeItemGetInput
   ) {
   }
 }

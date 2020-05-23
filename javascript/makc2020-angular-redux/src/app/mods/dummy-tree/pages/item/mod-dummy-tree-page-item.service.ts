@@ -87,7 +87,7 @@ export class AppModDummyTreePageItemService {
 
     return path === this.settings.paths.pathCreate
       ? [path, qs]
-      : [path, parameters.paramId.value, qs];
+      : [path, parameters.paramRootId.value, qs];
   }
 
   /**

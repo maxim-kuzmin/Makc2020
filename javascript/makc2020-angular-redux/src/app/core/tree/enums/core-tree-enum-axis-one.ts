@@ -1,17 +1,17 @@
 // //Author Maxim Kuzmin//makc//
 
-/** Хост. Меню. Дерево. Перечисления. Оси для получения одного узла. */
+/** Ядро. Дерево. Перечисления. Оси для получения одного узла. */
 export enum AppCoreTreeEnumAxisOne {
 
   /**
    * Родитель.
    * @type {number}
    */
-  Parent,
+  Parent = 0,
 
   /**
    * Сам.
    * @type {number}
    */
-  Self
+  Self = 1
 }
