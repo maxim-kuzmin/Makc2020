@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreLocalizationEnumActions} from './enums/core-localization-enum-actions';
 import {AppCoreLocalizationState} from './core-localization-state';
+import {appCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. Локализация. Хранилище состояния. */
 @Injectable({
@@ -19,7 +21,11 @@ export class AppCoreLocalizationStore {
   private readonly stateChanged$: BehaviorSubject<AppCoreLocalizationState>;
 
   /** Конструктор. */
-  constructor() {
+  constructor(
+    private cookieService: CookieService
+  ) {
+    this.state.languageKey = this.cookieService.get(appCoreSettings.hostLangParamName);
+
     this.stateChanged$ = new BehaviorSubject<AppCoreLocalizationState>(this.state);
   }
 
@@ -44,6 +50,8 @@ export class AppCoreLocalizationStore {
 
   /** Запустить действие "Очистка". */
   runActionClear() {
+    this.cookieService.delete(appCoreSettings.hostLangParamName);
+
     this.setState({
       ...this.state,
       action: AppCoreLocalizationEnumActions.Clear,
@@ -56,6 +64,10 @@ export class AppCoreLocalizationStore {
    * @param {string} languageKey Ключ языка.
    */
   runActionLanguageSet(languageKey: string) {
+    if (this.state.languageKey !== languageKey) {
+      this.cookieService.set(appCoreSettings.hostLangParamName, languageKey);
+    }
+
     this.setState({
       ...this.state,
       action: AppCoreLocalizationEnumActions.LanguageSet,

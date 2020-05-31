@@ -14,11 +14,11 @@ export class AppCoreLocalizationService {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationStore} appStore Хранилище состояния.
+   * @param {AppCoreLocalizationStore} appLocalizerStore Хранилище состояния локализатора.
    * @param {TranslateService} extTranslator Переводчик.
    */
   constructor(
-    private appStore: AppCoreLocalizationStore,
+    private appLocalizerStore: AppCoreLocalizationStore,
     private extTranslator: TranslateService
   ) {
   }
@@ -42,18 +42,24 @@ export class AppCoreLocalizationService {
 
   /** Обработчик события запуска приложения. */
   onApplicationStart() {
-    const languageKeys = appCoreLocalizationConfigLanguages.map(x => x.key);
+    let {
+      languageKey
+    } = this.appLocalizerStore.getState();
 
-    this.extTranslator.addLangs(languageKeys);
+    if (!languageKey) {
+      const languageKeys = appCoreLocalizationConfigLanguages.map(x => x.key);
 
-    let languageKey = appCoreLocalizationConfigDefaultLanguage.key;
+      this.extTranslator.addLangs(languageKeys);
 
-    this.extTranslator.setDefaultLang(languageKey);
+      languageKey = appCoreLocalizationConfigDefaultLanguage.key;
 
-    const browserLang = this.extTranslator.getBrowserLang();
+      this.extTranslator.setDefaultLang(languageKey);
 
-    if (this.languageKeyIsAllowed(browserLang)) {
-      languageKey = browserLang;
+      const browserLang = this.extTranslator.getBrowserLang();
+
+      if (this.languageKeyIsAllowed(browserLang)) {
+        languageKey = browserLang;
+      }
     }
 
     this.executeActionLanguageSet(languageKey);
@@ -66,7 +72,7 @@ export class AppCoreLocalizationService {
   executeActionLanguageSet(languageKey: string) {
     this.extTranslator.use(languageKey);
 
-    this.appStore.runActionLanguageSet(languageKey);
+    this.appLocalizerStore.runActionLanguageSet(languageKey);
   }
 
   /**

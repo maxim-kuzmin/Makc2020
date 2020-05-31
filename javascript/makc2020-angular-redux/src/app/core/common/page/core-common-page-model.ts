@@ -8,6 +8,7 @@ import {AppCoreExceptionState} from '@app/core/exception/core-exception-state';
 import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
+import {appCoreSettings} from '@app/core/core-settings';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 
 /** Ядро. Общее. Страница. Модель. */
@@ -44,7 +45,7 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
     this.onGetPageKeyOverAfterViewInit = this.onGetPageKeyOverAfterViewInit.bind(this);
     this.onGetPageKeyOverInit = this.onGetPageKeyOverInit.bind(this);
 
-    const languageKey = this.extRoute.snapshot.queryParamMap.get('lang');
+    const languageKey = this.extRoute.snapshot.queryParamMap.get(appCoreSettings.hostLangParamName);
 
     if (this.appLocalizer.languageKeyIsAllowed(languageKey)) {
       this.appLocalizer.executeActionLanguageSet(languageKey);

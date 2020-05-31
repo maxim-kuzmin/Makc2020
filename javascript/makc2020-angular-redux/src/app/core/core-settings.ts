@@ -8,6 +8,14 @@ import {AppCoreAuthEnumTypes} from '@app/core/auth/enums/core-auth-enum-types';
 export class AppCoreSettings {
 
   /**
+   * API. Имя параметра языка.
+   * @type {string}
+   */
+  get apiLangParamName() {
+    return environment.apiServerLangParamName;
+  }
+
+  /**
    * API. URL.
    * @type {string}
    */
@@ -31,6 +39,15 @@ export class AppCoreSettings {
    */
   get authTypeOidcServerUrl() {
     return environment.identityServerUrl;
+  }
+
+
+  /**
+   * Хост. Имя параметра языка.
+   * @type {string}
+   */
+  get hostLangParamName() {
+    return environment.hostLangParamName;
   }
 
   /**

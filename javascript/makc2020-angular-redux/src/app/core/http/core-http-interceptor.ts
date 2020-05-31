@@ -4,7 +4,7 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
-import {AppCoreSettings} from '@app/core/core-settings';
+import {appCoreSettings, AppCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. HTTP. Перехватчик. */
 @Injectable()
@@ -24,7 +24,7 @@ export class AppCoreHttpInterceptor implements HttpInterceptor {
         headers: request.headers
           .set('Content-Type', 'application/json'),
         params: request.params
-          .set('lang', this.extTranslator.currentLang)
+          .set(appCoreSettings.apiLangParamName, this.extTranslator.currentLang)
       });
 
       if (req.method === 'GET') {

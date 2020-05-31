@@ -3,7 +3,8 @@
 import {Injectable} from '@angular/core';
 import {AuthConfig, JwksValidationHandler, OAuthService} from 'angular-oauth2-oidc';
 import {filter, map} from 'rxjs/operators';
-import {AppCoreSettings} from '@app/core/core-settings';
+import {AppCoreLocalizationStore} from '@app/core/localization/core-localization-store';
+import {appCoreSettings, AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartAuthStore} from '@app/host/parts/auth/host-part-auth-store';
 import {AppCoreAuthEnumTypes} from '../../enums/core-auth-enum-types';
 
@@ -24,11 +25,13 @@ export class AppCoreAuthTypeOidcService {
   /**
    * Конструктор.
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppCoreLocalizationStore} appLocalizerStore Хранилище состояния локализатора.
    * @param {AppCoreSettings} appSettings Настройки.
    * @param {OAuthService} extOauthService Авторизация OAuth 2.0.
    */
   constructor(
     private appAuthStore: AppHostPartAuthStore,
+    private appLocalizerStore: AppCoreLocalizationStore,
     private appSettings: AppCoreSettings,
     private extOauthService: OAuthService
   ) {
@@ -56,6 +59,18 @@ export class AppCoreAuthTypeOidcService {
    * @param {string} returnUrl URL возврата.
    */
   login(returnUrl: string) {
+    const langKey = appCoreSettings.hostLangParamName;
+
+    if (returnUrl.indexOf(`?${langKey}=`) < 0 && returnUrl.indexOf(`&${langKey}=`) < 0) {
+      if (returnUrl.indexOf('?') < 0) {
+        returnUrl += '?';
+      } else {
+        returnUrl += '&';
+      }
+
+      returnUrl += `${langKey}=${this.appLocalizerStore.getState().languageKey}`;
+    }
+
     this.extOauthService.initLoginFlow(encodeURIComponent(returnUrl));
   }
 
