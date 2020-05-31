@@ -49,8 +49,8 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
   /**
    * Конструктор.
    * @param {AppCoreDialogService} appDialog Диалог.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
    * @param {AppModDummyMainPageListService} appModDummyMainPageList Страница "ModDummyMainPageList".
@@ -63,8 +63,8 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    */
   constructor(
     private appDialog: AppCoreDialogService,
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
     private appModDummyMainPageList: AppModDummyMainPageListService,
@@ -77,6 +77,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

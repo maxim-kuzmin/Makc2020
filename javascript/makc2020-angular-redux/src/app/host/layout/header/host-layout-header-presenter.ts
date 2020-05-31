@@ -46,11 +46,15 @@ export class AppHostLayoutHeaderPresenter {
       fieldLanguage
     } = this.view;
 
-    fieldLanguage.setValue(this.model.getLanguageKey(), {emitEvent: false});
-
     this.model.subscribeToEvent(fieldLanguage.valueChanges, this.onLanguageChange);
 
     this.view.build();
+
+    this.model.getLanguageKey$().subscribe(
+      languageKey => {
+        fieldLanguage.setValue(languageKey, {emitEvent: false});
+      }
+    );
   }
 
   /** @type {string} languageKey */

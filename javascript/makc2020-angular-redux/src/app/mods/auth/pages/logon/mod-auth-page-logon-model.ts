@@ -43,9 +43,9 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
    * Конструктор.
    * @param {AppHostPartAuthService} appAuth Аутентификация.
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
+   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreLoggingService} appLogger Регистратор.
-   * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
    * @param {AppModAuthPageRedirectService} appModAuthPageRedirect Страница "ModAuthPageRedirect".
@@ -60,9 +60,9 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
   constructor(
     private appAuth: AppHostPartAuthService,
     private appAuthStore: AppHostPartAuthStore,
+    appExceptionStore: AppCoreExceptionStore,
     appLocalizer: AppCoreLocalizationService,
     appLogger: AppCoreLoggingService,
-    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
     private appModAuthPageRedirect: AppModAuthPageRedirectService,
@@ -76,6 +76,7 @@ export class AppModAuthPageLogonModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

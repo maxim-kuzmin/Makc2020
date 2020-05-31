@@ -6,6 +6,7 @@ import {filter, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
 import {AppCoreExceptionState} from '@app/core/exception/core-exception-state';
 import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
+import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
 
@@ -26,12 +27,14 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
   /**
    * Конструктор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartRouteService} appRoute Маршрут.
    * @param {AppCoreTitleService} appTitle Заголовок.
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   protected constructor(
     private appExceptionStore: AppCoreExceptionStore,
+    private appLocalizer: AppCoreLocalizationService,
     protected appRoute: AppHostPartRouteService,
     appTitle: AppCoreTitleService,
     protected extRoute: ActivatedRoute
@@ -40,6 +43,12 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
 
     this.onGetPageKeyOverAfterViewInit = this.onGetPageKeyOverAfterViewInit.bind(this);
     this.onGetPageKeyOverInit = this.onGetPageKeyOverInit.bind(this);
+
+    const languageKey = this.extRoute.snapshot.queryParamMap.get('lang');
+
+    if (this.appLocalizer.languageKeyIsAllowed(languageKey)) {
+      this.appLocalizer.executeActionLanguageSet(languageKey);
+    }
   }
 
   /**

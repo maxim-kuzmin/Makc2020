@@ -56,7 +56,7 @@ export class AppCoreAuthTypeOidcService {
    * @param {string} returnUrl URL возврата.
    */
   login(returnUrl: string) {
-    this.extOauthService.initLoginFlow(returnUrl);
+    this.extOauthService.initLoginFlow(encodeURIComponent(returnUrl));
   }
 
   /** Выйти из системы. */
@@ -136,6 +136,6 @@ export class AppCoreAuthTypeOidcService {
   }
 
   private onGetReturnUrl(returnUrl: string) {
-    this.appAuthStore.runActionReturnUrlSet(returnUrl);
+    this.appAuthStore.runActionReturnUrlSet(decodeURIComponent(returnUrl));
   }
 }

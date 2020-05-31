@@ -29,8 +29,8 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyMainPageIndexService} appModDummyMainPageIndex Страница "ModDummyMainPageIndex".
    * @param {AppModDummyMainPageItemService} appModDummyMainPageItem Страница "ModDummyMainPageItem".
@@ -41,8 +41,8 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appModDummyMainPageIndex: AppModDummyMainPageIndexService,
     private appModDummyMainPageItem: AppModDummyMainPageItemService,
@@ -54,6 +54,7 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

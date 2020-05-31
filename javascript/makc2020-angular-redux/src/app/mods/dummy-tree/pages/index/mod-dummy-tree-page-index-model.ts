@@ -29,8 +29,8 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModDummyTreePageIndexService} appModDummyTreePageIndex Страница "ModDummyTreePageIndex".
    * @param {AppModDummyTreePageItemService} appModDummyTreePageItem Страница "ModDummyTreePageItem".
@@ -41,8 +41,8 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appModDummyTreePageIndex: AppModDummyTreePageIndexService,
     private appModDummyTreePageItem: AppModDummyTreePageItemService,
@@ -54,6 +54,7 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

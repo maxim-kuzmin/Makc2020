@@ -28,8 +28,8 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppRootPageAdministrationService} appRootPageAdministration
    * @param {AppRootPageIndexService} appRootPageIndex Страница "RootPageIndex".
@@ -40,8 +40,8 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appRootPageAdministration: AppRootPageAdministrationService,
     private appRootPageIndex: AppRootPageIndexService,
@@ -53,6 +53,7 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

@@ -38,8 +38,8 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartAuthStore} appAuthStore Хранилище состояния аутентификации.
    * @param {AppCoreAuthTypeOidcService} appAuthTypeOidc Аутентификация типа OIDC.
    * @param {AppCoreAuthTypeOidcStore} appAuthTypeOidcStore Хранилище состояния аутентификации типа OIDC.
@@ -54,8 +54,8 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appAuthStore: AppHostPartAuthStore,
     private appAuthTypeOidc: AppCoreAuthTypeOidcService,
     private appAuthTypeOidcStore: AppCoreAuthTypeOidcStore,
@@ -71,6 +71,7 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

@@ -52,11 +52,8 @@ export class AppCoreLocalizationService {
 
     const browserLang = this.extTranslator.getBrowserLang();
 
-    for (const lang of languageKeys) {
-      if (lang === browserLang) {
-        languageKey = browserLang;
-        break;
-      }
+    if (this.languageKeyIsAllowed(browserLang)) {
+      languageKey = browserLang;
     }
 
     this.executeActionLanguageSet(languageKey);
@@ -70,5 +67,27 @@ export class AppCoreLocalizationService {
     this.extTranslator.use(languageKey);
 
     this.appStore.runActionLanguageSet(languageKey);
+  }
+
+  /**
+   * Получить признак того, что ключ языка является разрешённым.
+   * @param {string} languageKey Ключ языка.
+   * @returns {boolean}
+   */
+  languageKeyIsAllowed(languageKey: string): boolean {
+    let result = false;
+
+    if (languageKey) {
+      const languageKeys = appCoreLocalizationConfigLanguages.map(x => x.key);
+
+      for (const lang of languageKeys) {
+        if (lang === languageKey) {
+          result = true;
+          break;
+        }
+      }
+    }
+
+    return result;
   }
 }

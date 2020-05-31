@@ -28,8 +28,8 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppModAuthPageIndexService} appModAuthPageIndex Страница "ModAuthPageIndex".
    * @param {AppModAuthPageLogonService} appModAuthPageLogon Страница "ModAuthPageLogon".
@@ -40,8 +40,8 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appModAuthPageIndex: AppModAuthPageIndexService,
     private appModAuthPageLogon: AppModAuthPageLogonService,
@@ -53,6 +53,7 @@ export class AppModAuthPageIndexModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

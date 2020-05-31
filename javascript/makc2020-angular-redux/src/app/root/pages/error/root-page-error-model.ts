@@ -26,8 +26,8 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
-   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
+   * @param {AppCoreLocalizationService} appLocalizer Локализатор.
    * @param {AppHostPartMenuService} appMenu Меню.
    * @param {AppRootPageErrorService} appRootPageError Страница "RootPageError".
    * @param {AppHostPartRouteService} appRoute Маршрут.
@@ -36,8 +36,8 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
-    appLocalizer: AppCoreLocalizationService,
     appExceptionStore: AppCoreExceptionStore,
+    appLocalizer: AppCoreLocalizationService,
     private appMenu: AppHostPartMenuService,
     private appRootPageError: AppRootPageErrorService,
     appRoute: AppHostPartRouteService,
@@ -47,6 +47,7 @@ export class AppRootPageErrorModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute

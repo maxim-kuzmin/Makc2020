@@ -3,7 +3,7 @@
 import {FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonUnsubscribable} from '@app/core/common/core-common-unsubscribable';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreLocalizationStore} from '@app/core/localization/core-localization-store';
@@ -73,10 +73,12 @@ export class AppHostLayoutHeaderModel extends AppCoreCommonUnsubscribable {
 
   /**
    * Получить ключ языка.
-   * @type {string}
+   * @returns {Observable<string>} Поток значений ключа языка.
    */
-  getLanguageKey(): string {
-    return this.appLocalizerStore.getState().languageKey;
+  getLanguageKey$(): Observable<string> {
+    return this.appLocalizerStore.getState$(this.unsubscribe$).pipe(
+      map(state => state.languageKey)
+    );
   }
 
   /**

@@ -40,9 +40,9 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
    * @param {ActivatedRoute} extRoute Маршрут.
    */
   constructor(
+    appExceptionStore: AppCoreExceptionStore,
     appLocalizer: AppCoreLocalizationService,
     private appLocalizerStore: AppCoreLocalizationStore,
-    appExceptionStore: AppCoreExceptionStore,
     private appMenu: AppHostPartMenuService,
     private appRootPageContacts: AppRootPageContactsService,
     appRoute: AppHostPartRouteService,
@@ -52,6 +52,7 @@ export class AppRootPageContactsModel extends AppCoreCommonPageModel {
   ) {
     super(
       appExceptionStore,
+      appLocalizer,
       appRoute,
       appTitle,
       extRoute
