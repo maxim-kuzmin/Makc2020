@@ -47,22 +47,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
         /// </summary>
         public string ExternalLoginScheme => IsExternalLoginOnly ? ExternalProviders?.SingleOrDefault()?.AuthenticationScheme : null;
 
-        #endregion Properties
-
-        #region Constructors
-
         /// <summary>
-        /// Конструктор.
+        /// URL перенаправления.
         /// </summary>
-        /// <param name="loginMethod">Способ входа в систему.</param>
-        public ModIdentityServerWebMvcPartAccountCommonJobLoginOutput(
-            ModIdentityServerBaseEnumLoginMethods loginMethod
-            )
-        {
-            LoginMethod = loginMethod;
-        }
+        public string RedirectUrl { get; set; }
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Public methods
 
@@ -74,18 +64,19 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
         /// <param name="textLdap">Текст для метода "LDAP".</param>
         /// <returns></returns>
         public IEnumerable<SelectListItem> CreateLoginMethodSelectListItems(
-            string textWindows,
+            //string textWindows,
             string textLocal,
-            string textLdap
-            )
+            string textLdap,
+            string textWindowsDomain
+        )
         {
             return new[]
             {
-                new SelectListItem(
-                    textWindows,
-                    ModIdentityServerBaseEnumLoginMethods.Windows.ToString(),
-                    LoginMethod == ModIdentityServerBaseEnumLoginMethods.Windows
-                    ),
+                //new SelectListItem(
+                //    textWindows,
+                //    ModIdentityServerBaseEnumLoginMethods.WindowsMachine.ToString(),
+                //    LoginMethod == ModIdentityServerBaseEnumLoginMethods.WindowsMachine
+                //    ),
                 new SelectListItem(
                     textLocal,
                     ModIdentityServerBaseEnumLoginMethods.Local.ToString(),
@@ -95,6 +86,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
                     textLdap,
                     ModIdentityServerBaseEnumLoginMethods.Ldap.ToString(),
                     LoginMethod == ModIdentityServerBaseEnumLoginMethods.Ldap
+                    ),
+                new SelectListItem(
+                    textWindowsDomain,
+                    ModIdentityServerBaseEnumLoginMethods.WindowsDomain.ToString(),
+                    LoginMethod == ModIdentityServerBaseEnumLoginMethods.WindowsDomain
                     )
             };
         }

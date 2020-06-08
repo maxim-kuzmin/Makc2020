@@ -53,31 +53,23 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Вход в систему. Получение.
         /// </summary>
         [HttpGet("Login")]
-        public async Task<IActionResult> LoginGet(string returnUrl)
+        public async Task<IActionResult> LoginGet(string returnUrl, string lang, string isFirstLogin)
         {
             MyModel.Init(HostWebState.Create(HttpContext));
 
-            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginResult();
+            var output = await GetLoginGetOutput(returnUrl, lang, isFirstLogin)
+                .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var input = new ModIdentityServerWebMvcPartAccountJobLoginGetInput
+            var redirectUrl = output.RedirectUrl;
+
+            if (string.IsNullOrWhiteSpace(redirectUrl))
             {
-                ReturnUrl = returnUrl
-            };
-
-            var (execute, onSuccess, onError) = MyModel.BuildActionLoginGet(input);
-
-            try
-            {
-                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
-
-                onSuccess(result);
+                return View("~/Views/Account/Login.cshtml", output);
             }
-            catch (Exception ex)
+            else
             {
-                onError(ex, result);
+                return Redirect(redirectUrl);
             }
-
-            return View("~/Views/Account/Login.cshtml", result.Data);
         }
 
         /// <summary>
@@ -97,7 +89,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             var produceOutput = await GetLoginPostProduceOutput(model)
                 .CoreBaseExtTaskWithCurrentCulture(false);
-            
+
             return processOutput.Status switch
             {
                 ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index =>
@@ -111,6 +103,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                         }),
                 ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return =>
                     Redirect(produceOutput.ReturnUrl),
+                ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows =>
+                    Challenge(ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows),
                 _ =>
                     View("~/Views/Account/Login.cshtml", produceOutput),
             };
@@ -124,32 +118,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         {
             MyModel.Init(HostWebState.Create(HttpContext));
 
-            var result = new ModIdentityServerWebMvcPartAccountJobLogoutGetResult();
-
-            var input = new ModIdentityServerWebMvcPartAccountJobLogoutGetInput
-            {
-                LogoutId = logoutId,
-                User = User
-            };
-
-            var (execute, onSuccess, onError) = MyModel.BuildActionLogoutGet(input);
-
-            try
-            {
-                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
-
-                onSuccess(result);
-            }
-            catch (Exception ex)
-            {
-                onError(ex, result);
-            }
+            var output = await GetLogoutGetOutput(logoutId).CoreBaseExtTaskWithCurrentCulture(false);
 
             //return View("~/Views/Account/Logout.cshtml", result.Data);  // страница подтверждения выхода
-            return await LogoutPost(new ModIdentityServerWebMvcPartAccountViewLogoutModel()
+
+            var model = new ModIdentityServerWebMvcPartAccountViewLogoutModel
             {
-                LogoutId = result.Data.LogoutId
-            }).CoreBaseExtTaskWithCurrentCulture(false);
+                LogoutId = output.LogoutId
+            };
+
+            return await LogoutPost(model).CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         /// <summary>
@@ -171,8 +149,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             return processOutput.Status switch
             {
-                 ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses.LoggedOut =>
-                    View("~/Views/Account/LoggedOut.cshtml", produceOutput),
+                ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses.LoggedOut =>
+                   View("~/Views/Account/LoggedOut.cshtml", produceOutput),
                 _ =>
                     ((Func<SignOutResult>)(() =>
                     {
@@ -181,14 +159,15 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                         // complete our single sign-out processing.
                         var redirectUri = Url.Action(
                             "LogoutGet",
-                            new 
+                            new
                             {
-                                logoutId = produceOutput.LogoutId 
+                                logoutId = produceOutput.LogoutId
                             });
 
                         // this triggers a redirect to the external provider for sign-out
                         return SignOut(
-                            new AuthenticationProperties {
+                            new AuthenticationProperties
+                            {
                                 RedirectUri = redirectUri
                             },
                             produceOutput.ExternalAuthenticationScheme
@@ -206,6 +185,42 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #endregion Public methods
 
         #region Private methods
+
+        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> GetLoginGetOutput(
+            string returnUrl,
+            string lang,
+            string isFirstLogin
+            )
+        {
+            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginResult();
+
+            var input = new ModIdentityServerWebMvcPartAccountJobLoginGetInput
+            {
+                HttpRequest = Request,
+                LanguageKey = lang,
+                ReturnUrl = returnUrl
+            };
+
+            if (!string.IsNullOrWhiteSpace(isFirstLogin))
+            {
+                input.IsFirstLogin = isFirstLogin == "true";
+            }
+
+            var (execute, onSuccess, onError) = MyModel.BuildActionLoginGet(input);
+
+            try
+            {
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
+
+                onSuccess(result);
+            }
+            catch (Exception ex)
+            {
+                onError(ex, result);
+            }
+
+            return result.Data ?? new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput();
+        }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput> GetLoginPostProcessOutput(
             ModIdentityServerWebMvcPartAccountViewLoginModel model,
@@ -265,6 +280,32 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             return result.Data;
+        }
+
+        private async Task<ModIdentityServerWebMvcPartAccountJobLogoutGetOutput> GetLogoutGetOutput(string logoutId)
+        {
+            var result = new ModIdentityServerWebMvcPartAccountJobLogoutGetResult();
+
+            var input = new ModIdentityServerWebMvcPartAccountJobLogoutGetInput
+            {
+                LogoutId = logoutId,
+                User = User
+            };
+
+            var (execute, onSuccess, onError) = MyModel.BuildActionLogoutGet(input);
+
+            try
+            {
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
+
+                onSuccess(result);
+            }
+            catch (Exception ex)
+            {
+                onError(ex, result);
+            }
+
+            return result.Data ?? new ModIdentityServerWebMvcPartAccountJobLogoutGetOutput();
         }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProcessOutput> GetLogoutPostProcessOutput(

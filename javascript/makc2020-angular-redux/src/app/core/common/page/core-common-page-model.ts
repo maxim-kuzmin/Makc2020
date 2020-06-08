@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
@@ -42,14 +42,10 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
   ) {
     super(appTitle);
 
+    this.onGetIsFirstLoginOverInit = this.onGetIsFirstLoginOverInit.bind(this);
+    this.onGetLanguageKeyOverInit = this.onGetLanguageKeyOverInit.bind(this);
     this.onGetPageKeyOverAfterViewInit = this.onGetPageKeyOverAfterViewInit.bind(this);
     this.onGetPageKeyOverInit = this.onGetPageKeyOverInit.bind(this);
-
-    const languageKey = this.extRoute.snapshot.queryParamMap.get(appCoreSettings.hostLangParamName);
-
-    if (this.appLocalizer.languageKeyIsAllowed(languageKey)) {
-      this.appLocalizer.executeActionLanguageSet(languageKey);
-    }
   }
 
   /**
@@ -80,12 +76,44 @@ export abstract class AppCoreCommonPageModel extends AppCoreCommonTitlable {
 
   /** Обработчик события инициализации. */
   onInit() {
+    this.appRoute.getIsFirstLogin$(
+      this.extRoute,
+      this.unsubscribe$
+    ).subscribe(
+      this.onGetIsFirstLoginOverInit
+    );
+
+    this.appRoute.getLanguageKey$(
+      this.extRoute,
+      this.unsubscribe$
+    ).subscribe(
+      this.onGetLanguageKeyOverInit
+    );
+
     this.appRoute.getPageKey$(
       this.extRoute,
       this.unsubscribe$
     ).subscribe(
       this.onGetPageKeyOverInit
     );
+  }
+
+  /**
+   * Обработчик события получения признака первого входа в систему.
+   * @param {boolean} isFirstLogin Признак первого входа в систему.
+   */
+  protected onGetIsFirstLoginOverInit(isFirstLogin: boolean) {
+    appCoreSettings.isFirstLogin = isFirstLogin;
+  }
+
+  /**
+   * Обработчик события получения ключа языка при инициализации.
+   * @param {string} languageKey Ключ языка.
+   */
+  protected onGetLanguageKeyOverInit(languageKey: string) {
+    if (this.appLocalizer.languageKeyIsAllowed(languageKey)) {
+      this.appLocalizer.executeActionLanguageSet(languageKey);
+    }
   }
 
   /**

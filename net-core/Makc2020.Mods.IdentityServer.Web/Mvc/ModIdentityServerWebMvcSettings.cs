@@ -19,6 +19,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
         /// </summary>
         public const string ACTION_Login = "LoginPost";
 
+        /// <summary>
+        /// Схема аутентификации "Windows".
+        /// </summary>
+        public const string AUTHENTICATION_SCHEME_Windows = "Windows";
+
         #endregion Constants
     }
 }

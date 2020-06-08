@@ -8,6 +8,12 @@ import {AppCoreAuthEnumTypes} from '@app/core/auth/enums/core-auth-enum-types';
 export class AppCoreSettings {
 
   /**
+   * Признак первого входа.
+   * @type {boolean}
+   */
+  isFirstLogin = true;
+
+  /**
    * API. Имя параметра языка.
    * @type {string}
    */
@@ -41,6 +47,21 @@ export class AppCoreSettings {
     return environment.identityServerUrl;
   }
 
+  /**
+   * Хост. Имя параметра признака первого входа в систему.
+   * @type {string}
+   */
+  get hostIsFirstLoginParamName() {
+    return environment.hostIsFirstLoginParamName;
+  }
+
+  /**
+   * Хост. Значение параметра признака первого входа в систему.
+   * @type {string}
+   */
+  get hostIsFirstLoginParamValue() {
+    return environment.hostIsFirstLoginParamValue;
+  }
 
   /**
    * Хост. Имя параметра языка.

@@ -10,6 +10,7 @@ using IdentityServer4.Stores;
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Base.Logging;
+using Makc2020.Core.Web.Ext;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Base.Parts.Ldap;
@@ -31,13 +32,20 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Logout;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Novell.Directory.Ldap;
 using System;
+using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 {
@@ -57,7 +65,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// <summary>
         /// Конструктор.
         /// </summary>        
-        /// <param name="configSettings">Конфигурационные настройки.</param>        
+        /// <param name="configSettings">Конфигурационные настройки.</param> 
         public ModIdentityServerWebMvcPartAccountService(
             IModIdentityServerWebMvcPartAccountConfigSettings configSettings
             )
@@ -80,11 +88,28 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         {
             return ProduceLogin(
                 input.ReturnUrl,
-                ModIdentityServerBaseEnumLoginMethods.Windows,
+                ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
                 input.Interaction,
                 input.SchemeProvider,
                 input.СlientStore
                 );
+
+            ////makc//!!!//>//
+            //if (input.IsFirstLogin.HasValue)
+            //{
+            //    return ProduceLogin(
+            //        input.ReturnUrl,
+            //        ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
+            //        input.Interaction,
+            //        input.SchemeProvider,
+            //        input.СlientStore
+            //        );
+            //}
+            //else
+            //{
+            //    return ProcessLoginGet(input.ReturnUrl, input.HttpRequest);
+            //}
+            ////makc//!!!//<//
         }
 
         /// <summary>
@@ -96,42 +121,54 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountJobLoginPostProcessInput input
         )
         {
-            var result = new ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput();
-
-            if (input.Model.LoginMethod == ModIdentityServerBaseEnumLoginMethods.Ldap)
+            return new ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput
             {
-                result.Status = await ProcessLoginLPostLdap(
-                    input.Model,
-                    input.Action,
-                    input.Events,
-                    input.ModelState,
-                    input.UrlHelper,
-                    input.UserManager,
-                    input.Interaction,
-                    input.СlientStore,
-                    input.HttpContext,
-                    input.RoleManager,
-                    input.Logger,
-                    input.JobLdapLogin,
-                    input.JobUserEntityCreate
-                    ).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-            else
-            {
-                result.Status = await ProcessLoginPostLocal(
-                    input.Model,
-                    input.Action,
-                    input.Events,
-                    input.ModelState,
-                    input.SignInManager,
-                    input.UrlHelper,
-                    input.UserManager,
-                    input.Interaction,
-                    input.СlientStore
-                    ).CoreBaseExtTaskWithCurrentCulture(false);
-            }
-
-            return result;
+                Status = input.Model.LoginMethod switch
+                {
+                    ModIdentityServerBaseEnumLoginMethods.Ldap =>
+                        await ProcessLoginPostLdap(
+                            input.Model,
+                            input.Action,
+                            input.Events,
+                            input.ModelState,
+                            input.UrlHelper,
+                            input.UserManager,
+                            input.Interaction,
+                            input.СlientStore,
+                            input.HttpContext,
+                            input.RoleManager,
+                            input.Logger,
+                            input.JobLdapLogin,
+                            input.JobUserEntityCreate
+                            ).CoreBaseExtTaskWithCurrentCulture(false),
+                    ModIdentityServerBaseEnumLoginMethods.WindowsDomain =>
+                        await ProcessLoginLPostWindowsDomain(
+                            input.Model,
+                            input.Action,
+                            input.Events,
+                            input.ModelState,
+                            input.UrlHelper,
+                            input.UserManager,
+                            input.Interaction,
+                            input.СlientStore,
+                            input.HttpContext,
+                            input.RoleManager,
+                            input.Logger,
+                            input.JobUserEntityCreate
+                            ).CoreBaseExtTaskWithCurrentCulture(false),
+                    _ => await ProcessLoginPostLocal(
+                            input.Model,
+                            input.Action,
+                            input.Events,
+                            input.ModelState,
+                            input.SignInManager,
+                            input.UrlHelper,
+                            input.UserManager,
+                            input.Interaction,
+                            input.СlientStore
+                            ).CoreBaseExtTaskWithCurrentCulture(false)
+                }
+            };
         }
 
         /// <summary>
@@ -169,7 +206,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         }
 
         /// <summary>
-        /// Обработать отправку данных входа из системы.
+        /// Обработать отправку данных выхода из системы.
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с выводом.</returns>
@@ -221,7 +258,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             UserManager<DataEntityObjectUser> userManager,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore
-            )
+        )
         {
             // check if we are in the context of an authorization request
             var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl)
@@ -230,32 +267,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             // the user clicked the "cancel" button
             if (action != ModIdentityServerWebMvcSettings.ACTION_Login)
             {
-                if (context != null)
-                {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
-                    await interaction.GrantConsentAsync(context, ConsentResponse.Denied)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    if (isPckeRequired)
-                    {
-                        // if the client is PKCE then we assume it's native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
-                    }
-
-                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
-                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
-                }
+                return await CheckContext(context, clientStore, interaction)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
             }
             else if (modelState.IsValid)
             {
@@ -326,7 +339,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default;
         }
 
-        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginLPostLdap(
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginPostLdap(
             ModIdentityServerWebMvcPartAccountViewLoginModel model,
             string action,
             IEventService events,
@@ -346,140 +359,238 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            // the user clicked the "cancel" button
             if (action != ModIdentityServerWebMvcSettings.ACTION_Login)
             {
-                if (context != null)
-                {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
-                    await interaction.GrantConsentAsync(context, ConsentResponse.Denied)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    if (isPckeRequired)
-                    {
-                        // if the client is PKCE then we assume it's native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
-                    }
-
-                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
-                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
-                }
+                return await CheckContext(context, clientStore, interaction).CoreBaseExtTaskWithCurrentCulture(false);
             }
             else if (modelState.IsValid)
             {
-                var ldapUser = LoginViaLdap(logger, jobLdapLogin, model.Username, model.Username);
+                var ldapUser = LoginViaLdap(logger, jobLdapLogin, model.Username, model.Password);
 
-                if (ldapUser != null)
+                if (ldapUser == null)
                 {
-                    var user = await userManager.FindByNameAsync(ldapUser.UserName)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
+                    throw new ModIdentityServerBaseExceptionLdapLoginFailed();
+                }
 
-                    if (user == null)
+                var connection = ldapUser.LdapConnection;
+
+                var groups = new List<string>();
+
+                var port = ldapUser.LdapConnection.Port;
+                var host = ldapUser.LdapConnection.Host;
+
+                var dcArray = host.Split('.').TakeLast(2).ToArray();
+
+                connection.Connect(host, port);
+
+                connection.Bind(LdapConnection.LdapV3, ldapUser.UserName, model.Password);
+
+                if (connection.Bound)
+                {
+                    ILdapSearchResults searchResults = ldapUser.LdapConnection.Search(
+                        $"DC={dcArray[0]},DC={dcArray[1]}", //You can use String.Empty for all domain search.
+                        LdapConnection.ScopeSub,//Use SUB
+                        $"(sAMAccountName={model.Username})",
+                        null, // no specified attributes
+                        false // return attr and value
+                    );
+
+                    while (searchResults.HasMore())
                     {
-                        // this might be where you might initiate a custom workflow for user registration
-                        // in this sample we don't show how that would be done, as our sample implementation
-                        // simply auto-provisions new external user
-                        user = await AutoProvisionUserAsync(ldapUser,
-                            logger,
-                            jobUserEntityCreate,
-                            roleManager,
-                            userManager
-                        ).CoreBaseExtTaskWithCurrentCulture(false);
-                    }
-
-                    AuthenticationProperties props = null;
-
-                    if (model.RememberLogin)
-                    {
-                        props = new AuthenticationProperties
+                        try
                         {
-                            IsPersistent = true
-                        };
-                    };
-
-                    // issue authentication cookie with subject ID and username
-                    await httpContext.SignInAsync(user.Id.ToString(), user.UserName, props)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    await events.RaiseAsync(
-                        new UserLoginSuccessEvent(
-                            user.UserName,
-                            user.Id.ToString(),
-                            user.UserName,
-                            clientId: context?.ClientId
-                        )
-                    ).CoreBaseExtTaskWithCurrentCulture(false);
-
-                    if (context != null)
-                    {
-                        var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
-                            .CoreBaseExtTaskWithCurrentCulture(false);
-
-                        if (isPckeRequired)
-                        {
-                            // if the client is PKCE then we assume it's native, so this change in how to
-                            // return the response is for better UX for the end user.
-                            return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
+                            var nextEntry = searchResults.Next();
+                            nextEntry.GetAttributeSet();
+                            var groupString = nextEntry.GetAttribute("memberOf").StringValue;
+                            var pattern = @"CN=([A-Za-zА-Яа-я_\s]*),";
+                            var matchesGroup = Regex.Matches(groupString, pattern);
+                            groups.Add(matchesGroup.FirstOrDefault()?.Groups[1].Value);
                         }
-
-                        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                    }
-
-                    // request for a local page
-                    if (urlHelper.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                    }
-                    else if (string.IsNullOrEmpty(model.ReturnUrl))
-                    {
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
-                    }
-                    else
-                    {
-                        // user might have clicked on a malicious link - should be logged
-                        throw new ModIdentityServerBaseExceptionInvalidReturnUrl();
+                        catch
+                        {
+                            continue;
+                        }
                     }
                 }
 
-                await events.RaiseAsync(
-                    new UserLoginFailureEvent(
-                        model.Username,
-                        "invalid credentials",
-                        clientId: context?.ClientId
-                        )
-                    ).CoreBaseExtTaskWithCurrentCulture(false);
-
-                throw new ModIdentityServerBaseExceptionLogin();
+                return await ProcessLoginPostActiveDirectoryKind(ldapUser.UserName,
+                    groups,
+                    model,
+                    events,
+                    urlHelper,
+                    userManager,
+                    clientStore,
+                    httpContext,
+                    roleManager,
+                    logger,
+                    jobUserEntityCreate,
+                    context);
             }
 
             return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default;
         }
 
+        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> ProcessLoginGet(string returnUrl, HttpRequest httpRequest)
+        {
+            var displayUrl = httpRequest.GetDisplayUrl();
+            var encodedUrl = httpRequest.GetEncodedUrl();
+
+            /*
+            /connect/authorize/callback
+                ?response_type=id_token%20token
+                &client_id=SrtdbWebClient
+                &state=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx;%252F%253Fcore--lang%253Dru%2526core--is-first-login%253Dtrue
+                &redirect_uri=http%3A%2F%2Flocalhost%3A4203%2Fmods%2Fauth%2Fredirect
+                &scope=offline_access%20openid%20SrtdbWebApi
+                &nonce=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx
+            */
+
+            var oldUri = new Uri(new Uri("http://fake"), returnUrl);
+
+            var oldQs = HttpUtility.ParseQueryString(oldUri.Query);
+
+            var oldQsNonce = oldQs["nonce"];
+            var oldQsState = oldQs["state"];
+
+            var oldState = HttpUtility.UrlDecode(oldQsState.Substring(oldQsNonce.Length + 1));
+
+            var oldStateUri = new Uri(new Uri("http://fake"), oldState);
+
+            var oldStateQs = HttpUtility.ParseQueryString(oldStateUri.Query);
+
+            var oldStateQsIsFirstLogin = oldStateQs["core--is-first-login"];
+            var oldStateQsLang = oldStateQs["core--lang"];
+
+            oldStateQs.Remove("core--is-first-login");
+
+            var newState = HttpUtility.UrlEncode($"{oldStateUri.LocalPath}{oldStateQs.CoreWebExtConvertToQueryString()}");
+
+            var newQsState = $"{oldQsNonce};{newState}";
+
+            oldQs["state"] = newQsState;
+
+            var newQuery = oldQs.CoreWebExtConvertToQueryString(new[] { "response_type", "state", "scope" });
+
+            var newUrl = $"{oldUri.LocalPath}{newQuery}";
+
+            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput
+            {
+                ReturnUrl = newUrl
+            };
+
+            return await Task.FromResult(result).CoreBaseExtTaskWithCurrentCulture(false);
+        }
+
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginLPostWindowsDomain(
+            ModIdentityServerWebMvcPartAccountViewLoginModel model,
+            string action,
+            IEventService events,
+            ModelStateDictionary modelState,
+            IUrlHelper urlHelper,
+            UserManager<DataEntityObjectUser> userManager,
+            IIdentityServerInteractionService interaction,
+            IClientStore clientStore,
+            HttpContext httpContext,
+            RoleManager<DataEntityObjectRole> roleManager,
+            CoreBaseLoggingService logger,
+            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate
+            )
+        {
+            // check if we are in the context of an authorization request
+            var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl)
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            modelState.Clear();
+
+            if (action != ModIdentityServerWebMvcSettings.ACTION_Login)
+            {
+                return await CheckContext(context, clientStore, interaction).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+            else if (modelState.IsValid)
+            {
+                // see if windows auth has already been requested and succeeded
+                var result = await httpContext.AuthenticateAsync(
+                    ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (result?.Principal is WindowsPrincipal)
+                {
+                    var groups = GetAdGroups(result.Principal.Identity.Name);
+
+                    return await ProcessLoginPostActiveDirectoryKind(result.Principal.Identity.Name,
+                        groups,
+                        model,
+                        events,
+                        urlHelper,
+                        userManager,
+                        clientStore,
+                        httpContext,
+                        roleManager,
+                        logger,
+                        jobUserEntityCreate,
+                        context
+                        );
+                }
+
+                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows;
+            }
+
+            return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default;
+        }
+
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> CheckContext(
+            AuthorizationRequest context,
+            IClientStore clientStore,
+            IIdentityServerInteractionService interaction
+            )
+        {
+            if (context != null)
+            {
+                // if the user cancels, send a result back into IdentityServer as if they 
+                // denied the consent (even if this client does not require consent).
+                // this will send back an access denied OIDC error response to the client.
+                await interaction.GrantConsentAsync(context, ConsentResponse.Denied)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                if (isPckeRequired)
+                {
+                    // if the client is PKCE then we assume it's native, so this change in how to
+                    // return the response is for better UX for the end user.
+                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
+                }
+
+                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
+            }
+            else
+            {
+                // since we don't have a valid context, then we just go back to the home page
+                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
+            }
+        }
+
         private async Task<DataEntityObjectUser> AutoProvisionUserAsync(
-            HostBasePartLdapUser user,
+            string userName,
+            string fullName,
+            string password,
+            IEnumerable<string> roleNames,
             CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
             RoleManager<DataEntityObjectRole> roleManager,
             UserManager<DataEntityObjectUser> userManager
-            )
+        )
         {
             var input = new HostBasePartAuthJobUserEntityCreateInput
             {
                 RoleManager = roleManager,
                 UserManager = userManager,
-                UserName = user.UserName
+                UserName = userName,
+                FullName = fullName,
+                RoleNames = roleNames,
+                Password = password
             };
 
             var execResult = await CreateUserEntity(logger, jobUserEntityCreate, input)
@@ -497,7 +608,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             CoreBaseLoggingService logger,
             HostBasePartAuthJobUserEntityCreateService job,
             HostBasePartAuthJobUserEntityCreateInput input
-        )
+            )
         {
             var result = new CoreBaseExecutionResultWithData<DataEntityObjectUser>();
 
@@ -513,6 +624,104 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             return result;
+        }
+
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginPostActiveDirectoryKind(
+            string ldapUserName,
+            List<string> groups,
+            ModIdentityServerWebMvcPartAccountViewLoginModel model,
+            IEventService events,
+            IUrlHelper urlHelper,
+            UserManager<DataEntityObjectUser> userManager,
+            IClientStore clientStore,
+            HttpContext httpContext,
+            RoleManager<DataEntityObjectRole> roleManager,
+            CoreBaseLoggingService logger,
+            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
+            AuthorizationRequest context
+            )
+        {
+            if (ldapUserName != null)
+            {
+                var user = await userManager.FindByNameAsync(ldapUserName)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (groups == null)
+                {
+                    throw new ModIdentityServerBaseExceptionLdapUserHasNotGroups();
+                }
+
+                AuthenticationProperties props = null;
+
+                if (model.RememberLogin)
+                {
+                    props = new AuthenticationProperties
+                    {
+                        IsPersistent = true
+                    };
+                }
+
+                var userRoles = await userManager.GetRolesAsync(user).CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (!userRoles.Any())
+                {
+                    throw new ModIdentityServerBaseExceptionLdapLoginFailed();
+                }
+
+                // issue authentication cookie with subject ID and username
+                await httpContext.SignInAsync(user.Id.ToString(), user.UserName, props)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                await events.RaiseAsync(
+                    new UserLoginSuccessEvent(
+                        user.UserName,
+                        user.Id.ToString(),
+                        user.UserName,
+                        clientId: context?.ClientId
+                    )
+                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (context != null)
+                {
+                    var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
+                        .CoreBaseExtTaskWithCurrentCulture(false);
+
+                    if (isPckeRequired)
+                    {
+                        // if the client is PKCE then we assume it's native, so this change in how to
+                        // return the response is for better UX for the end user.
+                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
+                    }
+
+                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
+                }
+
+                // request for a local page
+                if (urlHelper.IsLocalUrl(model.ReturnUrl))
+                {
+                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
+                }
+                else if (string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
+                }
+                else
+                {
+                    // user might have clicked on a malicious link - should be logged
+                    throw new ModIdentityServerBaseExceptionInvalidReturnUrl();
+                }
+            }
+
+            await events.RaiseAsync(
+                new UserLoginFailureEvent(
+                    model.Username,
+                    "invalid credentials",
+                    clientId: context?.ClientId
+                    )
+                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+            throw new ModIdentityServerBaseExceptionLogin();
         }
 
         private HostBasePartLdapUser LoginViaLdap(
@@ -555,8 +764,9 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var context = await interaction.GetAuthorizationContextAsync(returnUrl)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput(loginMethod)
+            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput
             {
+                LoginMethod = loginMethod,
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint
             };
@@ -591,9 +801,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                     .CoreBaseExtTaskWithCurrentCulture(false);
 
                 var providers = schemes.Where(x =>
-                        x.DisplayName != null
-                        ||
-                        x.Name.Equals(ConfigSettings.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase)
+                    x.DisplayName != null
+                    ||
+                    x.Name.Equals(
+                        ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows,
+                        StringComparison.OrdinalIgnoreCase
+                        )
                     ).Select(x =>
                         new ModIdentityServerWebMvcPartAccountExternalProvider
                         {
@@ -628,6 +841,30 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             return result;
+        }
+
+        private List<string> GetAdGroups(string name)
+        {
+            List<string> groups = null;
+
+            try
+            {
+                PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
+
+                UserPrincipal userP = UserPrincipal.FindByIdentity(ctx, name);
+
+                if (userP != null)
+                {
+                    var principals = userP.GetAuthorizationGroups();
+
+                    groups = principals.Select(g => g.Name).ToList();
+                }
+            }
+            catch
+            {
+            }
+
+            return groups;
         }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLogoutGetOutput> ProduceLogoutGet(
@@ -718,10 +955,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var context = await interaction.GetLogoutContextAsync(logoutId)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
+            var referer = httpContext.Request.Headers["Referer"].FirstOrDefault();
+
             var result = new ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput
             {
                 AutomaticRedirectAfterSignOut = ConfigSettings.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = context?.PostLogoutRedirectUri,
+                PostLogoutRedirectUri = context?.PostLogoutRedirectUri ?? referer,
                 ClientName = string.IsNullOrEmpty(context?.ClientName) ? context?.ClientId : context?.ClientName,
                 SignOutIframeUrl = context?.SignOutIFrameUrl,
                 LogoutId = logoutId
