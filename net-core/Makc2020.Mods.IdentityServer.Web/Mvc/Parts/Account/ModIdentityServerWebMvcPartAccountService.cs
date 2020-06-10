@@ -438,10 +438,10 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             /*
             /connect/authorize/callback
                 ?response_type=id_token%20token
-                &client_id=SrtdbWebClient
+                &client_id=Makc2020WebClient
                 &state=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx;%252F%253Fcore--lang%253Dru%2526core--is-first-login%253Dtrue
                 &redirect_uri=http%3A%2F%2Flocalhost%3A4203%2Fmods%2Fauth%2Fredirect
-                &scope=offline_access%20openid%20SrtdbWebApi
+                &scope=offline_access%20openid%20Makc2020WebApi
                 &nonce=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx
             */
 
