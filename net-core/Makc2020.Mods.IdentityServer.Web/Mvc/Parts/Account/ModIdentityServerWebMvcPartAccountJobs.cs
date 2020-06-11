@@ -3,7 +3,8 @@
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
@@ -20,9 +21,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #region Properties
 
         /// <summary>
-        /// Задание на получение входа в систему.
+        /// Задание на обработку получения входа в систему.
         /// </summary>
-        public ModIdentityServerWebMvcPartAccountJobLoginGetService JobLoginGet { get; private set; }
+        public ModIdentityServerWebMvcPartAccountJobLoginGetProcessService JobLoginGetProcess { get; private set; }
+
+        /// <summary>
+        /// Задание на создание отклика на получение входа в систему.
+        /// </summary>
+        public ModIdentityServerWebMvcPartAccountJobLoginGetProduceService JobLoginGetProduce { get; private set; }
 
         /// <summary>
         /// Задание на обработку отправки данных входа в систему.
@@ -65,12 +71,17 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerBaseResourceSuccesses resourceSuccesses,
             ModIdentityServerBaseResourceErrors resourceErrors,
             ModIdentityServerWebMvcPartAccountService service
-            )
+        )
         {
-            JobLoginGet = new ModIdentityServerWebMvcPartAccountJobLoginGetService(
-                service.GetLogin,
+            JobLoginGetProcess = new ModIdentityServerWebMvcPartAccountJobLoginGetProcessService(
+                service.GetLoginProcess,
                 coreBaseResourceErrors
-                );
+            );
+
+            JobLoginGetProduce = new ModIdentityServerWebMvcPartAccountJobLoginGetProduceService(
+                service.GetLoginProduce,
+                coreBaseResourceErrors
+            );
 
             JobLoginPostProcess = new ModIdentityServerWebMvcPartAccountJobLoginPostProcessService(
                 service.PostLoginProcess,
@@ -103,3 +114,4 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #endregion Constructor
     }
 }
+

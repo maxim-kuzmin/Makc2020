@@ -10,7 +10,8 @@ using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
 using Makc2020.Host.Web;
 using Makc2020.Host.Web.Mvc;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Logout.Get;
@@ -33,7 +34,9 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         private HostBasePartLdapJobLoginService AppJobLdapLogin { get; set; }
 
-        private ModIdentityServerWebMvcPartAccountJobLoginGetService AppJobLoginGet { get; set; }
+        private ModIdentityServerWebMvcPartAccountJobLoginGetProcessService AppJobLoginGetProcess { get; set; }
+
+        private ModIdentityServerWebMvcPartAccountJobLoginGetProduceService AppJobLoginGetProduce { get; set; }
 
         private ModIdentityServerWebMvcPartAccountJobLoginPostProcessService AppJobLoginPostProcess { get; set; }
 
@@ -70,14 +73,15 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Конструктор.
         /// </summary>
         /// <param name="appJobLdapLogin">Задание на вход в систему через LDAP.</param>
-        /// <param name="appJobLoginGet">Задание на получение входа в систему.</param>
+        /// <param name="appJobLoginGetProcess">Задание на обработку получения входа в систему.</param>
+        /// <param name="appJobLoginGetProduce">Задание на создание отклика на получение входа в систему.</param>
         /// <param name="appJobLoginPostProcess">Задание на обработку отправки данных входа в систему.</param>
         /// <param name="appJobLoginPostProduce">Задание на создание отклика на отправку данных входа в систему.</param>
         /// <param name="appJobLogoutGet">Задание на получение выхода из системы.</param>
         /// <param name="appJobLogoutPostProcess">Задание на обработку отправки данных выхода из системы.</param>
         /// <param name="appJobLogoutPostProduce">Задание на создание отклика на отправку данных выхода из системы.</param>
         /// <param name="appJobUserEntityCreate">Задание на создание сущности пользователя.</param>
-        /// <param name="appLogger">Регистратор.</param>
+        /// /// <param name="appLogger">Регистратор.</param>
         /// <param name="extClientStore">Хранилище клиентов.</param>
         /// <param name="extEvents">События.</param>
         /// <param name="extInteraction">Взаимодействие.</param>        
@@ -88,7 +92,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// <param name="extViewEngine">Средство создания представлений.</param>
         public ModIdentityServerWebMvcPartAccountModel(
             HostBasePartLdapJobLoginService appJobLdapLogin,
-            ModIdentityServerWebMvcPartAccountJobLoginGetService appJobLoginGet,
+            ModIdentityServerWebMvcPartAccountJobLoginGetProcessService appJobLoginGetProcess,
+            ModIdentityServerWebMvcPartAccountJobLoginGetProduceService appJobLoginGetProduce,
             ModIdentityServerWebMvcPartAccountJobLoginPostProcessService appJobLoginPostProcess,
             ModIdentityServerWebMvcPartAccountJobLoginPostProduceService appJobLoginPostProduce,
             ModIdentityServerWebMvcPartAccountJobLogoutGetService appJobLogoutGet,
@@ -98,7 +103,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             CoreBaseLoggingServiceWithCategoryName<ModIdentityServerWebMvcPartAccountModel> appLogger,
             IClientStore extClientStore,
             IEventService extEvents,
-            IIdentityServerInteractionService extInteraction,            
+            IIdentityServerInteractionService extInteraction,
             RoleManager<DataEntityObjectRole> extRoleManager,
             IAuthenticationSchemeProvider extSchemeProvider,
             SignInManager<DataEntityObjectUser> extSignInManager,
@@ -108,7 +113,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             : base(appLogger, extViewEngine)
         {
             AppJobLdapLogin = appJobLdapLogin;
-            AppJobLoginGet = appJobLoginGet;
+            AppJobLoginGetProcess = appJobLoginGetProcess;
+            AppJobLoginGetProduce = appJobLoginGetProduce;
             AppJobLoginPostProcess = appJobLoginPostProcess;
             AppJobLoginPostProduce = appJobLoginPostProduce;
             AppJobLogoutGet = appJobLogoutGet;
@@ -129,7 +135,35 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #region Public methods
 
         /// <summary>
-        /// Построить действие "Вход в систему. Получение".
+        /// Построить действие "Вход в систему. Получение. Обработка".
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Функции действия.</returns>
+        public (
+            Func<Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput>> execute,
+            Action<ModIdentityServerWebMvcPartAccountJobLoginGetProcessResult> onSuccess,
+            Action<Exception, ModIdentityServerWebMvcPartAccountJobLoginGetProcessResult> onError
+            ) BuildActionLoginGetProcess(ModIdentityServerWebMvcPartAccountJobLoginGetProcessInput input)
+        {
+            var job = AppJobLoginGetProcess;
+
+            Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput> execute() => job.Execute(input);
+
+            void onSuccess(ModIdentityServerWebMvcPartAccountJobLoginGetProcessResult result)
+            {
+                job.OnSuccess(AppLogger, result, input);
+            }
+
+            void onError(Exception ex, ModIdentityServerWebMvcPartAccountJobLoginGetProcessResult result)
+            {
+                job.OnError(ex, AppLogger, result);
+            }
+
+            return (execute, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Построить действие "Вход в систему. Получение. Создание отклика".
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Функции действия.</returns>
@@ -137,13 +171,13 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             Func<Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput>> execute,
             Action<ModIdentityServerWebMvcPartAccountCommonJobLoginResult> onSuccess,
             Action<Exception, ModIdentityServerWebMvcPartAccountCommonJobLoginResult> onError
-            ) BuildActionLoginGet(ModIdentityServerWebMvcPartAccountJobLoginGetInput input)
+            ) BuildActionLoginGetProduce(ModIdentityServerWebMvcPartAccountJobLoginGetProduceInput input)
         {
             input.СlientStore = ExtClientStore;
             input.Interaction = ExtInteraction;
             input.SchemeProvider = ExtSchemeProvider;
 
-            var job = AppJobLoginGet;
+            var job = AppJobLoginGetProduce;
 
             Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> execute() => job.Execute(input);
 

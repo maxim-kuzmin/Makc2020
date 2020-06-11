@@ -302,7 +302,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
                 throw new ModIdentityServerBaseExceptionInvalidReturnUrl();
             }
 
-            if (provider == ConfigSettings.WindowsAuthenticationSchemeName)
+            if (provider == ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows)
             {
                 // windows authentication needs special handling
                 return ProcessChallengeGetForWindowsLogin(authenticationProperties, httpContext);
@@ -319,13 +319,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External
             )
         {
             // see if windows auth has already been requested and succeeded
-            var result = await httpContext.AuthenticateAsync(ConfigSettings.WindowsAuthenticationSchemeName)
-                .CoreBaseExtTaskWithCurrentCulture(false);
+            var result = await httpContext.AuthenticateAsync(
+                ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows
+                ).CoreBaseExtTaskWithCurrentCulture(false);
 
             if (result?.Principal is WindowsPrincipal wp)
             {
                 // we will issue the external cookie and then redirect the
-                var id = new ClaimsIdentity(ConfigSettings.WindowsAuthenticationSchemeName);
+                var id = new ClaimsIdentity(ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows);
 
                 id.AddClaim(new Claim(JwtClaimTypes.Subject, wp.FindFirst(ClaimTypes.PrimarySid).Value));
 

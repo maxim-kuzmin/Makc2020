@@ -3,7 +3,8 @@
 using Makc2020.Core.Base.Ext;
 using Makc2020.Host.Web;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
@@ -53,18 +54,21 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Вход в систему. Получение.
         /// </summary>
         [HttpGet("Login")]
-        public async Task<IActionResult> LoginGet(string returnUrl, string lang, string isFirstLogin)
+        public async Task<IActionResult> LoginGet(string returnUrl, string isFirstLogin)
         {
             MyModel.Init(HostWebState.Create(HttpContext));
 
-            var output = await GetLoginGetOutput(returnUrl, lang, isFirstLogin)
+            var processOutput = await GetLoginGetProcessOutput(returnUrl, isFirstLogin)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var redirectUrl = output.RedirectUrl;
+            var redirectUrl = processOutput.RedirectUrl;
 
             if (string.IsNullOrWhiteSpace(redirectUrl))
             {
-                return View("~/Views/Account/Login.cshtml", output);
+                var produceOutput = await GetLoginGetProduceOutput(returnUrl)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                return View("~/Views/Account/Login.cshtml", produceOutput);
             }
             else
             {
@@ -186,18 +190,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
         #region Private methods
 
-        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> GetLoginGetOutput(
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput> GetLoginGetProcessOutput(
             string returnUrl,
-            string lang,
             string isFirstLogin
             )
         {
-            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginResult();
+            var result = new ModIdentityServerWebMvcPartAccountJobLoginGetProcessResult();
 
-            var input = new ModIdentityServerWebMvcPartAccountJobLoginGetInput
+            var input = new ModIdentityServerWebMvcPartAccountJobLoginGetProcessInput
             {
                 HttpRequest = Request,
-                LanguageKey = lang,
                 ReturnUrl = returnUrl
             };
 
@@ -206,7 +208,34 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 input.IsFirstLogin = isFirstLogin == "true";
             }
 
-            var (execute, onSuccess, onError) = MyModel.BuildActionLoginGet(input);
+            var (execute, onSuccess, onError) = MyModel.BuildActionLoginGetProcess(input);
+
+            try
+            {
+                result.Data = await execute().CoreBaseExtTaskWithCurrentCulture(false);
+
+                onSuccess(result);
+            }
+            catch (Exception ex)
+            {
+                onError(ex, result);
+            }
+
+            return result.Data ?? new ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput();
+        }
+
+        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> GetLoginGetProduceOutput(
+            string returnUrl
+            )
+        {
+            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginResult();
+
+            var input = new ModIdentityServerWebMvcPartAccountJobLoginGetProduceInput
+            {
+                ReturnUrl = returnUrl
+            };
+
+            var (execute, onSuccess, onError) = MyModel.BuildActionLoginGetProduce(input);
 
             try
             {

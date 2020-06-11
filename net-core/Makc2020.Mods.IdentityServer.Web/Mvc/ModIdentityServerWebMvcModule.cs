@@ -39,7 +39,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
             services.AddTransient(x => GetContext(x).PartAccount);
-            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginGet);
+            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginGetProcess);
+            services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginGetProduce);
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginPostProcess);
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLoginPostProduce);
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutGet);

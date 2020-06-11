@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Host.Web;
 using Makc2020.Root.Base;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Makc2020.Root.Web
 {
@@ -18,12 +18,6 @@ namespace Makc2020.Root.Web
         where TModules : RootBaseModules
         where TConfigurator : RootBaseConfigurator<TContext, TModules>
     {
-        #region Constants
-
-        private const string CULTURE_PARAMETER_NAME = "lang";
-
-        #endregion Constants
-
         #region Protected methods
 
         /// <summary>
@@ -38,9 +32,9 @@ namespace Makc2020.Root.Web
 
             var cultureName = CULTURE_NAME;
 
-            if (httpContext.Request.Query.ContainsKey(CULTURE_PARAMETER_NAME))
+            if (httpContext.Request.Query.ContainsKey(HostWebSettings.PARAM_Lang))
             {
-                cultureName = httpContext.Request.Query[CULTURE_PARAMETER_NAME];
+                cultureName = httpContext.Request.Query[HostWebSettings.PARAM_Lang];
             }
 
             EnsureInitialization();

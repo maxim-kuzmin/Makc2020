@@ -10,10 +10,31 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config
         #region Properties
 
         /// <inheritdoc/>
-        public bool AllowLocalLogin { get; set;  }
+        public bool AllowLocalLogin { get; set; }
+
+        /// <inheritdoc/>
+        public bool AllowLoginWithoutPassword { get; set; }
 
         /// <inheritdoc/>
         public bool AllowRememberLogin { get; set; }
+
+        /// <inheritdoc/>
+        public bool AutomaticRedirectAfterSignOut { get; set; }
+
+        /// <inheritdoc/>
+        public string ClientIsFirstLoginParamName { get; }
+
+        /// <inheritdoc/>
+        public string ClientIsFirstLoginParamValue { get; }
+
+        /// <inheritdoc/>
+        public string ClientLangParamName { get; }
+
+        /// <inheritdoc/>
+        public bool IncludeWindowsGroups { get; set; }
+
+        /// <inheritdoc/>
+        public string LogOutRoute { get; set; }
 
         /// <inheritdoc/>
         public int RememberLoginDurationInDays { get; set; }
@@ -22,13 +43,10 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config
         public bool ShowLogoutPrompt { get; set; }
 
         /// <inheritdoc/>
-        public bool AutomaticRedirectAfterSignOut { get; set; }
+        public string UserSessionCountRoute { get; set; }
 
         /// <inheritdoc/>
-        public string WindowsAuthenticationSchemeName { get; set; }
-
-        /// <inheritdoc/>
-        public bool IncludeWindowsGroups { get; set; }
+        public string WebApiUrlAddress { get; set; }
 
         #endregion Properties
     }

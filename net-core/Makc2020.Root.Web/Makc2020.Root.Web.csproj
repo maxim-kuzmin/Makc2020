@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Host.Web\Makc2020.Host.Web.csproj" />
     <ProjectReference Include="..\Makc2020.Root.Base\Makc2020.Root.Base.csproj" />
   </ItemGroup>
 

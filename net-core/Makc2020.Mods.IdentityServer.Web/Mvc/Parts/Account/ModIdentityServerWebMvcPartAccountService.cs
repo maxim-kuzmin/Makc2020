@@ -15,12 +15,14 @@ using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
 using Makc2020.Host.Base.Parts.Ldap;
 using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
+using Makc2020.Host.Web;
 using Makc2020.Mods.IdentityServer.Base.Enums;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
 using Makc2020.Mods.IdentityServer.Web.Ext;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Process;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Produce;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce;
@@ -78,38 +80,33 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #region Public methods
 
         /// <summary>
-        /// Получить вход в систему.
+        /// Обработать получение входа в систему.
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с выводом.</returns>
-        public Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> GetLogin(
-            ModIdentityServerWebMvcPartAccountJobLoginGetInput input
+        public Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput> GetLoginProcess(
+            ModIdentityServerWebMvcPartAccountJobLoginGetProcessInput input
             )
         {
-            return ProduceLogin(
+            return ProcessLoginGet(input.IsFirstLogin, input.ReturnUrl, input.HttpRequest);
+        }
+
+        /// <summary>
+        /// Создать отклик на получение входа в систему.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача с выводом.</returns>
+        public Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> GetLoginProduce(
+            ModIdentityServerWebMvcPartAccountJobLoginGetProduceInput input
+            )
+        {
+            return ProduceLoginGet(
                 input.ReturnUrl,
                 ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
                 input.Interaction,
                 input.SchemeProvider,
                 input.СlientStore
                 );
-
-            ////makc//!!!//>//
-            //if (input.IsFirstLogin.HasValue)
-            //{
-            //    return ProduceLogin(
-            //        input.ReturnUrl,
-            //        ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
-            //        input.Interaction,
-            //        input.SchemeProvider,
-            //        input.СlientStore
-            //        );
-            //}
-            //else
-            //{
-            //    return ProcessLoginGet(input.ReturnUrl, input.HttpRequest);
-            //}
-            ////makc//!!!//<//
         }
 
         /// <summary>
@@ -180,7 +177,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             ModIdentityServerWebMvcPartAccountJobLoginPostProduceInput input
         )
         {
-            return await ProduceLogin(
+            return await ProduceLoginGet(
                 input.Model.ReturnUrl,
                 input.Model.LoginMethod,
                 input.Interaction,
@@ -430,53 +427,73 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default;
         }
 
-        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> ProcessLoginGet(string returnUrl, HttpRequest httpRequest)
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput> ProcessLoginGet(
+            bool? isFirstLogin,
+            string returnUrl,
+            HttpRequest httpRequest
+            )
         {
-            var displayUrl = httpRequest.GetDisplayUrl();
-            var encodedUrl = httpRequest.GetEncodedUrl();
+            var result = new ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput();
 
-            /*
-            /connect/authorize/callback
-                ?response_type=id_token%20token
-                &client_id=Makc2020WebClient
-                &state=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx;%252F%253Fcore--lang%253Dru%2526core--is-first-login%253Dtrue
-                &redirect_uri=http%3A%2F%2Flocalhost%3A4203%2Fmods%2Fauth%2Fredirect
-                &scope=offline_access%20openid%20Makc2020WebApi
-                &nonce=vkmTVmgYfe6BvOfdv_knVhDCqTVXWpmDaSY0wP7yO4ZTx
-            */
+            if (isFirstLogin.HasValue)
+            {
+                return result;
+            }
 
-            var oldUri = new Uri(new Uri("http://fake"), returnUrl);
+            var oldReturnUri = new Uri(new Uri("http://fake"), returnUrl);
 
-            var oldQs = HttpUtility.ParseQueryString(oldUri.Query);
+            var oldReturnQs = HttpUtility.ParseQueryString(oldReturnUri.Query);
 
-            var oldQsNonce = oldQs["nonce"];
-            var oldQsState = oldQs["state"];
+            var oldReturnQsState = oldReturnQs["state"];
 
-            var oldState = HttpUtility.UrlDecode(oldQsState.Substring(oldQsNonce.Length + 1));
+            if (string.IsNullOrWhiteSpace(oldReturnQsState))
+            {
+                return result;
+            }
+
+            var oldReturnQsNonce = oldReturnQs["nonce"];
+
+            var oldState = HttpUtility.UrlDecode(oldReturnQsState.Substring(oldReturnQsNonce.Length + 1));
 
             var oldStateUri = new Uri(new Uri("http://fake"), oldState);
 
             var oldStateQs = HttpUtility.ParseQueryString(oldStateUri.Query);
 
-            var oldStateQsIsFirstLogin = oldStateQs["core--is-first-login"];
-            var oldStateQsLang = oldStateQs["core--lang"];
+            var oldStateQsIsFirstLogin = oldStateQs[ConfigSettings.ClientIsFirstLoginParamName];
+            var oldStateQsLang = oldStateQs[ConfigSettings.ClientLangParamName];
 
-            oldStateQs.Remove("core--is-first-login");
+            oldStateQs.Remove(ConfigSettings.ClientIsFirstLoginParamName);
 
             var newState = HttpUtility.UrlEncode($"{oldStateUri.LocalPath}{oldStateQs.CoreWebExtConvertToQueryString()}");
 
-            var newQsState = $"{oldQsNonce};{newState}";
+            var newReturnQsState = $"{oldReturnQsNonce};{newState}";
 
-            oldQs["state"] = newQsState;
+            oldReturnQs["state"] = newReturnQsState;
 
-            var newQuery = oldQs.CoreWebExtConvertToQueryString(new[] { "response_type", "state", "scope" });
+            var newReturnQs = oldReturnQs.CoreWebExtConvertToQueryString(new[] { "response_type", "state", "scope" });
 
-            var newUrl = $"{oldUri.LocalPath}{newQuery}";
+            var newReturnUrl = $"{oldReturnUri.LocalPath}{newReturnQs}";
 
-            var result = new ModIdentityServerWebMvcPartAccountCommonJobLoginOutput
+            var oldRedirectUrl = httpRequest.GetEncodedUrl();
+
+            var redirectUrlPrefix = oldRedirectUrl.Split("?").First();
+
+            var oldRedirectUri = new Uri(oldRedirectUrl);
+
+            var oldRedirectQs = HttpUtility.ParseQueryString(oldRedirectUri.Query);
+
+            oldRedirectQs[HostWebSettings.PARAM_IsFirstLogin] = oldStateQsIsFirstLogin == ConfigSettings.ClientIsFirstLoginParamValue ? "true" : "false";
+
+            if (!string.IsNullOrWhiteSpace(oldStateQsLang))
             {
-                ReturnUrl = newUrl
-            };
+                oldRedirectQs[HostWebSettings.PARAM_Lang] = oldStateQsLang;
+            }
+
+            oldRedirectQs[HostWebSettings.PARAM_ReturnUrl] = newReturnUrl;
+
+            var newRedirectQs = oldRedirectQs.CoreWebExtConvertToQueryString().Replace("%3b", ";", StringComparison.InvariantCultureIgnoreCase);
+
+            result.RedirectUrl = $"{redirectUrlPrefix}{newRedirectQs}{oldRedirectUri.Fragment}";
 
             return await Task.FromResult(result).CoreBaseExtTaskWithCurrentCulture(false);
         }
@@ -753,7 +770,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             return result.Data;
         }
 
-        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> ProduceLogin(
+        private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> ProduceLoginGet(
             string returnUrl,
             ModIdentityServerBaseEnumLoginMethods loginMethod,
             IIdentityServerInteractionService interaction,
