@@ -5,9 +5,9 @@ export const environment = {
   apiServerUrl: `http://localhost:5002`,
   authTypeOidcIsEnabled: true,
   identityServerUrl: `http://localhost:6002`,
-  hostIsFirstLoginParamName: 'is-first-login',
+  hostIsFirstLoginParamName: 'core--is-first-login',
   hostIsFirstLoginParamValue: 'true',
-  hostLangParamName: 'lang',
+  hostLangParamName: 'core--lang',
   hostPort: hostPort,
   hostUrl: `http://localhost:${hostPort}`,
   production: true
