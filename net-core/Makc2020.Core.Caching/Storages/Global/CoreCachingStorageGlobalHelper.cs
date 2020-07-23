@@ -152,7 +152,7 @@ namespace Makc2020.Core.Caching.Storages.Global
             {
                 var server = Connection.GetServer(endpoint);
 
-                if (!server.IsSlave && server.IsConnected)
+                if (!server.IsReplica && server.IsConnected)
                 {
                     var keys = server.Keys(
                         database: DbIndex,
