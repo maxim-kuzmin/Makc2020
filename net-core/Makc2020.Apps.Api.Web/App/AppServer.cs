@@ -66,17 +66,21 @@ namespace Makc2020.Apps.Api.Web.App
 
             app.Use(async (httpContext, next) =>
             {
-                if (httpContext.Request.Path.HasValue)
-                {
-                    var path = httpContext.Request.Path.Value;
+                var path = httpContext.Request.Path.HasValue ? httpContext.Request.Path.Value : null;
 
-                    if (!Path.HasExtension(path) && path.Contains("/api/"))
-                    {
-                        OnBeginRequest(httpContext);
-                    }
+                var isOk = path != null && !Path.HasExtension(path) && path.Contains("/api/");
+
+                if (isOk)
+                {
+                    OnBeginRequest(httpContext);
                 }
 
-                await next().CoreBaseExtTaskWithCurrentCulture(false);
+                await next.Invoke().CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (isOk)
+                {
+                    OnEndRequest(httpContext);
+                }
             });
 
             appLifetime.ApplicationStarted.Register(OnStarted);

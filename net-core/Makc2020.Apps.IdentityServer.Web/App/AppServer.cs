@@ -65,17 +65,21 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
 
             app.Use(async (httpContext, next) =>
             {
-                if (httpContext.Request.Path.HasValue)
-                {
-                    var path = httpContext.Request.Path.Value;
+                var path = httpContext.Request.Path.HasValue ? httpContext.Request.Path.Value : null;
 
-                    if (!Path.HasExtension(path))
-                    {
-                        OnBeginRequest(httpContext);
-                    }
+                var isOk = path != null && !Path.HasExtension(path);
+
+                if (isOk)
+                {
+                    OnBeginRequest(httpContext);
                 }
 
-                await next().CoreBaseExtTaskWithCurrentCulture(false);
+                await next.Invoke().CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (isOk)
+                {
+                    OnEndRequest(httpContext);
+                }
             });
 
             appLifetime.ApplicationStarted.Register(OnStarted);

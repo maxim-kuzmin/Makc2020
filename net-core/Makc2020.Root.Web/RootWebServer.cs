@@ -3,6 +3,7 @@
 using Makc2020.Host.Web;
 using Makc2020.Root.Base;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 
 namespace Makc2020.Root.Web
 {
@@ -44,6 +45,50 @@ namespace Makc2020.Root.Web
             context.InitCurrentCulture(cultureName);
 
             Logger.LogDebug("RootWebServer.OnBeginRequest end");
+        }
+
+        /// <summary>
+        /// Обработать событие окончания запроса.
+        /// </summary>
+        /// <param name="httpContext">HTTP-контекст.</param>
+        protected virtual void OnEndRequest(HttpContext httpContext)
+        {
+            Logger.LogDebug("RootWebServer.OnEndRequest begin");
+
+            Logger.LogDebug($"Request path: {httpContext.Request.Path}");
+
+            const string headerKey = "Set-Cookie";
+
+            var isOk = httpContext.Response.Headers.TryGetValue(headerKey, out var oldHeaderValues)
+                && oldHeaderValues.Count > 0;
+
+            if (isOk)
+            {
+                const string oldPhrase = "samesite=none";
+                const string newPhrase = "samesite=strict";
+
+                var newHeaderValues = new string[oldHeaderValues.Count];
+
+                for (var i = 0; i < oldHeaderValues.Count; i++)
+                {
+                    var oldHeaderValue = oldHeaderValues[i];
+
+                    if (oldHeaderValue.Contains(oldPhrase))
+                    {
+                        var newHeaderValue = oldHeaderValue.Replace(oldPhrase, newPhrase);
+
+                        newHeaderValues[i] = newHeaderValue;
+                    }
+                    else
+                    {
+                        newHeaderValues[i] = oldHeaderValue;
+                    }
+                }
+
+                httpContext.Response.Headers[headerKey] = new StringValues(newHeaderValues);
+            }
+
+            Logger.LogDebug("RootWebServer.OnEndRequest end");
         }
 
         #endregion Protected methods
