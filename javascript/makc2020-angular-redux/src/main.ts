@@ -14,17 +14,25 @@ import {AppBaseDialogDefault} from '@app/base/dialog/base-dialog-default';
 import {AppBaseLoggingDefault} from '@app/base/logging/base-logging-default';
 import {AppBaseNavigationDefault} from '@app/base/navigation/base-navigation-default';
 import {AppBaseStorageDefault} from '@app/base/storage/base-storage-default';
-import {appBaseDiTokenLocalStorage, appBaseDiTokenSessionStorage, appBaseDiTokenWindow} from '@app/base/base-di';
+import {
+  appBaseDiTokenConsole,
+  appBaseDiTokenDocument,
+  appBaseDiTokenLocalStorage,
+  appBaseDiTokenSessionStorage,
+  appBaseDiTokenWindow
+} from '@app/base/base-di';
 import {AppModule} from '@app/app.module';
 
 const providers = [
   {provide: appBaseDiTokenLocalStorage, useValue: window.localStorage},
   {provide: appBaseDiTokenSessionStorage, useValue: window.sessionStorage},
+  {provide: appBaseDiTokenConsole, useValue: console},
+  {provide: appBaseDiTokenDocument, useValue: document},
   {provide: appBaseDiTokenWindow, useValue: window},
   {provide: AppCoreAuthTypeJwtDefault, useClass: AppBaseAuthTypeJwtDefault, deps: [appBaseDiTokenSessionStorage]},
   {provide: AppCoreDialogDefault, useClass: AppBaseDialogDefault, deps: [appBaseDiTokenWindow]},
-  {provide: AppCoreLoggingDefault, useClass: AppBaseLoggingDefault, deps: [appBaseDiTokenWindow]},
-  {provide: AppCoreNavigationDefault, useClass: AppBaseNavigationDefault, deps: [AppCoreSettings, appBaseDiTokenWindow]},
+  {provide: AppCoreLoggingDefault, useClass: AppBaseLoggingDefault, deps: [appBaseDiTokenConsole]},
+  {provide: AppCoreNavigationDefault, useClass: AppBaseNavigationDefault, deps: [AppCoreSettings, appBaseDiTokenDocument]},
   {provide: AppCoreSettings, useValue: appCoreSettings},
   {provide: AppCoreStorageDefault, useClass: AppBaseStorageDefault, deps: [appBaseDiTokenLocalStorage, appBaseDiTokenSessionStorage]}
 ];

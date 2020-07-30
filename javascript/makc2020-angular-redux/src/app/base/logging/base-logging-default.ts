@@ -3,17 +3,17 @@
 import {Inject} from '@angular/core';
 import {AppCoreLoggingDefault} from '@app/core/logging/core-logging-default';
 import {appCoreLoggingEntryKind, AppCoreLoggingEntryKindValue} from '@app/core/logging/core-logging-entry-kind';
-import {appBaseDiTokenWindow} from '../base-di';
+import {appBaseDiTokenConsole} from '../base-di';
 
 /** Основа. Логирование. Умолчание. */
 export class AppBaseLoggingDefault extends AppCoreLoggingDefault {
 
   /**
    * Конструктор.
-   * @param {Window} appWindow Окно.
+   * @param {Console} appConsole Консоль.
    */
   constructor(
-    @Inject(appBaseDiTokenWindow) private appWindow: Window
+    @Inject(appBaseDiTokenConsole) private appConsole: Console
   ) {
     super();
   }
@@ -30,16 +30,16 @@ export class AppBaseLoggingDefault extends AppCoreLoggingDefault {
 
     switch (entryKind) {
       case appCoreLoggingEntryKind.info:
-        func = this.appWindow.console.info;
+        func = this.appConsole.info;
         break;
       case appCoreLoggingEntryKind.debug:
-        func = this.appWindow.console.debug;
+        func = this.appConsole.debug;
         break;
       case appCoreLoggingEntryKind.error:
-        func = this.appWindow.console.error;
+        func = this.appConsole.error;
         break;
       default:
-        func = this.appWindow.console.log;
+        func = this.appConsole.log;
         break;
     }
 
