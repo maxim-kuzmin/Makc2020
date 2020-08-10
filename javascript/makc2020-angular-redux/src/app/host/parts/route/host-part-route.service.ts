@@ -4,9 +4,9 @@ import {Injectable} from '@angular/core';
 import {ActivatedRoute, ActivatedRouteSnapshot, Event, NavigationEnd, Router} from '@angular/router';
 import {Observable, of, Subject} from 'rxjs';
 import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {appCoreSettings} from '@app/core/core-settings';
 import {AppHostPartRouteData, appHostPartRouteDataCreate} from './host-part-route-data';
 import {AppHostPartRouteDataPage} from '@app/host/parts/route/data/host-part-route-data-page';
-import {appCoreSettings} from '@app/core/core-settings';
 
 /** Хост. Часть "Route". Сервис. */
 @Injectable({
@@ -44,7 +44,7 @@ export class AppHostPartRouteService {
    * @returns Observable<boolean> Поток признака первого входа в систему.
    */
   getIsFirstLogin$(extRoute: ActivatedRoute, unsubscribe$: Subject<boolean>): Observable<boolean> {
-    return extRoute.paramMap.pipe(
+    return extRoute.queryParamMap.pipe(
       map(paramMap =>
         paramMap.get(appCoreSettings.hostIsFirstLoginParamName) === appCoreSettings.hostIsFirstLoginParamValue
       ),
@@ -59,7 +59,7 @@ export class AppHostPartRouteService {
    * @returns Observable<string> Поток ключа языка.
    */
   getLanguageKey$(extRoute: ActivatedRoute, unsubscribe$: Subject<boolean>): Observable<string> {
-    return extRoute.paramMap.pipe(
+    return extRoute.queryParamMap.pipe(
       map(paramMap => paramMap.get(appCoreSettings.hostLangParamName)),
       takeUntil(unsubscribe$)
     );

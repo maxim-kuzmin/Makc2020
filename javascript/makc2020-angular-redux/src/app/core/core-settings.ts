@@ -72,6 +72,14 @@ export class AppCoreSettings {
   }
 
   /**
+   * Хост. Имя сессии языка.
+   * @type {string}
+   */
+  get hostLangSessionName() {
+    return environment.hostLangSessionName;
+  }
+
+  /**
    * Хост. Порт.
    * @type {string}
    */

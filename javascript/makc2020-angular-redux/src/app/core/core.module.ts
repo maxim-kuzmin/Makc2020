@@ -3,7 +3,6 @@
 import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import {AppCoreAuthInterceptor} from './auth/core-auth-interceptor';
 import {AppCoreEmptyComponent} from './empty/core-empty.component';
 import {AppCoreHttpInterceptor} from './http/core-http-interceptor';
@@ -26,7 +25,6 @@ import {AppCoreViewComponent} from './view/core-view.component';
     AppCoreViewHostDirective
   ],
   providers: [
-    CookieService,
     {provide: appCoreLoggingDiTokenLoggerName, useValue: AppCoreModule.name},
     AppCoreLoggingService
   ]

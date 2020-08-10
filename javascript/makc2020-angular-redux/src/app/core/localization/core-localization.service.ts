@@ -2,9 +2,15 @@
 
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {appCoreLocalizationConfigDefaultLanguage, appCoreLocalizationConfigLanguages} from './core-localization-config';
+import 'core-js/features/url-search-params';
+import {
+  appCoreLocalizationConfigDefaultLanguage,
+  appCoreLocalizationConfigLanguageRu,
+  appCoreLocalizationConfigLanguages
+} from './core-localization-config';
 import {AppCoreLocalizationStore} from './core-localization-store';
 import {AppCoreLocalizationTranslator} from './core-localization-translator';
+import {appCoreSettings} from '@app/core/core-settings';
 
 /** Ядро. Локализация. Сервис. */
 @Injectable({
@@ -42,9 +48,13 @@ export class AppCoreLocalizationService {
 
   /** Обработчик события запуска приложения. */
   onApplicationStart() {
-    let {
-      languageKey
-    } = this.appLocalizerStore.getState();
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let languageKey = urlParams.get(appCoreSettings.hostLangParamName);
+
+    if (!languageKey) {
+      languageKey = this.appLocalizerStore.getState().languageKey;
+    }
 
     if (!languageKey) {
       const languageKeys = appCoreLocalizationConfigLanguages.map(x => x.key);
@@ -70,7 +80,13 @@ export class AppCoreLocalizationService {
    * @param {string} languageKey Ключ языка.
    */
   executeActionLanguageSet(languageKey: string) {
-    this.extTranslator.use(languageKey);
+    if (this.extTranslator.currentLang !== languageKey) {
+      if (languageKey === appCoreLocalizationConfigLanguageRu.key) {
+        this.extTranslator.resetLang(this.extTranslator.currentLang);
+      }
+
+      this.extTranslator.use(languageKey);
+    }
 
     this.appLocalizerStore.runActionLanguageSet(languageKey);
   }

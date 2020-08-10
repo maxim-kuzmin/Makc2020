@@ -1,12 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
-import {CookieService} from 'ngx-cookie-service';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreLocalizationEnumActions} from './enums/core-localization-enum-actions';
 import {AppCoreLocalizationState} from './core-localization-state';
 import {appCoreSettings} from '@app/core/core-settings';
+import {AppCoreStorageSessionService} from '@app/core/storage/session/core-storage-session.service';
 
 /** Ядро. Локализация. Хранилище состояния. */
 @Injectable({
@@ -20,11 +20,14 @@ export class AppCoreLocalizationStore {
   /** @type {BehaviorSubject<AppCoreLocalizationState>} */
   private readonly stateChanged$: BehaviorSubject<AppCoreLocalizationState>;
 
-  /** Конструктор. */
+  /**
+   * Конструктор.
+   * @param {AppCoreStorageSessionService} sessionStorage Хранилище сессии.
+   */
   constructor(
-    private cookieService: CookieService
+    private sessionStorage: AppCoreStorageSessionService
   ) {
-    this.state.languageKey = this.cookieService.get(appCoreSettings.hostLangParamName);
+    this.state.languageKey = this.sessionStorage.get(appCoreSettings.hostLangSessionName);
 
     this.stateChanged$ = new BehaviorSubject<AppCoreLocalizationState>(this.state);
   }
@@ -50,7 +53,7 @@ export class AppCoreLocalizationStore {
 
   /** Запустить действие "Очистка". */
   runActionClear() {
-    this.cookieService.delete(appCoreSettings.hostLangParamName);
+    this.sessionStorage.remove(appCoreSettings.hostLangSessionName);
 
     this.setState({
       ...this.state,
@@ -65,7 +68,7 @@ export class AppCoreLocalizationStore {
    */
   runActionLanguageSet(languageKey: string) {
     if (this.state.languageKey !== languageKey) {
-      this.cookieService.set(appCoreSettings.hostLangParamName, languageKey);
+      this.sessionStorage.set(appCoreSettings.hostLangSessionName, languageKey);
     }
 
     this.setState({
