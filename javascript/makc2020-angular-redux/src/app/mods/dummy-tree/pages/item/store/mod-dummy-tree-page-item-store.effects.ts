@@ -78,8 +78,8 @@ export class AppModDummyTreePageItemStoreEffects {
         } = input.objectDummyTree;
 
         const result$ = id > 0
-          ? this.appJobItemUpdate.execute$(input, this.executionHandlerOnLoad)
-          : this.appJobItemInsert.execute$(input, this.executionHandlerOnLoad);
+          ? this.appJobItemUpdate.execute$(input, this.executionHandlerOnSave)
+          : this.appJobItemInsert.execute$(input, this.executionHandlerOnSave);
 
         return result$.pipe(
           map(
