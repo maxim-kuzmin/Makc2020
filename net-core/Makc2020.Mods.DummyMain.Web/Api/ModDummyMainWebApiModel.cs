@@ -37,9 +37,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
         private ModDummyMainCachingJobListGetService AppJobListGet { get; set; }
 
-        private ModDummyMainCachingJobOptionsDummyManyToManyGetService AppJobOptionDummyManyToManyListGet { get; set; }
+        private ModDummyMainCachingJobOptionsDummyManyToManyGetService AppJobOptionsDummyManyToManyGet { get; set; }
 
-        private ModDummyMainCachingJobOptionsDummyOneToManyGetService AppJobOptionDummyOneToManyListGet { get; set; }
+        private ModDummyMainCachingJobOptionsDummyOneToManyGetService AppOptionsDummyOneToManyGet { get; set; }
 
         #endregion Properties
 
@@ -53,10 +53,10 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="appJobItemInsert">Задание на вставку элемента.</param>
         /// <param name="appJobItemUpdate">Задание на обновление элемента.</param>
         /// <param name="appJobListGet">Задание на получение списка.</param>
-        /// <param name="appJobOptionDummyManyToManyListGet">
+        /// <param name="appJobOptionsDummyManyToManyGet">
         /// Задание на получение вариантов выбора сущности "DummyManyToMany".
         /// </param>
-        /// <param name="appJobOptionDummyOneToManyListGet">
+        /// <param name="appJobOptionsDummyOneToManyGet">
         /// Задание на получение вариантов выбора сущности "DummyOneToMany".
         /// </param>
         /// <param name="appLogger">Регистратор.</param>
@@ -66,8 +66,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             ModDummyMainCachingJobItemInsertService appJobItemInsert,
             ModDummyMainCachingJobItemUpdateService appJobItemUpdate,
             ModDummyMainCachingJobListGetService appJobListGet,
-            ModDummyMainCachingJobOptionsDummyManyToManyGetService appJobOptionDummyManyToManyListGet,
-            ModDummyMainCachingJobOptionsDummyOneToManyGetService appJobOptionDummyOneToManyListGet,
+            ModDummyMainCachingJobOptionsDummyManyToManyGetService appJobOptionsDummyManyToManyGet,
+            ModDummyMainCachingJobOptionsDummyOneToManyGetService appJobOptionsDummyOneToManyGet,
             CoreBaseLoggingServiceWithCategoryName<ModDummyMainWebApiController> appLogger
             )
             : base(appLogger)
@@ -77,8 +77,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             AppJobItemInsert = appJobItemInsert;
             AppJobItemUpdate = appJobItemUpdate;
             AppJobListGet = appJobListGet;
-            AppJobOptionDummyManyToManyListGet = appJobOptionDummyManyToManyListGet;
-            AppJobOptionDummyOneToManyListGet = appJobOptionDummyOneToManyListGet;
+            AppJobOptionsDummyManyToManyGet = appJobOptionsDummyManyToManyGet;
+            AppOptionsDummyOneToManyGet = appJobOptionsDummyOneToManyGet;
         }
 
         #endregion Constructors
@@ -234,9 +234,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
             Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
             Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
-            ) BuildActionOptionDummyManyToManyListGet()
+            ) BuildActionOptionsDummyManyToManyGet()
         {
-            var job = AppJobOptionDummyManyToManyListGet;
+            var job = AppJobOptionsDummyManyToManyGet;
 
             Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
 
@@ -262,9 +262,9 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             Func<Task<ModDummyMainBaseCommonJobOptionListGetOutput>> execute,
             Action<ModDummyMainBaseCommonJobOptionListGetResult> onSuccess,
             Action<Exception, ModDummyMainBaseCommonJobOptionListGetResult> onError
-            ) BuildActionOptionDummyOneToManyListGet()
+            ) BuildActionOptionsDummyOneToManyGet()
         {
-            var job = AppJobOptionDummyOneToManyListGet;
+            var job = AppOptionsDummyOneToManyGet;
 
             Task<ModDummyMainBaseCommonJobOptionListGetOutput> execute() => job.Execute();
 

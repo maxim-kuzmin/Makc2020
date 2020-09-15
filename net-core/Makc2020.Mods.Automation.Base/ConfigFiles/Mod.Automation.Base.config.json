@@ -1,14 +1,14 @@
 ﻿{
   "PartAngular": {
-    "SourceEntityName": "DummyMain",
+    "SourceEntityName": "CalcTemplate",
     "SourcePath": "E:\\TMP\\source\\javascript",
-    "TargetEntityName": "DummyTree",
+    "TargetEntityName": "CalcParameterConstant",
     "TargetPath": "E:\\TMP\\target\\javascript"
   },
   "PartNetCore": {
-    "SourceEntityName": "DummyMain",
+    "SourceEntityName": "CalcTemplate",
     "SourcePath": "E:\\TMP\\source\\net-core",
-    "TargetEntityName": "DummyTree",
+    "TargetEntityName": "CalcParameterConstant",
     "TargetPath": "E:\\TMP\\target\\net-core"
   }
 }

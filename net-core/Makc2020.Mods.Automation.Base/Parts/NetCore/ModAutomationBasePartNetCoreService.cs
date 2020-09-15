@@ -30,7 +30,7 @@ namespace Makc2020.Mods.Automation.Base.Parts.NetCore
                 "obj"
             };
 
-            var fileSearchPatterns = new[] { "*.cs", "*.json" };
+            var fileSearchPatterns = new[] { "*.cs", "*.json", "*.resx" };
 
             foreach (var fileSearchPattern in fileSearchPatterns)
             {

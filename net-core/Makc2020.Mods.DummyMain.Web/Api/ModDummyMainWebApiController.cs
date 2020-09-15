@@ -134,7 +134,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
-            var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyManyToManyListGet();
+            var (execute, onSuccess, onError) = MyModel.BuildActionOptionsDummyManyToManyGet();
 
             try
             {
@@ -161,7 +161,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
 
             var result = new ModDummyMainBaseCommonJobOptionListGetResult();
 
-            var (execute, onSuccess, onError) = MyModel.BuildActionOptionDummyOneToManyListGet();
+            var (execute, onSuccess, onError) = MyModel.BuildActionOptionsDummyOneToManyGet();
 
             try
             {
