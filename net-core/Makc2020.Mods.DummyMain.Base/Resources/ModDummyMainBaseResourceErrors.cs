@@ -36,7 +36,43 @@ namespace Makc2020.Mods.DummyMain.Base.Resources.Errors
         /// <returns>Строка.</returns>
         public string GetStringFormatFieldValueIsNotUnique()
         {
-            return Localizer["Значение поля \"{0}\" не уникально"];
+            return Localizer["Значение поля '{0}' не уникально"];
+        }
+
+        /// <summary>
+        /// Получить строку форматирования "Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringFormatHasRelatedData()
+        {
+            return Localizer["Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности"];
+        }
+
+        /// <summary>
+        /// Получить строку форматирования "Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringFormatHaveRelatedData()
+        {
+            return Localizer["Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'"];
+        }
+
+        /// <summary>
+        /// Получить строку форматирования "Не удалось удалить объекты с наименованиями: '{0}'".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringFormatAreFailedToDelete()
+        {
+            return Localizer["Не удалось удалить объекты с наименованиями: '{0}'"];
+        }
+
+        /// <summary>
+        /// Получить строку форматирования "Не удалось удалить объект с наименованием '{0}'".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringFormatIsFailedToDelete()
+        {
+            return Localizer["Не удалось удалить объект с наименованием '{0}'"];
         }
 
         #endregion Public methods

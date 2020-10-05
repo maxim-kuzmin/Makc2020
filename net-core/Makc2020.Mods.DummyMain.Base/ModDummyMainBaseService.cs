@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common.Exceptions;
 using Makc2020.Core.Base.Common.Ext;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Ext;
@@ -11,9 +12,12 @@ using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Config;
 using Makc2020.Mods.DummyMain.Base.Ext;
+using Makc2020.Mods.DummyMain.Base.Jobs.Filtered.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +61,148 @@ namespace Makc2020.Mods.DummyMain.Base
         #endregion Constructors
 
         #region Public methods
+
+        /// <summary>
+        /// Удалить элемент.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task DeleteItem(ModDummyMainBaseJobItemGetInput input)
+        {
+            using var dbContext = CreateDbContext();
+
+            var obj = await dbContext.DummyMain.FirstOrDefaultAsync(
+                x => x.Id == input.DataId
+                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+            if (obj != null)
+            {
+                var items = new[] { obj.Name };
+
+                try
+                {
+                    dbContext.DummyMain.Remove(obj);
+
+                    await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+                }
+                catch (DbUpdateException)
+                {
+                    throw new CoreBaseCommonExceptionNonDeleted(null, items, null);
+                }
+                catch (Exception ex)
+                {
+                    throw new CoreBaseCommonExceptionNonDeleted(items, null, ex);
+                }
+
+                input.DataName = obj.Name;
+            }
+        }
+
+        /// <summary>
+        /// Удалить список.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task DeleteList(ModDummyMainBaseJobListDeleteInput input)
+        {
+            var deletedItems = new List<string>();
+            var failedItems = new List<string>();
+            var relatedItems = new List<string>();
+
+            Exception exception = null;
+
+            for (var i = 0; i < input.DataIds.Length; i++)
+            {
+                var dataId = input.DataIds[i];
+
+                if (dataId < 1)
+                {
+                    continue;
+                }
+
+                using var dbContext = CreateDbContext();
+
+                var obj = await dbContext.DummyMain.FirstOrDefaultAsync(
+                    x => x.Id == dataId
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (obj != null)
+                {
+                    try
+                    {
+                        dbContext.DummyMain.Remove(obj);
+
+                        await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+                        deletedItems.Add(obj.Name);
+                    }
+                    catch (DbUpdateException)
+                    {
+                        relatedItems.Add(obj.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        failedItems.Add(obj.Name);
+
+                        if (exception == null)
+                        {
+                            exception = ex;
+                        }
+                    }
+                }
+                else
+                {
+                    deletedItems.Add(input.DataNames[i]);
+                }
+            }
+
+            input.DeletedItems = deletedItems;
+
+            if (failedItems.Any() || relatedItems.Any() || exception != null)
+            {
+                input.Exception = new CoreBaseCommonExceptionNonDeleted(failedItems, relatedItems, exception);
+            }
+        }
+
+        /// <summary>
+        /// Получить отфильтрованное.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача с полученными данными.</returns>
+        public async Task<ModDummyMainBaseJobFilteredGetOutput> GetFiltered(
+            ModDummyMainBaseJobListGetInput input
+            )
+        {
+            var result = new ModDummyMainBaseJobFilteredGetOutput();
+
+            using var dbContext = CreateDbContext();
+
+            var items = await dbContext.DummyMain
+                .Include(x => x.ObjectDummyOneToMany)
+                .Include(x => x.ObjectsDummyMainDummyManyToMany)
+                .ModDummyMainBaseExtApplyFiltering(input)
+                .Select(x => new { x.Id, x.Name })
+                .ToArrayAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var length = items.Length;
+
+            if (length > 0)
+            {
+                result.DataIds = new long[length];
+                result.DataNames = new string[length];
+
+                for (var i = 0; i < length; i++)
+                {
+                    var item = items[i];
+
+                    result.DataIds[i] = item.Id;
+                    result.DataNames[i] = item.Name;
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Получить элемент.
@@ -249,24 +395,6 @@ namespace Makc2020.Mods.DummyMain.Base
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Удалить элемент.
-        /// </summary>
-        /// <param name="input">Ввод.</param>
-        /// <returns>Задача.</returns>
-        public async Task DeleteItem(ModDummyMainBaseJobItemGetInput input)
-        {
-            using var dbContext = CreateDbContext();
-
-            var obj = await dbContext.DummyMain.FirstAsync(
-                x => x.Id == input.DataId
-                ).CoreBaseExtTaskWithCurrentCulture(false);
-
-            dbContext.DummyMain.Remove(obj);
-
-            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods

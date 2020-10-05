@@ -31,30 +31,39 @@ namespace Makc2020.Mods.DummyMain.Base.Resources.Successes
         #region Public methods
 
         /// <summary>
-        /// Получить строку форматирования "Объект с Id = {0} удалён".
+        /// Получить строку форматирования "Объект с наименованием '{0}' удалён".
         /// </summary>
         /// <returns>Строка.</returns>
-        public string GetStringFormatObjectWithIdIsDeleted()
+        public string GetStringFormatIsDeleted()
         {
-            return Localizer["Объект с Id = {0} удалён"];
+            return Localizer["Объект с наименованием '{0}' удалён"];
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объект с Id = {0} вставлен".
+        /// Получить строку форматирования "Объекты удалены. Наименования удалённых объектов: '{0}'".
         /// </summary>
         /// <returns>Строка.</returns>
-        public string GetStringFormatObjectWithIdIsInserted()
+        public string GetStringFormatAreDeleted()
         {
-            return Localizer["Объект с Id = {0} вставлен"];
+            return Localizer["Объекты удалены. Наименования удалённых объектов: '{0}'"];
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объект с Id = {0} обновлён".
+        /// Получить строку форматирования "Объект с наименованием '{0}' вставлен".
         /// </summary>
         /// <returns>Строка.</returns>
-        public string GetStringFormatObjectWithIdIsUpdated()
+        public string GetStringFormatIsInserted()
         {
-            return Localizer["Объект с Id = {0} обновлён"];
+            return Localizer["Объект с наименованием '{0}' вставлен"];
+        }
+
+        /// <summary>
+        /// Получить строку форматирования "Объект с наименованием '{0}' обновлён".
+        /// </summary>
+        /// <returns>Строка.</returns>
+        public string GetStringFormatIsUpdated()
+        {
+            return Localizer["Объект с наименованием '{0}' обновлён"];
         }
 
         #endregion Public methods

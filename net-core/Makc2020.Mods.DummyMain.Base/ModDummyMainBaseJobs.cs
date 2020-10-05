@@ -2,10 +2,12 @@
 
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
+using Makc2020.Mods.DummyMain.Base.Jobs.Filtered.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Update;
+using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyManyToMany.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Option.DummyOneToMany.List.Get;
@@ -20,6 +22,11 @@ namespace Makc2020.Mods.DummyMain.Base
     public class ModDummyMainBaseJobs
     {
         #region Properties
+
+        /// <summary>
+        /// Задание на получение отфильтрованного.
+        /// </summary>
+        public ModDummyMainBaseJobFilteredGetService JobFilteredGet { get; private set; }
 
         /// <summary>
         /// Задание на удаление элемента.
@@ -40,6 +47,11 @@ namespace Makc2020.Mods.DummyMain.Base
         /// Задание на обновление элемента.
         /// </summary>
         public ModDummyMainBaseJobItemUpdateService JobItemUpdate { get; private set; }
+
+        /// <summary>
+        /// Задание на удаление списка.
+        /// </summary>
+        public ModDummyMainBaseJobListDeleteService JobListDelete { get; private set; }
 
         /// <summary>
         /// Задание на получение списка.
@@ -76,10 +88,16 @@ namespace Makc2020.Mods.DummyMain.Base
             ModDummyMainBaseService service
             )
         {
+            JobFilteredGet = new ModDummyMainBaseJobFilteredGetService(
+                service.GetFiltered,
+                coreBaseResourceErrors
+                );
+
             JobItemDelete = new ModDummyMainBaseJobItemDeleteService(
                 service.DeleteItem,
-                coreBaseResourceErrors,
-                resourceSuccesses
+                coreBaseResourceErrors,                
+                resourceSuccesses,
+                resourceErrors
                 );
 
             JobItemGet = new ModDummyMainBaseJobItemGetService(
@@ -101,6 +119,13 @@ namespace Makc2020.Mods.DummyMain.Base
                 resourceSuccesses,
                 resourceErrors,
                 dataBaseSettings
+                );
+
+            JobListDelete = new ModDummyMainBaseJobListDeleteService(
+                service.DeleteList,
+                coreBaseResourceErrors,
+                resourceSuccesses,
+                resourceErrors
                 );
 
             JobListGet = new ModDummyMainBaseJobListGetService(

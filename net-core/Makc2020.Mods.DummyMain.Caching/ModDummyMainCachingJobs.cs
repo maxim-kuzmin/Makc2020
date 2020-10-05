@@ -8,10 +8,12 @@ using Makc2020.Data.Base;
 using Makc2020.Mods.DummyMain.Base;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
+using Makc2020.Mods.DummyMain.Caching.Jobs.Filtered.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Delete;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Insert;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Item.Update;
+using Makc2020.Mods.DummyMain.Caching.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Caching.Jobs.List.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyManyToMany.Get;
 using Makc2020.Mods.DummyMain.Caching.Jobs.Options.DummyOneToMany.Get;
@@ -24,6 +26,11 @@ namespace Makc2020.Mods.DummyMain.Caching
     public class ModDummyMainCachingJobs
     {
         #region Properties
+
+        /// <summary>
+        /// Задание на получение отфильтрованного.
+        /// </summary>
+        public ModDummyMainCachingJobFilteredGetService JobFilteredGet { get; private set; }
 
         /// <summary>
         /// Задание на удаление элемента.
@@ -44,6 +51,11 @@ namespace Makc2020.Mods.DummyMain.Caching
         /// Задание на обновление элемента.
         /// </summary>
         public ModDummyMainCachingJobItemUpdateService JobItemUpdate { get; private set; }
+
+        /// <summary>
+        /// Задание на удаление списка.
+        /// </summary>
+        public ModDummyMainCachingJobListDeleteService JobListDelete { get; private set; }
 
         /// <summary>
         /// Задание на получение списка.
@@ -86,10 +98,20 @@ namespace Makc2020.Mods.DummyMain.Caching
             ModDummyMainBaseService service
             )
         {
+            JobFilteredGet = new ModDummyMainCachingJobFilteredGetService(
+                service.GetFiltered,
+                coreBaseResourceErrors,
+                dataBaseSettings,
+                cacheSettings,
+                cache,
+                coreCachingResourceErrors
+                );
+
             JobItemDelete = new ModDummyMainCachingJobItemDeleteService(
                 service.DeleteItem,
                 coreBaseResourceErrors,
                 resourceSuccesses,
+                resourceErrors,
                 dataBaseSettings,
                 cacheSettings,
                 cache,
@@ -118,6 +140,17 @@ namespace Makc2020.Mods.DummyMain.Caching
 
             JobItemUpdate = new ModDummyMainCachingJobItemUpdateService(
                 service.SaveItem,
+                coreBaseResourceErrors,
+                resourceSuccesses,
+                resourceErrors,
+                dataBaseSettings,
+                cacheSettings,
+                cache,
+                coreCachingResourceErrors
+                );
+
+            JobListDelete = new ModDummyMainCachingJobListDeleteService(
+                service.DeleteList,
                 coreBaseResourceErrors,
                 resourceSuccesses,
                 resourceErrors,

@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace Srtdb.Core.Web.Ext
+namespace Makc2020.Core.Web.Ext
 {
     /// <summary>
     /// Ядро. Веб. Расширение. Получить.

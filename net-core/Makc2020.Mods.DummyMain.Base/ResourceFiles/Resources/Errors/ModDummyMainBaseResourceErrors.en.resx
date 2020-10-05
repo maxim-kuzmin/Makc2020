@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Значение поля &quot;{0}&quot; не уникально" xml:space="preserve">
-    <value>Value in field "{0}" is not unique</value>
+  <data name="Значение поля '{0}' не уникально" xml:space="preserve">
+    <value>The value of the field '{0}' is not unique</value>
+  </data>
+  <data name="Не удалось удалить объект с наименованием '{0}'" xml:space="preserve">
+    <value>Failed to delete the object with the name: '{0}'</value>
+  </data>
+  <data name="Не удалось удалить объекты с наименованиями: '{0}'" xml:space="preserve">
+    <value>Failed to delete objects with names: {0}</value>
+  </data>
+  <data name="Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности" xml:space="preserve">
+    <value>The object with the name '{0}' cannot be deleted because there are entities associated with it</value>
+  </data>
+  <data name="Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'" xml:space="preserve">
+    <value>Objects cannot be deleted because there are entities associated with them. Object's names: '{0}'</value>
   </data>
 </root>

@@ -56,8 +56,8 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Update
             return new[]
             {
                 string.Format(
-                    ResourceSuccesses.GetStringFormatObjectWithIdIsUpdated(),
-                    output.ObjectDummyMain.Id
+                    ResourceSuccesses.GetStringFormatIsUpdated(),
+                    output.ObjectDummyMain.Name
                     )
             };
         }

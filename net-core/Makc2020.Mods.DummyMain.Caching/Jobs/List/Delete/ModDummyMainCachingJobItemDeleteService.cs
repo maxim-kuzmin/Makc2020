@@ -2,23 +2,22 @@
 
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Core.Caching;
-using Makc2020.Core.Caching.Common.Client.Config;
 using Makc2020.Core.Caching.Clients;
+using Makc2020.Core.Caching.Common.Client.Config;
 using Makc2020.Core.Caching.Resources.Errors;
 using Makc2020.Data.Base;
-using Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete;
-using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
+using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
 using System;
 using System.Threading.Tasks;
-using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 
-namespace Makc2020.Mods.DummyMain.Caching.Jobs.Item.Delete
+namespace Makc2020.Mods.DummyMain.Caching.Jobs.List.Delete
 {
     /// <summary>
-    /// Мод "DummyMain". Кэширование. Задания. Элемент. Удаление. Сервис.
+    /// Мод "DummyMain". Кэширование. Задания. Список. Удаление. Сервис.
     /// </summary>
-    public class ModDummyMainCachingJobItemDeleteService : ModDummyMainBaseJobItemDeleteService
+    public class ModDummyMainCachingJobListDeleteService : ModDummyMainBaseJobListDeleteService
     {
         #region Constructors
 
@@ -31,18 +30,23 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Item.Delete
         /// <param name="resourceErrors">Ресурсы ошибок.</param>
         /// <param name="dataBaseSettings">Настройки основы данных.</param>
         /// <param name="cacheSettings">Настройки кэширования.</param>        
-        /// <param name="cache">Кэш.</param>     
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>        
-        public ModDummyMainCachingJobItemDeleteService(
-            Func<ModDummyMainBaseJobItemGetInput, Task> executable,
+        /// <param name="cache">Кэш.</param>      
+        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        public ModDummyMainCachingJobListDeleteService(
+            Func<ModDummyMainBaseJobListDeleteInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModDummyMainBaseResourceSuccesses resourceSuccesses,
             ModDummyMainBaseResourceErrors resourceErrors,
             DataBaseSettings dataBaseSettings,
             ICoreCachingCommonClientConfigSettings cacheSettings,
             ICoreCachingCache cache,
-            CoreCachingResourceErrors coreCachingResourceErrors            
-            ) : base(executable, coreBaseResourceErrors, resourceSuccesses, resourceErrors)
+            CoreCachingResourceErrors coreCachingResourceErrors
+            ) : base(
+                executable,
+                coreBaseResourceErrors,
+                resourceSuccesses,
+                resourceErrors
+                )
         {
             if (cacheSettings.IsCachingEnabled)
             {

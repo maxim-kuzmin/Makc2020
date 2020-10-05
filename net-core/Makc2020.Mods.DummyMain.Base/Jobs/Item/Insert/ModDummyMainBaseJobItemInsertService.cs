@@ -112,8 +112,8 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
             return new[]
             {
                 string.Format(
-                    ResourceSuccesses.GetStringFormatObjectWithIdIsInserted(),
-                    output.ObjectDummyMain.Id
+                    ResourceSuccesses.GetStringFormatIsInserted(),
+                    output.ObjectDummyMain.Name
                     )
             };
         }

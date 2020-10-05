@@ -1,10 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Common.Exceptions;
+using Makc2020.Core.Base.Common.Jobs.List.Delete;
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Execution.Exceptions;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
 using System;
@@ -12,14 +12,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
+namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Delete
 {
     /// <summary>
-    /// Мод "DummyMain". Основа. Задания. Элемент. Удаление. Сервис.
+    /// Мод "DummyMain". Задания. Список. Получение. Сервис.
     /// </summary>
-    public class ModDummyMainBaseJobItemDeleteService : CoreBaseExecutableServiceAsyncWithInput
+    public class ModDummyMainBaseJobListDeleteService : CoreBaseExecutableServiceAsyncWithInput
         <
-            ModDummyMainBaseJobItemGetInput
+            ModDummyMainBaseJobListDeleteInput
         >
     {
         #region Properties
@@ -38,8 +38,9 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
         /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        public ModDummyMainBaseJobItemDeleteService(
-            Func<ModDummyMainBaseJobItemGetInput, Task> executable,
+        /// <param name="resourceErrors">Ресурсы ошибок.</param>
+        public ModDummyMainBaseJobListDeleteService(
+            Func<ModDummyMainBaseJobListDeleteInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModDummyMainBaseResourceSuccesses resourceSuccesses,
             ModDummyMainBaseResourceErrors resourceErrors
@@ -63,48 +64,51 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
             {
                 var exception = (CoreBaseCommonExceptionNonDeleted)ex;
 
-                if (exception.FailedItems != null && exception.FailedItems.Any())
+                var errors = new List<string>();
+
+                if (exception.FailedItems.Any())
                 {
-                    return new string[] {
+                    errors.Add(
                         string.Format(
-                            ResourceErrors.GetStringFormatIsFailedToDelete(),
-                            exception.FailedItems.First()
+                            ResourceErrors.GetStringFormatAreFailedToDelete(),
+                            string.Join("', '", exception.FailedItems)
                             )
-                        };
+                        );
                 }
-                else if (exception.RelatedItems != null && exception.RelatedItems.Any())
+
+                if (exception.RelatedItems.Any())
                 {
-                    return new string[] {
+                    errors.Add(
                         string.Format(
-                            ResourceErrors.GetStringFormatHasRelatedData(),
-                            exception.RelatedItems.First()
+                            ResourceErrors.GetStringFormatHaveRelatedData(),
+                            string.Join("', '", exception.RelatedItems)
                             )
-                        };
+                        );
                 }
+
+                return errors;
             }
 
             return GetErrorMessagesOnInvalidInput(ex);
         }
 
-        private IEnumerable<string> GetSuccessMessages(ModDummyMainBaseJobItemGetInput input)
+        private IEnumerable<string> GetSuccessMessages(CoreBaseCommonJobListDeleteInput input)
         {
             return new[]
             {
                 string.Format(
-                    ResourceSuccesses.GetStringFormatIsDeleted(),
-                    input.DataName
+                    ResourceSuccesses.GetStringFormatAreDeleted(),
+                    string.Join("', '", input.DeletedItems)
                     )
             };
         }
 
-        private ModDummyMainBaseJobItemGetInput TransformInput(ModDummyMainBaseJobItemGetInput input)
+        private ModDummyMainBaseJobListDeleteInput TransformInput(ModDummyMainBaseJobListDeleteInput input)
         {
             if (input == null)
             {
-                input = new ModDummyMainBaseJobItemGetInput();
+                input = new ModDummyMainBaseJobListDeleteInput();
             }
-
-            input.Normalize();
 
             var invalidProperties = input.GetInvalidProperties();
 
