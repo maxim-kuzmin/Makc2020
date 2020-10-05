@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Debug;Release;Test</Configurations>    
+    <Configurations>Debug;Release;Test</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,19 +10,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Makc2020.Data.Entity\Makc2020.Data.Entity.csproj" />
+    <ProjectReference Include="..\net-core\Makc2020.Data.Entity\Makc2020.Data.Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.PostgreSql.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.MAKC2.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.PostgreSql.config.m.MAKC2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

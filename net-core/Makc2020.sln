@@ -131,6 +131,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tree", "Tree", "{94E363EF-C
 		sql\Tree\Tree.Trigger.sql = sql\Tree\Tree.Trigger.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makc2020.Data.Entity.Clients.PostgreSql", "..\Makc2020.Data.Entity.Clients.PostgreSql\Makc2020.Data.Entity.Clients.PostgreSql.csproj", "{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -341,6 +343,12 @@ Global
 		{73C70BAF-3843-488F-8B28-C4227B150DDD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73C70BAF-3843-488F-8B28-C4227B150DDD}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{73C70BAF-3843-488F-8B28-C4227B150DDD}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,6 +395,7 @@ Global
 		{73C70BAF-3843-488F-8B28-C4227B150DDD} = {187B264A-0185-4F8E-9017-1265D0A86F35}
 		{ACE3D1D1-3A88-4163-BD3D-3650022998BE} = {F3B85D6B-A5CD-48AB-BE52-519A90895E61}
 		{94E363EF-C298-4A7C-B36E-B4B0A8AF28A5} = {ACE3D1D1-3A88-4163-BD3D-3650022998BE}
+		{9A1D863B-F2DE-4115-ADCA-CCE33381DB43} = {0B006A17-0CFF-4228-BDBB-37627E2DD857}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70A0C8D4-5F1D-4A8C-9379-48C8BF6F5493}
