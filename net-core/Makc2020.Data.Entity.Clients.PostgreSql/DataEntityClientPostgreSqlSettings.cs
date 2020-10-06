@@ -4,17 +4,17 @@ using Makc2020.Data.Base;
 using Makc2020.Data.Base.Settings;
 using System;
 
-namespace Makc2020.Data.Entity.Clients.SqlServer
+namespace Makc2020.Data.Entity.Clients.PostgreSql
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Настройки.
+    /// Данные. Entity Framework. Клиенты. PostgreSQL. Настройки.
     /// </summary>
-    public sealed class DataEntityClientSqlServerSettings : DataBaseSettings
+    public sealed class DataEntityClientPostgreSqlSettings : DataBaseSettings
     {
         #region Fields
 
-        private static readonly Lazy<DataEntityClientSqlServerSettings> lazy =
-            new Lazy<DataEntityClientSqlServerSettings>(() => new DataEntityClientSqlServerSettings());
+        private static readonly Lazy<DataEntityClientPostgreSqlSettings> lazy =
+            new Lazy<DataEntityClientPostgreSqlSettings>(() => new DataEntityClientPostgreSqlSettings());
 
         #endregion Fields
 
@@ -35,11 +35,11 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
 
         #region Constructors
 
-        private DataEntityClientSqlServerSettings()
+        private DataEntityClientPostgreSqlSettings()
         {
             var defaults = new DataBaseDefaults
             {
-                Schema = "dbo"
+                Schema = "public"
             };
 
             DummyOneToMany = new DataBaseSettingDummyOneToMany(defaults, "DummyOneToMany");

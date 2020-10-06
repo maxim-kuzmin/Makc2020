@@ -131,7 +131,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tree", "Tree", "{94E363EF-C
 		sql\Tree\Tree.Trigger.sql = sql\Tree\Tree.Trigger.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makc2020.Data.Entity.Clients.PostgreSql", "..\Makc2020.Data.Entity.Clients.PostgreSql\Makc2020.Data.Entity.Clients.PostgreSql.csproj", "{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makc2020.Data.Entity.Clients.PostgreSql", "Makc2020.Data.Entity.Clients.PostgreSql\Makc2020.Data.Entity.Clients.PostgreSql.csproj", "{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

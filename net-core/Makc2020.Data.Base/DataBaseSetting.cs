@@ -7,44 +7,44 @@ namespace Makc2020.Data.Base
     /// </summary>
     public class DataBaseSetting
     {
-        #region Constants
+        #region Properties
+
+        private DataBaseDefaults Defaults { get; set; }
+
+        /// <summary>
+        /// Таблица в базе данных.
+        /// </summary>
+        public string DbTable { get; private set; }
 
         /// <summary>
         /// Схема в базе данных.
         /// </summary>
-        private const string DB_SCHEMA = "dbo";
+        public string DbSchema { get; private set; }
 
         /// <summary>
-        /// Префикс первичного ключа в базе данных.
+        /// Таблица со схемой в базе данных.
         /// </summary>
-        private const string DB_PREFIX_PK = "PK";
+        public string DbTableWithSchema { get; private set; }
+
+        #endregion Properties
+
+        #region Constructors
 
         /// <summary>
-        /// Префикс внешнего ключа в базе данных.
+        /// Конструктор.
         /// </summary>
-        private const string DB_PREFIX_FK = "FK";
+        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="dbTable">Таблица в базе данных.</param>
+        /// <param name="dbSchema">Схема в базе данных.</param>
+        public DataBaseSetting(DataBaseDefaults defaults, string dbTable, string dbSchema = null)
+        {
+            Defaults = defaults;
+            DbTable = dbTable;
+            DbSchema = dbSchema ?? CreateNameOfSchema();
+            DbTableWithSchema = string.IsNullOrWhiteSpace(DbSchema) ? DbTable : CreateFullName(DbSchema, DbTable);
+        }
 
-        /// <summary>
-        /// Префикс уникального индекса в базе данных.
-        /// </summary>
-        private const string DB_PREFIX_UX = "UX";
-
-        /// <summary>
-        /// Префикс индекса в базе данных.
-        /// </summary>
-        private const string DB_PREFIX_IX = "IX";
-
-        /// <summary>
-        /// Разделитель частей полного имени в базе данных.
-        /// </summary>
-        private const string DB_SEPARATOR_OF_FULL_NAME_PARTS = ".";
-
-        /// <summary>
-        /// Разделитель частей имени в базе данных.
-        /// </summary>
-        private const string DB_SEPARATOR_OF_NAME_PARTS = "_";
-
-        #endregion Constants
+        #endregion Constructors
 
         #region Protected methods
 
@@ -55,7 +55,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateFullName(params string[] parts)
         {
-            return string.Join(DB_SEPARATOR_OF_FULL_NAME_PARTS, parts);
+            return string.Join(Defaults.FullNamePartsSeparator, parts);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfForeignKey(params string[] parts)
         {
-            return CreateName(DB_PREFIX_FK, parts);
+            return CreateName(Defaults.ForeignKeyPrefix, parts);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfIndex(params string[] parts)
         {
-            return CreateName(DB_PREFIX_IX, parts);
+            return CreateName(Defaults.IndexPrefix, parts);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfPrimaryKey(params string[] parts)
         {
-            return CreateName(DB_PREFIX_PK, parts);
+            return CreateName(Defaults.PrimaryKeyPrefix, parts);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfSchema(params string[] parts)
         {
-            return parts.Length > 0 ? CreateName(null, parts) : DB_SCHEMA;
+            return parts.Length > 0 ? CreateName(null, parts) : Defaults.Schema;
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfUniqueIndex(params string[] parts)
         {
-            return CreateName(DB_PREFIX_UX, parts);
+            return CreateName(Defaults.UniqueIndexPrefix, parts);
         }
 
         #endregion Protected methods
@@ -124,11 +124,11 @@ namespace Makc2020.Data.Base
 
         private string CreateName(string prefix, params string[] parts)
         {
-            var result = string.Join(DB_SEPARATOR_OF_NAME_PARTS, parts);
+            var result = string.Join(Defaults.NamePartsSeparator, parts);
 
             if (!string.IsNullOrWhiteSpace(prefix))
             {
-                result = string.Concat(prefix, DB_SEPARATOR_OF_NAME_PARTS, result);
+                result = string.Concat(prefix, Defaults.NamePartsSeparator, result);
             }
 
             return result;

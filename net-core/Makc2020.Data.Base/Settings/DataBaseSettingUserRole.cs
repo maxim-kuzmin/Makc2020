@@ -9,62 +9,70 @@ namespace Makc2020.Data.Base.Settings
     /// </summary>
     public class DataBaseSettingUserRole : DataBaseSetting
     {
-        #region Constants
-
-        /// <summary>
-        /// Таблица в базе данных.
-        /// </summary>
-        public const string DB_TABLE = "UserRole";
-
-        #endregion Constants
-
         #region Properties
-
-        /// <summary>
-        /// Таблица в базе данных.
-        /// </summary>
-        public string DbTable => DB_TABLE;
-
-        /// <summary>
-        /// Схема в базе данных.
-        /// </summary>
-        public string DbSchema => CreateNameOfSchema();
-
-        /// <summary>
-        /// Таблица со схемой в базе данных.
-        /// </summary>
-        public string DbTableWithSchema => CreateFullName(DbSchema, DbTable);
-
-        /// <summary>
-        /// Первичный ключ в базе данных.
-        /// </summary>
-        public string DbPrimaryKey => CreateNameOfPrimaryKey(DbTable);
-
-        /// <summary>
-        /// Внешний ключ в базе данных к сущности "User".
-        /// </summary>
-        public string DbForeignKeyToUser => CreateNameOfForeignKey(DbTable, DataBaseSettingUser.DB_TABLE);
-
-        /// <summary>
-        /// Внешний ключ в базе данных к сущности "Role".
-        /// </summary>
-        public string DbForeignKeyToRole => CreateNameOfForeignKey(DbTable, DataBaseSettingRole.DB_TABLE);
-
-        /// <summary>
-        /// Имя колонки в базе данных для поля идентификатора сущности "User".
-        /// </summary>
-        public string DbColumnNameForUserId => CreateNameOfColumn(DataBaseSettingUser.DB_TABLE, nameof(DataBaseObjectUser.Id));
 
         /// <summary>
         /// Имя колонки в базе данных для поля идентификатора сущности "Role".
         /// </summary>
-        public string DbColumnNameForRoleId => CreateNameOfColumn(DataBaseSettingRole.DB_TABLE, nameof(DataBaseObjectRole.Id));
+        public string DbColumnNameForRoleId { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля идентификатора сущности "User".
+        /// </summary>
+        public string DbColumnNameForUserId { get; set; }
+
+        /// <summary>
+        /// Внешний ключ в базе данных к сущности "Role".
+        /// </summary>
+        public string DbForeignKeyToRole { get; set; }
+
+        /// <summary>
+        /// Внешний ключ в базе данных к сущности "User".
+        /// </summary>
+        public string DbForeignKeyToUser { get; set; }
 
         /// <summary>
         /// Наименование индекса в базе данных для поля "RoleId".
         /// </summary>
-        public string DbIndexForRoleId => CreateNameOfIndex(DbTable, nameof(DataBaseObjectUserRole.RoleId));
+        public string DbIndexForRoleId { get; set; }
+
+        /// <summary>
+        /// Первичный ключ в базе данных.
+        /// </summary>
+        public string DbPrimaryKey { get; set; }
 
         #endregion Properties
+
+        #region Constructors
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="settingRole">Настройка сущности "Role".</param>
+        /// <param name="settingUser">Настройка сущности "User".</param>
+        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="dbTable">Таблица в базе данных.</param>
+        /// <param name="dbSchema">Схема в базе данных.</param>
+        public DataBaseSettingUserRole(
+            DataBaseSettingRole settingRole,
+            DataBaseSettingUser settingUser,
+            DataBaseDefaults defaults,
+            string dbTable,
+            string dbSchema = null
+            )
+            : base(defaults, dbTable, dbSchema)
+        {
+            DbColumnNameForRoleId = CreateNameOfColumn(settingRole.DbTable, nameof(DataBaseObjectRole.Id));
+            DbColumnNameForUserId = CreateNameOfColumn(settingUser.DbTable, nameof(DataBaseObjectUser.Id));
+
+            DbForeignKeyToRole = CreateNameOfForeignKey(DbTable, settingRole.DbTable);
+            DbForeignKeyToUser = CreateNameOfForeignKey(DbTable, settingUser.DbTable);
+
+            DbIndexForRoleId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectUserRole.RoleId));
+
+            DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
+        }
+
+        #endregion Constructors
     }
 }

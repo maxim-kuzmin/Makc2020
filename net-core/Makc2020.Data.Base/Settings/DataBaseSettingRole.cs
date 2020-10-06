@@ -9,42 +9,40 @@ namespace Makc2020.Data.Base.Settings
     /// </summary>
     public class DataBaseSettingRole : DataBaseSetting
     {
-        #region Constants
-
-        /// <summary>
-        /// Таблица в базе данных.
-        /// </summary>
-        public const string DB_TABLE = "Role";
-
-        #endregion Constants
-
         #region Properties
-
-        /// <summary>
-        /// Таблица в базе данных.
-        /// </summary>
-        public string DbTable => DB_TABLE;
-
-        /// <summary>
-        /// Схема в базе данных.
-        /// </summary>
-        public string DbSchema => CreateNameOfSchema();
-
-        /// <summary>
-        /// Таблица со схемой в базе данных.
-        /// </summary>
-        public string DbTableWithSchema => CreateFullName(DbSchema, DbTable);
 
         /// <summary>
         /// Первичный ключ в базе данных.
         /// </summary>
-        public string DbPrimaryKey => CreateNameOfPrimaryKey(DbTable);
+        public string DbPrimaryKey { get; set; }
 
         /// <summary>
         /// Наименование уникального индекса в базе данных для поля "NormalizedName".
         /// </summary>
-        public string DbUniqueIndexForNormalizedName => CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectRole.NormalizedName));
+        public string DbUniqueIndexForNormalizedName { get; set; }
 
         #endregion Properties
+
+        #region Constructors
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="dbTable">Таблица в базе данных.</param>
+        /// <param name="dbSchema">Схема в базе данных.</param>
+        public DataBaseSettingRole(
+            DataBaseDefaults defaults,
+            string dbTable,
+            string dbSchema = null
+            )
+            : base(defaults, dbTable, dbSchema)
+        {
+            DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
+
+            DbUniqueIndexForNormalizedName = CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectRole.NormalizedName));
+        }
+
+        #endregion Constructors
     }
 }

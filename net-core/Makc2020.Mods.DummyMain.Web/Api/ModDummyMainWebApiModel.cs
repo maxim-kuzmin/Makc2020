@@ -2,7 +2,7 @@
 
 using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Logging;
-using Makc2020.Data.Base.Settings;
+using Makc2020.Data.Base;
 using Makc2020.Host.Web;
 using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
@@ -31,6 +31,8 @@ namespace Makc2020.Mods.DummyMain.Web.Api
     {
         #region Properties
 
+        private DataBaseSettings AppDataBaseSettings { get; set; }
+
         private ModDummyMainCachingJobFilteredGetService AppJobFilteredGet { get; set; }
 
         private ModDummyMainCachingJobItemDeleteService AppJobItemDelete { get; set; }
@@ -56,6 +58,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <summary>
         /// Конструктор.
         /// </summary>        
+        /// <param name="appDataBaseSettings">Настройки базы данных.</param>
         /// <param name="appJobFilteredGet">Задание на получение отфильтрованного.</param>
         /// <param name="appJobItemDelete">Задание на удаление элемента.</param>
         /// <param name="appJobItemGet">Задание на получение элемента.</param>
@@ -70,6 +73,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// </param>
         /// <param name="appLogger">Регистратор.</param>
         public ModDummyMainWebApiModel(
+            DataBaseSettings appDataBaseSettings,
             ModDummyMainCachingJobFilteredGetService appJobFilteredGet,
             ModDummyMainCachingJobItemDeleteService appJobItemDelete,
             ModDummyMainCachingJobItemGetService appJobItemGet,
@@ -83,6 +87,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             )
             : base(appLogger)
         {
+            AppDataBaseSettings = appDataBaseSettings;
             AppJobFilteredGet = appJobFilteredGet;
             AppJobItemDelete = appJobItemDelete;
             AppJobItemGet = appJobItemGet;
@@ -357,7 +362,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <returns>Ключ объекта.</returns>
         public string CreateObjectKey(long id)
         {
-            return $"{DataBaseSettingDummyTree.DB_TABLE}-{id}";
+            return $"{AppDataBaseSettings.DummyMain.DbTable}-{id}";
         }
 
         #endregion Public methods    

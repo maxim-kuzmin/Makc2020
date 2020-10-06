@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\net-core\Makc2020.Data.Entity\Makc2020.Data.Entity.csproj" />
+    <ProjectReference Include="..\Makc2020.Data.Entity\Makc2020.Data.Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
