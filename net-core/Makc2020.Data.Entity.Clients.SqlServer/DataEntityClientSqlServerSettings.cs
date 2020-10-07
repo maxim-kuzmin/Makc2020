@@ -48,7 +48,13 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
                 ColumnNameForTreePath = "TreePath",
                 ColumnNameForTreePosition = "TreePosition",
                 ColumnNameForTreeSort = "TreeSort",
-                Schema = "dbo"
+                ForeignKeyPrefix = "FK",
+                FullNamePartsSeparator = ".",
+                IndexPrefix = "IX",
+                NamePartsSeparator = "_",
+                PrimaryKeyPrefix = "PK",
+                Schema = "dbo",
+                UniqueIndexPrefix = "UX"
             };
 
             DummyOneToMany = new DataBaseSettingDummyOneToMany(defaults, "DummyOneToMany");

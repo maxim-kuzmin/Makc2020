@@ -31,9 +31,23 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 
-            builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);            
+            builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
-            builder.HasIndex(x => x.NormalizedName).IsUnique().HasName(setting.DbUniqueIndexForNormalizedName);
+            builder.Property(x => x.ConcurrencyStamp)
+                .HasColumnName(setting.DbColumnNameForConcurrencyStamp);
+
+            builder.Property(x => x.Id)
+                .HasColumnName(setting.DbColumnNameForId);
+
+            builder.Property(x => x.Name)
+                .HasColumnName(setting.DbColumnNameForName);
+
+            builder.Property(x => x.NormalizedName)
+                .HasColumnName(setting.DbColumnNameForNormalizedName);
+
+            builder.HasIndex(x => x.NormalizedName)
+                .IsUnique()
+                .HasName(setting.DbUniqueIndexForNormalizedName);
         }
 
         #endregion Public methods

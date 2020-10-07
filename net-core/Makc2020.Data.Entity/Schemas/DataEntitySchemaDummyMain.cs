@@ -33,7 +33,9 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);            
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnName(setting.DbColumnNameForId);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName(setting.DbColumnNameForId);
 
             builder.Property(x => x.Name)
                 .IsRequired()
@@ -45,20 +47,56 @@ namespace Makc2020.Data.Entity.Schemas
                 .IsRequired()
                 .HasColumnName(setting.DbColumnNameForObjectDummyOneToManyId);
 
-            builder.Property(x => x.PropBoolean).IsRequired();
-            builder.Property(x => x.PropBooleanNullable);
-            builder.Property(x => x.PropDate).IsRequired();
-            builder.Property(x => x.PropDateNullable);
-            builder.Property(x => x.PropDateTimeOffset).IsRequired();
-            builder.Property(x => x.PropDateTimeOffsetNullable);
-            builder.Property(x => x.PropDecimal).IsRequired();
-            builder.Property(x => x.PropDecimalNullable);
-            builder.Property(x => x.PropInt32).IsRequired();
-            builder.Property(x => x.PropInt32Nullable);
-            builder.Property(x => x.PropInt64).IsRequired();
-            builder.Property(x => x.PropInt64Nullable);
-            builder.Property(x => x.PropString).IsRequired().IsUnicode();
-            builder.Property(x => x.PropStringNullable).IsUnicode();
+            builder.Property(x => x.PropBoolean)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropBoolean);
+
+            builder.Property(x => x.PropBooleanNullable)
+                .HasColumnName(setting.DbColumnNameForPropBooleanNullable);
+
+            builder.Property(x => x.PropDate)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropDate);
+
+            builder.Property(x => x.PropDateNullable)
+                .HasColumnName(setting.DbColumnNameForPropDateNullable);
+
+            builder.Property(x => x.PropDateTimeOffset)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropDateTimeOffset);
+
+            builder.Property(x => x.PropDateTimeOffsetNullable)
+                .HasColumnName(setting.DbColumnNameForPropDateTimeOffsetNullable);
+
+            builder.Property(x => x.PropDecimal)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropDecimal);
+
+            builder.Property(x => x.PropDecimalNullable)
+                .HasColumnName(setting.DbColumnNameForPropDecimalNullable);
+
+            builder.Property(x => x.PropInt32)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropInt32);
+
+            builder.Property(x => x.PropInt32Nullable)
+                .HasColumnName(setting.DbColumnNameForPropInt32Nullable);
+
+            builder.Property(x => x.PropInt64)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForPropInt64);
+
+            builder.Property(x => x.PropInt64Nullable)
+                .HasColumnName(setting.DbColumnNameForPropInt64Nullable);
+
+            builder.Property(x => x.PropString)
+                .IsRequired()
+                .IsUnicode()
+                .HasColumnName(setting.DbColumnNameForPropString);
+
+            builder.Property(x => x.PropStringNullable)
+                .IsUnicode()
+                .HasColumnName(setting.DbColumnNameForPropStringNullable);
 
             builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
 

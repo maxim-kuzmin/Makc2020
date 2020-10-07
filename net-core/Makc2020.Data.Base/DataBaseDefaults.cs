@@ -57,27 +57,27 @@ namespace Makc2020.Data.Base
         /// <summary>
         /// Префикс внешнего ключа.
         /// </summary>
-        public string ForeignKeyPrefix { get; set; } = "FK";
+        public string ForeignKeyPrefix { get; set; }
 
         /// <summary>
         /// Разделитель частей полного имени.
         /// </summary>
-        public string FullNamePartsSeparator { get; set; } = ".";
+        public string FullNamePartsSeparator { get; set; }
 
         /// <summary>
         /// Префикс индекса в базе данных.
         /// </summary>
-        public string IndexPrefix { get; set; } = "IX";
+        public string IndexPrefix { get; set; }
 
         /// <summary>
         /// Разделитель частей имени.
         /// </summary>
-        public string NamePartsSeparator { get; set; } = "_";
+        public string NamePartsSeparator { get; set; }
 
         /// <summary>
         /// Префикс первичного ключа.
         /// </summary>
-        public string PrimaryKeyPrefix { get; set; } = "PK";
+        public string PrimaryKeyPrefix { get; set; }
 
         /// <summary>
         /// Схема.
@@ -87,7 +87,7 @@ namespace Makc2020.Data.Base
         /// <summary>
         /// Префикс уникального индекса.
         /// </summary>
-        public string UniqueIndexPrefix { get; set; } = "UX";
+        public string UniqueIndexPrefix { get; set; }
 
         #endregion Properties
     }

@@ -31,9 +31,23 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 
-            builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);            
+            builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
-            builder.HasIndex(x => x.RoleId).IsUnique().HasName(setting.DbIndexForRoleId);
+            builder.Property(x => x.ClaimType)
+                .HasColumnName(setting.DbColumnNameForClaimType);
+
+            builder.Property(x => x.ClaimValue)
+                .HasColumnName(setting.DbColumnNameForClaimValue);
+
+            builder.Property(x => x.Id)
+                .HasColumnName(setting.DbColumnNameForId);
+
+            builder.Property(x => x.RoleId)
+                .HasColumnName(setting.DbColumnNameForRoleId);
+
+            builder.HasIndex(x => x.RoleId)
+                .IsUnique()
+                .HasName(setting.DbIndexForRoleId);
 
             builder.HasOne(x => x.ObjectRole)
                 .WithMany(x => x.ObjectsRoleClaim)

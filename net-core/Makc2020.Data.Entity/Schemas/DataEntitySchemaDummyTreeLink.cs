@@ -33,8 +33,13 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => new { x.Id, x.ParentId }).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.Id).IsRequired().HasColumnName(setting.DbColumnNameForId);
-            builder.Property(x => x.ParentId).IsRequired().HasColumnName(setting.DbColumnNameForParentId);
+            builder.Property(x => x.Id)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForId);
+
+            builder.Property(x => x.ParentId)
+                .IsRequired()
+                .HasColumnName(setting.DbColumnNameForParentId);
         }
 
         #endregion Public methods

@@ -12,6 +12,26 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
+        /// Имя колонки в базе данных для поля "ClaimType".
+        /// </summary>
+        public string DbColumnNameForClaimType { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "ClaimValue".
+        /// </summary>
+        public string DbColumnNameForClaimValue { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Id".
+        /// </summary>
+        public string DbColumnNameForId { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "RoleId".
+        /// </summary>
+        public string DbColumnNameForRoleId { get; set; }
+
+        /// <summary>
         /// Внешний ключ в базе данных к сущности "Role".
         /// </summary>
         public string DbForeignKeyToRole { get; set; }
@@ -45,6 +65,13 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
+            DbColumnNameForId = defaults.ColumnNameForId;
+
+            DbColumnNameForRoleId = CreateNameOfColumn(
+                settingRole.DbTable,
+                settingRole.DbColumnNameForId
+                );
+
             DbForeignKeyToRole = CreateNameOfForeignKey(DbTable, settingRole.DbTable);
 
             DbIndexForRoleId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectRoleClaim.RoleId));

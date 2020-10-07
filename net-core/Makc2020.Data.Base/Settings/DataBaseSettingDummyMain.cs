@@ -25,6 +25,76 @@ namespace Makc2020.Data.Base.Settings
         public string DbColumnNameForObjectDummyOneToManyId { get; set; }
 
         /// <summary>
+        /// Имя колонки в базе данных для поля "PropBoolean".
+        /// </summary>
+        public string DbColumnNameForPropBoolean { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropBooleanNullable".
+        /// </summary>
+        public string DbColumnNameForPropBooleanNullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDate".
+        /// </summary>
+        public string DbColumnNameForPropDate { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDateNullable".
+        /// </summary>
+        public string DbColumnNameForPropDateNullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDateTimeOffset".
+        /// </summary>
+        public string DbColumnNameForPropDateTimeOffset { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDateTimeOffsetNullable".
+        /// </summary>
+        public string DbColumnNameForPropDateTimeOffsetNullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDecimal".
+        /// </summary>
+        public string DbColumnNameForPropDecimal { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropDecimalNullable".
+        /// </summary>
+        public string DbColumnNameForPropDecimalNullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropInt32".
+        /// </summary>
+        public string DbColumnNameForPropInt32 { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropInt32Nullable".
+        /// </summary>
+        public string DbColumnNameForPropInt32Nullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropInt64".
+        /// </summary>
+        public string DbColumnNameForPropInt64 { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropInt64Nullable".
+        /// </summary>
+        public string DbColumnNameForPropInt64Nullable { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropString".
+        /// </summary>
+        public string DbColumnNameForPropString { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "PropStringNullable".
+        /// </summary>
+        public string DbColumnNameForPropStringNullable { get; set; }
+
+        /// <summary>
         /// Внешний ключ в базе данных к сущности "DummyOneToMany".
         /// </summary>
         public string DbForeignKeyToDummyOneToMany { get; set; }

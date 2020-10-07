@@ -33,10 +33,17 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.FullName).IsUnicode().HasMaxLength(256);
+            builder.Property(x => x.FullName)
+                .IsUnicode()
+                .HasMaxLength(256)
+                .HasColumnName(setting.DbColumnNameForFullName);
 
-            builder.HasIndex(x => x.NormalizedUserName).IsUnique().HasName(setting.DbUniqueIndexForNormalizedUserName);
-            builder.HasIndex(x => x.NormalizedEmail).HasName(setting.DbIndexForNormalizedEmail);
+            builder.HasIndex(x => x.NormalizedUserName)
+                .IsUnique()
+                .HasName(setting.DbUniqueIndexForNormalizedUserName);
+
+            builder.HasIndex(x => x.NormalizedEmail)
+                .HasName(setting.DbIndexForNormalizedEmail);
         }
 
         #endregion Public methods

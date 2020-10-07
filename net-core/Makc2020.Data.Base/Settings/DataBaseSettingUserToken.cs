@@ -10,6 +10,26 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
+        /// Имя колонки в базе данных для поля "LoginProvider".
+        /// </summary>
+        public string DbColumnNameForLoginProvider { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Name".
+        /// </summary>
+        public string DbColumnNameForName { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "UserId".
+        /// </summary>
+        public string DbColumnNameForUserId { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Value".
+        /// </summary>
+        public string DbColumnNameForValue { get; set; }
+
+        /// <summary>
         /// Внешний ключ в базе данных к сущности "User".
         /// </summary>
         public string DbForeignKeyToUser { get; set; }
@@ -38,6 +58,8 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
+            DbColumnNameForName = defaults.ColumnNameForName;
+
             DbForeignKeyToUser = CreateNameOfForeignKey(DbTable, settingUser.DbTable);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);

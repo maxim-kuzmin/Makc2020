@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Base.Objects;
-
 namespace Makc2020.Data.Base.Settings
 {
     /// <summary>
@@ -62,13 +60,13 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
-            DbColumnNameForRoleId = CreateNameOfColumn(settingRole.DbTable, nameof(DataBaseObjectRole.Id));
-            DbColumnNameForUserId = CreateNameOfColumn(settingUser.DbTable, nameof(DataBaseObjectUser.Id));
+            DbColumnNameForRoleId = CreateNameOfColumn(settingRole.DbTable, settingRole.DbColumnNameForId);
+            DbColumnNameForUserId = CreateNameOfColumn(settingUser.DbTable, settingUser.DbColumnNameForId);
 
             DbForeignKeyToRole = CreateNameOfForeignKey(DbTable, settingRole.DbTable);
             DbForeignKeyToUser = CreateNameOfForeignKey(DbTable, settingUser.DbTable);
 
-            DbIndexForRoleId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectUserRole.RoleId));
+            DbIndexForRoleId = CreateNameOfIndex(DbTable, DbColumnNameForRoleId);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
         }

@@ -1,3 +1,3 @@
 ﻿{
-  "ConnectionString": "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=Makc2020;"
+  "ConnectionString": "Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=makc_2020;"
 }

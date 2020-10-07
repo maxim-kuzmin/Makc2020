@@ -9,16 +9,27 @@ namespace Makc2020.Data.Base.Settings
     /// </summary>
     public class DataBaseSettingUserLogin : DataBaseSetting
     {
-        #region Constants
+        #region Properties
 
         /// <summary>
-        /// Таблица в базе данных.
+        /// Имя колонки в базе данных для поля "LoginProvider".
         /// </summary>
-        public const string DB_TABLE = "UserLogin";
+        public string DbColumnNameForLoginProvider { get; set; }
 
-        #endregion Constants
+        /// <summary>
+        /// Имя колонки в базе данных для поля "ProviderKey".
+        /// </summary>
+        public string DbColumnNameForProviderKey { get; set; }
 
-        #region Properties
+        /// <summary>
+        /// Имя колонки в базе данных для поля "ProviderDisplayName".
+        /// </summary>
+        public string DbColumnNameForProviderDisplayName { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "UserId".
+        /// </summary>
+        public string DbColumnNameForUserId { get; set; }
 
         /// <summary>
         /// Внешний ключ в базе данных к сущности "User".
@@ -50,13 +61,16 @@ namespace Makc2020.Data.Base.Settings
             DataBaseSettingUser settingUser,
             DataBaseDefaults defaults,
             string dbTable,
-            string dbSchema = null
+            string dbSchema = null,
+            string dbColumnNameForUserId = null
             )
             : base(defaults, dbTable, dbSchema)
         {
+            DbColumnNameForUserId = dbColumnNameForUserId ?? nameof(DataBaseObjectUserLogin.UserId);
+
             DbForeignKeyToUser = CreateNameOfForeignKey(DbTable, settingUser.DbTable);
 
-            DbIndexForUserId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectUserLogin.UserId));
+            DbIndexForUserId = CreateNameOfIndex(DbTable, DbColumnNameForUserId);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
         }

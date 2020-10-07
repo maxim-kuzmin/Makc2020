@@ -12,6 +12,26 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
+        /// Имя колонки в базе данных для поля "ConcurrencyStamp".
+        /// </summary>
+        public string DbColumnNameForConcurrencyStamp { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Id".
+        /// </summary>
+        public string DbColumnNameForId { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Name".
+        /// </summary>
+        public string DbColumnNameForName { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "NormalizedName".
+        /// </summary>
+        public string DbColumnNameForNormalizedName { get; set; }
+
+        /// <summary>
         /// Первичный ключ в базе данных.
         /// </summary>
         public string DbPrimaryKey { get; set; }
@@ -38,6 +58,9 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
+            DbColumnNameForId = defaults.ColumnNameForId;
+            DbColumnNameForName = defaults.ColumnNameForName;
+
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
 
             DbUniqueIndexForNormalizedName = CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectRole.NormalizedName));

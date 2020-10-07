@@ -12,6 +12,26 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
+        /// Имя колонки в базе данных для поля "ClaimType".
+        /// </summary>
+        public string DbColumnNameForClaimType { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "ClaimValue".
+        /// </summary>
+        public string DbColumnNameForClaimValue { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "Id".
+        /// </summary>
+        public string DbColumnNameForId { get; set; }
+
+        /// <summary>
+        /// Имя колонки в базе данных для поля "UserId".
+        /// </summary>
+        public string DbColumnNameForUserId { get; set; }
+
+        /// <summary>
         /// Первичный ключ в базе данных.
         /// </summary>
         public string DbPrimaryKey { get; set; }
@@ -37,17 +57,22 @@ namespace Makc2020.Data.Base.Settings
         /// <param name="defaults">Значения по-умолчанию.</param>
         /// <param name="dbTable">Таблица в базе данных.</param>
         /// <param name="dbSchema">Схема в базе данных.</param>
+        /// <param name="dbColumnNameForUserId">Имя колонки в базе данных для поля "UserId".</param>
         public DataBaseSettingUserClaim(
             DataBaseSettingUser settingUser,
             DataBaseDefaults defaults,
             string dbTable,
-            string dbSchema = null
+            string dbSchema = null,
+            string dbColumnNameForUserId = null
             )
             : base(defaults, dbTable, dbSchema)
         {
+            DbColumnNameForId = defaults.ColumnNameForId;
+            DbColumnNameForUserId = dbColumnNameForUserId ?? nameof(DataBaseObjectUserClaim.UserId);
+
             DbForeignKeyToUser = CreateNameOfForeignKey(DbTable, settingUser.DbTable);
 
-            DbIndexForUserId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectUserClaim.UserId));
+            DbIndexForUserId = CreateNameOfIndex(DbTable, DbColumnNameForUserId);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
         }

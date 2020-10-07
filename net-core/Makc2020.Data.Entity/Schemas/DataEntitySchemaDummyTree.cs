@@ -33,7 +33,9 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
-            builder.Property(x => x.Id).ValueGeneratedOnAdd().HasColumnName(setting.DbColumnNameForId);
+            builder.Property(x => x.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName(setting.DbColumnNameForId);
 
             builder.Property(x => x.Name)
                 .IsRequired()
@@ -41,7 +43,8 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasMaxLength(setting.DbMaxLengthForName)
                 .HasColumnName(setting.DbColumnNameForName);
 
-            builder.Property(x => x.ParentId).HasColumnName(setting.DbColumnNameForParentId);
+            builder.Property(x => x.ParentId)                
+                .HasColumnName(setting.DbColumnNameForParentId);
 
             builder.Property(x => x.TreeChildCount)
                 .IsRequired()
