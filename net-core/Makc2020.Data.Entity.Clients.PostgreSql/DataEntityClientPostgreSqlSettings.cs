@@ -39,6 +39,15 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql
         {
             var defaults = new DataBaseDefaults
             {
+                ColumnNameForId = "Id",
+                ColumnNameForName = "Name",
+                ColumnNameForParentId = "ParentId",
+                ColumnNameForTreeChildCount = "TreeChildCount",
+                ColumnNameForTreeDescendantCount = "TreeDescendantCount",
+                ColumnNameForTreeLevel = "TreeLevel",
+                ColumnNameForTreePath = "TreePath",
+                ColumnNameForTreePosition = "TreePosition",
+                ColumnNameForTreeSort = "TreeSort",                
                 Schema = "public"
             };
 

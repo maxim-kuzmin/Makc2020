@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Data;
-
 namespace Makc2020.Data.Base.Settings
 {
     /// <summary>
@@ -53,8 +51,8 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
-            DbColumnNameForId = CoreBaseDataSettings.FIELD_NAME_Id;
-            DbColumnNameForName = CoreBaseDataSettings.FIELD_NAME_Name;
+            DbColumnNameForId = defaults.ColumnNameForId;
+            DbColumnNameForName = defaults.ColumnNameForName;
 
             DbMaxLengthForName = 256;
 

@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Data;
-
 namespace Makc2020.Core.Base.Common.Data.Queries.Tree
 {
     /// <summary>
@@ -14,12 +12,12 @@ namespace Makc2020.Core.Base.Common.Data.Queries.Tree
         /// <summary>
         /// Имя поля таблицы связи для идентификатора родителя.
         /// </summary>
-        public string LinkTableFieldNameForId { get; set; } = CoreBaseDataSettings.FIELD_NAME_Id;
+        public string LinkTableFieldNameForId { get; set; }
 
         /// <summary>
         /// Имя поля таблицы связи для идентификатора родителя.
         /// </summary>
-        public string LinkTableFieldNameForParentId { get; set; } = CoreBaseDataSettings.FIELD_NAME_ParentId;
+        public string LinkTableFieldNameForParentId { get; set; }
 
         /// <summary>
         /// Имя таблицы связи.
@@ -45,42 +43,42 @@ namespace Makc2020.Core.Base.Common.Data.Queries.Tree
         /// <summary>
         /// Имя поля таблицы дерева для идентификатора.
         /// </summary>
-        public string TreeTableFieldNameForId { get; set; } = CoreBaseDataSettings.FIELD_NAME_Id;
+        public string TreeTableFieldNameForId { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для идентификатора родителя.
         /// </summary>
-        public string TreeTableFieldNameForParentId { get; set; } = CoreBaseDataSettings.FIELD_NAME_ParentId;
+        public string TreeTableFieldNameForParentId { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для числа детей узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreeChildCount { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeChildCount;
+        public string TreeTableFieldNameForTreeChildCount { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для числа потомков узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreeDescendantCount { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeDescendantCount;
+        public string TreeTableFieldNameForTreeDescendantCount { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для уровня узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreeLevel { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeLevel;
+        public string TreeTableFieldNameForTreeLevel { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для пути узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreePath { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreePath;
+        public string TreeTableFieldNameForTreePath { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для позиции узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreePosition { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreePosition;
+        public string TreeTableFieldNameForTreePosition { get; set; }
 
         /// <summary>
         /// Имя поля таблицы дерева для сортировки узла в дереве.
         /// </summary>
-        public string TreeTableFieldNameForTreeSort { get; set; } = CoreBaseDataSettings.FIELD_NAME_TreeSort;
+        public string TreeTableFieldNameForTreeSort { get; set; }
 
         /// <summary>
         /// Имя таблицы дерева.

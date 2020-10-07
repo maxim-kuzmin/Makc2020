@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Data;
-
 namespace Makc2020.Data.Base.Settings
 {
     /// <summary>
@@ -108,15 +106,15 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {
-            DbColumnNameForId = CoreBaseDataSettings.FIELD_NAME_Id;
-            DbColumnNameForName = CoreBaseDataSettings.FIELD_NAME_Name;
-            DbColumnNameForParentId = CoreBaseDataSettings.FIELD_NAME_ParentId;
-            DbColumnNameForTreeChildCount = CoreBaseDataSettings.FIELD_NAME_TreeChildCount;
-            DbColumnNameForTreeDescendantCount = CoreBaseDataSettings.FIELD_NAME_TreeDescendantCount;
-            DbColumnNameForTreeLevel = CoreBaseDataSettings.FIELD_NAME_TreeLevel;
-            DbColumnNameForTreePath = CoreBaseDataSettings.FIELD_NAME_TreePath;
-            DbColumnNameForTreePosition = CoreBaseDataSettings.FIELD_NAME_TreePosition;
-            DbColumnNameForTreeSort = CoreBaseDataSettings.FIELD_NAME_TreeSort;
+            DbColumnNameForId = defaults.ColumnNameForId;
+            DbColumnNameForName = defaults.ColumnNameForName;
+            DbColumnNameForParentId = defaults.ColumnNameForParentId;
+            DbColumnNameForTreeChildCount = defaults.ColumnNameForTreeChildCount;
+            DbColumnNameForTreeDescendantCount = defaults.ColumnNameForTreeDescendantCount;
+            DbColumnNameForTreeLevel = defaults.ColumnNameForTreeLevel;
+            DbColumnNameForTreePath = defaults.ColumnNameForTreePath;
+            DbColumnNameForTreePosition = defaults.ColumnNameForTreePosition;
+            DbColumnNameForTreeSort = defaults.ColumnNameForTreeSort;
 
             DbForeignKeyToParentDummyTree = CreateNameOfForeignKey(DbTable, DbTable, DbColumnNameForParentId);
 
