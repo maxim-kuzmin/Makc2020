@@ -3,6 +3,7 @@
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Logging;
 using Makc2020.Data.Entity;
+using Makc2020.Data.Entity.Clients.PostgreSql;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Host.Base;
 using System;
@@ -42,6 +43,11 @@ namespace Makc2020.Root.Base
         /// Данные. Entity Framework.
         /// </summary>
         public DataEntityContext DataEntity => Modules.DataEntity.Context;
+
+        /// <summary>
+        /// Данные. Entity Framework. Клиенты. PostgreSQL.
+        /// </summary>
+        public DataEntityClientPostgreSqlContext DataEntityClientPostgreSql => Modules.DataEntityClientPostgreSql.Context;
 
         /// <summary>
         /// Данные. Entity Framework. Клиенты. SQL Server.

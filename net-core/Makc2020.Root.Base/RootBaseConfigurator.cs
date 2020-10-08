@@ -4,6 +4,7 @@ using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Entity;
+using Makc2020.Data.Entity.Clients.PostgreSql;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Data.Entity.Clients.SqlServer.Db;
 using Makc2020.Data.Entity.Db;
@@ -56,6 +57,7 @@ namespace Makc2020.Root.Base
         {
             services.AddTransient(x => GetContext(x).CoreBase);
             services.AddTransient(x => GetContext(x).DataEntity);
+            services.AddTransient(x => GetContext(x).DataEntityClientPostgreSql);
             services.AddTransient(x => GetContext(x).DataEntityClientSqlServer);
             services.AddTransient(x => GetContext(x).HostBase);
 
@@ -90,6 +92,7 @@ namespace Makc2020.Root.Base
                 new CoreBaseModule(),
                 new CoreDataClientSqlServerModule(),
                 new DataEntityModule(),
+                new DataEntityClientPostgreSqlModule(),
                 new DataEntityClientSqlServerModule(),
                 new HostBaseModule()
             };

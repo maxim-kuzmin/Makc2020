@@ -17,10 +17,10 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Identity.Reseed
         {
 			var result = new StringBuilder();
 
-            foreach (var table in Tables)
+            foreach (var input in Inputs)
             {
                 result.Append($@"
-DBCC CHECKIDENT ('{table}', RESEED, 0);
+DBCC CHECKIDENT ('{input.Schema}.{input.Table}', RESEED, 0);
 ");
             }
 

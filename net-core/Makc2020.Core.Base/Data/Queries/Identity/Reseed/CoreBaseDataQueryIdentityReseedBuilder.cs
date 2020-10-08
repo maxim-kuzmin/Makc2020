@@ -14,7 +14,8 @@ namespace Makc2020.Core.Base.Data.Queries.Identity.Reseed
         /// <summary>
         /// Таблицы.
         /// </summary>
-        public List<string> Tables { get; private set; } = new List<string>();
+        public List<CoreBaseDataQueryIdentityReseedInput> Inputs { get; private set; }
+            = new List<CoreBaseDataQueryIdentityReseedInput>();
 
         #endregion Properties
 

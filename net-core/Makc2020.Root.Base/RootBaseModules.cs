@@ -8,6 +8,7 @@ using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
+using Makc2020.Data.Entity.Clients.PostgreSql;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Host.Base;
@@ -45,6 +46,11 @@ namespace Makc2020.Root.Base
         /// Данные. Entity Framework.
         /// </summary>
         public DataEntityModule DataEntity { get; set; }
+
+        /// <summary>
+        /// Данные. Entity Framework. Клиенты. PostgreSQL.
+        /// </summary>
+        public DataEntityClientPostgreSqlModule DataEntityClientPostgreSql { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework. Клиенты. SQL Server.
@@ -88,6 +94,7 @@ namespace Makc2020.Root.Base
             CoreBase?.ConfigureServices(services);
             CoreDataClientSqlServer?.ConfigureServices(services);
             DataEntity?.ConfigureServices(services);
+            DataEntityClientPostgreSql?.ConfigureServices(services);
             DataEntityClientSqlServer?.ConfigureServices(services);
             HostBase?.ConfigureServices(services);
         }
@@ -99,6 +106,7 @@ namespace Makc2020.Root.Base
         public virtual void InitConfig(CoreBaseEnvironment environment)
         {
             DataEntity?.InitConfig(environment);
+            DataEntityClientPostgreSql?.InitConfig(environment);
             DataEntityClientSqlServer?.InitConfig(environment);
             HostBase?.InitConfig(environment);
         }
@@ -114,6 +122,11 @@ namespace Makc2020.Root.Base
             {
                 ResourceConvertingLocalizer = GetLocalizer<CoreBaseResourceConverting>(serviceProvider),
                 ResourceErrorsLocalizer = GetLocalizer<CoreBaseResourceErrors>(serviceProvider)
+            });
+
+            DataEntityClientPostgreSql?.InitContext(new DataEntityClientPostgreSqlExternals
+            {
+                Environment = environment
             });
 
             DataEntityClientSqlServer?.InitContext(new DataEntityClientSqlServerExternals
@@ -172,7 +185,14 @@ namespace Makc2020.Root.Base
         /// <returns>Основные настройки данных.</returns>
         protected DataBaseSettings GetDataBaseSettings()
         {
-            return DataEntityClientSqlServer?.Context.Settings;
+            var result = DataEntityClientPostgreSql?.Context.Settings;
+
+            if (result == null)
+            {
+                result = DataEntityClientSqlServer?.Context.Settings;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -181,7 +201,14 @@ namespace Makc2020.Root.Base
         /// <returns>Entity Framework фабрика базы данных..</returns>
         protected DataEntityDbFactory GetDataEntityDbFactory()
         {
-            return DataEntityClientSqlServer?.Context.DbFactory;
+            var result = DataEntityClientPostgreSql?.Context.DbFactory;
+
+            if (result == null)
+            {
+                result = DataEntityClientSqlServer?.Context.DbFactory;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -205,6 +232,7 @@ namespace Makc2020.Root.Base
             if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
             if (TrySet<CoreDataClientSqlServerModule>(x => CoreDataClientSqlServer = x, commonModule)) return true;
             if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
+            if (TrySet<DataEntityClientPostgreSqlModule>(x => DataEntityClientPostgreSql = x, commonModule)) return true;
             if (TrySet<DataEntityClientSqlServerModule>(x => DataEntityClientSqlServer = x, commonModule)) return true;
             if (TrySet<HostBaseModule>(x => HostBase = x, commonModule)) return true;
 
@@ -220,9 +248,9 @@ namespace Makc2020.Root.Base
         /// <returns>Результат установки.</returns>
         protected bool TrySet<TModule>(Action<TModule> actionSet, ICoreBaseCommonModule commonModule)
         {
-            if (commonModule is TModule)
+            if (commonModule is TModule module)
             {
-                actionSet.Invoke((TModule)commonModule);
+                actionSet.Invoke(module);
 
                 return true;
             }
