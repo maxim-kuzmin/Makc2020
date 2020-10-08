@@ -12,12 +12,12 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Имя колонки в базе данных для поля идентификатора сущности "DummyMain".
         /// </summary>
-        public string DbColumnNameForDummyMainId { get; set; }
+        public string DbColumnNameForObjectDummyMainId { get; set; }
 
         /// <summary>
         /// Имя колонки в базе данных для поля идентификатора сущности "DummyManyToMany".
         /// </summary>
-        public string DbColumnNameForDummyManyToManyId { get; set; }
+        public string DbColumnNameForObjectDummyManyToManyId { get; set; }
 
         /// <summary>
         /// Внешний ключ в базе данных к сущности "DummyMain".
@@ -28,6 +28,11 @@ namespace Makc2020.Data.Base.Settings
         /// Внешний ключ в базе данных к сущности "DummyManyToMany".
         /// </summary>
         public string DbForeignKeyToDummyManyToMany { get; set; }
+
+        /// <summary>
+        /// Наименование индекса в базе данных для поля "ObjectDummyManyToManyId".
+        /// </summary>
+        public string DbIndexForObjectDummyManyToManyId { get; set; }
 
         /// <summary>
         /// Первичный ключ в базе данных.
@@ -55,18 +60,20 @@ namespace Makc2020.Data.Base.Settings
             )
             : base(defaults, dbTable, dbSchema)
         {                        
-            DbColumnNameForDummyMainId = CreateNameOfColumn(
+            DbColumnNameForObjectDummyMainId = CreateNameOfColumn(
                 settingDummyMain.DbTable,
                 settingDummyMain.DbColumnNameForId
                 );
 
-            DbColumnNameForDummyManyToManyId = CreateNameOfColumn(
+            DbColumnNameForObjectDummyManyToManyId = CreateNameOfColumn(
                 settingDummyManyToMany.DbTable,
                 settingDummyManyToMany.DbColumnNameForId
                 );
 
             DbForeignKeyToDummyMain = CreateNameOfForeignKey(DbTable, settingDummyMain.DbTable);
             DbForeignKeyToDummyManyToMany = CreateNameOfForeignKey(DbTable, settingDummyManyToMany.DbTable);
+
+            DbIndexForObjectDummyManyToManyId = CreateNameOfIndex(DbTable, DbColumnNameForObjectDummyManyToManyId);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
         }

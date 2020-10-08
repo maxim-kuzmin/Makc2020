@@ -100,6 +100,11 @@ namespace Makc2020.Data.Base.Settings
         public string DbForeignKeyToDummyOneToMany { get; set; }
 
         /// <summary>
+        /// Наименование индекса в базе данных для поля "ObjectDummyOneToManyId".
+        /// </summary>
+        public string DbIndexForObjectDummyOneToManyId { get; set; }
+
+        /// <summary>
         /// Максимальная длина в базе данных для поля "Name".
         /// </summary>
         public int DbMaxLengthForName { get; set; }
@@ -142,6 +147,8 @@ namespace Makc2020.Data.Base.Settings
                 );
 
             DbForeignKeyToDummyOneToMany = CreateNameOfForeignKey(DbTable, settingDummyOneToMany.DbTable);
+
+            DbIndexForObjectDummyOneToManyId = CreateNameOfIndex(DbTable, DbColumnNameForObjectDummyOneToManyId);
 
             DbMaxLengthForName = 256;
 

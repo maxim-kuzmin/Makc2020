@@ -33,6 +33,18 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.HasKey(x => x.Id).HasName(setting.DbPrimaryKey);
 
+            builder.Property(x => x.ClaimType)
+                .HasColumnName(setting.DbColumnNameForClaimType);
+
+            builder.Property(x => x.ClaimValue)
+                .HasColumnName(setting.DbColumnNameForClaimValue);
+
+            builder.Property(x => x.Id)
+                .HasColumnName(setting.DbColumnNameForId);
+
+            builder.Property(x => x.UserId)
+                .HasColumnName(setting.DbColumnNameForUserId);
+
             builder.HasIndex(x => x.UserId).HasName(setting.DbIndexForUserId);
 
             builder.HasOne(x => x.ObjectUser)

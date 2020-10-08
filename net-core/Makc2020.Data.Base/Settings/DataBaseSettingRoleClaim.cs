@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Data.Base.Objects;
-
 namespace Makc2020.Data.Base.Settings
 {
     /// <summary>
@@ -37,14 +35,14 @@ namespace Makc2020.Data.Base.Settings
         public string DbForeignKeyToRole { get; set; }
 
         /// <summary>
-        /// Наименование индекса в базе данных для поля "RoleId".
-        /// </summary>
-        public string DbIndexForRoleId { get; set; }
-
-        /// <summary>
         /// Первичный ключ в базе данных.
         /// </summary>
         public string DbPrimaryKey { get; set; }
+
+        /// <summary>
+        /// Наименование индекса в базе данных для поля "RoleId".
+        /// </summary>
+        public string DbUniqueIndexForRoleId { get; set; }
 
         #endregion Properties
 
@@ -74,7 +72,7 @@ namespace Makc2020.Data.Base.Settings
 
             DbForeignKeyToRole = CreateNameOfForeignKey(DbTable, settingRole.DbTable);
 
-            DbIndexForRoleId = CreateNameOfIndex(DbTable, nameof(DataBaseObjectRoleClaim.RoleId));
+            DbUniqueIndexForRoleId = CreateNameOfUniqueIndex(DbTable, DbColumnNameForRoleId);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);            
         }

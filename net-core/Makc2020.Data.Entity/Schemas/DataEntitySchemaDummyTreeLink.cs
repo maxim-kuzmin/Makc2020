@@ -40,6 +40,11 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.ParentId)
                 .IsRequired()
                 .HasColumnName(setting.DbColumnNameForParentId);
+
+            builder.HasOne(x => x.ObjectDummyTree)
+                .WithMany(x => x.ObjectsDummyTreeLink)
+                .HasForeignKey(x => x.Id)
+                .HasConstraintName(setting.DbForeignKeyToDummyTree);
         }
 
         #endregion Public methods

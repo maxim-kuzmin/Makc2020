@@ -31,16 +31,17 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 
-            builder.HasKey(x => new { x.ObjectDummyMainId, x.ObjectDummyManyToManyId })
-                .HasName(setting.DbPrimaryKey);
+            builder.HasKey(x => new { x.ObjectDummyMainId, x.ObjectDummyManyToManyId }).HasName(setting.DbPrimaryKey);
 
             builder.Property(x => x.ObjectDummyMainId)
                 .IsRequired()
-                .HasColumnName(setting.DbColumnNameForDummyMainId);
+                .HasColumnName(setting.DbColumnNameForObjectDummyMainId);
 
             builder.Property(x => x.ObjectDummyManyToManyId)
                 .IsRequired()
-                .HasColumnName(setting.DbColumnNameForDummyManyToManyId);
+                .HasColumnName(setting.DbColumnNameForObjectDummyManyToManyId);
+
+            builder.HasIndex(x => x.ObjectDummyManyToManyId).HasName(setting.DbIndexForObjectDummyManyToManyId);
 
             builder.HasOne(x => x.ObjectDummyMain)
                 .WithMany(x => x.ObjectsDummyMainDummyManyToMany)

@@ -10,11 +10,6 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
-        /// Первичный ключ в базе данных.
-        /// </summary>
-        public string DbPrimaryKey { get; set; }
-
-        /// <summary>
         /// Имя колонки в базе данных для поля "Id".
         /// </summary>
         public string DbColumnNameForId { get; set; }
@@ -24,6 +19,16 @@ namespace Makc2020.Data.Base.Settings
         /// </summary>
         public string DbColumnNameForParentId { get; set; }
 
+        /// <summary>
+        /// Внешний ключ в базе данных к сущности "DummyTree".
+        /// </summary>
+        public string DbForeignKeyToDummyTree { get; set; }
+
+        /// <summary>
+        /// Первичный ключ в базе данных.
+        /// </summary>
+        public string DbPrimaryKey { get; set; }
+
         #endregion Properties
 
         #region Constructors
@@ -31,10 +36,12 @@ namespace Makc2020.Data.Base.Settings
         /// <summary>
         /// Конструктор.
         /// </summary>
+        /// <param name="settingDummyTree">Настройка сущности "DummyTree".</param>
         /// <param name="defaults">Значения по-умолчанию.</param>
         /// <param name="dbTable">Таблица в базе данных.</param>
         /// <param name="dbSchema">Схема в базе данных.</param>
         public DataBaseSettingDummyTreeLink(
+            DataBaseSettingDummyTree settingDummyTree,
             DataBaseDefaults defaults,
             string dbTable,
             string dbSchema = null
@@ -43,6 +50,8 @@ namespace Makc2020.Data.Base.Settings
         {
             DbColumnNameForId = defaults.ColumnNameForId;
             DbColumnNameForParentId = defaults.ColumnNameForParentId;
+
+            DbForeignKeyToDummyTree = CreateNameOfForeignKey(DbTable, settingDummyTree.DbTable);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
         }

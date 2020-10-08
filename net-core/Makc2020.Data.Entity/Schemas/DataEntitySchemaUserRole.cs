@@ -31,8 +31,7 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 
-            builder.HasKey(x => new { x.UserId, x.RoleId })
-                .HasName(setting.DbPrimaryKey);
+            builder.HasKey(x => new { x.UserId, x.RoleId }).HasName(setting.DbPrimaryKey);
 
             builder.Property(x => x.UserId)
                 .IsRequired()

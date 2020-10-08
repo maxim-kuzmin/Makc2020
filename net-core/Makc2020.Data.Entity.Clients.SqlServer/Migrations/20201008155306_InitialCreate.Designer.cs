@@ -4,14 +4,16 @@ using Makc2020.Data.Entity.Clients.SqlServer.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
 {
     [DbContext(typeof(DataEntityClientSqlServerDbContext))]
-    partial class DataEntityClientSqlServerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201008155306_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

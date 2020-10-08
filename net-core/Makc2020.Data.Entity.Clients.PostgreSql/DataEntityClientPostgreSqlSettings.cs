@@ -48,6 +48,7 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql
                 ColumnNameForTreePath = "tree_path",
                 ColumnNameForTreePosition = "tree_position",
                 ColumnNameForTreeSort = "tree_sort",
+                ColumnNamePartsSeparator = "_",
                 ForeignKeyPrefix = "fk",
                 FullNamePartsSeparator = ".",
                 IndexPrefix = "ix",
@@ -88,12 +89,13 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql
 
             DummyTree = new DataBaseSettingDummyTree(defaults, "dummy_tree");
 
-            DummyTreeLink = new DataBaseSettingDummyTreeLink(defaults, "dummy_tree_link");
+            DummyTreeLink = new DataBaseSettingDummyTreeLink(DummyTree, defaults, "dummy_tree_link");
 
-            Role = new DataBaseSettingRole(defaults, "role")
+            Role = new DataBaseSettingRole(defaults, "role",
+                dbColumnNameForNormalizedName: "normalized_name"
+                )
             {
-                DbColumnNameForConcurrencyStamp = "concurrency_stamp",
-                DbColumnNameForNormalizedName = "normalized_name"
+                DbColumnNameForConcurrencyStamp = "concurrency_stamp"
             };
 
             RoleClaim = new DataBaseSettingRoleClaim(Role, defaults, "role_claim")

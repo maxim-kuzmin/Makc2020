@@ -99,6 +99,7 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasColumnName(setting.DbColumnNameForPropStringNullable);
 
             builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
+            builder.HasIndex(x => x.ObjectDummyOneToManyId).HasName(setting.DbIndexForObjectDummyOneToManyId);
 
             builder.HasOne(x => x.ObjectDummyOneToMany)
                 .WithMany(x => x.ObjectsDummyMain)

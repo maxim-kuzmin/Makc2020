@@ -10,11 +10,6 @@ namespace Makc2020.Data.Base.Settings
         #region Properties
 
         /// <summary>
-        /// Внешний ключ в базе данных к родительской сущности "DummyTree".
-        /// </summary>
-        public string DbForeignKeyToParentDummyTree { get; set; }
-
-        /// <summary>
         /// Имя колонки в базе данных для поля "Id".
         /// </summary>
         public string DbColumnNameForId { get; set; }
@@ -60,9 +55,19 @@ namespace Makc2020.Data.Base.Settings
         public string DbColumnNameForTreeSort { get; set; }
 
         /// <summary>
+        /// Внешний ключ в базе данных к родительской сущности "DummyTree".
+        /// </summary>
+        public string DbForeignKeyToParentDummyTree { get; set; }
+
+        /// <summary>
         /// Наименование индекса в базе данных для поля "Name".
         /// </summary>
         public string DbIndexForName { get; set; }
+
+        /// <summary>
+        /// Наименование индекса в базе данных для поля "ParentId".
+        /// </summary>
+        public string DbIndexForParentId { get; set; }
 
         /// <summary>
         /// Наименование индекса в базе данных для поля "TreeSort".
@@ -119,6 +124,7 @@ namespace Makc2020.Data.Base.Settings
             DbForeignKeyToParentDummyTree = CreateNameOfForeignKey(DbTable, DbTable, DbColumnNameForParentId);
 
             DbIndexForName = CreateNameOfIndex(DbTable, DbColumnNameForName);
+            DbIndexForParentId = CreateNameOfIndex(DbTable, DbColumnNameForParentId);
             DbIndexForTreeSort = CreateNameOfIndex(DbTable, DbColumnNameForTreeSort);
 
             DbMaxLengthForName = 256;

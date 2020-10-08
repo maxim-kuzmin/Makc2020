@@ -55,7 +55,9 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateFullName(params string[] parts)
         {
-            return string.Join(Defaults.FullNamePartsSeparator, parts);
+            return string.IsNullOrEmpty(Defaults.FullNamePartsSeparator)
+                ? string.Concat(parts)
+                : string.Join(Defaults.FullNamePartsSeparator, parts);
         }
 
         /// <summary>
@@ -65,7 +67,9 @@ namespace Makc2020.Data.Base
         /// <returns>Имя.</returns>
         protected string CreateNameOfColumn(params string[] parts)
         {
-            return string.Concat(parts);
+            return string.IsNullOrEmpty(Defaults.ColumnNamePartsSeparator)
+                ? string.Concat(parts)
+                : string.Join(Defaults.ColumnNamePartsSeparator, parts);
         }
 
         /// <summary>
@@ -124,11 +128,17 @@ namespace Makc2020.Data.Base
 
         private string CreateName(string prefix, params string[] parts)
         {
-            var result = string.Join(Defaults.NamePartsSeparator, parts);
+            var isNullOrEmptyNamePartsSeparator = string.IsNullOrEmpty(Defaults.NamePartsSeparator);
+
+            var result = isNullOrEmptyNamePartsSeparator
+                ? string.Concat(parts)
+                : string.Join(Defaults.NamePartsSeparator, parts);
 
             if (!string.IsNullOrWhiteSpace(prefix))
             {
-                result = string.Concat(prefix, Defaults.NamePartsSeparator, result);
+                result = isNullOrEmptyNamePartsSeparator
+                    ? string.Concat(prefix, result)
+                    : string.Concat(prefix, Defaults.NamePartsSeparator, result);
             }
 
             return result;

@@ -48,6 +48,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
                 ColumnNameForTreePath = "TreePath",
                 ColumnNameForTreePosition = "TreePosition",
                 ColumnNameForTreeSort = "TreeSort",
+                ColumnNamePartsSeparator = "",
                 ForeignKeyPrefix = "FK",
                 FullNamePartsSeparator = ".",
                 IndexPrefix = "IX",
@@ -72,7 +73,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
 
             DummyTree = new DataBaseSettingDummyTree(defaults, "DummyTree");
 
-            DummyTreeLink = new DataBaseSettingDummyTreeLink(defaults, "DummyTreeLink");
+            DummyTreeLink = new DataBaseSettingDummyTreeLink(DummyTree, defaults, "DummyTreeLink");
 
             Role = new DataBaseSettingRole(defaults, "Role");
 

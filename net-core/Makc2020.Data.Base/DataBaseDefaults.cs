@@ -55,6 +55,11 @@ namespace Makc2020.Data.Base
         public string ColumnNameForTreeSort { get; set; }
 
         /// <summary>
+        /// Разделитель частей имени столбца.
+        /// </summary>
+        public string ColumnNamePartsSeparator { get; set; }
+
+        /// <summary>
         /// Префикс внешнего ключа.
         /// </summary>
         public string ForeignKeyPrefix { get; set; }

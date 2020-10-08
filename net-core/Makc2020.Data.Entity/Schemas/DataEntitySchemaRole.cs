@@ -45,9 +45,7 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.NormalizedName)
                 .HasColumnName(setting.DbColumnNameForNormalizedName);
 
-            builder.HasIndex(x => x.NormalizedName)
-                .IsUnique()
-                .HasName(setting.DbUniqueIndexForNormalizedName);
+            builder.HasIndex(x => x.NormalizedName).IsUnique().HasName(setting.DbUniqueIndexForNormalizedName);
         }
 
         #endregion Public methods

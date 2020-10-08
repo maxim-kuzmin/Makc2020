@@ -54,16 +54,18 @@ namespace Makc2020.Data.Base.Settings
         public DataBaseSettingRole(
             DataBaseDefaults defaults,
             string dbTable,
-            string dbSchema = null
+            string dbSchema = null,
+            string dbColumnNameForNormalizedName = null
             )
             : base(defaults, dbTable, dbSchema)
         {
             DbColumnNameForId = defaults.ColumnNameForId;
             DbColumnNameForName = defaults.ColumnNameForName;
+            DbColumnNameForNormalizedName = dbColumnNameForNormalizedName ?? nameof(DataBaseObjectRole.NormalizedName);
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
 
-            DbUniqueIndexForNormalizedName = CreateNameOfUniqueIndex(DbTable, nameof(DataBaseObjectRole.NormalizedName));
+            DbUniqueIndexForNormalizedName = CreateNameOfUniqueIndex(DbTable, DbColumnNameForNormalizedName);
         }
 
         #endregion Constructors

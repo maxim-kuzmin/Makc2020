@@ -50,9 +50,9 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                     TreeChildCount = table.Column<long>(nullable: false, defaultValue: 0L),
                     TreeDescendantCount = table.Column<long>(nullable: false, defaultValue: 0L),
                     TreeLevel = table.Column<long>(nullable: false, defaultValue: 0L),
-                    TreePath = table.Column<string>(nullable: false, defaultValue: ""),
+                    TreePath = table.Column<string>(unicode: false, maxLength: 900, nullable: false, defaultValue: ""),
                     TreePosition = table.Column<int>(nullable: false, defaultValue: 0),
-                    TreeSort = table.Column<string>(nullable: false, defaultValue: "")
+                    TreeSort = table.Column<string>(unicode: false, maxLength: 900, nullable: false, defaultValue: "")
                 },
                 constraints: table =>
                 {
@@ -152,19 +152,18 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
-                    ParentId = table.Column<long>(nullable: false),
-                    ObjectDummyTreeId = table.Column<long>(nullable: true)
+                    ParentId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DummyTreeLink", x => new { x.Id, x.ParentId });
                     table.ForeignKey(
-                        name: "FK_DummyTreeLink_DummyTree_ObjectDummyTreeId",
-                        column: x => x.ObjectDummyTreeId,
+                        name: "FK_DummyTreeLink_DummyTree",
+                        column: x => x.Id,
                         principalSchema: "dbo",
                         principalTable: "DummyTree",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -345,16 +344,22 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_DummyTree_Name",
+                schema: "dbo",
+                table: "DummyTree",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DummyTree_ParentId",
                 schema: "dbo",
                 table: "DummyTree",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DummyTreeLink_ObjectDummyTreeId",
+                name: "IX_DummyTree_TreeSort",
                 schema: "dbo",
-                table: "DummyTreeLink",
-                column: "ObjectDummyTreeId");
+                table: "DummyTree",
+                column: "TreeSort");
 
             migrationBuilder.CreateIndex(
                 name: "UX_Role_NormalizedName",
@@ -365,7 +370,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleClaim_RoleId",
+                name: "UX_RoleClaim_RoleId",
                 schema: "dbo",
                 table: "RoleClaim",
                 column: "RoleId",

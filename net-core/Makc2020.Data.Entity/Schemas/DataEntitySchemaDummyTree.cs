@@ -81,6 +81,7 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasColumnName(setting.DbColumnNameForTreeSort);
 
             builder.HasIndex(x => x.Name).HasName(setting.DbIndexForName);
+            builder.HasIndex(x => x.ParentId).HasName(setting.DbIndexForParentId);
             builder.HasIndex(x => x.TreeSort).HasName(setting.DbIndexForTreeSort);
 
             builder.HasOne(x => x.ObjectDummyTreeParent)

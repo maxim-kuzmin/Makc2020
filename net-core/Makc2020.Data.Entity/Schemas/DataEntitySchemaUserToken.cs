@@ -31,8 +31,19 @@ namespace Makc2020.Data.Entity.Schemas
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 
-            builder.HasKey(x => new { x.UserId, x.LoginProvider, x.Name })
-                .HasName(setting.DbPrimaryKey);
+            builder.HasKey(x => new { x.UserId, x.LoginProvider, x.Name }).HasName(setting.DbPrimaryKey);
+
+            builder.Property(x => x.LoginProvider)
+                .HasColumnName(setting.DbColumnNameForLoginProvider);
+
+            builder.Property(x => x.Name)
+                .HasColumnName(setting.DbColumnNameForName);
+
+            builder.Property(x => x.Value)
+                .HasColumnName(setting.DbColumnNameForValue);
+
+            builder.Property(x => x.UserId)
+                .HasColumnName(setting.DbColumnNameForUserId);
 
             builder.HasOne(x => x.ObjectUser)
                 .WithMany(x => x.ObjectsUserToken)
