@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Makc2020.Core.Data.Clients.PostgreSql\Makc2020.Core.Data.Clients.PostgreSql.csproj" />
     <ProjectReference Include="..\Makc2020.Core.Data.Clients.SqlServer\Makc2020.Core.Data.Clients.SqlServer.csproj" />
     <ProjectReference Include="..\Makc2020.Data.Entity.Clients.PostgreSql\Makc2020.Data.Entity.Clients.PostgreSql.csproj" />
     <ProjectReference Include="..\Makc2020.Data.Entity.Clients.SqlServer\Makc2020.Data.Entity.Clients.SqlServer.csproj" />

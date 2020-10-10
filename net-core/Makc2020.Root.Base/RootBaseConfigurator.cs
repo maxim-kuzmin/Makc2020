@@ -2,14 +2,17 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
+using Makc2020.Core.Data.Clients.PostgreSql;
 using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.PostgreSql;
+using Makc2020.Data.Entity.Clients.PostgreSql.Db;
 using Makc2020.Data.Entity.Clients.SqlServer;
 using Makc2020.Data.Entity.Clients.SqlServer.Db;
 using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Ext;
 using Makc2020.Host.Base;
+using Makc2020.Root.Base.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,6 +27,8 @@ namespace Makc2020.Root.Base
         where TModules : RootBaseModules
     {
         #region Properties
+
+        private RootBaseEnumDataClients DataClient { get; } = RootBaseEnumDataClients.PostgreSql;
 
         private bool DataEntityDbContextIsEnabled
         {
@@ -68,14 +73,7 @@ namespace Makc2020.Root.Base
 
             if (DataEntityDbContextIsEnabled)
             {
-                services.DataEntityExtConfigureDbContext<DataEntityClientSqlServerDbContext>(
-                    FuncGetDataEntityDbFactory
-                    );
-
-                if (IdentityIsEnabled)
-                {
-                    services.DataEntityExtConfigureIdentity<DataEntityClientSqlServerDbContext>();
-                }
+                ConfigureServicesForDataClient(services);
             }
         }
 
@@ -85,19 +83,14 @@ namespace Makc2020.Root.Base
         /// <returns>Список обобщённых модулей.</returns>
         public virtual List<ICoreBaseCommonModule> CreateCommonModuleList()
         {
-            var result = new List<ICoreBaseCommonModule>();
-
-            var modules = new ICoreBaseCommonModule[]
+            var result = new List<ICoreBaseCommonModule>(new ICoreBaseCommonModule[]
             {
                 new CoreBaseModule(),
-                new CoreDataClientSqlServerModule(),
                 new DataEntityModule(),
-                new DataEntityClientPostgreSqlModule(),
-                new DataEntityClientSqlServerModule(),
                 new HostBaseModule()
-            };
+            });
 
-            result.AddRange(modules);
+            AddModulesForDataClient(result);
 
             return result;
         }
@@ -166,5 +159,58 @@ namespace Makc2020.Root.Base
         }
 
         #endregion Protected methods
+
+        #region Private methods
+
+        private void AddModulesForDataClient(List<ICoreBaseCommonModule> modules)
+        {
+            switch (DataClient)
+            {
+                case RootBaseEnumDataClients.PostgreSql:
+                    AddModulesForDataClient<CoreDataClientPostgreSqlModule, DataEntityClientPostgreSqlModule>(modules);
+                    break;
+                case RootBaseEnumDataClients.SqlServer:
+                    AddModulesForDataClient<CoreDataClientSqlServerModule, DataEntityClientSqlServerModule>(modules);
+                    break;
+            }
+        }
+
+        private void AddModulesForDataClient<TCoreDataClientModule, TEntityDataClientModule>(
+            List<ICoreBaseCommonModule> modules
+            )
+            where TCoreDataClientModule : ICoreBaseCommonModule, new()
+            where TEntityDataClientModule : ICoreBaseCommonModule, new()
+        {
+            modules.Add(new TCoreDataClientModule());
+            modules.Add(new TEntityDataClientModule());
+        }
+
+        private void ConfigureServicesForDataClient(IServiceCollection services)
+        {
+            switch (DataClient)
+            {
+                case RootBaseEnumDataClients.PostgreSql:
+                    ConfigureServicesForDataClient<DataEntityClientPostgreSqlDbContext>(services);
+                    break;
+                case RootBaseEnumDataClients.SqlServer:
+                    ConfigureServicesForDataClient<DataEntityClientSqlServerDbContext>(services);
+                    break;
+            }
+        }
+
+        private void ConfigureServicesForDataClient<TDbContext>(IServiceCollection services)
+            where TDbContext : DataEntityDbContext
+        {
+            services.DataEntityExtConfigureDbContext<TDbContext>(
+                FuncGetDataEntityDbFactory
+                );
+
+            if (IdentityIsEnabled)
+            {
+                services.DataEntityExtConfigureIdentity<TDbContext>();
+            }
+        }
+
+        #endregion Private methods
     }
 }

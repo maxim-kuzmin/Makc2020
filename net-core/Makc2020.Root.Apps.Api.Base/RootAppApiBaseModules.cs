@@ -94,9 +94,9 @@ namespace Makc2020.Root.Apps.Api.Base
             ModDummyMainBase?.InitContext(new ModDummyMainBaseExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = GetCoreBaseDataProvider(),
-                DataBaseSettings = GetDataBaseSettings(),
-                DataEntityDbFactory = GetDataEntityDbFactory(),
+                CoreBaseDataProvider = GetProviderForDataClient(),
+                DataBaseSettings = GetSettingsForDataClient(),
+                DataEntityDbFactory = GetDbFactoryForDataClient(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyMainBaseResourceErrors>(serviceProvider),
                 ResourceSuccessesLocalizer = GetLocalizer<ModDummyMainBaseResourceSuccesses>(serviceProvider)
             });
@@ -104,9 +104,9 @@ namespace Makc2020.Root.Apps.Api.Base
             ModDummyTreeBase?.InitContext(new ModDummyTreeBaseExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = GetCoreBaseDataProvider(),
-                DataBaseSettings = GetDataBaseSettings(),
-                DataEntityDbFactory = GetDataEntityDbFactory(),
+                CoreBaseDataProvider = GetProviderForDataClient(),
+                DataBaseSettings = GetSettingsForDataClient(),
+                DataEntityDbFactory = GetDbFactoryForDataClient(),
                 ResourceErrorsLocalizer = GetLocalizer<ModDummyTreeBaseResourceErrors>(serviceProvider),
                 ResourceSuccessesLocalizer = GetLocalizer<ModDummyTreeBaseResourceSuccesses>(serviceProvider)
             });

@@ -5,6 +5,7 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Resources.Converting;
 using Makc2020.Core.Base.Resources.Errors;
+using Makc2020.Core.Data.Clients.PostgreSql;
 using Makc2020.Core.Data.Clients.SqlServer;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
@@ -17,6 +18,7 @@ using Makc2020.Host.Base.Parts.Auth.Resources.Successes;
 using Makc2020.Host.Base.Parts.Ldap;
 using Makc2020.Host.Base.Parts.Ldap.Resources.Errors;
 using Makc2020.Host.Base.Parts.Ldap.Resources.Successes;
+using Makc2020.Root.Base.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using System;
@@ -32,10 +34,17 @@ namespace Makc2020.Root.Base
     {
         #region Properties
 
+        private RootBaseEnumDataClients DataClient { get; }
+
         /// <summary>
         /// Ядро. Основа.
         /// </summary>
         public CoreBaseModule CoreBase { get; set; }
+
+        /// <summary>
+        /// Ядро. Данные. Клиенты. PostgreSQL.
+        /// </summary>
+        public CoreDataClientPostgreSqlModule CoreDataClientPostgreSql { get; set; }
 
         /// <summary>
         /// Ядро. Данные. Клиенты. SQL Server.
@@ -78,6 +87,19 @@ namespace Makc2020.Root.Base
                 {
                     TrySetModule(commonModule);
                 }
+
+                if (DataEntityClientPostgreSql != null)
+                {
+                    DataClient = RootBaseEnumDataClients.PostgreSql;
+                }
+                else if(DataEntityClientSqlServer != null)
+                {
+                    DataClient = RootBaseEnumDataClients.SqlServer;
+                }
+                else
+                {
+                    DataClient = RootBaseEnumDataClients.None;
+                }
             }
         }
 
@@ -92,6 +114,7 @@ namespace Makc2020.Root.Base
         public virtual void ConfigureServices(IServiceCollection services)
         {
             CoreBase?.ConfigureServices(services);
+            CoreDataClientPostgreSql?.ConfigureServices(services);
             CoreDataClientSqlServer?.ConfigureServices(services);
             DataEntity?.ConfigureServices(services);
             DataEntityClientPostgreSql?.ConfigureServices(services);
@@ -137,9 +160,9 @@ namespace Makc2020.Root.Base
             DataEntity?.InitContext(new DataEntityExternals
             {
                 CoreBaseResourceErrors = CoreBase?.Context.Resources.Errors,
-                CoreBaseDataProvider = GetCoreBaseDataProvider(),
-                DataBaseSettings = GetDataBaseSettings(),
-                DataEntityDbFactory = GetDataEntityDbFactory()
+                CoreBaseDataProvider = GetProviderForDataClient(),
+                DataBaseSettings = GetSettingsForDataClient(),
+                DataEntityDbFactory = GetDbFactoryForDataClient()
             });
 
             HostBase?.InitContext(new HostBaseExternals
@@ -171,44 +194,45 @@ namespace Makc2020.Root.Base
         #region Protected methods
 
         /// <summary>
-        /// Получить поставщика данных.
+        /// Получить фабрику базы данных для клиента данных.
         /// </summary>
-        /// <returns>Поставщик данных.</returns>
-        protected ICoreBaseDataProvider GetCoreBaseDataProvider()
+        /// <returns>Фабрика базы данных.</returns>
+        protected DataEntityDbFactory GetDbFactoryForDataClient()
         {
-            return CoreDataClientSqlServer?.Context.Provider;
+            return DataClient switch
+            {
+                RootBaseEnumDataClients.PostgreSql => DataEntityClientPostgreSql.Context.DbFactory,
+                RootBaseEnumDataClients.SqlServer => DataEntityClientSqlServer.Context.DbFactory,
+                _ => null,
+            };
         }
 
         /// <summary>
-        /// Получить основные настройки данных.
+        /// Получить поставщика для клиента данных.
         /// </summary>
-        /// <returns>Основные настройки данных.</returns>
-        protected DataBaseSettings GetDataBaseSettings()
+        /// <returns>Поставщик.</returns>
+        protected ICoreBaseDataProvider GetProviderForDataClient()
         {
-            var result = DataEntityClientPostgreSql?.Context.Settings;
-
-            if (result == null)
+            return DataClient switch
             {
-                result = DataEntityClientSqlServer?.Context.Settings;
-            }
-
-            return result;
+                RootBaseEnumDataClients.PostgreSql => CoreDataClientPostgreSql.Context.Provider,
+                RootBaseEnumDataClients.SqlServer => CoreDataClientSqlServer.Context.Provider,
+                _ => null,
+            };
         }
 
         /// <summary>
-        /// Получить Entity Framework фабрику базы данных.
+        /// Получить настройки для клиента данных.
         /// </summary>
-        /// <returns>Entity Framework фабрика базы данных..</returns>
-        protected DataEntityDbFactory GetDataEntityDbFactory()
+        /// <returns>Настройки.</returns>
+        protected DataBaseSettings GetSettingsForDataClient()
         {
-            var result = DataEntityClientPostgreSql?.Context.DbFactory;
-
-            if (result == null)
+            return DataClient switch
             {
-                result = DataEntityClientSqlServer?.Context.DbFactory;
-            }
-
-            return result;
+                RootBaseEnumDataClients.PostgreSql => DataEntityClientPostgreSql.Context.Settings,
+                RootBaseEnumDataClients.SqlServer => DataEntityClientSqlServer.Context.Settings,
+                _ => null,
+            };
         }
 
         /// <summary>
@@ -230,6 +254,7 @@ namespace Makc2020.Root.Base
         protected virtual bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
             if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
+            if (TrySet<CoreDataClientPostgreSqlModule>(x => CoreDataClientPostgreSql = x, commonModule)) return true;
             if (TrySet<CoreDataClientSqlServerModule>(x => CoreDataClientSqlServer = x, commonModule)) return true;
             if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
             if (TrySet<DataEntityClientPostgreSqlModule>(x => DataEntityClientPostgreSql = x, commonModule)) return true;

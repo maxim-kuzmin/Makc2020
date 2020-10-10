@@ -118,7 +118,7 @@ namespace Makc2020.Root.Apps.Api.Web
                 Cache = CoreCaching.Context.Cache,
                 CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
                 CoreCachingResourceErrors = CoreCaching.Context.Resources.Errors,
-                DataBaseSettings = GetDataBaseSettings(),
+                DataBaseSettings = GetSettingsForDataClient(),
                 ResourceErrors = ModDummyMainBase.Context.Resources.Errors,
                 ResourceSuccesses = ModDummyMainBase.Context.Resources.Successes,
                 Service = ModDummyMainBase.Context.Service
@@ -129,7 +129,7 @@ namespace Makc2020.Root.Apps.Api.Web
                 Cache = CoreCaching.Context.Cache,
                 CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
                 CoreCachingResourceErrors = CoreCaching.Context.Resources.Errors,
-                DataBaseSettings = GetDataBaseSettings(),
+                DataBaseSettings = GetSettingsForDataClient(),
                 ResourceErrors = ModDummyTreeBase.Context.Resources.Errors,
                 ResourceSuccesses = ModDummyTreeBase.Context.Resources.Successes,
                 Service = ModDummyTreeBase.Context.Service
