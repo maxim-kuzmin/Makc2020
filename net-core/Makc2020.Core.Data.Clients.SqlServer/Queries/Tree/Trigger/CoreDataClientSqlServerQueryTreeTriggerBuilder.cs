@@ -13,322 +13,199 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger
     /// </summary>
     public class CoreDataClientSqlServerQueryTreeTriggerBuilder : CoreBaseDataQueryTreeTriggerBuilder
     {
-        #region Public methods
+		#region Public methods
 
-        /// <inheritdoc/>
-        public sealed override string GetResultSql()
-        {
-			var aliasForIds = $"{Prefix}ids";
-			var aliasForAncestors = $"{Prefix}k";
-			var aliasForTree = $"{Prefix}t";
+		/// <inheritdoc/>
+		public sealed override string GetResultSql()
+		{
+			var aliasForLink = $"[{Prefix}k]";
+			var aliasForLink1 = $"[{Prefix}k1]";
+			var aliasForLink2 = $"[{Prefix}k2]";
+			var aliasForResult = $"[{Prefix}r]";
+			var aliasForTree = $"[{Prefix}t]";
 
-			var cteForAll = $"{Prefix}cte_All";
-			var cteForAncestors = $"{Prefix}cte_Link";
+			var linkTableFieldNameForId = $"[{LinkTableFieldNameForId}]";
+			var linkTableFieldNameForParentId = $"[{LinkTableFieldNameForParentId}]";
 
-			var tableNameForIds = $"@{Prefix}Ids";
-            var tableNameForIdsAncestor = $"@{Prefix}IdsAncestor";
-            var tableNameForIdsBroken = $"@{Prefix}IdsBroken";
-            var tableNameForIdsCalculated = $"@{Prefix}IdsCalculated";
-            var tableNameForIdsDescendant = $"@{Prefix}IdsDescendant";
-            var tableNameForIdsLinked = $"@{Prefix}IdsLinked";			
+			var linkTableName = $"[{LinkTableSchema}\".\"{LinkTableNameWithoutSchema}]";
 
-			string sqlForIdsSelectQuery = string.Empty;
+			var treeTableFieldNameForId = $"[{TreeTableFieldNameForId}]";
+			var treeTableFieldNameForParentId = $"[{TreeTableFieldNameForParentId}]";
+			var treeTableFieldNameForTreeChildCount = $"[{TreeTableFieldNameForTreeChildCount}]";
+			var treeTableFieldNameForTreeDescendantCount = $"[{TreeTableFieldNameForTreeDescendantCount}]";
+			var treeTableFieldNameForTreeLevel = $"[{TreeTableFieldNameForTreeLevel}]";
+			var treeTableFieldNameForTreePath = $"[{TreeTableFieldNameForTreePath}]";
+			var treeTableFieldNameForTreePosition = $"[{TreeTableFieldNameForTreePosition}]";
+			var treeTableFieldNameForTreeSort = $"[{TreeTableFieldNameForTreeSort}]";
 
-            var parIds = Parameters.Ids;
-
-            if (parIds.Any() || !string.IsNullOrWhiteSpace(SqlForIdsSelectQuery))
-            {
-                sqlForIdsSelectQuery = parIds.Any()
-                    ?
-                    "values (" + string.Join("), (", parIds.Select(x => x.ParameterName)) + ")"
-                    :
-                    SqlForIdsSelectQuery;
-            }
-            else
-            {
-                sqlForIdsSelectQuery = $"select {TreeTableFieldNameForId} from {TreeTableName}";
-            }
-            
-            var sqlForCalculate = CreateSqlForCalculate($"select distinct Val from {tableNameForIdsCalculated}");
-
-			var variableNameForAction = $"@{Prefix}Action";
-
-			var valueForActionDelete = "'D'";
-			var valueForActionInsert = "'I'";
-			var valueForActionUpdate = "'U'";
-
-			var variableValueForAction = "''";
-
-			switch (Action)
-			{
-				case CoreBaseCommonEnumSqlTriggerActions.Delete:
-					variableValueForAction = valueForActionDelete;
-						break;
-				case CoreBaseCommonEnumSqlTriggerActions.Insert:
-					variableValueForAction = valueForActionInsert;
-					break;
-				case CoreBaseCommonEnumSqlTriggerActions.Update:
-					variableValueForAction = valueForActionUpdate;
-					break;
-			}
+			var treeTableName = $"[{TreeTableSchema}].[{TreeTableNameWithoutSchema}]";
 
 			var result = new StringBuilder($@"
-declare {variableNameForAction} char = {variableValueForAction};
-
-declare {tableNameForIds} table (Val bigint);
-declare {tableNameForIdsAncestor} table (Val bigint);
-declare {tableNameForIdsBroken} table (Val bigint);
-declare {tableNameForIdsCalculated} table (Val bigint);
-declare {tableNameForIdsDescendant} table (Val bigint);
-declare {tableNameForIdsLinked} table (Val bigint);		
-
-insert into {tableNameForIds}
-(
-    Val
-)
-{sqlForIdsSelectQuery}
-;
-
--- Добавляем узлы к разрушенным узлам.
-insert into {tableNameForIdsBroken}
-(
-	Val
-)
-select
-	Val
-from
-	{tableNameForIds}
-;
-
--- Удаление или обновление.
-if {variableNameForAction} <> {valueForActionInsert}
+while 1 = 1
 begin;
-	-- Запоминаем идентификаторы предков удалённых или обновлённых узлов.
-	insert into {tableNameForIdsAncestor}
+	with cte as
 	(
-		Val
+		select top 1
+			{treeTableFieldNameForId},
+			{treeTableFieldNameForParentId},
+			{treeTableFieldNameForTreePosition}
+		from
+			{treeTableName}
+		where
+			{treeTableFieldNameForTreePosition} = 0
 	)
-	select distinct
-		{LinkTableFieldNameForParentId}
-	from
-		{LinkTableName}
-	where
-		{LinkTableFieldNameForParentId} > 0
-		and 
-		{LinkTableFieldNameForId} <> {LinkTableFieldNameForParentId}
-		and
-		{LinkTableFieldNameForId} in (select Val from {tableNameForIds})
+	update cte set
+		{treeTableFieldNameForTreePosition} = 
+		(
+			select
+				MAX({aliasForTree}.{treeTableFieldNameForTreePosition}) + 10
+			from
+				{treeTableName} {aliasForTree}
+			where
+				COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) = COALESCE(cte.{treeTableFieldNameForParentId}, 0)
+		)
 	;
+
+	if @@ROWCOUNT < 1 break;
 end;
 
--- Обновление.
-if {variableNameForAction} = {valueForActionUpdate}
-begin;
-	-- Запоминаем идентификаторы потомков обновлённых узлов.
-	insert into {tableNameForIdsDescendant}
-	(
-		Val
-	)
-	select distinct
-		{LinkTableFieldNameForId}
-	from
-		{LinkTableName}
-	where
-		{LinkTableFieldNameForId} <> {LinkTableFieldNameForParentId}
-		and
-		{LinkTableFieldNameForParentId} in (select Val from {tableNameForIds})
-	;
-
-	-- Добавляем потомков обновлённых узлов к разрушенным узлам.
-	insert into {tableNameForIdsBroken}
-	(
-		Val
-	)
-	select
-		Val
-	from
-		{tableNameForIdsDescendant}
-	;
-
-	-- Добавляем потомков обновлённых узлов к связываемым узлам.
-	insert into {tableNameForIdsLinked}
-	(
-		Val
-	)
-	select
-		Val
-	from
-		{tableNameForIdsDescendant}
-	;
-end;
-
--- Вставка или обновление.
-if {variableNameForAction} <> {valueForActionDelete}
-begin;
-	-- Добавляем вставленные или обновлённые узлы к связываемым узлам.
-	insert into {tableNameForIdsLinked}
-	(
-		Val
-	)
-	select
-		Val
-	from
-		{tableNameForIds}
-	;
-
-	-- Добавляем родителей вставленных или обновлённых узлов к вычисляемым узлам.
-	insert into {tableNameForIdsCalculated}
-	(
-		Val
-	)
-	select distinct
-		{TreeTableFieldNameForParentId}
-	from
-		{TreeTableName}
-	where
-		{TreeTableFieldNameForParentId} is not null
-		and
-		{TreeTableFieldNameForId} in (select Val from {tableNameForIds})
-	;
-
-	-- Запоминаем идентификаторы предков родителей вставленных или обновлённых узлов.
-	insert into {tableNameForIdsAncestor}
-	(
-		Val
-	)
-	select distinct
-		{LinkTableFieldNameForParentId}
-	from
-		{LinkTableName}
-	where
-		{LinkTableFieldNameForParentId} > 0
-		and
-		{LinkTableFieldNameForId} <> {LinkTableFieldNameForParentId}
-		and
-		{LinkTableFieldNameForId} in (select Val from {tableNameForIdsCalculated})
-	;
-
-	-- Добавляем вставленные или обновлённые узлы к вычисляемым узлам.
-	insert into {tableNameForIdsCalculated}
-	(
-		Val
-	)
-	select
-		Val
-	from
-		{tableNameForIds}
-	;
-end;
-
--- Добавляем предков к вычисляемым узлам.
-insert into {tableNameForIdsCalculated}
+with cte as
 (
-	Val
+	select
+		{treeTableFieldNameForId},
+		{treeTableFieldNameForTreeChildCount},
+		{treeTableFieldNameForTreeDescendantCount},
+		{treeTableFieldNameForTreeLevel},
+		{treeTableFieldNameForTreePath},
+		{treeTableFieldNameForTreeSort}
+	from
+		{treeTableName}
 )
-select
-	Val
-from
-	{tableNameForIdsAncestor}
-;
-
--- Обновление.
-if {variableNameForAction} = {valueForActionUpdate}
-begin;
-	-- Добавляем потомков обновлённых узлов к вычисляемым узлам.
-	insert into {tableNameForIdsCalculated}
+update cte set
+	{treeTableFieldNameForTreeChildCount} = 
 	(
-		Val
+		select
+			COUNT_BIG(*)
+		from
+			{treeTableName} {aliasForTree}
+		where
+			{aliasForTree}.{treeTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
+	),
+	{treeTableFieldNameForTreeDescendantCount} = 
+	(
+		select
+			COUNT_BIG(*)
+		from
+			{linkTableName} {aliasForLink}
+		where
+			{aliasForLink}.{linkTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
+			and
+			{aliasForLink}.{linkTableFieldNameForParentId} <> {aliasForLink}.{linkTableFieldNameForId}
+	),
+	{treeTableFieldNameForTreeLevel} = 
+	(
+		select
+			COUNT_BIG(*) - 1
+		from
+			{linkTableName} {aliasForLink}
+		where
+			{aliasForLink}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
+	),
+	{treeTableFieldNameForTreePath} =
+	(
+		select
+			COALESCE({aliasForResult}.Val, N'')
+		from
+		(
+			select
+				{aliasForLink1}.{linkTableFieldNameForId},
+				STUFF
+				(
+					(
+						select
+							',' + CONVERT(varchar(max), {aliasForLink2}.{linkTableFieldNameForParentId})
+						from
+							{linkTableName} {aliasForLink2}
+						where
+							{aliasForLink1}.{linkTableFieldNameForId} = {aliasForLink2}.{linkTableFieldNameForId}
+							and
+							{aliasForLink2}.{linkTableFieldNameForParentId} > 0
+							and
+							{aliasForLink2}.{linkTableFieldNameForParentId} <> {aliasForLink2}.{linkTableFieldNameForId}
+							for xml path(''), type
+					).value('.', 'varchar(max)'),
+					1,
+					1,
+					''
+				) Val
+			from
+				{linkTableName} {aliasForLink1}
+			group by
+				{aliasForLink1}.{linkTableFieldNameForId}
+		) {aliasForResult}
+		where
+			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
+	),
+	{treeTableFieldNameForTreeSort} =
+	(
+		select
+			COALESCE({aliasForResult}.Val, N'')
+		from
+		(
+			select
+				{aliasForLink1}.{linkTableFieldNameForId},
+				STUFF
+				(
+					(
+						select
+							',' + RIGHT('0000000000' + CONVERT(varchar(max), {aliasForTree}.{treeTableFieldNameForTreePosition}) + '.' + CONVERT(varchar(max), {aliasForLink2}.{linkTableFieldNameForParentId}), 10)
+						from
+							{linkTableName} {aliasForLink2}
+							inner join {treeTableName} {aliasForTree}
+								on {aliasForLink2}.{linkTableFieldNameForParentId} = {aliasForTree}.{treeTableFieldNameForId}
+						where
+							{aliasForLink1}.{linkTableFieldNameForId} = {aliasForLink2}.{linkTableFieldNameForId}
+							and
+							{aliasForLink2}.{linkTableFieldNameForParentId} > 0
+							for xml path(''), type
+					).value('.', 'varchar(max)'),
+					1,
+					1,
+					''
+				) Val
+			from
+				{linkTableName} {aliasForLink1}
+			group by
+				{aliasForLink1}.{linkTableFieldNameForId}
+		) {aliasForResult}
+		where
+			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
 	)
-	select
-		Val
-	from
-		{tableNameForIdsDescendant}
-	;
-end;
-
--- Удаляем связи разрушенных узлов.
-delete from	{LinkTableName}
-where
-	{LinkTableFieldNameForId} in (select Val from {tableNameForIdsBroken})
-;		
-
--- Добавляем связи разрушенных узлов.
-with {cteForAncestors} as
-(
-	select
-		{TreeTableFieldNameForId} = {aliasForTree}.{TreeTableFieldNameForId},
-		{TreeTableFieldNameForParentId} = COALESCE({aliasForTree}.{TreeTableFieldNameForParentId}, 0)
-	from
-		{TreeTableName} {aliasForTree}
-		inner join {tableNameForIdsLinked} {aliasForIds}
-            on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForIds}.Val
-	union all
-	select
-		{TreeTableFieldNameForId} = {aliasForAncestors}.{TreeTableFieldNameForId},
-		{TreeTableFieldNameForParentId} = COALESCE({aliasForTree}.{TreeTableFieldNameForParentId}, 0)
-	from 
-		{TreeTableName} {aliasForTree}
-		inner join {cteForAncestors} {aliasForAncestors}
-            on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForAncestors}.{TreeTableFieldNameForParentId}
-),
-{cteForAll} as 
-(
-	select
-		{TreeTableFieldNameForId} = {aliasForTree}.{TreeTableFieldNameForId},
-		{TreeTableFieldNameForParentId} = {aliasForTree}.{TreeTableFieldNameForId}
-	from
-		{TreeTableName} {aliasForTree}
-		inner join {tableNameForIdsLinked} {aliasForIds}
-			on {aliasForTree}.{TreeTableFieldNameForId} = {aliasForIds}.Val
-	union all
-	select
-		{TreeTableFieldNameForId}, 
-		{TreeTableFieldNameForParentId}
-	from 
-		{cteForAncestors}
-)
-insert into {LinkTableName}
-(
-	{LinkTableFieldNameForId},
-	{LinkTableFieldNameForParentId}
-)
-select
-	{TreeTableFieldNameForId}, 
-	{TreeTableFieldNameForParentId}
-from
-	{cteForAll}
-;
-
-{sqlForCalculate}        
 ");
+			var parIds = Parameters.Ids;
 
-            return result.ToString();
-        }
+			if (parIds.Any() || !string.IsNullOrWhiteSpace(SqlForIdsSelectQuery))
+			{
+				var sqlForIdsSelectQuery = parIds.Any()
+					?
+					string.Join(", ", parIds.Select(x => x.ParameterName))
+					:
+					SqlForIdsSelectQuery;
 
-        #endregion Public methods
+				result.Append($@"
+where
+	cte.{treeTableFieldNameForId} in
+	(
+		{sqlForIdsSelectQuery}
+	)
+"
+);
+			}
 
-        #region Private methods
+			return result.ToString();
+		}
 
-        private string CreateSqlForCalculate(string sqlForIdsSelectQuery)
-        {
-            return new CoreDataClientSqlServerQueryTreeCalculateBuilder
-            {                
-                LinkTableFieldNameForId = LinkTableFieldNameForId,
-                LinkTableFieldNameForParentId = LinkTableFieldNameForParentId,
-                LinkTableName = LinkTableName,
-                SqlForIdsSelectQuery = sqlForIdsSelectQuery,
-                TreeTableFieldNameForId = TreeTableFieldNameForId,
-                TreeTableFieldNameForParentId = TreeTableFieldNameForParentId,
-                TreeTableFieldNameForTreeChildCount = TreeTableFieldNameForTreeChildCount,
-                TreeTableFieldNameForTreeDescendantCount = TreeTableFieldNameForTreeDescendantCount,
-                TreeTableFieldNameForTreeLevel = TreeTableFieldNameForTreeLevel,
-                TreeTableFieldNameForTreePath = TreeTableFieldNameForTreePath,
-                TreeTableFieldNameForTreePosition = TreeTableFieldNameForTreePosition,
-                TreeTableFieldNameForTreeSort = TreeTableFieldNameForTreeSort,
-                TreeTableName = TreeTableName                
-            }.GetResultSql();
-        }
-
-        #endregion Private methods
-    }
+		#endregion Public methods
+	}
 }
+

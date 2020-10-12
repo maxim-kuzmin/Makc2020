@@ -20,9 +20,14 @@ namespace Makc2020.Core.Base.Common.Data.Queries.Tree
         public string LinkTableFieldNameForParentId { get; set; }
 
         /// <summary>
-        /// Имя таблицы связи.
+        /// Имя таблицы связи без схемы.
         /// </summary>
-        public string LinkTableName { get; set; }
+        public string LinkTableNameWithoutSchema { get; set; }
+
+        /// <summary>
+        /// Схема таблицы связи.
+        /// </summary>
+        public string LinkTableSchema { get; set; }
 
         /// <summary>
         /// Параметры.
@@ -81,9 +86,14 @@ namespace Makc2020.Core.Base.Common.Data.Queries.Tree
         public string TreeTableFieldNameForTreeSort { get; set; }
 
         /// <summary>
-        /// Имя таблицы дерева.
+        /// Имя таблицы дерева без схемы.
         /// </summary>
-        public string TreeTableName { get; set; }
+        public string TreeTableNameWithoutSchema { get; set; }
+
+        /// <summary>
+        /// Схема таблицы дерева.
+        /// </summary>
+        public string TreeTableSchema { get; set; }
 
         #endregion Properties
 

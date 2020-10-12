@@ -144,7 +144,9 @@ namespace Makc2020.Data.Entity
         {
             builder.LinkTableFieldNameForId = linkSettings.DbColumnNameForId;
             builder.LinkTableFieldNameForParentId = linkSettings.DbColumnNameForParentId;
-            builder.LinkTableName = linkSettings.DbTableWithSchema;
+
+            builder.LinkTableNameWithoutSchema = linkSettings.DbTable;
+            builder.LinkTableSchema = linkSettings.DbSchema;
 
             builder.TreeTableFieldNameForId = treeSettings.DbColumnNameForId;
             builder.TreeTableFieldNameForParentId = treeSettings.DbColumnNameForParentId;
@@ -154,7 +156,9 @@ namespace Makc2020.Data.Entity
             builder.TreeTableFieldNameForTreePath = treeSettings.DbColumnNameForTreePath;
             builder.TreeTableFieldNameForTreePosition = treeSettings.DbColumnNameForTreePosition;
             builder.TreeTableFieldNameForTreeSort = treeSettings.DbColumnNameForTreeSort;
-            builder.TreeTableName = treeSettings.DbTableWithSchema;
+
+            builder.TreeTableNameWithoutSchema = treeSettings.DbTable;
+            builder.TreeTableSchema = treeSettings.DbSchema;
         }
 
         private DataEntityObjectDummyMain CreateTestDataItemForDummyMain(
