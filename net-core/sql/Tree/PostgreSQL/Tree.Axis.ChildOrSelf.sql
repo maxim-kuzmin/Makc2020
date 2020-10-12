@@ -1,4 +1,4 @@
-﻿-- Axis Child
+﻿-- Axis ChildOrSelf
 
 with "cte_input" as 
 (
@@ -16,4 +16,6 @@ from
 	cross join "cte_input"
 where
 	"t"."parent_id" = "cte_input"."root_id"
+	or
+	"t"."id" = "cte_input"."root_id"
 ;

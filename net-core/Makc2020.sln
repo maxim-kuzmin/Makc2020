@@ -128,7 +128,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostgreSQL", "PostgreSQL", 
 	ProjectSection(SolutionItems) = preProject
 		sql\Tree\PostgreSQL\Tree.Axis.All.sql = sql\Tree\PostgreSQL\Tree.Axis.All.sql
 		sql\Tree\PostgreSQL\Tree.Axis.Ancestor.sql = sql\Tree\PostgreSQL\Tree.Axis.Ancestor.sql
+		sql\Tree\PostgreSQL\Tree.Axis.AncestorOrSelf.sql = sql\Tree\PostgreSQL\Tree.Axis.AncestorOrSelf.sql
+		sql\Tree\PostgreSQL\Tree.Axis.Child.sql = sql\Tree\PostgreSQL\Tree.Axis.Child.sql
+		sql\Tree\PostgreSQL\Tree.Axis.ChildOrSelf.sql = sql\Tree\PostgreSQL\Tree.Axis.ChildOrSelf.sql
+		sql\Tree\PostgreSQL\Tree.Axis.Descendant.sql = sql\Tree\PostgreSQL\Tree.Axis.Descendant.sql
+		sql\Tree\PostgreSQL\Tree.Axis.DescendantOrSelf.sql = sql\Tree\PostgreSQL\Tree.Axis.DescendantOrSelf.sql
+		sql\Tree\PostgreSQL\Tree.Axis.Parent.sql = sql\Tree\PostgreSQL\Tree.Axis.Parent.sql
+		sql\Tree\PostgreSQL\Tree.Axis.ParentOrSelf.sql = sql\Tree\PostgreSQL\Tree.Axis.ParentOrSelf.sql
+		sql\Tree\PostgreSQL\Tree.Axis.Self.sql = sql\Tree\PostgreSQL\Tree.Axis.Self.sql
 		sql\Tree\PostgreSQL\Tree.Calculate.sql = sql\Tree\PostgreSQL\Tree.Calculate.sql
+		sql\Tree\PostgreSQL\Tree.Create.sql = sql\Tree\PostgreSQL\Tree.Create.sql
+		sql\Tree\PostgreSQL\Tree.Identity.Reseed.sql = sql\Tree\PostgreSQL\Tree.Identity.Reseed.sql
+		sql\Tree\PostgreSQL\Tree.Init.sql = sql\Tree\PostgreSQL\Tree.Init.sql
+		sql\Tree\PostgreSQL\Tree.Select.Opened.All.sql = sql\Tree\PostgreSQL\Tree.Select.Opened.All.sql
+		sql\Tree\PostgreSQL\Tree.Select.Opened.Descendant.sql = sql\Tree\PostgreSQL\Tree.Select.Opened.Descendant.sql
 		sql\Tree\PostgreSQL\Tree.Trigger.sql = sql\Tree\PostgreSQL\Tree.Trigger.sql
 	EndProjectSection
 EndProject

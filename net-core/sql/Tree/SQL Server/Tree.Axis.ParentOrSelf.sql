@@ -1,7 +1,14 @@
 ﻿-- Axis ParentOrSelf
 
-declare @RootId bigint = 7;
-
+with cte_Input as 
+(
+	select
+		Id RootId
+	from
+		dbo.DummyTree
+	where
+		[Name] = 'Name-1-1'
+)
 select
 	t1.*
 from
@@ -10,8 +17,9 @@ from
 		on t1.Id = k.ParentId
 	inner join dbo.DummyTree t2
 		on k.Id = t2.Id
+	cross join cte_Input
 where
-	k.Id = @RootId
+	k.Id = cte_Input.RootId
 	and
 	(
 		t1.TreeLevel = t2.TreeLevel

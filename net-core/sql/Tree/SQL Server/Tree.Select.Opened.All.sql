@@ -1,16 +1,20 @@
 ﻿-- Select Opened All
 
-declare @IdsOpened table (Val bigint);
-
-insert into @IdsOpened
-	(Val)
-values
-	(1),
-	(18),
-	(3),
-	(8)
-;
-
+with cte_Input_IdsOpened as
+(
+	select
+		Id Val
+	from
+		dbo.DummyTree
+	where
+		[Name] in
+		(
+			'Name-1',
+			'Name-1-1-2-1-1',
+			'Name-1-1-1',
+			'Name-1-1-1-2'
+		)
+)
 select
 	t.*
 from
@@ -24,9 +28,9 @@ from
 		from
 			dbo.DummyTree tt
 		where
-			tt.ParentId in (select Val from @IdsOpened)
+			tt.ParentId in (select Val from cte_Input_IdsOpened)
 			or
-			tt.Id in (select Val from @IdsOpened)
+			tt.Id in (select Val from cte_Input_IdsOpened)
 	) ids
 		on t.Id = ids.Val
 where
