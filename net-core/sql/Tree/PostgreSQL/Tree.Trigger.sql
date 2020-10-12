@@ -180,16 +180,16 @@ where
 with cteForAncestors as
 (
 	select
-		Id = aliasForTree.Id,
-		ParentId = COALESCE(aliasForTree.ParentId, 0)
+		aliasForTree.Id Id,
+		COALESCE(aliasForTree.ParentId, 0) ParentId
 	from
 		dbo.DummyTree aliasForTree
 		inner join @IdsLinked aliasForIds
             on aliasForTree.Id = aliasForIds.Val
 	union all
 	select
-		Id = aliasForAncestors.Id,
-		ParentId = COALESCE(aliasForTree.ParentId, 0)
+		aliasForAncestors.Id Id,
+		COALESCE(aliasForTree.ParentId, 0) ParentId
 	from 
 		dbo.DummyTree aliasForTree
 		inner join cteForAncestors aliasForAncestors
@@ -198,8 +198,8 @@ with cteForAncestors as
 cteForAll as 
 (
 	select
-		Id = aliasForTree.Id,
-		ParentId = aliasForTree.Id
+		aliasForTree.Id Id,
+		aliasForTree.Id ParentId
 	from
 		dbo.DummyTree aliasForTree
 		inner join @IdsLinked aliasForIds
