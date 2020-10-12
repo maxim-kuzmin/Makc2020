@@ -22,6 +22,8 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate
 			var aliasForResult = $"[{Prefix}r]";
 			var aliasForTree = $"[{Prefix}t]";
 
+			var cte = "[cte]";
+
 			var linkTableFieldNameForId = $"[{LinkTableFieldNameForId}]";
 			var linkTableFieldNameForParentId = $"[{LinkTableFieldNameForParentId}]";
 
@@ -38,10 +40,12 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate
 
 			var treeTableName = $"[{TreeTableSchema}].[{TreeTableNameWithoutSchema}]";
 
+			var val = "[val]";
+
 			var result = new StringBuilder($@"
 while 1 = 1
 begin;
-	with cte as
+	with {cte} as
 	(
 		select top 1
 			{treeTableFieldNameForId},
@@ -52,7 +56,7 @@ begin;
 		where
 			{treeTableFieldNameForTreePosition} = 0
 	)
-	update cte set
+	update {cte} set
 		{treeTableFieldNameForTreePosition} = 
 		(
 			select
@@ -60,14 +64,14 @@ begin;
 			from
 				{treeTableName} {aliasForTree}
 			where
-				COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) = COALESCE(cte.{treeTableFieldNameForParentId}, 0)
+				COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) = COALESCE({cte}.{treeTableFieldNameForParentId}, 0)
 		)
 	;
 
 	if @@ROWCOUNT < 1 break;
 end;
 
-with cte as
+with {cte} as
 (
 	select
 		{treeTableFieldNameForId},
@@ -79,7 +83,7 @@ with cte as
 	from
 		{treeTableName}
 )
-update cte set
+update {cte} set
 	{treeTableFieldNameForTreeChildCount} = 
 	(
 		select
@@ -87,7 +91,7 @@ update cte set
 		from
 			{treeTableName} {aliasForTree}
 		where
-			{aliasForTree}.{treeTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
+			{aliasForTree}.{treeTableFieldNameForParentId} = {cte}.{treeTableFieldNameForId}
 	),
 	{treeTableFieldNameForTreeDescendantCount} = 
 	(
@@ -96,7 +100,7 @@ update cte set
 		from
 			{linkTableName} {aliasForLink}
 		where
-			{aliasForLink}.{linkTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
+			{aliasForLink}.{linkTableFieldNameForParentId} = {cte}.{treeTableFieldNameForId}
 			and
 			{aliasForLink}.{linkTableFieldNameForParentId} <> {aliasForLink}.{linkTableFieldNameForId}
 	),
@@ -107,12 +111,12 @@ update cte set
 		from
 			{linkTableName} {aliasForLink}
 		where
-			{aliasForLink}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
+			{aliasForLink}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 	),
 	{treeTableFieldNameForTreePath} =
 	(
 		select
-			COALESCE({aliasForResult}.Val, N'')
+			COALESCE({aliasForResult}.{val}, N'')
 		from
 		(
 			select
@@ -135,19 +139,19 @@ update cte set
 					1,
 					1,
 					''
-				) Val
+				) {val}
 			from
 				{linkTableName} {aliasForLink1}
 			group by
 				{aliasForLink1}.{linkTableFieldNameForId}
 		) {aliasForResult}
 		where
-			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
+			{aliasForResult}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 	),
 	{treeTableFieldNameForTreeSort} =
 	(
 		select
-			COALESCE({aliasForResult}.Val, N'')
+			COALESCE({aliasForResult}.{val}, N'')
 		from
 		(
 			select
@@ -170,14 +174,14 @@ update cte set
 					1,
 					1,
 					''
-				) Val
+				) {val}
 			from
 				{linkTableName} {aliasForLink1}
 			group by
 				{aliasForLink1}.{linkTableFieldNameForId}
 		) {aliasForResult}
 		where
-			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
+			{aliasForResult}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 	)
 ");
 			var parIds = Parameters.Ids;
@@ -192,12 +196,11 @@ update cte set
 
 				result.Append($@"
 where
-	cte.{treeTableFieldNameForId} in
+	{cte}.{treeTableFieldNameForId} in
 	(
 		{sqlForIdsSelectQuery}
 	)
-"
-);
+");
 			}
 
 			return result.ToString();

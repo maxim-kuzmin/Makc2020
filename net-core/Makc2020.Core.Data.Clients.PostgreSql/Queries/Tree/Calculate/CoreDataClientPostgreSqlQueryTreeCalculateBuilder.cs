@@ -22,6 +22,8 @@ namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Calculate
 			var aliasForResult = $"\"{Prefix}r\"";
 			var aliasForTree = $"\"{Prefix}t\"";
 
+			var cte = "\"cte\"";
+
 			var linkTableFieldNameForId = $"\"{LinkTableFieldNameForId}\"";
 			var linkTableFieldNameForParentId = $"\"{LinkTableFieldNameForParentId}\"";
 
@@ -38,90 +40,102 @@ namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Calculate
 
 			var treeTableName = $"\"{TreeTableSchema}\".\"{TreeTableNameWithoutSchema}\"";
 
+			var val = "\"val\"";
+
 			var result = new StringBuilder($@"
-while 1 = 1
-begin;
-	with cte as
-	(
-		select top 1
-			{treeTableFieldNameForId},
-			{treeTableFieldNameForParentId},
-			{treeTableFieldNameForTreePosition}
-		from
-			{treeTableName}
-		where
-			{treeTableFieldNameForTreePosition} = 0
-	)
-	update cte set
-		{treeTableFieldNameForTreePosition} = 
+do $$
+declare
+	_row_count bigint := 0;
+begin
+	loop
+		with {cte} as
 		(
 			select
-				MAX({aliasForTree}.{treeTableFieldNameForTreePosition}) + 10
+				{treeTableFieldNameForId},
+				{treeTableFieldNameForParentId},
+				{treeTableFieldNameForTreePosition}
+			from
+				{treeTableName}
+			where
+				{treeTableFieldNameForTreePosition} = 0
+			limit 1
+		)
+		update {treeTableName} set
+			{treeTableFieldNameForTreePosition} = 
+			(
+				select
+					MAX({aliasForTree}.{treeTableFieldNameForTreePosition}) + 10
+				from
+					{treeTableName} {aliasForTree}
+				where
+					COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) = COALESCE({cte}.{treeTableFieldNameForParentId}, 0)
+			)
+		from
+			{cte}
+		where
+			{treeTableName}.{treeTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
+		;
+
+		get diagnostics _row_count = row_count;
+
+		if (_row_count < 1) then
+			exit;
+		end if;
+	end loop;
+
+	with {cte} as
+	(
+		select
+			{treeTableFieldNameForId},
+			{treeTableFieldNameForTreeChildCount},
+			{treeTableFieldNameForTreeDescendantCount},
+			{treeTableFieldNameForTreeLevel},
+			{treeTableFieldNameForTreePath},
+			{treeTableFieldNameForTreeSort}
+		from
+			{treeTableName}
+	)
+	update {treeTableName} set
+		{treeTableFieldNameForTreeChildCount} = 
+		(
+			select
+				COUNT(*)
 			from
 				{treeTableName} {aliasForTree}
 			where
-				COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) = COALESCE(cte.{treeTableFieldNameForParentId}, 0)
-		)
-	;
-
-	if @@ROWCOUNT < 1 break;
-end;
-
-with cte as
-(
-	select
-		{treeTableFieldNameForId},
-		{treeTableFieldNameForTreeChildCount},
-		{treeTableFieldNameForTreeDescendantCount},
-		{treeTableFieldNameForTreeLevel},
-		{treeTableFieldNameForTreePath},
-		{treeTableFieldNameForTreeSort}
-	from
-		{treeTableName}
-)
-update cte set
-	{treeTableFieldNameForTreeChildCount} = 
-	(
-		select
-			COUNT_BIG(*)
-		from
-			{treeTableName} {aliasForTree}
-		where
-			{aliasForTree}.{treeTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
-	),
-	{treeTableFieldNameForTreeDescendantCount} = 
-	(
-		select
-			COUNT_BIG(*)
-		from
-			{linkTableName} {aliasForLink}
-		where
-			{aliasForLink}.{linkTableFieldNameForParentId} = cte.{treeTableFieldNameForId}
-			and
-			{aliasForLink}.{linkTableFieldNameForParentId} <> {aliasForLink}.{linkTableFieldNameForId}
-	),
-	{treeTableFieldNameForTreeLevel} = 
-	(
-		select
-			COUNT_BIG(*) - 1
-		from
-			{linkTableName} {aliasForLink}
-		where
-			{aliasForLink}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
-	),
-	{treeTableFieldNameForTreePath} =
-	(
-		select
-			COALESCE({aliasForResult}.Val, N'')
-		from
+				{aliasForTree}.{treeTableFieldNameForParentId} = {cte}.{treeTableFieldNameForId}
+		),
+		{treeTableFieldNameForTreeDescendantCount} = 
 		(
 			select
-				{aliasForLink1}.{linkTableFieldNameForId},
-				STUFF
-				(
+				COUNT(*)
+			from
+				{linkTableName} {aliasForLink}
+			where
+				{aliasForLink}.{linkTableFieldNameForParentId} = {cte}.{treeTableFieldNameForId}
+				and
+				{aliasForLink}.{linkTableFieldNameForParentId} <> {aliasForLink}.{linkTableFieldNameForId}
+		),
+		{treeTableFieldNameForTreeLevel} = 
+		(
+			select
+				COUNT(*) - 1
+			from
+				{linkTableName} {aliasForLink}
+			where
+				{aliasForLink}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
+		),
+		{treeTableFieldNameForTreePath} =
+		(
+			select
+				COALESCE({aliasForResult}.{val}, '')
+			from
+			(
+				select
+					{aliasForLink1}.{linkTableFieldNameForId},
 					(
 						select
-							',' + CONVERT(varchar(max), {aliasForLink2}.{linkTableFieldNameForParentId})
+							STRING_AGG({aliasForLink2}.{linkTableFieldNameForParentId}::text, ',')
 						from
 							{linkTableName} {aliasForLink2}
 						where
@@ -130,33 +144,26 @@ update cte set
 							{aliasForLink2}.{linkTableFieldNameForParentId} > 0
 							and
 							{aliasForLink2}.{linkTableFieldNameForParentId} <> {aliasForLink2}.{linkTableFieldNameForId}
-							for xml path(''), type
-					).value('.', 'varchar(max)'),
-					1,
-					1,
-					''
-				) Val
-			from
-				{linkTableName} {aliasForLink1}
-			group by
-				{aliasForLink1}.{linkTableFieldNameForId}
-		) {aliasForResult}
-		where
-			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
-	),
-	{treeTableFieldNameForTreeSort} =
-	(
-		select
-			COALESCE({aliasForResult}.Val, N'')
-		from
+					) {val}
+				from
+					{linkTableName} {aliasForLink1}
+				group by
+					{aliasForLink1}.{linkTableFieldNameForId}
+			) {aliasForResult}
+			where
+				{aliasForResult}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
+		),
+		{treeTableFieldNameForTreeSort} =
 		(
 			select
-				{aliasForLink1}.{linkTableFieldNameForId},
-				STUFF
-				(
+				COALESCE({aliasForResult}.{val}, '')
+			from
+			(
+				select
+					{aliasForLink1}.{linkTableFieldNameForId},
 					(
 						select
-							',' + RIGHT('0000000000' + CONVERT(varchar(max), {aliasForTree}.{treeTableFieldNameForTreePosition}) + '.' + CONVERT(varchar(max), {aliasForLink2}.{linkTableFieldNameForParentId}), 10)
+							STRING_AGG(RIGHT('0000000000' || {aliasForTree}.{treeTableFieldNameForTreePosition}::text || '.' || {aliasForLink2}.{linkTableFieldNameForParentId}::text, 10), ',')
 						from
 							{linkTableName} {aliasForLink2}
 							inner join {treeTableName} {aliasForTree}
@@ -165,20 +172,17 @@ update cte set
 							{aliasForLink1}.{linkTableFieldNameForId} = {aliasForLink2}.{linkTableFieldNameForId}
 							and
 							{aliasForLink2}.{linkTableFieldNameForParentId} > 0
-							for xml path(''), type
-					).value('.', 'varchar(max)'),
-					1,
-					1,
-					''
-				) Val
-			from
-				{linkTableName} {aliasForLink1}
-			group by
-				{aliasForLink1}.{linkTableFieldNameForId}
-		) {aliasForResult}
-		where
-			{aliasForResult}.{linkTableFieldNameForId} = cte.{treeTableFieldNameForId}
-	)
+					) {val}
+				from
+					{linkTableName} {aliasForLink1}
+				group by
+					{aliasForLink1}.{linkTableFieldNameForId}
+			) {aliasForResult}
+			where
+				{aliasForResult}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
+		)
+	where
+		{treeTableName}.{treeTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 ");
 			var parIds = Parameters.Ids;
 
@@ -191,13 +195,15 @@ update cte set
 					SqlForIdsSelectQuery;
 
 				result.Append($@"
-where
-	cte.{treeTableFieldNameForId} in
-	(
-		{sqlForIdsSelectQuery}
-	)
-"
-);
+		and
+		{cte}.{treeTableFieldNameForId} in
+		(
+			{sqlForIdsSelectQuery}
+		)
+");
+				result.Append($@"
+end $$;
+");
 			}
 
 			return result.ToString();
