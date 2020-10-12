@@ -19,11 +19,11 @@ namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Trigger
 		public sealed override string GetResultSql()
 		{
 			var aliasForIds = $"\"{Prefix}ids\"";
-			var aliasForAncestors = $"\"{Prefix}k\"";
+			var aliasForAncestors = $"\"{Prefix}a\"";
 			var aliasForTree = $"\"{Prefix}t\"";
 
 			var cteForAll = $"\"{Prefix}cte_All\"";
-			var cteForAncestors = $"\"{Prefix}cte_Link\"";
+			var cteForAncestors = $"\"{Prefix}cte_Ancestors\"";
 
 			var linkTableFieldNameForId = $"\"{LinkTableFieldNameForId}\"";
 			var linkTableFieldNameForParentId = $"\"{LinkTableFieldNameForParentId}\"";
@@ -90,11 +90,11 @@ declare
 	{variableNameForAction} char := {variableValueForAction};
 begin
 	create temp table {tableNameForIds} ({val} bigint);
-	create temp table {tableNameForIdsAncestor} table ({val} bigint);
-	create temp table {tableNameForIdsBroken} table ({val} bigint);
-	create temp table {tableNameForIdsCalculated} table ({val} bigint);
-	create temp table {tableNameForIdsDescendant} table ({val} bigint);
-	create temp table {tableNameForIdsLinked} table ({val} bigint);		
+	create temp table {tableNameForIdsAncestor} ({val} bigint);
+	create temp table {tableNameForIdsBroken} ({val} bigint);
+	create temp table {tableNameForIdsCalculated} ({val} bigint);
+	create temp table {tableNameForIdsDescendant} ({val} bigint);
+	create temp table {tableNameForIdsLinked} ({val} bigint);		
 
 	insert into {tableNameForIds}
 	(
@@ -244,7 +244,6 @@ begin
 
 	-- Обновление.
 	if ({variableNameForAction} = {valueForActionUpdate}) then
-	begin;
 		-- Добавляем потомков обновлённых узлов к вычисляемым узлам.
 		insert into {tableNameForIdsCalculated}
 		(
@@ -264,19 +263,19 @@ begin
 	;		
 
 	-- Добавляем связи разрушенных узлов.
-	with {cteForAncestors} as
+	with recursive {cteForAncestors} as
 	(
 		select
-			{treeTableFieldNameForId} = {aliasForTree}.{treeTableFieldNameForId},
-			{treeTableFieldNameForParentId} = COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0)
+			{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+			COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) {treeTableFieldNameForParentId}
 		from
 			{treeTableName} {aliasForTree}
 			inner join {tableNameForIdsLinked} {aliasForIds}
 				on {aliasForTree}.{treeTableFieldNameForId} = {aliasForIds}.{val}
 		union all
 		select
-			{treeTableFieldNameForId} = {aliasForAncestors}.{treeTableFieldNameForId},
-			{treeTableFieldNameForParentId} = COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0)
+			{aliasForAncestors}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+			COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) {treeTableFieldNameForParentId}
 		from 
 			{treeTableName} {aliasForTree}
 			inner join {cteForAncestors} {aliasForAncestors}
@@ -285,8 +284,8 @@ begin
 	{cteForAll} as 
 	(
 		select
-			{treeTableFieldNameForId} = {aliasForTree}.{treeTableFieldNameForId},
-			{treeTableFieldNameForParentId} = {aliasForTree}.{treeTableFieldNameForId}
+			{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+			{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForParentId}
 		from
 			{treeTableName} {aliasForTree}
 			inner join {tableNameForIdsLinked} {aliasForIds}
@@ -309,9 +308,9 @@ begin
 	from
 		{cteForAll}
 	;
-
-	{sqlForCalculate}
 end $$;
+
+{sqlForCalculate}
 ");
 
 			return result.ToString();

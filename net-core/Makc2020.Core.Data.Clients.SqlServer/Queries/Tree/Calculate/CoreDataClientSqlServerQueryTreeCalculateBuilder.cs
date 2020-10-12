@@ -27,7 +27,7 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate
 			var linkTableFieldNameForId = $"[{LinkTableFieldNameForId}]";
 			var linkTableFieldNameForParentId = $"[{LinkTableFieldNameForParentId}]";
 
-			var linkTableName = $"[{LinkTableSchema}\".\"{LinkTableNameWithoutSchema}]";
+			var linkTableName = $"[{LinkTableSchema}].[{LinkTableNameWithoutSchema}]";
 
 			var treeTableFieldNameForId = $"[{TreeTableFieldNameForId}]";
 			var treeTableFieldNameForParentId = $"[{TreeTableFieldNameForParentId}]";
@@ -200,6 +200,7 @@ where
 	(
 		{sqlForIdsSelectQuery}
 	)
+;
 ");
 			}
 

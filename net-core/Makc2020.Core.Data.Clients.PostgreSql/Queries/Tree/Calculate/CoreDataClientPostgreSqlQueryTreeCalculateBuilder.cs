@@ -181,6 +181,8 @@ begin
 			where
 				{aliasForResult}.{linkTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 		)
+	from
+		{cte}
 	where
 		{treeTableName}.{treeTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 ");
@@ -200,6 +202,7 @@ begin
 		(
 			{sqlForIdsSelectQuery}
 		)
+	;
 ");
 				result.Append($@"
 end $$;

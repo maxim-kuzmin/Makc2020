@@ -19,11 +19,11 @@ namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger
 		public sealed override string GetResultSql()
 		{
 			var aliasForIds = $"[{Prefix}ids]";
-			var aliasForAncestors = $"[{Prefix}k]";
+			var aliasForAncestors = $"[{Prefix}a]";
 			var aliasForTree = $"[{Prefix}t]";
 
 			var cteForAll = $"[{Prefix}cte_All]";
-			var cteForAncestors = $"[{Prefix}cte_Link]";
+			var cteForAncestors = $"[{Prefix}cte_Ancestors]";
 
 			var linkTableFieldNameForId = $"[{LinkTableFieldNameForId}]";
 			var linkTableFieldNameForParentId = $"[{LinkTableFieldNameForParentId}]";
@@ -268,16 +268,16 @@ where
 with {cteForAncestors} as
 (
 	select
-		{treeTableFieldNameForId} = {aliasForTree}.{treeTableFieldNameForId},
-		{treeTableFieldNameForParentId} = COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0)
+		{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+		COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) {treeTableFieldNameForParentId}
 	from
 		{treeTableName} {aliasForTree}
 		inner join {tableNameForIdsLinked} {aliasForIds}
             on {aliasForTree}.{treeTableFieldNameForId} = {aliasForIds}.{val}
 	union all
 	select
-		{treeTableFieldNameForId} = {aliasForAncestors}.{treeTableFieldNameForId},
-		{treeTableFieldNameForParentId} = COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0)
+		{aliasForAncestors}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+		COALESCE({aliasForTree}.{treeTableFieldNameForParentId}, 0) {treeTableFieldNameForParentId}
 	from 
 		{treeTableName} {aliasForTree}
 		inner join {cteForAncestors} {aliasForAncestors}
@@ -286,8 +286,8 @@ with {cteForAncestors} as
 {cteForAll} as 
 (
 	select
-		{treeTableFieldNameForId} = {aliasForTree}.{treeTableFieldNameForId},
-		{treeTableFieldNameForParentId} = {aliasForTree}.{treeTableFieldNameForId}
+		{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForId},
+		{aliasForTree}.{treeTableFieldNameForId} {treeTableFieldNameForParentId}
 	from
 		{treeTableName} {aliasForTree}
 		inner join {tableNameForIdsLinked} {aliasForIds}
