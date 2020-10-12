@@ -391,13 +391,11 @@ namespace Makc2020.Data.Entity
             await SaveTestDataListForDummyTree(dbContext, result, new List<int>(), null)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            //makc//!!!//>//Убрать комментарии, когда закончу адаптировать запросы//
-            //var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.None);
+            var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.None);
 
-            //var sql = queryTreeTriggerBuilder.GetResultSql();
+            var sql = queryTreeTriggerBuilder.GetResultSql();
 
-            //await dbContext.Database.ExecuteSqlRawAsync(sql).CoreBaseExtTaskWithCurrentCulture(false);
-            //makc//!!!//<//
+            await dbContext.Database.ExecuteSqlRawAsync(sql).CoreBaseExtTaskWithCurrentCulture(false);
 
             return result;
         }
