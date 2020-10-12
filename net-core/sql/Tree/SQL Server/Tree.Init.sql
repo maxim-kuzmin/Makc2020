@@ -1,4 +1,4 @@
--- Init
+﻿-- Init
 
 insert into dbo.DummyTree
 	(Id, ParentId, Name) 

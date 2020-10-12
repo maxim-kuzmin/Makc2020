@@ -44,8 +44,6 @@ namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Calculate
 
 			var result = new StringBuilder($@"
 do $$
-declare
-	_row_count bigint := 0;
 begin
 	loop
 		with {cte} as
@@ -76,9 +74,7 @@ begin
 			{treeTableName}.{treeTableFieldNameForId} = {cte}.{treeTableFieldNameForId}
 		;
 
-		get diagnostics _row_count = row_count;
-
-		if (_row_count < 1) then
+		if not FOUND then
 			exit;
 		end if;
 	end loop;

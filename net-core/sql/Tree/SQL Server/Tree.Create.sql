@@ -1,4 +1,4 @@
--- Create
+﻿-- Create
 
 CREATE TABLE [dbo].[DummyTree](
 	[Id] [bigint] NOT NULL,

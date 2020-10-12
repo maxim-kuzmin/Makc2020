@@ -1,226 +1,226 @@
--- Trigger
+п»ї-- Trigger
 
-declare @Ids table (Val bigint);
-declare @IdsAncestor table (Val bigint);
-declare @IdsBroken table (Val bigint);
-declare @IdsCalculated table (Val bigint);
-declare @IdsDescendant table (Val bigint);
-declare @IdsLinked table (Val bigint);		
+do $$
+declare
+	_action char := '';
+begin
+	create temp table _ids ("val" bigint);
+	create temp table _idsAncestor ("val" bigint);
+	create temp table _idsBroken ("val" bigint);
+	create temp table _idsCalculated ("val" bigint);
+	create temp table _idsDescendant ("val" bigint);
+	create temp table _idsLinked ("val" bigint);		
 
---declare @Action char = 'D';
---insert into @Ids (Val) values (4);
---delete from dbo.DummyTree where Id in (select Val from @Ids);
-declare @Action char = '';
-
-insert into @Ids
-(
-	Val
-)
-select Id from dbo.DummyTree
-;
-
--- Добавляем узлы к разрушенным узлам.
-insert into @IdsBroken
-(
-	Val
-)
-select Val from @Ids
-;
-
--- Удаление или обновление.
-if @Action <> 'I'
-begin;
-	-- Запоминаем идентификаторы предков удалённых или обновлённых узлов.
-	insert into @IdsAncestor
+	insert into _ids
 	(
-		Val
+		"val"
 	)
-	select distinct
-		ParentId
+	select "id" from "public"."dummy_tree"
+	;
+
+	-- Р”РѕР±Р°РІР»СЏРµРј СѓР·Р»С‹ Рє СЂР°Р·СЂСѓС€РµРЅРЅС‹Рј СѓР·Р»Р°Рј.
+	insert into _idsBroken
+	(
+		"val"
+	)
+	select
+		"val"
 	from
-		dbo.DummyTreeLink
+		_ids
+	;
+
+	-- РЈРґР°Р»РµРЅРёРµ РёР»Рё РѕР±РЅРѕРІР»РµРЅРёРµ.
+	if (_action <> 'I') then	
+		-- Р—Р°РїРѕРјРёРЅР°РµРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ РїСЂРµРґРєРѕРІ СѓРґР°Р»С‘РЅРЅС‹С… РёР»Рё РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ.
+		insert into _idsAncestor
+		(
+			"val"
+		)
+		select distinct
+			"parent_id"
+		from
+			"public"."dummy_tree_link"
+		where
+			"parent_id" > 0
+			and 
+			"id" <> "parent_id"
+			and
+			"id" in (select "val" from _ids)
+		;
+	end if;
+
+	-- РћР±РЅРѕРІР»РµРЅРёРµ.
+	if (_action = 'U') then
+		-- Р—Р°РїРѕРјРёРЅР°РµРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ РїРѕС‚РѕРјРєРѕРІ РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ.
+		insert into _idsDescendant
+		(
+			"val"
+		)
+		select distinct
+			"id"
+		from
+			"public"."dummy_tree_link"
+		where
+			"id" <> "parent_id"
+			and
+			"parent_id" in (select "val" from _ids)
+		;
+
+		-- Р”РѕР±Р°РІР»СЏРµРј РїРѕС‚РѕРјРєРѕРІ РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ Рє СЂР°Р·СЂСѓС€РµРЅРЅС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsBroken
+		(
+			"val"
+		)
+		select
+			"val"
+		from
+			_idsDescendant
+		;
+
+		-- Р”РѕР±Р°РІР»СЏРµРј РїРѕС‚РѕРјРєРѕРІ РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ Рє СЃРІСЏР·С‹РІР°РµРјС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsLinked
+		(
+			"val"
+		)
+		select
+			"val"
+		from
+			_idsDescendant
+		;
+	end if;
+
+	-- Р’СЃС‚Р°РІРєР° РёР»Рё РѕР±РЅРѕРІР»РµРЅРёРµ.
+	if (_action <> 'D') then
+		-- Р”РѕР±Р°РІР»СЏРµРј РІСЃС‚Р°РІР»РµРЅРЅС‹Рµ РёР»Рё РѕР±РЅРѕРІР»С‘РЅРЅС‹Рµ СѓР·Р»С‹ Рє СЃРІСЏР·С‹РІР°РµРјС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsLinked
+		(
+			"val"
+		)
+		select
+			"val"
+		from
+			_ids
+		;
+
+		-- Р”РѕР±Р°РІР»СЏРµРј СЂРѕРґРёС‚РµР»РµР№ РІСЃС‚Р°РІР»РµРЅРЅС‹С… РёР»Рё РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ Рє РІС‹С‡РёСЃР»СЏРµРјС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsCalculated
+		(
+			"val"
+		)
+		select distinct
+			"parent_id"
+		from
+			"public"."dummy_tree"
+		where
+			"parent_id" is not null
+			and
+			"id" in (select "val" from _ids)
+		;
+
+		-- Р—Р°РїРѕРјРёРЅР°РµРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ РїСЂРµРґРєРѕРІ СЂРѕРґРёС‚РµР»РµР№ РІСЃС‚Р°РІР»РµРЅРЅС‹С… РёР»Рё РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ.
+		insert into _idsAncestor
+		(
+			"val"
+		)
+		select distinct
+			"parent_id"
+		from
+			"public"."dummy_tree_link"
+		where
+			"parent_id" > 0
+			and
+			"id" <> "parent_id"
+			and
+			"id" in (select "val" from _idsCalculated)
+		;
+
+		-- Р”РѕР±Р°РІР»СЏРµРј РІСЃС‚Р°РІР»РµРЅРЅС‹Рµ РёР»Рё РѕР±РЅРѕРІР»С‘РЅРЅС‹Рµ СѓР·Р»С‹ Рє РІС‹С‡РёСЃР»СЏРµРјС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsCalculated
+		(
+			"val"
+		)
+		select
+			"val"
+		from
+			_ids
+		;
+	end if;
+
+	-- Р”РѕР±Р°РІР»СЏРµРј РїСЂРµРґРєРѕРІ Рє РІС‹С‡РёСЃР»СЏРµРјС‹Рј СѓР·Р»Р°Рј.
+	insert into _idsCalculated
+	(
+		"val"
+	)
+	select
+		"val"
+	from
+		_idsAncestor
+	;
+
+	-- РћР±РЅРѕРІР»РµРЅРёРµ.
+	if (_action = 'U') then
+		-- Р”РѕР±Р°РІР»СЏРµРј РїРѕС‚РѕРјРєРѕРІ РѕР±РЅРѕРІР»С‘РЅРЅС‹С… СѓР·Р»РѕРІ Рє РІС‹С‡РёСЃР»СЏРµРјС‹Рј СѓР·Р»Р°Рј.
+		insert into _idsCalculated
+		(
+			"val"
+		)
+		select
+			"val"
+		from
+			_idsDescendant
+		;
+	end if;
+
+	-- РЈРґР°Р»СЏРµРј СЃРІСЏР·Рё СЂР°Р·СЂСѓС€РµРЅРЅС‹С… СѓР·Р»РѕРІ.
+	delete from	"public"."dummy_tree_link"
 	where
-		ParentId > 0
-		and
-		Id <> ParentId
-		and
-		Id in (select Val from @Ids)
-	;
-end;
+		"id" in (select "val" from _idsBroken)
+	;		
 
--- Обновление.
-if @Action = 'U'
-begin;
-	-- Запоминаем идентификаторы потомков обновлённых узлов.
-	insert into @IdsDescendant
+	-- Р”РѕР±Р°РІР»СЏРµРј СЃРІСЏР·Рё СЂР°Р·СЂСѓС€РµРЅРЅС‹С… СѓР·Р»РѕРІ.
+	with recursive "cteForAncestors" as
 	(
-		Val
+		select
+			"aliasForTree"."id" "id",
+			COALESCE("aliasForTree"."parent_id", 0) "parent_id"
+		from
+			"public"."dummy_tree" "aliasForTree"
+			inner join _idsLinked "aliasForIds"
+				on "aliasForTree"."id" = "aliasForIds"."val"
+		union all
+		select
+			"aliasForAncestors"."id" "id",
+			COALESCE("aliasForTree"."parent_id", 0) "parent_id"
+		from 
+			"public"."dummy_tree" "aliasForTree"
+			inner join "cteForAncestors" "aliasForAncestors"
+				on "aliasForTree"."id" = "aliasForAncestors"."parent_id"
+	),
+	"cteForAll" as 
+	(
+		select
+			"aliasForTree"."id" "id",
+			"aliasForTree"."id" "parent_id"
+		from
+			"public"."dummy_tree" "aliasForTree"
+			inner join _idsLinked "aliasForIds"
+				on "aliasForTree"."id" = "aliasForIds"."val"
+		union all
+		select
+			"id", 
+			"parent_id"
+		from 
+			"cteForAncestors"
 	)
-	select distinct
-		Id
-	from
-		dbo.DummyTreeLink
-	where
-		Id <> ParentId
-		and 
-		ParentId in (select Val from @Ids)
-	;
-
-	-- Добавляем потомков обновлённых узлов к разрушенным узлам.
-	insert into @IdsBroken
+	insert into "public"."dummy_tree_link"
 	(
-		Val
-	)
-	select
-		Val
-	from
-		@IdsDescendant
-	;
-
-	-- Добавляем потомков обновлённых узлов к связываемым узлам.
-	insert into @IdsLinked
-	(
-		Val
-	)
-	select
-		Val
-	from
-		@IdsDescendant
-	;
-end;
-
--- Вставка или обновление.
-if @Action <> 'D'
-begin;
-	-- Добавляем вставленные или обновлённые узлы к связываемым узлам.
-	insert into @IdsLinked
-	(
-		Val
+		"id",
+		"parent_id"
 	)
 	select
-		Val
+		"id", 
+		"parent_id"
 	from
-		@Ids
+		"cteForAll"
 	;
-
-	-- Добавляем родителей вставленных или обновлённых узлов к вычисляемым узлам.
-	insert into @IdsCalculated
-	(
-		Val
-	)
-	select distinct
-		ParentId
-	from
-		dbo.DummyTree
-	where
-		ParentId is not null
-		and Id in (select Val from @Ids)
-	;
-
-	-- Запоминаем идентификаторы предков родителей вставленных или обновлённых узлов.
-	insert into @IdsAncestor
-	(
-		Val
-	)
-	select distinct
-		ParentId
-	from
-		dbo.DummyTreeLink
-	where
-		ParentId > 0
-		and Id <> ParentId
-		and Id in (select Val from @IdsCalculated)
-	;
-
-	-- Добавляем вставленные или обновлённые узлы к вычисляемым узлам.
-	insert into @IdsCalculated
-	(
-		Val
-	)
-	select
-		Val
-	from
-		@Ids
-	;
-end;
-
--- Добавляем предков к вычисляемым узлам.
-insert into @IdsCalculated
-(
-	Val
-)
-select
-	Val
-from
-	@IdsAncestor
-;
-
--- Обновление.
-if @Action = 'U'
-begin;
-	-- Добавляем потомков обновлённых узлов к вычисляемым узлам.
-	insert into @IdsCalculated
-	(
-		Val
-	)
-	select
-		Val
-	from
-		@IdsDescendant
-	;
-end;
-
--- Удаляем связи разрушенных узлов.
-delete from	dbo.DummyTreeLink
-where
-	Id in (select Val from @IdsBroken)
-;		
-
--- Добавляем связи разрушенных узлов.
-with cteForAncestors as
-(
-	select
-		aliasForTree.Id Id,
-		COALESCE(aliasForTree.ParentId, 0) ParentId
-	from
-		dbo.DummyTree aliasForTree
-		inner join @IdsLinked aliasForIds
-            on aliasForTree.Id = aliasForIds.Val
-	union all
-	select
-		aliasForAncestors.Id Id,
-		COALESCE(aliasForTree.ParentId, 0) ParentId
-	from 
-		dbo.DummyTree aliasForTree
-		inner join cteForAncestors aliasForAncestors
-            on aliasForTree.Id = aliasForAncestors.ParentId
-),
-cteForAll as 
-(
-	select
-		aliasForTree.Id Id,
-		aliasForTree.Id ParentId
-	from
-		dbo.DummyTree aliasForTree
-		inner join @IdsLinked aliasForIds
-			on aliasForTree.Id = aliasForIds.Val
-	union all
-	select
-		Id, 
-		ParentId
-	from 
-		cteForAncestors
-)
-insert into dbo.DummyTreeLink
-(
-	Id,
-	ParentId
-)
-select
-	Id,
-	ParentId
-from
-	cteForAll
-;
-
-select distinct * from @IdsCalculated;
+end $$;

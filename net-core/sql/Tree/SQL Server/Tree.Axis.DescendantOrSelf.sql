@@ -1,4 +1,4 @@
--- Axis DescendantOrSelf
+﻿-- Axis DescendantOrSelf
 
 declare @RootId bigint = 2;
 

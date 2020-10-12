@@ -1,4 +1,4 @@
--- Select Opened All
+﻿-- Select Opened All
 
 declare @IdsOpened table (Val bigint);
 

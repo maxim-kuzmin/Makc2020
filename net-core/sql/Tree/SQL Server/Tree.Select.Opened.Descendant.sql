@@ -1,4 +1,4 @@
--- Select Opened Descendant
+﻿-- Select Opened Descendant
 
 declare @IdsOpened table (Val bigint);
 
