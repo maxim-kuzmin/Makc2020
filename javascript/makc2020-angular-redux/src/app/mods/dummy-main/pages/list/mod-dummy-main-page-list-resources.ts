@@ -1,11 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
-import {AppModDummyMainPageListResourceColumns} from './resources/mod-dummy-main-page-list-resource-columns';
-import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {AppModDummyMainPageListSettings} from './mod-dummy-main-page-list-settings';
 import {takeUntil} from 'rxjs/operators';
+import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
+import {AppModDummyMainPageListSettings} from './mod-dummy-main-page-list-settings';
 import {AppModDummyMainPageListResourceActions} from './resources/mod-dummy-main-page-list-resource-actions';
+import {AppModDummyMainPageListResourceColumns} from './resources/mod-dummy-main-page-list-resource-columns';
+import {AppModDummyMainPageListResourceFields} from './resources/mod-dummy-main-page-list-resource-fields';
 
 /** Мод "DummyMain". Страницы. Список. Ресурсы. */
 export class AppModDummyMainPageListResources {
@@ -21,6 +22,12 @@ export class AppModDummyMainPageListResources {
    * @type {AppModDummyMainPageListResourceColumns}
    */
   columns: AppModDummyMainPageListResourceColumns;
+
+  /**
+   * Поля.
+   * @type {AppModDummyMainPageListResourceFields}
+   */
+  fields: AppModDummyMainPageListResourceFields;
 
   /**
    * Заголовок.

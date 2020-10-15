@@ -7,6 +7,7 @@ import {
 } from './mod-dummy-main-page-list-config';
 import {AppModDummyMainPageListSettingActions} from './settings/mod-dummy-main-page-list-setting-actions';
 import {AppModDummyMainPageListSettingColumns} from './settings/mod-dummy-main-page-list-setting-columns';
+import {AppModDummyMainPageListSettingFields} from './settings/mod-dummy-main-page-list-setting-fields';
 
 /** Мод "DummyMain". Страницы. Список. Настройки. */
 export class AppModDummyMainPageListSettings {
@@ -24,10 +25,16 @@ export class AppModDummyMainPageListSettings {
   columns = new AppModDummyMainPageListSettingColumns();
 
   /**
+   * Поля.
+   * @type {AppModDummyMainPageListSettingFields}
+   */
+  fields = new AppModDummyMainPageListSettingFields();
+
+  /**
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Список';
+  titleResourceKey = 'Объекты сущности "DummyMain"'; // 'Список';
 
   /**
    * Индекс.

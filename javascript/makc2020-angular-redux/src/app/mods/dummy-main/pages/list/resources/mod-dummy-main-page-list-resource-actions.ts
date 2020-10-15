@@ -19,8 +19,50 @@ export class AppModDummyMainPageListResourceActions {
     title: ''
   };
 
+  /** Действие "Удалить отфильтрованное". */
+  actionDeleteFiltered = {
+    confirm: '',
+    title: ''
+  };
+
+  /** Действие "Удалить список". */
+  actionDeleteList = {
+    confirm: '',
+    title: ''
+  };
+
   /** Действие "Изменить". */
   actionEdit = {
+    title: ''
+  };
+
+  /** Действие "Фильтровать". */
+  actionFilter = {
+    title: ''
+  };
+
+  /** Действие "Отменить фильтрацию". */
+  actionFilterCancel = {
+    title: ''
+  };
+
+  /** Действие "Освежить". */
+  actionRefresh = {
+    title: ''
+  };
+
+  /** Действие "Выбрать всё на всех страницах". */
+  actionSelectAllOnAllPages = {
+    title: ''
+  };
+
+  /** Действие "Выбрать всё на этой странице". */
+  actionSelectAllOnThisPage = {
+    title: ''
+  };
+
+  /** Действие "Отменить сортировку". */
+  actionSortCancel = {
     title: ''
   };
 
@@ -43,7 +85,15 @@ export class AppModDummyMainPageListResourceActions {
     const {
       actionAdd,
       actionDelete,
+      actionDeleteFiltered,
+      actionDeleteList,
       actionEdit,
+      actionFilter,
+      actionFilterCancel,
+      actionRefresh,
+      actionSelectAllOnAllPages,
+      actionSelectAllOnThisPage,
+      actionSortCancel,
       actionView
     } = settingActions;
 
@@ -66,9 +116,63 @@ export class AppModDummyMainPageListResourceActions {
     });
 
     appLocalizer.createTranslator(
+      actionDeleteFiltered.confirmResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionDeleteFiltered.confirm = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionDeleteList.confirmResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionDeleteList.confirm = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionDeleteList.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionDeleteList.title = s;
+    });
+
+    appLocalizer.createTranslator(
       actionEdit.titleResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.actionEdit.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionFilter.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionFilter.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionFilterCancel.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionFilterCancel.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionRefresh.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionRefresh.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionSelectAllOnAllPages.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionSelectAllOnAllPages.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionSelectAllOnThisPage.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionSelectAllOnThisPage.title = s;
+    });
+
+    appLocalizer.createTranslator(
+      actionSortCancel.titleResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.actionSortCancel.title = s;
     });
 
     appLocalizer.createTranslator(

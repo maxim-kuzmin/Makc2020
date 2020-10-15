@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
-/** Мод "DummyMain". Страницы. Элемент. Настройки. Поля. */
-export class AppModDummyMainPageItemSettingFields {
+/** Мод "DummyMain". Страницы. Список. Настройки. Поля. */
+export class AppModDummyMainPageListSettingFields {
 
   /** Поле "Идентификатор". */
   fieldId = {
@@ -14,13 +14,6 @@ export class AppModDummyMainPageItemSettingFields {
     name: 'name',
     labelResourceKey: 'Имя',
     placeholderResourceKey: 'Введите имя'
-  };
-
-  /** Поле объекта сущности "DummyManyToMany". */
-  fieldObjectDummyManyToMany = {
-    name: 'objectDummyManyToMany',
-    labelResourceKey: 'Объект сущности "DummyManyToMany"',
-    placeholderResourceKey: 'Выберите объект'
   };
 
   /** Поле объекта сущности "DummyOneToMany". */

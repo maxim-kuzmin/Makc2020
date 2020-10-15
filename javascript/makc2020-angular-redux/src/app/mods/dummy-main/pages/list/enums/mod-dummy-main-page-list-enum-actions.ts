@@ -22,6 +22,32 @@ export enum AppModDummyMainPageListEnumActions {
   DeleteSuccess = '[AppModDummyMainPageList] Delete Success',
 
   /**
+   * Удаление отфильтрованного.
+   * @type {string}
+   */
+  DeleteFiltered = '[AppModDummyMainPageList] DeleteFiltered',
+
+
+  /**
+   * Удаление отфильтрованного.
+   * @type {string}
+   */
+  DeleteFilteredSuccess = '[AppModDummyMainPageList] DeleteFiltered Success',
+
+  /**
+   * Удаление списка.
+   * @type {string}
+   */
+  DeleteList = '[AppModDummyMainPageList] DeleteList',
+
+
+  /**
+   * Удаление списка.
+   * @type {string}
+   */
+  DeleteListSuccess = '[AppModDummyMainPageList] DeleteList Success',
+
+  /**
    * Загрузка.
    * @type {string}
    */
@@ -31,5 +57,11 @@ export enum AppModDummyMainPageListEnumActions {
    * Успех загрузки.
    * @type {string}
    */
-  LoadSuccess = '[AppModDummyMainPageList] Load Success'
+  LoadSuccess = '[AppModDummyMainPageList] Load Success',
+
+  /**
+   * Параметры. Установка.
+   * @type {string}
+   */
+  ParametersSet = '[AppModDummyMainPageList] ParametersSet'
 }

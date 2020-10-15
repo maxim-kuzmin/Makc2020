@@ -9,6 +9,12 @@ export class AppModDummyMainPageListSettingColumns {
     labelResourceKey: '',
   };
 
+  /** Столбец "Чекбоксы". */
+  columnCheckBoxes = {
+    name: 'checkBoxes',
+    labelResourceKey: '',
+  };
+
   /** Столбец "Идентификатор". */
   columnId = {
     name: 'id',
@@ -21,5 +27,12 @@ export class AppModDummyMainPageListSettingColumns {
     name: 'name',
     labelResourceKey: 'Имя',
     placeholderResourceKey: 'Введите имя'
+  };
+
+  /** Столбец объекта сущности "DummyOneToMany". */
+  columnObjectDummyOneToMany = {
+    name: 'objectDummyOneToMany',
+    labelResourceKey: 'Объект сущности "DummyOneToMany"',
+    placeholderResourceKey: 'Выберите объект'
   };
 }

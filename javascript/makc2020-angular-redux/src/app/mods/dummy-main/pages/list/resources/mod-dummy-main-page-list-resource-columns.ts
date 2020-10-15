@@ -13,6 +13,11 @@ export class AppModDummyMainPageListResourceColumns {
     label: ''
   };
 
+  /** Столбец "Чекбоксы". */
+  columnCheckBoxes = {
+    label: ''
+  };
+
   /** Столбец "Идентификатор". */
   columnId = {
     label: '',
@@ -21,6 +26,12 @@ export class AppModDummyMainPageListResourceColumns {
 
   /** Столбец "Имя". */
   columnName = {
+    label: '',
+    placeholder: ''
+  };
+
+  /** Столбец объекта сущности "DummyOneToMany". */
+  columnObjectDummyOneToMany = {
     label: '',
     placeholder: ''
   };
@@ -38,14 +49,22 @@ export class AppModDummyMainPageListResourceColumns {
   ) {
     const {
       columnAction,
+      columnCheckBoxes,
       columnId,
-      columnName
+      columnName,
+      columnObjectDummyOneToMany
     } = settingColumns;
 
     appLocalizer.createTranslator(
       columnAction.labelResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.columnAction.label = s;
+    });
+
+    appLocalizer.createTranslator(
+      columnCheckBoxes.labelResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.columnCheckBoxes.label = s;
     });
 
     appLocalizer.createTranslator(
@@ -70,6 +89,18 @@ export class AppModDummyMainPageListResourceColumns {
       columnName.placeholderResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.columnName.placeholder = s;
+    });
+
+    appLocalizer.createTranslator(
+      columnObjectDummyOneToMany.labelResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.columnObjectDummyOneToMany.label = s;
+    });
+
+    appLocalizer.createTranslator(
+      columnObjectDummyOneToMany.placeholderResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.columnObjectDummyOneToMany.placeholder = s;
     });
   }
 }
