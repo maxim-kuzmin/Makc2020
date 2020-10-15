@@ -1,6 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {
+  appModDummyMainPageItemConfigIndex,
   appModDummyMainPageItemConfigKey
 } from './mod-dummy-main-page-item-config';
 import {AppModDummyMainPageItemSettingActions} from './settings/mod-dummy-main-page-item-setting-actions';
@@ -38,14 +39,6 @@ export class AppModDummyMainPageItemSettings {
   fields = new AppModDummyMainPageItemSettingFields();
 
   /**
-   * Ключ.
-   * @type {string}
-   */
-  get key(): string {
-    return appModDummyMainPageItemConfigKey;
-  }
-
-  /**
    * Ключи.
    * @type {AppModDummyMainPageItemSettingKeys}
    */
@@ -80,4 +73,20 @@ export class AppModDummyMainPageItemSettings {
    * @type {string}
    */
   titleOfModDummyMainPageItemViewResourceKey = 'Просмотреть';
+
+  /**
+   * Индекс.
+   * @type {string}
+   */
+  get index(): string {
+    return appModDummyMainPageItemConfigIndex;
+  }
+
+  /**
+   * Ключ.
+   * @type {string}
+   */
+  get key(): string {
+    return appModDummyMainPageItemConfigKey;
+  }
 }

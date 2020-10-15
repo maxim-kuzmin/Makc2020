@@ -14,6 +14,7 @@ import {AppModDummyMainPageItemModel} from './mod-dummy-main-page-item-model';
 import {AppModDummyMainPageItemResources} from './mod-dummy-main-page-item-resources';
 import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
 import {AppModDummyMainPageItemView} from './mod-dummy-main-page-item-view';
+import {map} from 'rxjs/operators';
 
 /** Мод "DummyMain". Страницы. Элемент. Представитель. */
 export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageItemModel> {
@@ -69,7 +70,25 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
       actionDeactivate
     } = this.resources.actions;
 
-    return this.view.formGroup.dirty ? appDialog.confirm$(actionDeactivate.confirm) : of(true);
+    const {
+      formGroup
+    } = this.view;
+
+    if (formGroup.dirty) {
+      return appDialog.confirm$(
+        actionDeactivate.confirm
+      ).pipe(
+        map(isOk => {
+          if (isOk) {
+            this.restore();
+          }
+
+          return isOk;
+        })
+      );
+    } else {
+      return of(true);
+    }
   }
 
   /** @inheritDoc */
@@ -91,6 +110,10 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     this.hideSpinners();
 
     super.onException(message, error);
+
+    this.view.isActionStarted = false;
+
+    this.refreshFields();
   }
 
   /** @inheritDoc */
@@ -98,6 +121,13 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     this.model.getIsDataChangeAllowed$().subscribe(this.onGetIsDataChangeAllowed);
 
     super.onInit();
+  }
+
+  /** Обработчик события освежения. */
+  onRefresh() {
+    this.model.onReceiveEnsureLoadDataRequest();
+
+    this.refresh();
   }
 
   /** Обработчик события отправки. */
@@ -121,16 +151,14 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
       data = appModDummyMainJobItemGetOutputCreate();
     }
 
-    input.objectDummyMain = data.objectDummyMain
-      ? data.objectDummyMain
-      : appDataObjectDummyMainCreate();
+    input.objectDummyMain = data.objectDummyMain ?? appDataObjectDummyMainCreate();
 
     const {
       objectDummyMain
     } = input;
 
     objectDummyMain.name = fieldName.value;
-    objectDummyMain.objectDummyOneToManyId = fieldObjectDummyOneToMany.value;
+    objectDummyMain.objectDummyOneToManyId = +fieldObjectDummyOneToMany.value;
 
     this.model.executeActionSave(input);
   }
@@ -158,6 +186,29 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     });
 
     this.view.build(formGroup);
+  }
+
+  private clearFields() {
+    const {
+      fieldId,
+      fieldName,
+      fieldObjectDummyOneToMany
+    } = this.view;
+
+    fieldId.setValue('', {emitEvent: false});
+    fieldName.setValue('', {emitEvent: false});
+    fieldObjectDummyOneToMany.setValue(0, {emitEvent: false});
+
+    this.clearFormGroupState();
+  }
+
+  private clearFormGroupState() {
+    const {
+      formGroup
+    } = this.view;
+
+    formGroup.markAsPristine();
+    formGroup.markAsUntouched();
   }
 
   private hideSpinners() {
@@ -273,6 +324,10 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
   }
 
   private onActionsDataChanging() {
+    this.view.isActionStarted = true;
+
+    this.refreshFields();
+
     const {
       isDataLoaded
     } = this.view;
@@ -289,7 +344,6 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
       action
     } = this.model.getState();
 
-
     switch (action) {
       case AppModDummyMainPageItemEnumActions.LoadSuccess:
         this.onDataChangedByLoadSuccess();
@@ -300,6 +354,10 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     }
 
     this.hideSpinners();
+
+    this.view.isActionStarted = false;
+
+    this.refreshFields();
   }
 
   private onDataChangedByLoadSuccess() {
@@ -314,10 +372,6 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
         jobItemGetInput: input
       } = this.model.getState();
 
-      const {
-        formGroup
-      } = this.view;
-
       if (!input.isForUpdate) {
         this.resetForm();
       }
@@ -331,8 +385,7 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     this.view.isDataChangeAllowed = isDataChangeAllowed;
 
     if (this.view.isDataChangeAllowed) {
-      this.view.fieldName.enable();
-      this.view.fieldObjectDummyOneToMany.enable();
+      this.refreshFields();
     }
   }
 
@@ -360,19 +413,39 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
   }
 
   private refresh() {
-    const parameters = this.model.createParameters();
+    this.model.executeActionRefresh();
+  }
 
+  private refreshFields() {
     const {
-      paramId
-    } = parameters;
+      fieldName,
+      fieldObjectDummyOneToMany,
+      isActionStarted
+    } = this.view;
 
-    paramId.value = this.view.fieldId.value;
-
-    this.model.executeActionRefresh(parameters);
+    if (isActionStarted) {
+      fieldName.disable();
+      fieldObjectDummyOneToMany.disable();
+    } else {
+      fieldName.enable();
+      fieldObjectDummyOneToMany.enable();
+    }
   }
 
   private resetForm() {
     this.view.resetForm();
     this.view.formGroup.reset();
+  }
+
+  private restore() {
+    const {
+      jobItemGetResult
+    } = this.model.getState();
+
+    if (!!jobItemGetResult) {
+      this.loadData(jobItemGetResult.data);
+    } else {
+      this.clearFields();
+    }
   }
 }

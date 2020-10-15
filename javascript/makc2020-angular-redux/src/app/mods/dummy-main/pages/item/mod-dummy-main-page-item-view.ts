@@ -25,16 +25,10 @@ export abstract class AppModDummyMainPageItemView {
   formGroup: FormGroup;
 
   /**
-   * Варианты выбора сущности "DummyManyToMany".
-   * @type {AppModDummyMainCommonJobOptionsGetOutputList}
+   * Признак того, что действие началось.
+   * @type {boolean}
    */
-  optionsDummyManyToMany: AppModDummyMainCommonJobOptionsGetOutputList;
-
-  /**
-   * Варианты выбора сущности "DummyOneToMany".
-   * @type {AppModDummyMainCommonJobOptionsGetOutputList}
-   */
-  optionsDummyOneToMany: AppModDummyMainCommonJobOptionsGetOutputList;
+  isActionStarted = false;
 
   /**
    * Признак того, что данные загружены.
@@ -47,6 +41,18 @@ export abstract class AppModDummyMainPageItemView {
    * @type {boolean}
    */
   isDataChangeAllowed = false;
+
+  /**
+   * Варианты выбора сущности "DummyManyToMany".
+   * @type {AppModDummyMainCommonJobOptionsGetOutputList}
+   */
+  optionsDummyManyToMany: AppModDummyMainCommonJobOptionsGetOutputList;
+
+  /**
+   * Варианты выбора сущности "DummyOneToMany".
+   * @type {AppModDummyMainCommonJobOptionsGetOutputList}
+   */
+  optionsDummyOneToMany: AppModDummyMainCommonJobOptionsGetOutputList;
 
   /**
    * Сообщения об ошибках отклика.
@@ -65,7 +71,7 @@ export abstract class AppModDummyMainPageItemView {
    * @type {boolean}
    */
   get buttonSubmitDisabled(): boolean {
-    return !this.formGroup.valid;
+    return !this.formGroup.valid || this.isActionStarted;
   }
 
   /**

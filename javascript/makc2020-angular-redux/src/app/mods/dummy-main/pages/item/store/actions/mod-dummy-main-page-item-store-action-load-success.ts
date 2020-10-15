@@ -25,5 +25,6 @@ export class AppModDummyMainPageItemStoreActionLoadSuccess implements Action {
     public jobItemGetResult: AppModDummyMainJobItemGetResult,
     public jobOptionsDummyManyToManyGetResult: AppModDummyMainJobOptionsDummyManyToManyGetResult,
     public jobOptionsDummyOneToManyGetResult: AppModDummyMainJobOptionsDummyOneToManyGetResult
-  ) { }
+  ) {
+  }
 }

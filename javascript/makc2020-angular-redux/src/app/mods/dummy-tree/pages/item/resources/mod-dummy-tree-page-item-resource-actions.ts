@@ -5,7 +5,7 @@ import {takeUntil} from 'rxjs/operators';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppModDummyTreePageItemSettingActions} from '../settings/mod-dummy-tree-page-item-setting-actions';
 
-/** Мод "DummyTree". Страницы. Элемнет. Ресурсы. Действия. */
+/** Мод "DummyTree". Страницы. Элемент. Ресурсы. Действия. */
 export class AppModDummyTreePageItemResourceActions {
 
   /** Действие "Деактивировать". */

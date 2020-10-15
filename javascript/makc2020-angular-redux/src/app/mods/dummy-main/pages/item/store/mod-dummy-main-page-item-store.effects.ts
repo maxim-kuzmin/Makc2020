@@ -62,8 +62,8 @@ export class AppModDummyMainPageItemStoreEffects {
             results => {
               let jobItemGetResult: AppModDummyMainJobItemGetResult;
 
-              if (results.length > 2) {
-                jobItemGetResult = results[2] as AppModDummyMainJobItemGetResult;
+              if (results.length > 1) {
+                jobItemGetResult = results[results.length - 1] as AppModDummyMainJobItemGetResult;
               }
 
               return new AppModDummyMainPageItemStoreActionLoadSuccess(

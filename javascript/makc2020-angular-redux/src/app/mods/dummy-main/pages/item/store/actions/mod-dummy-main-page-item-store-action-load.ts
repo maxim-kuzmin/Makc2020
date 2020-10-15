@@ -17,5 +17,6 @@ export class AppModDummyMainPageItemStoreActionLoad implements Action {
    */
   constructor(
     public jobItemGetInput: AppModDummyMainJobItemGetInput
-  ) { }
+  ) {
+  }
 }

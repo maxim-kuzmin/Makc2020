@@ -5,7 +5,7 @@ import {takeUntil} from 'rxjs/operators';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppModDummyMainPageItemSettingActions} from '../settings/mod-dummy-main-page-item-setting-actions';
 
-/** Мод "DummyMain". Страницы. Элемнет. Ресурсы. Действия. */
+/** Мод "DummyMain". Страницы. Элемент. Ресурсы. Действия. */
 export class AppModDummyMainPageItemResourceActions {
 
   /** Действие "Деактивировать". */

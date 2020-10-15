@@ -85,12 +85,19 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
     );
 
     this.onGetJobItemGetInput = this.onGetJobItemGetInput.bind(this);
+    this.onReceiveEnsureLoadDataRequest = this.onReceiveEnsureLoadDataRequest.bind(this);
     this.onRouteParamMapSwitchMapToJobItemGetInput = this.onRouteParamMapSwitchMapToJobItemGetInput.bind(this);
 
     this.resources = new AppModDummyMainPageItemResources(
       appLocalizer,
       this.appModDummyMainPageItem.settings,
       this.unsubscribe$
+    );
+
+    this.appModDummyMainPageItem.receiveEnsureLoadDataRequest$(
+      this.unsubscribe$
+    ).subscribe(
+      this.onReceiveEnsureLoadDataRequest
     );
   }
 
@@ -177,6 +184,11 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
     super.onDestroy();
 
     this.appStore.runActionClear();
+  }
+
+  /** Обработчик события получения запроса на загрузку данных. */
+  onReceiveEnsureLoadDataRequest() {
+    this.jobItemGetInput = null;
   }
 
   /**

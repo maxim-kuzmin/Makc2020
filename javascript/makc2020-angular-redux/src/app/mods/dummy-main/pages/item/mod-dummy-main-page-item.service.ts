@@ -14,6 +14,9 @@ import {AppModDummyMainPageItemSettings} from './mod-dummy-main-page-item-settin
 })
 export class AppModDummyMainPageItemService {
 
+  /** @type {Subject} */
+  private ensureLoadDataRequest$ = new Subject();
+
   /** @type {AppModDummyMainPageItemLocation} */
   private location = new AppModDummyMainPageItemLocation();
 
@@ -42,6 +45,10 @@ export class AppModDummyMainPageItemService {
    * @returns {AppModDummyMainPageItemParameters} Параметры.
    */
   createParameters(index: string): AppModDummyMainPageItemParameters {
+    if (index === undefined || index === null) {
+      index = this.settings.index;
+    }
+
     return new AppModDummyMainPageItemParameters(index);
   }
 
@@ -107,6 +114,22 @@ export class AppModDummyMainPageItemService {
     return this.locationChanged$.pipe(
       takeUntil(unsubscribe$)
     );
+  }
+
+  /**
+   * Получить поток запросов на обеспечение загрузки данных.
+   * @param {Subject<boolean>} unsubscribe$ Отказ от подписки.
+   * @returns {Observable<any>} Поток запросов на обеспечение загрузки данных.
+   */
+  receiveEnsureLoadDataRequest$(unsubscribe$: Subject<boolean>): Observable<any> {
+    return this.ensureLoadDataRequest$.pipe(
+      takeUntil(unsubscribe$)
+    );
+  }
+
+  /** Отправить запрос на обеспечение загрузки данных. */
+  sendEnsureLoadDataRequest() {
+    this.ensureLoadDataRequest$.next();
   }
 
   /**
