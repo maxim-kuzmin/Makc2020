@@ -6,10 +6,10 @@ export const appBaseDiTokenLocalStorage = 'appBaseDiTokenLocalStorage';
 /** Основа. Внедрение зависимостей. Токен. Сессионное хранилище. */
 export const appBaseDiTokenSessionStorage = 'appBaseDiTokenSessionStorage';
 
-/** Ядро. Основа. Внедрение зависимостей. Токен. Консоль. */
+/** Основа. Внедрение зависимостей. Токен. Консоль. */
 export const appBaseDiTokenConsole = 'appBaseDiTokenConsole';
 
-/** Ядро. Основа. Внедрение зависимостей. Токен. Документ. */
+/** Основа. Внедрение зависимостей. Токен. Документ. */
 export const appBaseDiTokenDocument = 'appBaseDiTokenDocument';
 
 /** Основа. Внедрение зависимостей. Токен. Окно. */

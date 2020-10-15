@@ -32,14 +32,12 @@ const routes: Routes = [
 /** Приложение. Маршрутизация. Модуль. */
 @NgModule({
   imports: [
-    RouterModule.forRoot(
-      routes,
-      {
-        // enableTracing: true, // <-- debugging purposes only
-        onSameUrlNavigation: 'reload',
-        preloadingStrategy: PreloadAllModules
-      }
-    )
+    RouterModule.forRoot(routes, {
+      // enableTracing: true, // <-- debugging purposes only
+      onSameUrlNavigation: 'reload',
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: 'enabled'
+    })
   ],
   exports: [RouterModule],
   providers: []

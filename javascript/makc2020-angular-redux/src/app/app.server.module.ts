@@ -2,7 +2,6 @@
 
 import {NgModule} from '@angular/core';
 import {ServerModule} from '@angular/platform-server';
-import {ModuleMapLoaderModule} from '@nguniversal/module-map-ngfactory-loader';
 import {AppCoreAuthTypeJwtDefault} from './core/auth/types/jwt/core-auth-type-jwt-default';
 import {AppCoreDialogDefault} from './core/dialog/core-dialog-default';
 import {AppCoreLoggingDefault} from './core/logging/core-logging-default';
@@ -20,8 +19,7 @@ import {AppSkinComponent} from '@app-skin/app.component';
 @NgModule({
   imports: [
     AppModule,
-    ServerModule,
-    ModuleMapLoaderModule
+    ServerModule
   ],
   providers: [
     {provide: AppCoreAuthTypeJwtDefault, useClass: AppBaseAuthTypeJwtDefault, deps: [appBaseDiTokenSessionStorage]},

@@ -11,10 +11,10 @@ export class AppSkinHostLayoutHeaderView extends AppHostLayoutHeaderView {
 
   /** @inheritDoc */
   build() {
-    this.languageOptions = this.languages.map(language => <SelectItem>{
+    this.languageOptions = this.languages.map(language => ({
       label: language.name,
       title: language.name,
       value: language.key
-    });
+    } as SelectItem));
   }
 }

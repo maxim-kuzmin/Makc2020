@@ -1,13 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
-import {isPlatformBrowser} from '@angular/common';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {APP_ID, Inject, NgModule, PLATFORM_ID} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {EffectsModule} from '@ngrx/effects';
-import {StoreRouterConnectingModule, DefaultRouterStateSerializer} from '@ngrx/router-store';
+import {DefaultRouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
@@ -33,7 +32,7 @@ export function createTranslateLoader(http: HttpClient) {
 /** Приложение. Модуль. */
 @NgModule({
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
@@ -54,8 +53,8 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreRouterConnectingModule.forRoot({serializer: DefaultRouterStateSerializer}),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -66,17 +65,10 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   declarations: [],
   providers: [
-    { provide: appCoreLoggingDiTokenLoggerName, useValue: AppModule.name },
+    {provide: appCoreLoggingDiTokenLoggerName, useValue: AppModule.name},
     AppCoreLoggingService
   ],
   bootstrap: [AppSkinComponent]
 })
 export class AppModule {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
-      'in the browser' : 'on the server';
-    console.log(`Running ${platform} with appId=${appId}`);
-  }
 }

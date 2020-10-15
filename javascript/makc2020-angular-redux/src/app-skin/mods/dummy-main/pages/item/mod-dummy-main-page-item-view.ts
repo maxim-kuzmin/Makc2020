@@ -90,11 +90,11 @@ export class AppSkinModDummyMainPageItemView extends AppModDummyMainPageItemView
     super.loadOptionsDummyOneToMany(data);
 
     if (this.optionsDummyOneToMany) {
-      this.selectItemsDummyOneToMany = this.optionsDummyOneToMany.items.map(option => <SelectItem>{
+      this.selectItemsDummyOneToMany = this.optionsDummyOneToMany.items.map(option => ({
         label: option.name,
         title: option.name,
         value: option.value
-      });
+      } as SelectItem));
     }
   }
 
