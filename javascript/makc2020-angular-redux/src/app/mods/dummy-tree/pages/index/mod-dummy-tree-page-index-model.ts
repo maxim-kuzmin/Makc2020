@@ -132,12 +132,12 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
     } = this.appModDummyTreePageItem.settings.keys;
 
     const lookupOptionByMenuNodeKey = {
-      [keyEdit]: <AppHostPartMenuOption>{
+      [keyEdit]: {
         isNeededToRemove: true
-      },
-      [keyView]: <AppHostPartMenuOption>{
+      } as AppHostPartMenuOption,
+      [keyView]: {
         isNeededToRemove: true
-      }
+      } as AppHostPartMenuOption
     };
 
     this.appMenu.executeActionSet(this.pageKey, lookupOptionByMenuNodeKey);

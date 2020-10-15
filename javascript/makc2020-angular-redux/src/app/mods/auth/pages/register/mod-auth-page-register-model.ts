@@ -129,9 +129,9 @@ export class AppModAuthPageRegisterModel extends AppCoreCommonPageModel {
     } = this.appModAuthPageRedirect.settings;
 
     const lookupOptionByMenuNodeKey = {
-      [keyRedirect]: <AppHostPartMenuOption>{
+      [keyRedirect]: {
         isNeededToRemove: true
-      }
+      } as AppHostPartMenuOption
     };
 
     this.appMenu.executeActionSet(this.pageKey, lookupOptionByMenuNodeKey);

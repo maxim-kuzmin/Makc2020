@@ -109,7 +109,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
     return this.appModDummyMainPageList.createParameters(this.parameters.index);
   }
 
-    /**
+  /**
    * Выполнить действие "Элемент. Удаление".
    * @param {number} id Идентификатор.
    */
@@ -440,15 +440,15 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
       } = this.appModDummyMainPageItem.settings.paths;
 
       const lookupOptionByMenuNodeKey = {
-        [keyCreate]: <AppHostPartMenuOption>{
+        [keyCreate]: {
           routerLink: this.appModDummyMainPageItem.createRouterLink(pathCreate)
-        },
-        [keyEdit]: <AppHostPartMenuOption>{
+        } as AppHostPartMenuOption,
+        [keyEdit]: {
           isNeededToRemove: true
-        },
-        [keyView]: <AppHostPartMenuOption>{
+        } as AppHostPartMenuOption,
+        [keyView]: {
           isNeededToRemove: true
-        }
+        } as AppHostPartMenuOption
       };
 
       this.appMenu.executeActionSet(this.pageKey, lookupOptionByMenuNodeKey);

@@ -6,10 +6,16 @@ import {AppCoreCommonModJobListGetInput} from '@app/core/common/mod/jobs/list/ge
 export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetInput {
 
   /**
-   * Имя объекта, где хранятся данные сущности "DummyOneToMany".
+   * Строка идентификаторов.
    * @type {?string}
    */
-  dataObjectDummyOneToManyName?: string;
+  dataIdsString?: string;
+
+  /**
+   * Имя.
+   * @type {?string}
+   */
+  dataName?: string;
 
   /**
    * Идентификатор объекта, где хранятся данные сущности "DummyOneToMany".
@@ -24,49 +30,50 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
   dataObjectDummyOneToManyIdsString?: string;
 
   /**
-   * Имя.
+   * Имя объекта, где хранятся данные сущности "DummyOneToMany".
    * @type {?string}
    */
-  dataName?: string;
-
-  /**
-   * Строка идентификаторов.
-   * @type {?string}
-   */
-  dataIdsString?: string;
+  dataObjectDummyOneToManyName?: string;
 
   /**
    * Конструктор.
-   * @param {?number} dataPageNumber Номер страницы данных.
-   * @param {?number} dataPageSize Размер страницы данных.
-   * @param {?string} dataSortField Поле сортировки данных.
-   * @param {?string} dataSortDirection Направление сортировки данных.
-   * @param {?string} dataObjectDummyOneToManyName Имя объекта, где хранятся данные сущности "DummyOneToMany".
-   * @param {?number} dataObjectDummyOneToManyId Идентификатор объекта, где хранятся данные сущности "DummyOneToMany".
-   * @param {?string} dataObjectDummyOneToManyIdsString Строка идентификаторов объектов, где хранятся данные сущности "DummyOneToMany".
-   * @param {?string} dataName Имя данных.
-   * @param {?string} dataIdsString Строка идентификаторов данных.
+   * @param {?number} pageNumber Номер страницы.
+   * @param {?number} pageSize Размер страницы.
+   * @param {?string} sortField Поле сортировки.
+   * @param {?string} sortDirection Направление сортировки.
+   * @param {?string} dataIdsString Данные: строка идентификаторов.
+   * @param {?string} dataName Данные: имя.
+   * @param {?number} dataObjectDummyOneToManyId
+   * Данные: Идентификатор объекта, где хранятся данные сущности "DummyOneToMany".
+   * @param {?string} dataObjectDummyOneToManyIdsString
+   * Данные: строка идентификаторов объектов, где хранятся данные сущности "DummyOneToMany".
+   * @param {?string} dataObjectDummyOneToManyName
+   * Данные: имя объекта, где хранятся данные сущности "DummyOneToMany".
    */
   constructor(
-    dataPageNumber?: number,
-    dataPageSize?: number,
-    dataSortField?: string,
-    dataSortDirection?: string,
-    dataObjectDummyOneToManyName?: string,
+    pageNumber?: number,
+    pageSize?: number,
+    sortField?: string,
+    sortDirection?: string,
+    dataIdsString?: string,
+    dataName?: string,
     dataObjectDummyOneToManyId?: number,
     dataObjectDummyOneToManyIdsString?: string,
-    dataName?: string,
-    dataIdsString?: string
+    dataObjectDummyOneToManyName?: string
   ) {
     super(
-      dataPageNumber,
-      dataPageSize,
-      dataSortField,
-      dataSortDirection
+      pageNumber,
+      pageSize,
+      sortField,
+      sortDirection
     );
 
-    if (dataObjectDummyOneToManyName) {
-      this.dataObjectDummyOneToManyName = dataObjectDummyOneToManyName;
+    if (dataIdsString) {
+      this.dataIdsString = dataIdsString;
+    }
+
+    if (dataName) {
+      this.dataName = dataName;
     }
 
     if (dataObjectDummyOneToManyId) {
@@ -77,12 +84,8 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
       this.dataObjectDummyOneToManyIdsString = dataObjectDummyOneToManyIdsString;
     }
 
-    if (dataName) {
-      this.dataName = dataName;
-    }
-
-    if (dataIdsString) {
-      this.dataIdsString = dataIdsString;
+    if (dataObjectDummyOneToManyName) {
+      this.dataObjectDummyOneToManyName = dataObjectDummyOneToManyName;
     }
   }
 

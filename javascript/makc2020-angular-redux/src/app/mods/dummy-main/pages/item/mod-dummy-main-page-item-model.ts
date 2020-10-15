@@ -279,38 +279,38 @@ export class AppModDummyMainPageItemModel extends AppCoreCommonPageModel {
       } = settings.paths;
 
       const lookupOptionByMenuNodeKey = {
-        [this.appModDummyMainPageList.settings.key]: <AppHostPartMenuOption>{
+        [this.appModDummyMainPageList.settings.key]: {
           routerLink: this.appModDummyMainPageList.createRouterLink()
-        },
-        [keyCreate]: <AppHostPartMenuOption>{
+        } as AppHostPartMenuOption,
+        [keyCreate]: {
           routerLink: this.appModDummyMainPageItem.createRouterLink(pathCreate)
-        }
+        } as AppHostPartMenuOption
       };
 
       switch (this.pageKey) {
         case keyCreate: {
-          lookupOptionByMenuNodeKey[keyCreate] = <AppHostPartMenuOption>{
+          lookupOptionByMenuNodeKey[keyCreate] = {
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathCreate)
-          };
+          } as AppHostPartMenuOption;
 
-          lookupOptionByMenuNodeKey[keyEdit] = <AppHostPartMenuOption>{
+          lookupOptionByMenuNodeKey[keyEdit] = {
             isNeededToRemove: true
-          };
+          } as AppHostPartMenuOption;
 
-          lookupOptionByMenuNodeKey[keyView] = <AppHostPartMenuOption>{
+          lookupOptionByMenuNodeKey[keyView] = {
             isNeededToRemove: true
-          };
+          } as AppHostPartMenuOption;
         }
           break;
         case keyEdit:
         case keyView: {
-          lookupOptionByMenuNodeKey[keyEdit] = <AppHostPartMenuOption>{
+          lookupOptionByMenuNodeKey[keyEdit] = {
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathEdit)
-          };
+          } as AppHostPartMenuOption;
 
-          lookupOptionByMenuNodeKey[keyView] = <AppHostPartMenuOption>{
+          lookupOptionByMenuNodeKey[keyView] = {
             routerLink: this.appModDummyMainPageItem.createRouterLink(pathView)
-          };
+          } as AppHostPartMenuOption;
         }
           break;
       }

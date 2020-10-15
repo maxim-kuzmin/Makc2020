@@ -443,15 +443,15 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
       } = this.appModDummyTreePageItem.settings.paths;
 
       const lookupOptionByMenuNodeKey = {
-        [keyCreate]: <AppHostPartMenuOption>{
+        [keyCreate]: {
           routerLink: this.appModDummyTreePageItem.createRouterLink(pathCreate)
-        },
-        [keyEdit]: <AppHostPartMenuOption>{
+        } as AppHostPartMenuOption,
+        [keyEdit]: {
           isNeededToRemove: true
-        },
-        [keyView]: <AppHostPartMenuOption>{
+        } as AppHostPartMenuOption,
+        [keyView]: {
           isNeededToRemove: true
-        }
+        } as AppHostPartMenuOption
       };
 
       this.appMenu.executeActionSet(this.pageKey, lookupOptionByMenuNodeKey);

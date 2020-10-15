@@ -105,11 +105,11 @@ export class AppModDummyMainPageListParameters extends AppCoreCommonPageParamete
       this.paramPageSize.value,
       this.paramSortField.value,
       this.paramSortDirection.value,
-      this.paramObjectDummyOneToManyName.value,
+      this.paramIdsString.value,
+      this.paramName.value,
       this.paramObjectDummyOneToManyId.value,
       this.paramObjectDummyOneToManyIdsString.value,
-      this.paramName.value,
-      this.paramIdsString.value
+      this.paramObjectDummyOneToManyName.value
     );
   }
 }

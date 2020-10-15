@@ -126,9 +126,9 @@ export class AppModAuthPageRedirectModel extends AppCoreCommonPageModel {
     super.onGetPageKeyOverAfterViewInit(pageKey);
 
     const lookupOptionByMenuNodeKey = {
-      [pageKey]: <AppHostPartMenuOption>{
+      [pageKey]: {
         isNeededToRemove: true
-      }
+      } as AppHostPartMenuOption
     };
 
     this.appMenu.executeActionSet(this.pageKey, lookupOptionByMenuNodeKey);
