@@ -146,12 +146,20 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
   }
 
   private executeTitleActionItemAdd() {
-    this.appTitle.executeActionItemAdd(
-      this.appModDummyMainPageIndex.settings.titleResourceKey,
-      this.resources.titleTranslated$,
-      this.unsubscribe$
-    );
+    if (this.titleItemsCount === 0) {
+      const {
+        titleResourceKey
+      } = this.appModDummyMainPageIndex.settings;
 
-    this.titleItemsCount = 1;
+      if (titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
+    }
   }
 }
