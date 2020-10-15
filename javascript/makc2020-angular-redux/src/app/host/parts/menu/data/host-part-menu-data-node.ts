@@ -8,7 +8,7 @@ export interface AppHostPartMenuDataNode extends AppCoreTreeNode<AppHostPartMenu
 }
 
 /**
- * Хост. Меню. Данные. Узел. Создать.
+ * Хост. Часть "Menu". Данные. Узел. Создать.
  * @param {string} key Ключ.
  * @param {AppHostPartMenuDataItem} data Данные.
  * @param {string} parentKey Ключ родителя.
@@ -25,7 +25,8 @@ export function appHostMenuDataNodeCreate(
   level: number = null,
   childCount: number = null,
   descendantCount: number = null,
-  children: AppHostPartMenuDataNode[] = null
+  children: AppHostPartMenuDataNode[] = null,
+  isNeededToRemove = false
 ): AppHostPartMenuDataNode {
   return appCoreTreeNodeCreate<AppHostPartMenuDataItem>(
     key,
@@ -34,6 +35,7 @@ export function appHostMenuDataNodeCreate(
     level,
     childCount,
     descendantCount,
-    children
+    children,
+    isNeededToRemove
   ) as AppHostPartMenuDataNode;
 }

@@ -6,7 +6,10 @@ import {AppCoreExecutableAsync} from '../executable/core-executable-async';
 import {AppCoreSpinnerService} from './core-spinner.service';
 
 /** @type {number} */
-const timeout = 1000;
+const delayInMillisecond = 100;
+
+/** @type {number} */
+const timeoutInMillisecond = 1000;
 
 /** Ядро. Спиннер. Менеджер. */
 export class AppCoreSpinnerManager {
@@ -19,22 +22,27 @@ export class AppCoreSpinnerManager {
 
   /** @type {AppCoreExecutableAsync} */
   private showSpinnerAsync = new AppCoreExecutableAsync(() => {
-    if (!this.spinnerRef) {
-      this.spinnerRef = this.appSpinner.create(this.container);
-      this.startDate = new Date();
-    }
+    setTimeout(this.showSpinnerImmediately, delayInMillisecond);
   });
 
   /** @type {AppCoreExecutableAsync} */
   private hideSpinnerAsync = new AppCoreExecutableAsync(() => {
-    if (this.spinnerRef) {
-      const timeDiff = Math.abs((new Date()).getTime() - this.startDate.getTime());
+    if (!!this.spinnerRef) {
+      if (!!this.startDate) {
+        const timeDiff = Math.abs((new Date()).getTime() - this.startDate.getTime());
 
-      if (timeDiff < timeout) {
-        setTimeout(() => this.hideSpinnerImmediately(), timeout - timeDiff);
+        if (timeDiff < timeoutInMillisecond) {
+          setTimeout(this.hideSpinnerImmediately, timeoutInMillisecond - timeDiff);
+        } else {
+          this.hideSpinnerImmediately();
+        }
       } else {
         this.hideSpinnerImmediately();
       }
+    } else {
+      this.startDate = new Date();
+
+      this.hideSpinnerImmediately();
     }
   });
 
@@ -49,7 +57,10 @@ export class AppCoreSpinnerManager {
     private appSpinner: AppCoreSpinnerService,
     private container: ElementRef,
     private onAfterHide: () => void
-  ) { }
+  ) {
+    this.hideSpinnerImmediately = this.hideSpinnerImmediately.bind(this);
+    this.showSpinnerImmediately = this.showSpinnerImmediately.bind(this);
+  }
 
   /** Показать спиннер. */
   showSpinner() {
@@ -62,14 +73,24 @@ export class AppCoreSpinnerManager {
   }
 
   private hideSpinnerImmediately() {
-    if (this.spinnerRef) {
+    if (!!this.spinnerRef) {
       this.spinnerRef.dispose();
+
       this.spinnerRef = null;
       this.startDate = null;
+    }
 
-      if (this.onAfterHide) {
-        this.onAfterHide();
-      }
+    if (this.onAfterHide) {
+      this.onAfterHide();
+    }
+  }
+
+  private showSpinnerImmediately() {
+    if (!this.spinnerRef && !this.startDate) {
+      this.spinnerRef = this.appSpinner.create(this.container);
+      this.startDate = new Date();
+    } else if (!!this.startDate) {
+      this.startDate = null;
     }
   }
 }

@@ -20,8 +20,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
               "src/assets",
+              "src/favicon.ico",
+              "src/silent-refresh.html",
               "src/Web.config"
             ],
             "styles": [

@@ -102,34 +102,33 @@ export class AppCoreExecutionService {
     result: TResult,
     handler: AppCoreExecutionHandler
   ): TResult {
+    let {
+      errorMessages,
+      successMessages
+    } = result;
+
+    if (result.isOk) {
+      if (!successMessages || successMessages.length < 1) {
+        successMessages = [`${jobName} is successful`];
+      }
+    } else if (!errorMessages || errorMessages.length < 1) {
+      errorMessages = [`${jobName} is failed`];
+    }
+
+    if (successMessages && successMessages.length > 0) {
+      handler.onSuccess(successMessages);
+    }
+
+    if (errorMessages && errorMessages.length > 0) {
+      handler.onError(errorMessages);
+    }
+
     const {
       warningMessages
     } = result;
 
     if (warningMessages && warningMessages.length > 0) {
       handler.onWarning(warningMessages);
-    }
-
-    if (result.isOk) {
-      let {
-        successMessages
-      } = result;
-
-      if (!successMessages || successMessages.length < 1) {
-        successMessages = [`${jobName} is successful`];
-      }
-
-      handler.onSuccess(successMessages);
-    } else {
-      let {
-        errorMessages
-      } = result;
-
-      if (!errorMessages || errorMessages.length < 1) {
-        errorMessages = [`${jobName} is failed`];
-      }
-
-      handler.onError(errorMessages);
     }
 
     return result;

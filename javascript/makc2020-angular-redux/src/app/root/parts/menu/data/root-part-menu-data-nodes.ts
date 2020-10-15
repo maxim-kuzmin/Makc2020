@@ -371,7 +371,8 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemCreateConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemCreateConfigFullPath),
-      ''
+      '',
+      true
     );
 
     // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemEdit
@@ -381,7 +382,8 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemEditConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemEditConfigFullPath),
-      ''
+      '',
+      true
     );
 
     // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemView
@@ -391,7 +393,8 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemViewConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemViewConfigFullPath),
-      ''
+      '',
+      true
     );
   }
 
@@ -401,13 +404,15 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
    * @param {string} titleResourceKey
    * @param {string} routerLink
    * @param {string} icon
+   * @param {boolean} isNeedToRemove
    */
   private createNode(
     key: string,
     parent: AppHostPartMenuDataNode,
     titleResourceKey: string,
     routerLink: any[],
-    icon: string
+    icon: string,
+    isNeedToRemove = false
   ): AppHostPartMenuDataNode {
     const data = appHostMenuDataItemCreate(
       titleResourceKey,
@@ -420,7 +425,16 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
 
     const parentKey = parent ? parent.key : '';
 
-    const result = appHostMenuDataNodeCreate(key, data, parentKey);
+    const result = appHostMenuDataNodeCreate(
+      key,
+      data,
+      parentKey,
+      null,
+      null,
+      null,
+      null,
+      isNeedToRemove
+    );
 
     this.addNode(result);
 

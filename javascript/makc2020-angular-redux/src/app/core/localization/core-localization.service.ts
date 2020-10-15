@@ -65,11 +65,11 @@ export class AppCoreLocalizationService {
 
       this.extTranslator.setDefaultLang(languageKey);
 
-      const browserLang = this.extTranslator.getBrowserLang();
-
-      if (this.languageKeyIsAllowed(browserLang)) {
-        languageKey = browserLang;
-      }
+      // const browserLang = this.extTranslator.getBrowserLang();
+      //
+      // if (this.languageKeyIsAllowed(browserLang)) {
+      //   languageKey = browserLang;
+      // }
     }
 
     this.executeActionLanguageSet(languageKey);

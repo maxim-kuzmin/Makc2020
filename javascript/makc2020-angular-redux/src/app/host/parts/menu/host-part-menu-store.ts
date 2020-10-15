@@ -54,7 +54,7 @@ export class AppHostPartMenuStore {
    * @param {string} menuNodeKey Ключ узла меню.
    * @param {[key: string]: AppHostMenuOption} lookupOptionByMenuNodeKey Поиск варианта по ключу узла меню.
    */
-  runActionSet(menuNodeKey: string, lookupOptionByMenuNodeKey: {[key: string]: AppHostPartMenuOption}) {
+  runActionSet(menuNodeKey: string, lookupOptionByMenuNodeKey: { [key: string]: AppHostPartMenuOption }) {
     this.setState({
       ...this.state,
       action: AppHostPartMenuEnumActions.Set,

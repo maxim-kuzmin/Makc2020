@@ -9,7 +9,7 @@ export const environment = {
   hostIsFirstLoginParamValue: 'true',
   hostLangParamName: 'core--lang',
   hostLangSessionName: 'Lang',
-  hostPort: hostPort,
+  hostPort,
   hostUrl: `http://localhost:${hostPort}`,
   production: true
 };

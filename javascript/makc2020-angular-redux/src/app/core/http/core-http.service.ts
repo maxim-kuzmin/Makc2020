@@ -84,7 +84,7 @@ export class AppCoreHttpService {
 
   /**
    * Создать опции.
-   * @param {<any>} data Данные.
+   * @param {any} data Данные.
    * @returns {any} Опции.
    */
   private createParams(data: any) {

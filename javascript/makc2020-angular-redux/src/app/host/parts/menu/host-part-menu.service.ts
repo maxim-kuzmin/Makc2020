@@ -26,11 +26,11 @@ export class AppHostPartMenuService {
    */
   executeActionSet(
     menuNodeKey: string,
-    lookupOptionByMenuNodeKey: {[key: string]: AppHostPartMenuOption} = null
+    lookupOptionByMenuNodeKey: { [key: string]: AppHostPartMenuOption } = null
   ) {
     this.appStore.runActionSet(
       menuNodeKey,
       lookupOptionByMenuNodeKey
-      );
+    );
   }
 }

@@ -31,6 +31,12 @@ export interface AppCoreTreeNode<TData> {
   descendantCount: number;
 
   /**
+   * Признак необходимости удаления.
+   * @type {boolean}
+   */
+  isNeededToRemove: boolean;
+
+  /**
    * Уровень.
    * @type {number}
    */
@@ -50,7 +56,7 @@ export interface AppCoreTreeNode<TData> {
 }
 
 /**
- * Хост. Меню. Данные. Узел. Создать.
+ * Хост. Часть "Menu". Данные. Узел. Создать.
  * @param {string} key Ключ.
  * @param {TData} data Данные.
  * @param {string} parentKey Ключ родителя.
@@ -58,6 +64,7 @@ export interface AppCoreTreeNode<TData> {
  * @param {number} childCount Количество детей.
  * @param {number} descendantCount Количество потомков.
  * @param {AppCoreTreeNode<TData>[]} children Дети.
+ * @param {boolean} isNeededToRemove Признак необходимости удаления.
  * @returns {AppCoreTreeNode<TData>} Узел.
  */
 export function appCoreTreeNodeCreate<TData>(
@@ -67,15 +74,17 @@ export function appCoreTreeNodeCreate<TData>(
   level: number = null,
   childCount: number = null,
   descendantCount: number = null,
-  children: AppCoreTreeNode<TData>[] = null
+  children: AppCoreTreeNode<TData>[] = null,
+  isNeededToRemove = false
 ): AppCoreTreeNode<TData> {
   return  {
     childCount: childCount !== null ? childCount : 0,
     children: children || [],
-    data: data,
+    data,
     descendantCount: descendantCount !== null ? descendantCount : 0,
     level: level !== null ? level : 0,
-    key: key,
-    parentKey: parentKey
+    key,
+    parentKey,
+    isNeededToRemove
   } as AppCoreTreeNode<TData>;
 }

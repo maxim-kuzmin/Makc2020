@@ -28,7 +28,7 @@ export interface AppCoreTreeParts<TData, TNode extends AppCoreTreeNode<TData>> {
 }
 
 /**
- * Хост. Меню. Данные. Части. Создать.
+ * Хост. Часть "Menu". Данные. Части. Создать.
  * @param {TNode[][]} bottoms Низы.
  * @param {TNode[]} roots Корни.
  * @param {TNode[][]} tops Верхи.

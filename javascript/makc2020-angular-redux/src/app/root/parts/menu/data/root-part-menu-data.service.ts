@@ -152,7 +152,7 @@ export class AppRootPartMenuDataService extends AppHostPartMenuDataService {
       const option = lookupOptionByMenuNodeKey[node.key];
 
       if (option) {
-        if (option.isNeededToRemove) {
+        if (option.isNeededToRemove || node.isNeededToRemove) {
           indexesToRemove.push(index);
 
           node.children = [];
