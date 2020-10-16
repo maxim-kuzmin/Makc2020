@@ -4,11 +4,11 @@ import {Action} from '@ngrx/store';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
 import {AppModDummyMainPageListEnumActions} from '../../enums/mod-dummy-main-page-list-enum-actions';
 
-/** Мод "DummyMain". Страницы. Список. Хранилище состояния. Действия. Успех удаления. */
-export class AppModDummyMainPageListStoreActionDeleteSuccess implements Action {
+/** Мод "DummyMain". Страницы. Список. Хранилище состояния. Действия. Элемент. Успех удаления. */
+export class AppModDummyMainPageListStoreActionItemDeleteSuccess implements Action {
 
   /** @inheritDoc */
-  readonly type = AppModDummyMainPageListEnumActions.DeleteSuccess;
+  readonly type = AppModDummyMainPageListEnumActions.ItemDeleteSuccess;
 
   /**
    * Конструктор.
@@ -17,5 +17,6 @@ export class AppModDummyMainPageListStoreActionDeleteSuccess implements Action {
    */
   constructor(
     public jobItemDeleteResult: AppCoreExecutionResult
-  ) { }
+  ) {
+  }
 }

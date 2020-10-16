@@ -1,17 +1,22 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppModDummyMainJobItemGetInput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-input';
-import {AppModDummyMainJobListGetInput} from '@app/mods/dummy-main/jobs/list/get/mod-dummy-main-job-list-get-input';
-import {AppModDummyMainStoreState} from '@app/mods/dummy-main/store/mod-dummy-main-store.state';
-import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
+import {AppModDummyMainJobItemGetInput} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
+import {AppModDummyMainJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-main-job-list-delete-input';
+import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
+import {AppModDummyMainStoreState} from '../../store/mod-dummy-main-store.state';
+import {AppModDummyMainPageListStateParameters} from './state/mod-dummy-main-page-list-state-parameters';
 import {AppModDummyMainPageListStoreActionClear} from './store/actions/mod-dummy-main-page-list-store-action-clear';
-import {AppModDummyMainPageListStoreActionDelete} from './store/actions/mod-dummy-main-page-list-store-action-delete';
+import {AppModDummyMainPageListStoreActionItemDelete} from './store/actions/mod-dummy-main-page-list-store-action-item-delete';
+import {AppModDummyMainPageListStoreActionFilteredDelete} from './store/actions/mod-dummy-main-page-list-store-action-filtered-delete';
+import {AppModDummyMainPageListStoreActionListDelete} from './store/actions/mod-dummy-main-page-list-store-action-list-delete';
 import {AppModDummyMainPageListStoreActionLoad} from './store/actions/mod-dummy-main-page-list-store-action-load';
+import {AppModDummyMainPageListStoreActionParametersSet} from './store/actions/mod-dummy-main-page-list-store-action-parameters-set';
 import {appModDummyMainPageListStoreSelector} from './store/mod-dummy-main-page-list-store.selectors';
-import { Injectable } from '@angular/core';
+import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
 
 /** Мод "DummyMain". Страницы. Список. Хранилище состояния. */
 @Injectable()
@@ -57,11 +62,27 @@ export class AppModDummyMainPageListStore {
   }
 
   /**
-   * Запустить действие "Удаление".
+   * Запустить действие "Отфильтрованное. Удаление".
+   * @param {AppModDummyMainJobListGetInput} input Ввод.
+   */
+  runActionFilteredDelete(input: AppModDummyMainJobListGetInput) {
+    this.extStore.dispatch(new AppModDummyMainPageListStoreActionFilteredDelete(input));
+  }
+
+  /**
+   * Запустить действие "Элемент. Удаление".
    * @param {AppModDummyMainJobItemGetInput} input Ввод.
    */
-  runActionDelete(input: AppModDummyMainJobItemGetInput) {
-    this.extStore.dispatch(new AppModDummyMainPageListStoreActionDelete(input));
+  runActionItemDelete(input: AppModDummyMainJobItemGetInput) {
+    this.extStore.dispatch(new AppModDummyMainPageListStoreActionItemDelete(input));
+  }
+
+  /**
+   * Запустить действие "Список. Удаление".
+   * @param {AppModDummyMainJobListDeleteInput} input Ввод.
+   */
+  runActionListDelete(input: AppModDummyMainJobListDeleteInput) {
+    this.extStore.dispatch(new AppModDummyMainPageListStoreActionListDelete(input));
   }
 
   /**
@@ -70,6 +91,14 @@ export class AppModDummyMainPageListStore {
    */
   runActionLoad(input: AppModDummyMainJobListGetInput) {
     this.extStore.dispatch(new AppModDummyMainPageListStoreActionLoad(input));
+  }
+
+  /**
+   * Запустить действие "Параметры. Установка".
+   * @param {AppModDummyMainPageListStateParameters} parameters Параметры.
+   */
+  runActionParametersSet(parameters: AppModDummyMainPageListStateParameters) {
+    this.extStore.dispatch(new AppModDummyMainPageListStoreActionParametersSet(parameters));
   }
 
   /**

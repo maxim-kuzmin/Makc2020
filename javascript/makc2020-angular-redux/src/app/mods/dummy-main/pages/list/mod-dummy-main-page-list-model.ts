@@ -23,6 +23,7 @@ import {AppModDummyMainPageListService} from './mod-dummy-main-page-list.service
 import {AppModDummyMainPageListSettingColumns} from './settings/mod-dummy-main-page-list-setting-columns';
 import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
 import {AppModDummyMainPageListStore} from './mod-dummy-main-page-list-store';
+import {AppModDummyMainPageListSettingFields} from './settings/mod-dummy-main-page-list-setting-fields';
 
 /** Мод "DummyMain". Страницы. Список. Модель. */
 @Injectable()
@@ -120,7 +121,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
       if (isOk) {
         this.isItemDeleteStarted$.next();
 
-        this.appStore.runActionDelete(new AppModDummyMainJobItemGetInput(id));
+        this.appStore.runActionItemDelete(new AppModDummyMainJobItemGetInput(id));
       }
     });
   }
@@ -279,6 +280,14 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    */
   getSettingColumns(): AppModDummyMainPageListSettingColumns {
     return this.appModDummyMainPageList.settings.columns;
+  }
+
+  /**
+   * Получить настройку полей.
+   * @returns {AppModDummyMainPageListSettingFields} Настройка полей.
+   */
+  getSettingFields(): AppModDummyMainPageListSettingFields {
+    return this.appModDummyMainPageList.settings.fields;
   }
 
   /**

@@ -8,8 +8,9 @@ import {AppModDummyMainPageListSettingColumns} from '@app/mods/dummy-main/pages/
 import {AppSkinCoreProgressSpinnerComponent} from '@app-skin/core/progress/spinner/core-progress-spinner.component';
 import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinner/core-progress-spinner.directive';
 import {AppModDummyMainPageListDataItem} from '@app/mods/dummy-main/pages/list/data/mod-dummy-main-page-list-data-item';
-import {AppModDummyMainPageListResourceColumns} from '@app/mods/dummy-main/pages/list/resources/mod-dummy-main-page-list-resource-columns';
 import {AppModDummyMainPageListParameters} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-parameters';
+import {AppModDummyMainPageListResourceColumns} from '@app/mods/dummy-main/pages/list/resources/mod-dummy-main-page-list-resource-columns';
+import {AppModDummyMainPageListSettingFields} from '@app/mods/dummy-main/pages/list/settings/mod-dummy-main-page-list-setting-fields';
 
 /** Мод "DummyMain". Страницы. Список. Вид. */
 export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView {
@@ -51,14 +52,16 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
    * Конструктор.
    * @param {AppModDummyMainPageListResourceColumns} resourceColumns Ресурс столбцов.
    * @param {AppModDummyMainPageListSettings} settingColumns Настройка столбцов.
+   * @param {AppModDummyMainPageListSettingFields} settingFields Настройка полей.
    * @param {number[]} pageSizeOptions Опции размера страницы.
    */
   constructor(
     resourceColumns: AppModDummyMainPageListResourceColumns,
     settingColumns: AppModDummyMainPageListSettingColumns,
+    settingFields: AppModDummyMainPageListSettingFields,
     public pageSizeOptions: number[]
   ) {
-    super();
+    super(settingFields);
 
     const {
       columnId: columnIdResource,

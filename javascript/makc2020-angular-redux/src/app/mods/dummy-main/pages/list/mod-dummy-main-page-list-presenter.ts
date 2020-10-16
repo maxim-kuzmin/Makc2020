@@ -201,7 +201,7 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     let isCompleted = false;
 
     switch (action) {
-      case AppModDummyMainPageListEnumActions.DeleteSuccess:
+      case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
         isCompleted = this.onDataChangedByDeleteSuccess();
         break;
       case AppModDummyMainPageListEnumActions.LoadSuccess:
@@ -301,11 +301,11 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
       this.view.responseSuccessMessages = [];
 
       switch (action) {
-        case AppModDummyMainPageListEnumActions.Delete:
+        case AppModDummyMainPageListEnumActions.ItemDelete:
         case AppModDummyMainPageListEnumActions.Load:
           this.onActionsDataChangingAsync.execute();
           break;
-        case AppModDummyMainPageListEnumActions.DeleteSuccess:
+        case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
         case AppModDummyMainPageListEnumActions.LoadSuccess:
           this.onActionsDataChangedAsync.execute();
           break;

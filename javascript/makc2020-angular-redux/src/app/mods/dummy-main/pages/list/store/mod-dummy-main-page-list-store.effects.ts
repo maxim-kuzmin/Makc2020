@@ -12,7 +12,7 @@ import {AppModDummyMainJobListGetService} from '../../../jobs/list/get/mod-dummy
 import {AppModDummyMainPageListEnumActions} from '../enums/mod-dummy-main-page-list-enum-actions';
 import {AppModDummyMainPageListStoreActionLoadSuccess} from './actions/mod-dummy-main-page-list-store-action-load-success';
 import {AppModDummyMainPageListStoreActions} from './mod-dummy-main-page-list-store.actions';
-import {AppModDummyMainPageListStoreActionDeleteSuccess} from './actions/mod-dummy-main-page-list-store-action-delete-success';
+import {AppModDummyMainPageListStoreActionItemDeleteSuccess} from './actions/mod-dummy-main-page-list-store-action-item-delete-success';
 import {AppModDummyMainJobItemDeleteService} from '../../../jobs/item/delete/mod-dummy-main-job-item-delete.service';
 
 /** Мод "DummyMain". Страницы. Список. Хранилище состояния. Эффекты. */
@@ -31,7 +31,7 @@ export class AppModDummyMainPageListStoreEffects {
    */
   @Effect()
   delete$: Observable<Action> = this.extActions$.pipe(
-    ofType(AppModDummyMainPageListEnumActions.Delete),
+    ofType(AppModDummyMainPageListEnumActions.ItemDelete),
     switchMap(
       action =>
         this.appJobItemDelete.execute$(
@@ -40,7 +40,7 @@ export class AppModDummyMainPageListStoreEffects {
         ).pipe(
           map(
             result =>
-              new AppModDummyMainPageListStoreActionDeleteSuccess(result)
+              new AppModDummyMainPageListStoreActionItemDeleteSuccess(result)
           )
         )
     )

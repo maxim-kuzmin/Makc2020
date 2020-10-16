@@ -12,13 +12,13 @@ export function appModDummyMainPageListStoreReducer(
   switch (action.type) {
     case AppModDummyMainPageListEnumActions.Clear:
       return undefined;
-    case AppModDummyMainPageListEnumActions.Delete:
+    case AppModDummyMainPageListEnumActions.ItemDelete:
       return {
         ...state,
         action: action.type,
         jobItemGetInput: action.jobItemGetInput
       };
-    case AppModDummyMainPageListEnumActions.DeleteSuccess:
+    case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
       return {
         ...state,
         action: action.type,

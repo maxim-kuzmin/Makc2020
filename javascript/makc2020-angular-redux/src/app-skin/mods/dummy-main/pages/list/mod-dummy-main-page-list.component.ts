@@ -58,6 +58,7 @@ export class AppSkinModDummyMainPageListComponent implements AfterViewInit, OnDe
     this.myView = new AppSkinModDummyMainPageListView(
       model.resources.columns,
       model.getSettingColumns(),
+      model.getSettingFields(),
       model.getSettingPageSizeOptions()
     );
 

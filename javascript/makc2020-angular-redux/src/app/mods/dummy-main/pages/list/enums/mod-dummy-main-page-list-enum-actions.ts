@@ -10,42 +10,41 @@ export enum AppModDummyMainPageListEnumActions {
   Clear = '[AppModDummyMainPageList] Clear',
 
   /**
-   * Удаление.
+   * Удаление отфильтрованного.
    * @type {string}
    */
-  Delete = '[AppModDummyMainPageList] Delete',
-
-  /**
-   * Успех удаления.
-   * @type {string}
-   */
-  DeleteSuccess = '[AppModDummyMainPageList] Delete Success',
+  FilteredDelete = '[AppModDummyMainPageList] FilteredDelete',
 
   /**
    * Удаление отфильтрованного.
    * @type {string}
    */
-  DeleteFiltered = '[AppModDummyMainPageList] DeleteFiltered',
-
-
-  /**
-   * Удаление отфильтрованного.
-   * @type {string}
-   */
-  DeleteFilteredSuccess = '[AppModDummyMainPageList] DeleteFiltered Success',
+  FilteredDeleteSuccess = '[AppModDummyMainPageList] FilteredDelete Success',
 
   /**
-   * Удаление списка.
+   * Элемент. Удаление.
    * @type {string}
    */
-  DeleteList = '[AppModDummyMainPageList] DeleteList',
+  ItemDelete = '[AppModDummyMainPageList] ItemDelete',
 
+  /**
+   * Элемент. Успех удаления.
+   * @type {string}
+   */
+  ItemDeleteSuccess = '[AppModDummyMainPageList] ItemDelete Success',
 
   /**
    * Удаление списка.
    * @type {string}
    */
-  DeleteListSuccess = '[AppModDummyMainPageList] DeleteList Success',
+  ListDelete = '[AppModDummyMainPageList] ListDelete',
+
+
+  /**
+   * Удаление списка.
+   * @type {string}
+   */
+  ListDeleteSuccess = '[AppModDummyMainPageList] ListDelete Success',
 
   /**
    * Загрузка.
