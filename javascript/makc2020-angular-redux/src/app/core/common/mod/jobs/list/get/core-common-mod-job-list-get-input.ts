@@ -16,29 +16,29 @@ export class AppCoreCommonModJobListGetInput {
   pageSize?: number;
 
   /**
-   * Поле сортировки.
-   * @type {?string}
-   */
-  sortField?: string;
-
-  /**
    * Направление сортировки.
    * @type {?string}
    */
   sortDirection?: string;
 
   /**
+   * Поле сортировки.
+   * @type {?string}
+   */
+  sortField?: string;
+
+  /**
    * Конструктор.
    * @param {?number} pageNumber Номер страницы.
    * @param {?number} pageSize Размер страницы.
-   * @param {?string} sortField Поле сортировки.
    * @param {?string} sortDirection Направление сортировки.
+   * @param {?string} sortField Поле сортировки.
    */
   constructor(
     pageNumber?: number,
     pageSize?: number,
-    sortField?: string,
-    sortDirection?: string
+    sortDirection?: string,
+    sortField?: string
   ) {
     if (pageNumber) {
       this.pageNumber = pageNumber;
@@ -48,12 +48,12 @@ export class AppCoreCommonModJobListGetInput {
       this.pageSize = pageSize;
     }
 
-    if (sortField) {
-      this.sortField = sortField;
-    }
-
     if (sortDirection) {
       this.sortDirection = sortDirection;
+    }
+
+    if (sortField) {
+      this.sortField = sortField;
     }
   }
 }

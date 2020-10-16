@@ -19,26 +19,26 @@ export class AppModDummyTreeJobListGetInput extends AppCoreCommonModJobListGetIn
 
   /**
    * Конструктор.
-   * @param {?number} dataPageNumber Номер страницы данных.
-   * @param {?number} dataPageSize Размер страницы данных.
-   * @param {?string} dataSortField Поле сортировки данных.
-   * @param {?string} dataSortDirection Направление сортировки данных.
+   * @param {?number} pageNumber Номер страницы данных.
+   * @param {?number} pageSize Размер страницы данных.
+   * @param {?string} sortField Поле сортировки данных.
+   * @param {?string} sortDirection Направление сортировки данных.
    * @param {?string} dataName Имя данных.
    * @param {?string} dataIdsString Строка идентификаторов данных.
    */
   constructor(
-    dataPageNumber?: number,
-    dataPageSize?: number,
-    dataSortField?: string,
-    dataSortDirection?: string,
+    pageNumber?: number,
+    pageSize?: number,
+    sortField?: string,
+    sortDirection?: string,
     dataName?: string,
     dataIdsString?: string
   ) {
     super(
-      dataPageNumber,
-      dataPageSize,
-      dataSortField,
-      dataSortDirection
+      pageNumber,
+      pageSize,
+      sortDirection,
+      sortField,
     );
 
     if (dataName) {

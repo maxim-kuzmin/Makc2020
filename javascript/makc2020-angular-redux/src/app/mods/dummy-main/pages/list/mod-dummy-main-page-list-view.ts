@@ -1,14 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {FormControl, FormGroup} from '@angular/forms';
-import {AppModDummyMainPageListDataItem} from './data/mod-dummy-main-page-list-data-item';
-import {AppModDummyMainJobListGetInput} from '@app/mods/dummy-main/jobs/list/get/mod-dummy-main-job-list-get-input';
-import {AppModDummyMainPageListParameters} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-parameters';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {
   AppModDummyMainCommonJobOptionsGetOutputList,
   appModDummyMainCommonJobOptionsGetOutputListCreate
-} from '@app/mods/dummy-main/common/jobs/options/get/output/mod-dummy-main-common-job-options-get-output-list';
-import {AppModDummyMainPageListSettingFields} from '@app/mods/dummy-main/pages/list/settings/mod-dummy-main-page-list-setting-fields';
+} from '../../common/jobs/options/get/output/mod-dummy-main-common-job-options-get-output-list';
+import {AppModDummyMainPageListDataItem} from './data/mod-dummy-main-page-list-data-item';
+import {AppModDummyMainPageListSettingFields} from './settings/mod-dummy-main-page-list-setting-fields';
+import {AppModDummyMainPageListParameters} from './mod-dummy-main-page-list-parameters';
 
 /** Мод "DummyMain". Страницы. Список. Вид. */
 export abstract class AppModDummyMainPageListView {
@@ -24,12 +23,6 @@ export abstract class AppModDummyMainPageListView {
    * @type {FormControl}
    */
   fieldFiltered = new FormControl();
-
-  /**
-   * Элемент управления для ввода имени.
-   * @type {FormControl}
-   */
-  fieldName = new FormControl();
 
   /**
    * Группа полей формы.
@@ -126,6 +119,64 @@ export abstract class AppModDummyMainPageListView {
   }
 
   /**
+   * Поле ввода имени.
+   * @type {AbstractControl}
+   */
+  get fieldName(): AbstractControl {
+    return this.formGroup.get(this.settingFields.fieldName.name);
+  }
+
+  /**
+   * Поле ввода объекта сущности "DummyOneToMany".
+   * @type {AbstractControl}
+   */
+  get fieldObjectDummyOneToMany(): AbstractControl {
+    return this.formGroup.get(this.settingFields.fieldObjectDummyOneToMany.name);
+  }
+
+  /**
+   * Построить.
+   * @param {FormGroup} formGroup Группа полей формы.
+   */
+  build(
+    formGroup: FormGroup
+  ) {
+    this.formGroup = formGroup;
+  }
+
+  /**
+   * Получить признак отключения кнопки удаления списка.
+   * @returns {boolean} Признак отключения кнопки удаления списка.
+   */
+  getItemsDeleteButtonIsDisabled(): boolean {
+    return this.isActionStarted;
+  }
+
+  /**
+   * Получить признак отключения кнопки фильтрации.
+   * @returns {boolean} Признак отключения кнопки фильтрации.
+   */
+  getFilterButtonIsDisabled(): boolean {
+    return this.isActionStarted
+      || (
+        this.paramNameValue === this.fieldName.value
+        && this.paramObjectDummyOneToManyIdValue === this.fieldObjectDummyOneToMany.value
+      );
+  }
+
+  /**
+   * Получить признак отключения кнопки отмены фильтрации.
+   * @returns {boolean} Признак отключения кнопки отмены фильтрации.
+   */
+  getFilterCancelButtonIsDisabled(): boolean {
+    return this.isActionStarted
+      || (
+        !this.fieldName.value
+        && !this.fieldObjectDummyOneToMany.value
+      );
+  }
+
+  /**
    * Получить номер страницы.
    * @return {number}
    */
@@ -138,10 +189,24 @@ export abstract class AppModDummyMainPageListView {
   abstract getPageSize(): number;
 
   /**
-   * Получить идентификатор выбранного элемента.
-   * @returns {number} Идентификатор выбранного элемента.
+   * Получить выбранный элемент.
+   * @returns {AppModDummyMainPageListDataItem} Выбранный элемент.
    */
-  abstract getSelectedItemId(): number;
+  abstract getSelectedItem(): AppModDummyMainPageListDataItem;
+
+  /**
+   * Получить выбранные элементы.
+   * @returns {AppModDummyMainPageListDataItem[]} Выбранные элементы.
+   */
+  abstract getSelectedItems(): AppModDummyMainPageListDataItem[];
+
+  /**
+   * Получить признак отключения кнопки отмены сортировки.
+   * @returns {boolean} Признак отключения кнопки отмены сортировки.
+   */
+  getSortCancelButtonIsDisabled(): boolean {
+    return this.isActionStarted || !this.isSortApplied;
+  }
 
   /**
    * Получить направление сортировки.
@@ -154,6 +219,12 @@ export abstract class AppModDummyMainPageListView {
    * @return {string}
    */
   abstract getSortField(): string;
+
+  /**
+   * Получить данные.
+   * @return {AppModDummyMainPageListDataItem[]}
+   */
+  abstract getData(): AppModDummyMainPageListDataItem[];
 
   /** Спрятать спиннер загрузки. */
   abstract hideLoadingSpinner();
@@ -181,7 +252,7 @@ export abstract class AppModDummyMainPageListView {
   );
 
   /**
-   * Загрузить варианты выбора сущности "CalcElementState".
+   * Загрузить варианты выбора сущности "DummyOneToMany".
    * @param {?AppModDummyMainCommonJobOptionsGetOutputList} data Данные.
    */
   loadOptionsDummyOneToMany(data?: AppModDummyMainCommonJobOptionsGetOutputList) {
@@ -200,6 +271,12 @@ export abstract class AppModDummyMainPageListView {
    */
   abstract setSelectedItemId(value: number);
 
+  /**
+   * Установить идентификаторы выбранных элементов.
+   * @param {number[]} value Значение.
+   */
+  abstract setSelectedItemIds(value: number[]);
+
   /** Показать спиннер загрузки. */
   abstract showLoadingSpinner();
 
@@ -207,10 +284,22 @@ export abstract class AppModDummyMainPageListView {
   abstract showRefreshSpinner();
 
   /**
+   * Подписаться на событие переключения флажка в заголовке.
+   * @param {() => void} callback Функция обратного вызова.
+   */
+  abstract subscribeOnHeaderCheckboxToggle(callback: () => void);
+
+  /**
    * Подписаться на событие выбора строки.
    * @param {() => void} callback Функция обратного вызова.
    */
   abstract subscribeOnRowSelect(callback: () => void);
+
+  /**
+   * Подписаться на событие отмены выбора строки.
+   * @param {() => void} callback Функция обратного вызова.
+   */
+  abstract subscribeOnRowUnselect(callback: () => void);
 
   /**
    * Подписаться на событие изменения сортировки.

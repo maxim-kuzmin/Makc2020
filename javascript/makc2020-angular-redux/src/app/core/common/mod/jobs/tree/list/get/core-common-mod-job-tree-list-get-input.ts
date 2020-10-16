@@ -54,8 +54,8 @@ export class AppCoreCommonModJobTreeListGetInput extends AppCoreCommonModJobList
     super(
       pageNumber,
       pageSize,
-      sortField,
-      sortDirection
+      sortDirection,
+      sortField
     );
 
     if (allowOneLevelOnly) {

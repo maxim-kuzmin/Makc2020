@@ -5,12 +5,14 @@ export class AppModDummyMainPageListDataItem {
 
   /**
    * Конструктор.
-   * @param id Идентификатор.
-   * @param name Имя.
+   * @param {number} id Идентификатор.
+   * @param {string} name Имя.
+   * @param {string} objectDummyOneToManyName Имя объекта сущности "DummyOneToMany".
    */
   constructor(
     public id: number,
-    public name: string
+    public name: string,
+    public objectDummyOneToManyName: string
   ) {
   }
 }

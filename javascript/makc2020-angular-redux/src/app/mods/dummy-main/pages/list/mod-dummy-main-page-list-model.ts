@@ -1,10 +1,12 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {merge, Observable, of, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
+import {AppCoreDeactivatingService} from '@app/core/deactivating/core-deactivating.service';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
@@ -13,9 +15,10 @@ import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppModDummyMainJobItemGetInput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-input';
-import {AppModDummyMainJobListGetInput} from '@app/mods/dummy-main/jobs/list/get/mod-dummy-main-job-list-get-input';
-import {AppModDummyMainPageItemLocation} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-location';
+import {AppModDummyMainJobItemGetInput} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
+import {AppModDummyMainJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-main-job-list-delete-input';
+import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
+import {AppModDummyMainPageItemLocation} from '../item/mod-dummy-main-page-item-location';
 import {AppModDummyMainPageItemService} from '../item/mod-dummy-main-page-item.service';
 import {AppModDummyMainPageListParameters} from './mod-dummy-main-page-list-parameters';
 import {AppModDummyMainPageListResources} from './mod-dummy-main-page-list-resources';
@@ -24,6 +27,7 @@ import {AppModDummyMainPageListSettingColumns} from './settings/mod-dummy-main-p
 import {AppModDummyMainPageListState} from './mod-dummy-main-page-list-state';
 import {AppModDummyMainPageListStore} from './mod-dummy-main-page-list-store';
 import {AppModDummyMainPageListSettingFields} from './settings/mod-dummy-main-page-list-setting-fields';
+import {AppModDummyMainPageListStateParameters} from './state/mod-dummy-main-page-list-state-parameters';
 
 /** Мод "DummyMain". Страницы. Список. Модель. */
 @Injectable()
@@ -34,6 +38,9 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
 
   /** @type {Subject<boolean>} */
   private isItemDeleteStarted$ = new Subject<boolean>();
+
+  /** @type {Subject<boolean>} */
+  private isItemsDeleteStarted$ = new Subject<boolean>();
 
   /** @type {AppModDummyMainJobListGetInput} */
   private jobListGetInput: AppModDummyMainJobListGetInput;
@@ -49,6 +56,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
+   * @param {AppCoreDeactivatingService} appDeactivating Деактивация.
    * @param {AppCoreDialogService} appDialog Диалог.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
@@ -59,10 +67,12 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    * @param {AppModDummyMainPageListStore} appStore Хранилище состояния.
    * @param {AppCoreSettings} appSettings Настройки.
    * @param {AppCoreTitleService} appTitle Заголовок.
+   * @param {FormBuilder} extFormBuilder Построитель форм.
    * @param {ActivatedRoute} extRoute Маршрут.
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
+    private appDeactivating: AppCoreDeactivatingService,
     private appDialog: AppCoreDialogService,
     appExceptionStore: AppCoreExceptionStore,
     appLocalizer: AppCoreLocalizationService,
@@ -73,6 +83,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
     private appStore: AppModDummyMainPageListStore,
     private appSettings: AppCoreSettings,
     appTitle: AppCoreTitleService,
+    public extFormBuilder: FormBuilder,
     extRoute: ActivatedRoute,
     private extRouter: Router
   ) {
@@ -126,22 +137,60 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
     });
   }
 
+  /** Выполнить действие "Элементы. Удаление отфильтрованного". */
+  executeActionItemsDeleteFiltered() {
+    this.appDialog.confirm$(
+      this.resources.actions.actionDeleteFiltered.confirm
+    ).subscribe(isOk => {
+      if (isOk) {
+        this.isItemsDeleteStarted$.next();
+
+        const {
+          jobListGetInput
+        } = this.getState();
+
+        if (jobListGetInput) {
+          this.appStore.runActionFilteredDelete(jobListGetInput);
+        }
+      }
+    });
+  }
+
+  /**
+   * Выполнить действие "Элементы. Удаление списка".
+   * @param {number[]} ids Идентификаторы.
+   * @param {string[]} names Наименования.
+   */
+  executeActionItemsDeleteList(ids: number[], names: string[]) {
+    this.appDialog.confirm$(
+      this.resources.actions.actionDeleteList.confirm
+    ).subscribe(isOk => {
+      if (isOk) {
+        this.isItemsDeleteStarted$.next();
+
+        this.appStore.runActionListDelete(new AppModDummyMainJobListDeleteInput(ids, names));
+      }
+    });
+  }
+
   /**
    * Выполнить действие "Элемент. Редактирование".
    * @param {number} id Идентификатор.
    */
   executeActionItemEdit(id: number) {
-    this.setSelectedItemId(id);
-
     const {
       pathEdit
     } = this.appModDummyMainPageItem.settings.paths;
 
-    const parameters = this.appModDummyMainPageItem.createParameters(this.parameters.index);
+    const parameters = this.appModDummyMainPageItem.createParameters();
 
     parameters.paramId.value = id;
 
     const commands = this.appModDummyMainPageItem.createRouterLink(pathEdit, parameters);
+
+    this.appModDummyMainPageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
 
     this.extRouter.navigate(commands).catch();
   }
@@ -154,6 +203,10 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
 
     const commands = this.appModDummyMainPageItem.createRouterLink(pathCreate);
 
+    this.appModDummyMainPageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
+
     this.extRouter.navigate(commands).catch();
   }
 
@@ -162,17 +215,19 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    * @param {number} id Идентификатор.
    */
   executeActionItemView(id: number) {
-    this.setSelectedItemId(id);
-
     const {
       pathView
     } = this.appModDummyMainPageItem.settings.paths;
 
-    const parameters = this.appModDummyMainPageItem.createParameters(this.parameters.index);
+    const parameters = this.appModDummyMainPageItem.createParameters();
 
     parameters.paramId.value = id;
 
     const commands = this.appModDummyMainPageItem.createRouterLink(pathView, parameters);
+
+    this.appModDummyMainPageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
 
     this.extRouter.navigate(commands).catch();
   }
@@ -225,8 +280,23 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
     );
   }
 
+  getIsItemsDeleteStarted$(): Observable<boolean> {
+    return this.isItemsDeleteStarted$.pipe(
+      takeUntil(this.unsubscribe$)
+    );
+  }
+
   getParameters(): AppModDummyMainPageListParameters {
     return this.appModDummyMainPageList.getLocation().parameters;
+  }
+
+  /**
+   * Получить действительный идентификатор объекта сущности "DummyOneToMany".
+   * @param {?number} value Значение.
+   * @returns {number} Идентификатор состояния элемента расчёта.
+   */
+  getRealObjectDummyOneToManyId(value?: number): number {
+    return value > 0 ? value : this.parameters.paramObjectDummyOneToManyId.value;
   }
 
   /**
@@ -332,8 +402,22 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    */
   onAfterActionItemDeleteSuccess(): boolean {
     if (this.pageKey === this.appModDummyMainPageItem.settings.key) {
-      this.setSelectedItemId(0);
+      this.onReceiveEnsureLoadDataRequest();
 
+      this.executeActionItemInsert();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Обработчик события после действия "Элемент. Удаление. Успех".
+   * @returns {boolean} Результат обработки.
+   */
+  onAfterActionItemsDeleteSuccess(): boolean {
+    if (this.pageKey === this.appModDummyMainPageItem.settings.key) {
       this.onReceiveEnsureLoadDataRequest();
 
       this.executeActionItemInsert();
@@ -395,11 +479,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
   protected onGetPageKeyOverInit(pageKey: string) {
     super.onGetPageKeyOverInit(pageKey);
 
-    const {
-      index
-    } = this.appModDummyMainPageList.settings;
-
-    this.parameters = this.appModDummyMainPageList.createParameters(index);
+    this.parameters = this.createParameters();
   }
 
   /** @param {string} pageKey */
@@ -425,14 +505,69 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
 
   private executeTitleActionItemAdd() {
     if (this.titleItemsCount === 0) {
-      this.appTitle.executeActionItemAdd(
-        this.appModDummyMainPageList.settings.titleResourceKey,
-        this.resources.titleTranslated$,
-        this.unsubscribe$
-      );
+      const {
+        titleResourceKey
+      } = this.appModDummyMainPageList.settings;
 
-      this.titleItemsCount = 1;
+      if (titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
     }
+  }
+
+  private getItemParametersFromRouteParamMap(paramMap: ParamMap) {
+    const parameters = this.appModDummyMainPageItem.createParameters();
+
+    const {
+      paramId
+    } = parameters;
+
+    paramId.value = +paramMap.get(paramId.name);
+
+    return parameters;
+  }
+
+  private getParametersFromRouteParamMap(paramMap: ParamMap) {
+    const parameters = this.createParameters();
+
+    const {
+      paramIsDataRefreshed,
+      paramPageNumber,
+      paramPageSize,
+      paramSelectedItemId,
+      paramSelectedItemIdsString,
+      paramSortDirection,
+      paramSortField,
+      paramIdsString,
+      paramName,
+      paramObjectDummyOneToManyId,
+      paramObjectDummyOneToManyIdsString,
+      paramObjectDummyOneToManyName
+    } = parameters;
+
+    this.isDataRefreshed$.next(paramMap.get(paramIsDataRefreshed.name) === 'true');
+
+    paramPageNumber.value = this.getRealPageNumber(+paramMap.get(paramPageNumber.name));
+    paramPageSize.value = this.getRealPageSize(+paramMap.get(paramPageSize.name));
+    paramSelectedItemId.value = this.getRealSelectedItemId(+paramMap.get(paramSelectedItemId.name));
+    paramSelectedItemIdsString.value = paramMap.get(paramSelectedItemIdsString.name);
+    paramSortField.value = this.getRealSortField(paramMap.get(paramSortField.name));
+    paramSortDirection.value = this.getRealSortDirection(paramMap.get(paramSortDirection.name));
+
+    paramIdsString.value = paramMap.get(paramIdsString.name);
+    paramName.value = paramMap.get(paramName.name);
+
+    paramObjectDummyOneToManyId.value = this.getRealObjectDummyOneToManyId(+paramMap.get(paramObjectDummyOneToManyId.name));
+    paramObjectDummyOneToManyIdsString.value = paramMap.get(paramObjectDummyOneToManyIdsString.name);
+    paramObjectDummyOneToManyName.value = paramMap.get(paramObjectDummyOneToManyName.name);
+
+    return parameters;
   }
 
   /** @param {AppModDummyMainJobListGetInput} input */
@@ -481,45 +616,23 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
   }
 
   private onRouteParamMapSwitchMapToJobListGetInput(paramMap: ParamMap): Observable<AppModDummyMainJobListGetInput> {
-    const parameters = this.createParameters();
+    const paramsPageItem = this.getItemParametersFromRouteParamMap(paramMap);
+    const paramsPageList = this.getParametersFromRouteParamMap(paramMap);
 
-    const {
-      paramPageNumber,
-      paramPageSize,
-      paramSelectedItemId,
-      paramSortDirection,
-      paramSortField,
-      paramObjectDummyOneToManyName,
-      paramObjectDummyOneToManyId,
-      paramObjectDummyOneToManyIdsString,
-      paramName,
-      paramIdsString,
-      paramIsDataRefreshed
-    } = parameters;
+    const parameters = new AppModDummyMainPageListStateParameters(paramsPageItem, paramsPageList);
 
-    paramIdsString.value = paramMap.get(paramIdsString.name);
-    paramName.value = paramMap.get(paramName.name);
-    paramPageNumber.value = this.getRealPageNumber(+paramMap.get(paramPageNumber.name));
-    paramPageSize.value = this.getRealPageSize(+paramMap.get(paramPageSize.name));
-    paramSelectedItemId.value = this.getRealSelectedItemId(+paramMap.get(paramSelectedItemId.name));
-    paramSortField.value = this.getRealSortField(paramMap.get(paramSortField.name));
-    paramSortDirection.value = this.getRealSortDirection(paramMap.get(paramSortDirection.name));
-    paramObjectDummyOneToManyName.value = paramMap.get(paramObjectDummyOneToManyName.name);
-    paramObjectDummyOneToManyId.value = +paramMap.get(paramObjectDummyOneToManyId.name);
-    paramObjectDummyOneToManyIdsString.value = paramMap.get(paramObjectDummyOneToManyIdsString.name);
-
-    this.isDataRefreshed$.next(paramMap.get(paramIsDataRefreshed.name) === 'true');
+    this.appStore.runActionParametersSet(parameters);
 
     const location = this.appModDummyMainPageList.getLocation();
 
     location.path = this.appModDummyMainPageList.settings.path;
-    location.parameters = parameters;
+    location.parameters = paramsPageList;
     location.paramMap = paramMap;
     location.pageKey = this.pageKey;
 
     this.appModDummyMainPageList.setLocation(location);
 
-    let input = parameters.createJobListGetInput();
+    let input = paramsPageList.createJobListGetInput();
 
     if (input.equals(this.jobListGetInput)) {
       input = null;

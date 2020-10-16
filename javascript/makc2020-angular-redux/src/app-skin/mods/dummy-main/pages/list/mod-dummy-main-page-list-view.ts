@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {Paginator, Table} from 'primeng';
+import {Paginator, SelectItem, Table} from 'primeng';
 import {merge} from 'rxjs';
 import {AppModDummyMainPageListSettings} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-settings';
 import {AppModDummyMainPageListView} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-view';
 import {AppModDummyMainPageListSettingColumns} from '@app/mods/dummy-main/pages/list/settings/mod-dummy-main-page-list-setting-columns';
 import {AppSkinCoreProgressSpinnerComponent} from '@app-skin/core/progress/spinner/core-progress-spinner.component';
 import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinner/core-progress-spinner.directive';
+import {AppModDummyMainCommonJobOptionsGetOutputList} from '@app/mods/dummy-main/common/jobs/options/get/output/mod-dummy-main-common-job-options-get-output-list';
 import {AppModDummyMainPageListDataItem} from '@app/mods/dummy-main/pages/list/data/mod-dummy-main-page-list-data-item';
 import {AppModDummyMainPageListParameters} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-parameters';
 import {AppModDummyMainPageListResourceColumns} from '@app/mods/dummy-main/pages/list/resources/mod-dummy-main-page-list-resource-columns';
@@ -31,6 +32,12 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
   private isDataLoading = false;
 
   /**
+   * Вырианты выбора "DummyOneToMany".
+   * @type {SelectItem[]}
+   */
+  selectItemsDummyOneToMany: SelectItem[] = [];
+
+  /**
    * Ключ данных.
    * @type {string}
    */
@@ -49,6 +56,12 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
   selectedItem: AppModDummyMainPageListDataItem;
 
   /**
+   * Выбранные элементы.
+   * @type {AppModDummyMainPageListDataItem[]}
+   */
+  selectedItems: AppModDummyMainPageListDataItem[];
+
+  /**
    * Конструктор.
    * @param {AppModDummyMainPageListResourceColumns} resourceColumns Ресурс столбцов.
    * @param {AppModDummyMainPageListSettings} settingColumns Настройка столбцов.
@@ -65,12 +78,14 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
 
     const {
       columnId: columnIdResource,
-      columnName: columnNameResource
+      columnName: columnNameResource,
+      columnObjectDummyOneToMany: columnObjectDummyOneToManyResource
     } = resourceColumns;
 
     const {
       columnId: columnIdSetting,
-      columnName: columnNameSetting
+      columnName: columnNameSetting,
+      columnObjectDummyOneToMany: columnObjectDummyOneToManySetting
     } = settingColumns;
 
     this.dataKey = columnIdSetting.name;
@@ -87,8 +102,35 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
         get header(): string {
           return columnNameResource.label;
         }
-      }
+      },
+      {
+        field: columnObjectDummyOneToManySetting.name,
+        get header(): string {
+          return columnObjectDummyOneToManyResource.label;
+        }
+      },
     ];
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyMainPageListDataItem[]}
+   */
+  getData(): AppModDummyMainPageListDataItem[] {
+    return this.ctrlTable.value;
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {boolean}
+   */
+  getItemsDeleteButtonIsDisabled(): boolean {
+    return super.getItemsDeleteButtonIsDisabled()
+      || (
+        !this.selectedItems
+        || !this.selectedItems.length
+      )
+      && this.fieldFiltered.value === false;
   }
 
   /** @inheritDoc */
@@ -101,8 +143,30 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
     return 10;
   }
 
-  getSelectedItemId(): number {
-    return this.selectedItem ? this.selectedItem.id : 0;
+  /**
+   * Получить CSS-класс строки.
+   * @param {AppModDummyMainPageListDataItem} row Строка.
+   */
+  getRowCssClass(row: AppModDummyMainPageListDataItem) {
+    return {
+      'ui-state-highlight': this.currentItemId === row.id
+    };
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyMainPageListDataItem}
+   */
+  getSelectedItem(): AppModDummyMainPageListDataItem {
+    return this.selectedItem;
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyMainPageListDataItem[]}
+   */
+  getSelectedItems(): AppModDummyMainPageListDataItem[] {
+    return this.selectedItems ?? [];
   }
 
   /** @inheritDoc */
@@ -175,6 +239,7 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
     const {
       paramPageNumber,
       paramSelectedItemId,
+      paramSelectedItemIdsString,
       paramSortDirection,
       paramSortField
     } = parameters;
@@ -182,10 +247,42 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
     this.setPageNumber(paramPageNumber.value);
     this.setSelectedItemId(paramSelectedItemId.value);
 
+    let selectedItemIds: number[] = [];
+
+    if (paramSelectedItemIdsString.value && paramSelectedItemIdsString.value.length > 0) {
+      selectedItemIds = paramSelectedItemIdsString.value.split(',').map(x => +x);
+    }
+
+    this.setSelectedItemIds(selectedItemIds);
+
     this.ctrlTable.sortField = paramSortField.value;
     this.ctrlTable.sortOrder = paramSortDirection.value === 'asc' ? 1 : -1;
 
+    this.ctrlTable.sortSingle();
+
     this.isDataLoading = false;
+  }
+
+  /**
+   * @inheritDoc
+   * @param {AppModDummyMainCommonJobOptionsGetOutputList} data
+   */
+  loadOptionsDummyOneToMany(data?: AppModDummyMainCommonJobOptionsGetOutputList) {
+    super.loadOptionsDummyOneToMany(data);
+
+    if (this.optionsDummyOneToMany) {
+      this.selectItemsDummyOneToMany = this.optionsDummyOneToMany.items.map(option => ({
+        label: option.name,
+        title: option.name,
+        value: option.value
+      } as SelectItem));
+
+      this.selectItemsDummyOneToMany.unshift({
+        label: '',
+        title: '',
+        value: 0
+      } as SelectItem);
+    }
   }
 
   /**
@@ -194,6 +291,7 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
    */
   setPageNumber(value: number) {
     this.ctrlPaginator.first = (value - 1) * this.pageSize;
+    this.ctrlPaginator.updatePageLinks();
   }
 
   /**
@@ -204,6 +302,26 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
     this.selectedItem = value > 0
       ? this.ctrlTable.value.find(item => item.id === value)
       : null;
+  }
+
+  /**
+   * @inheritDoc
+   * @param {number[]} value
+   */
+  setSelectedItemIds(value: number[]) {
+    const selectedItems = [];
+
+    if (value && value.length > 0) {
+      for (const item of this.ctrlTable.value) {
+        for (const id of value) {
+          if (item.id === id) {
+            selectedItems.push(item);
+          }
+        }
+      }
+    }
+
+    this.selectedItems = selectedItems;
   }
 
   /** @inheritDoc */
@@ -217,8 +335,26 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
   }
 
   /** @inheritDoc */
+  subscribeOnHeaderCheckboxToggle(callback: () => void) {
+    this.ctrlTable.onHeaderCheckboxToggle.subscribe(event => {
+      if (!this.isDataLoading) {
+        callback();
+      }
+    });
+  }
+
+  /** @inheritDoc */
   subscribeOnRowSelect(callback: () => void) {
     this.ctrlTable.onRowSelect.subscribe(event => {
+      if (!this.isDataLoading) {
+        callback();
+      }
+    });
+  }
+
+  /** @inheritDoc */
+  subscribeOnRowUnselect(callback: () => void) {
+    this.ctrlTable.onRowUnselect.subscribe(event => {
       if (!this.isDataLoading) {
         callback();
       }

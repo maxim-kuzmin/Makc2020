@@ -1,7 +1,9 @@
 // //Author Maxim Kuzmin//makc//
 
+import {Validators} from '@angular/forms';
 import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
+import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
 import {AppModDummyMainJobListGetOutput} from '../../jobs/list/get/mod-dummy-main-job-list-get-output';
 import {AppModDummyMainPageListDataItem} from './data/mod-dummy-main-page-list-data-item';
 import {AppModDummyMainPageListEnumActions} from './enums/mod-dummy-main-page-list-enum-actions';
@@ -13,11 +15,20 @@ import {AppModDummyMainPageListView} from './mod-dummy-main-page-list-view';
 /** Мод "DummyMain". Страницы. Список. Представитель. */
 export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageListModel> {
 
+  /** @type {boolean} */
+  private isFilterApplied = false;
+
+  /** @type {boolean} */
+  private isSortCanceled = false;
+
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangedAsync: AppCoreExecutableAsync;
 
   /** @type {AppCoreExecutableAsync} */
   private onActionsDataChangingAsync: AppCoreExecutableAsync;
+
+  /** @type {AppCoreExecutableAsync} */
+  private onActionParametersSetAsync: AppCoreExecutableAsync;
 
   /**
    * Ресурсы.
@@ -44,19 +55,31 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     this.onActionsDataChanging = this.onActionsDataChanging.bind(this);
     this.onActionsDataChangingAsync = new AppCoreExecutableAsync(this.onActionsDataChanging);
 
+    this.onActionParametersSet = this.onActionParametersSet.bind(this);
+    this.onActionParametersSetAsync = new AppCoreExecutableAsync(this.onActionParametersSet);
+
     this.onDataLoaded = this.onDataLoaded.bind(this);
+    this.onFilterCancel = this.onFilterCancel.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
+    this.onFilteredToggle = this.onFilteredToggle.bind(this);
     this.onGetIsDataRefreshed = this.onGetIsDataRefreshed.bind(this);
     this.onGetIsItemDeleteStarted = this.onGetIsItemDeleteStarted.bind(this);
+    this.onGetIsItemsDeleteStarted = this.onGetIsItemsDeleteStarted.bind(this);
     this.onGetState = this.onGetState.bind(this);
+    this.onHeaderCheckboxToggle = this.onHeaderCheckboxToggle.bind(this);
     this.onRowSelect = this.onRowSelect.bind(this);
+    this.onRowUnselect = this.onRowUnselect.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onSortOrPageChange = this.onSortOrPageChange.bind(this);
+
+    this.buildView();
   }
 
   /** @inheritDoc */
   onAfterViewInit() {
+    this.view.subscribeOnHeaderCheckboxToggle(this.onHeaderCheckboxToggle);
     this.view.subscribeOnRowSelect(this.onRowSelect);
+    this.view.subscribeOnRowUnselect(this.onRowUnselect);
     this.view.subscribeOnSortChange(this.onSortChange);
     this.view.subscribeOnSortOrPageChange(this.onSortOrPageChange);
 
@@ -64,26 +87,45 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     this.view.initRefreshSpinner();
 
     this.model.getState$().subscribe(this.onGetState);
-    this.model.subscribeToEventDelayedDistinct(this.view.fieldName.valueChanges, this.onFilterChange);
+    // this.model.subscribeToEventDelayedDistinct(this.view.fieldName.valueChanges, this.onFilterChange);
+    // this.model.subscribeToEventDelayedDistinct(this.view.fieldObjectDummyMainType.valueChanges, this.onFilterChange);
 
     super.onAfterViewInit();
   }
 
-  /**
-   * @inheritDoc
-   * @param {string} message
-   * @param {any} error
-   */
-  protected onException(message: string, error: any) {
-    this.hideSpinners();
+  /** Обработчик события отмены фильтрации. */
+  onFilterCancel() {
+    this.clearFields();
 
-    super.onException(message, error);
+    if (this.isFilterApplied) {
+      this.onFilterChange();
+    }
+  }
+
+  /** Обработчик события изменения фильтрации. */
+  onFilterChange() {
+    if (this.view.getPageNumber() > 1) {
+      this.view.setPageNumber(1);
+    }
+
+    this.model.onReceiveEnsureLoadDataRequest();
+
+    this.clearSelectedItems();
+
+    this.refresh();
   }
 
   /** @inheritDoc */
   onInit() {
     this.model.getIsDataRefreshed$().subscribe(this.onGetIsDataRefreshed);
     this.model.getIsItemDeleteStarted$().subscribe(this.onGetIsItemDeleteStarted);
+    this.model.getIsItemsDeleteStarted$().subscribe(this.onGetIsItemsDeleteStarted);
+
+    const {
+      fieldFiltered
+    } = this.view;
+
+    this.model.subscribeToEvent(fieldFiltered.valueChanges, this.onFilteredToggle);
 
     super.onInit();
   }
@@ -97,9 +139,42 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
       return;
     }
 
-    this.view.setSelectedItemId(id);
-
     this.model.executeActionItemDelete(id);
+  }
+
+  /** Обработчик события удаления элементов. */
+  onItemsDelete() {
+    if (this.view.isItemsDeleteStarted) {
+      return;
+    }
+
+    let isOk = false;
+
+    if (this.view.fieldFiltered.value === true) {
+      this.model.executeActionItemsDeleteFiltered();
+
+      isOk = true;
+    } else {
+      const items = this.view.getSelectedItems();
+
+      if (items.length > 0) {
+        const ids: number[] = [];
+        const names: string[] = [];
+
+        for (const item of items) {
+          ids.push(item.id);
+          names.push(item.name);
+        }
+
+        this.model.executeActionItemsDeleteList(ids, names);
+
+        isOk = true;
+      }
+    }
+
+    if (!isOk) {
+      this.view.isItemsDeleteStarted = false;
+    }
   }
 
   /**
@@ -107,8 +182,6 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
    * @param {number} id Идентификатор.
    */
   onItemEdit(id: number) {
-    this.view.setSelectedItemId(id);
-
     this.model.executeActionItemEdit(id);
   }
 
@@ -122,9 +195,89 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
    * @param {number} id Идентификатор.
    */
   onItemView(id: number) {
-    this.view.setSelectedItemId(id);
-
     this.model.executeActionItemView(id);
+  }
+
+  /** Обработчик события освежения. */
+  onRefresh() {
+    const {
+      jobListGetInput
+    } = this.model.getState();
+
+    if (jobListGetInput) {
+      this.loadFilterFromJobListGetInput(jobListGetInput);
+    }
+
+    this.model.onReceiveEnsureLoadDataRequest();
+
+    this.refresh();
+  }
+
+  /** Обработчик события отмены сортировки. */
+  onSortCancel() {
+    this.isSortCanceled = true;
+
+    this.onRefresh();
+  }
+
+  /**
+   * @inheritDoc
+   * @param {string} message
+   * @param {any} error
+   */
+  protected onException(message: string, error: any) {
+    this.hideSpinners();
+
+    super.onException(message, error);
+
+    this.view.isActionStarted = false;
+
+    this.refreshFields();
+  }
+
+  private buildView() {
+    const {
+      extFormBuilder
+    } = this.model;
+
+    const {
+      fieldName,
+      fieldObjectDummyOneToMany
+    } = this.model.getSettingFields();
+
+    const formGroup = extFormBuilder.group({
+      [fieldName.name]: [{value: '', disabled: true}, Validators.nullValidator],
+      [fieldObjectDummyOneToMany.name]: [{value: '', disabled: true}, Validators.nullValidator],
+    });
+
+    this.view.build(formGroup);
+  }
+
+  private clearFields() {
+    const {
+      fieldName,
+      fieldObjectDummyOneToMany
+    } = this.view;
+
+    fieldName.setValue('', {emitEvent: false});
+    fieldObjectDummyOneToMany.setValue(0, {emitEvent: false});
+
+    this.clearFormGroupState();
+  }
+
+  private clearFormGroupState() {
+    const {
+      formGroup
+    } = this.view;
+
+    formGroup.markAsPristine();
+    formGroup.markAsUntouched();
+  }
+
+  private clearSelectedItems() {
+    if (this.view.getSelectedItems().length > 0) {
+      this.view.setSelectedItemIds([]);
+    }
   }
 
   private hideSpinners() {
@@ -158,7 +311,7 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     } = this.view;
 
     if ((!isDataLoaded || !isDataRefreshed) && jobListGetInput) {
-      this.view.fieldName.setValue(jobListGetInput.dataName, {emitEvent: false});
+      this.loadFilterFromJobListGetInput(jobListGetInput);
     }
 
     if (data) {
@@ -167,7 +320,8 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
       items = data.items.map(
         x => new AppModDummyMainPageListDataItem(
           x.objectDummyMain.id,
-          x.objectDummyMain.name
+          x.objectDummyMain.name,
+          x.objectDummyOneToMany.name
         )
       );
     }
@@ -181,7 +335,66 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     this.view.loadData(items, this.model.getParameters());
   }
 
+  private loadFilterFromJobListGetInput(jobListGetInput: AppModDummyMainJobListGetInput) {
+    const {
+      dataName,
+      dataObjectDummyOneToManyId
+    } = jobListGetInput;
+
+    const {
+      fieldName,
+      fieldObjectDummyOneToMany
+    } = this.view;
+
+    fieldName.setValue(dataName ?? '', {emitEvent: false});
+    fieldObjectDummyOneToMany.setValue(dataObjectDummyOneToManyId > 0 ? dataObjectDummyOneToManyId : 0, {emitEvent: false});
+  }
+
+  private onActionParametersSet() {
+    const {
+      parameters
+    } = this.model.getState();
+
+    const {
+      value: currentItemId
+    } = parameters.paramsPageItem.paramId;
+
+    this.view.currentItemId = currentItemId > 0 ? currentItemId : 0;
+
+    const {
+      paramName,
+      paramObjectDummyOneToManyId,
+      paramSelectedItemIdsString,
+      paramSortDirection,
+      paramSortField
+    } = parameters.paramsPageList;
+
+    const {
+      paramSortDirection: paramSortDirectionDefault,
+      paramSortField: paramSortFieldDefault
+    } = this.model.createParameters();
+
+    this.isFilterApplied = !!paramName.value
+      || !!paramObjectDummyOneToManyId.value;
+
+    this.view.isSortApplied = paramSortDirection.value !== paramSortDirectionDefault.value
+      || paramSortField.value !== paramSortFieldDefault.value;
+
+    const {
+      fieldFiltered
+    } = this.view;
+
+    fieldFiltered.setValue(paramSelectedItemIdsString.value === '*', {emitEvent: false});
+
+    this.view.paramNameValue = paramName.value ?? '';
+    this.view.paramObjectDummyOneToManyIdValue = paramObjectDummyOneToManyId.value ?? 0;
+  }
+
   private onActionsDataChanging() {
+    this.view.isActionStarted = true;
+
+    this.refreshFields();
+
     const {
       isDataLoaded
     } = this.view;
@@ -204,6 +417,12 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
       case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
         isCompleted = this.onDataChangedByDeleteSuccess();
         break;
+      case AppModDummyMainPageListEnumActions.FilteredDeleteSuccess:
+        isCompleted = this.onDataChangedByDeleteListSuccess();
+        break;
+      case AppModDummyMainPageListEnumActions.ListDeleteSuccess:
+        isCompleted = this.onDataChangedByDeleteListSuccess();
+        break;
       case AppModDummyMainPageListEnumActions.LoadSuccess:
         isCompleted = this.onDataChangedByLoadSuccess();
         break;
@@ -211,8 +430,13 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
 
     if (isCompleted) {
       this.view.isItemDeleteStarted = false;
+      this.view.isItemsDeleteStarted = false;
 
       this.hideSpinners();
+
+      this.view.isActionStarted = false;
+
+      this.refreshFields();
     }
   }
 
@@ -221,7 +445,6 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     const {
       jobItemDeleteResult
     } = this.model.getState();
-
     if (jobItemDeleteResult) {
       const {
         isOk,
@@ -234,8 +457,6 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
 
       if (isOk) {
         if (!this.model.onAfterActionItemDeleteSuccess()) {
-          this.view.setSelectedItemId(0);
-
           this.model.onReceiveEnsureLoadDataRequest();
 
           this.refresh();
@@ -247,9 +468,36 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
   }
 
   /** @returns {boolean} */
+  private onDataChangedByDeleteListSuccess(): boolean {
+    const {
+      jobListDeleteResult
+    } = this.model.getState();
+    if (jobListDeleteResult) {
+      const {
+        isOk,
+        errorMessages,
+        successMessages
+      } = jobListDeleteResult;
+
+      this.view.responseErrorMessages = errorMessages;
+      this.view.responseSuccessMessages = successMessages;
+
+      if (isOk) {
+        if (!this.model.onAfterActionItemsDeleteSuccess()) {
+          this.model.onReceiveEnsureLoadDataRequest();
+          this.refresh();
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /** @returns {boolean} */
   private onDataChangedByLoadSuccess(): boolean {
     const {
-      jobListGetResult: result
+      jobListGetResult: result,
+      jobOptionsDummyOneToManyGetResult: optionsDummyOneToMany,
     } = this.model.getState();
 
     if (result) {
@@ -265,6 +513,19 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
       this.loadData(data);
     }
 
+    if (optionsDummyOneToMany) {
+      const {
+        data,
+        errorMessages,
+        successMessages
+      } = optionsDummyOneToMany;
+
+      this.view.responseErrorMessages = errorMessages;
+      this.view.responseSuccessMessages = successMessages;
+
+      this.view.loadOptionsDummyOneToMany(data);
+    }
+
     return true;
   }
 
@@ -272,12 +533,8 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
     this.view.isDataLoaded = true;
   }
 
-  private onFilterChange() {
-    if (this.view.getPageNumber() > 1) {
-      this.view.setPageNumber(1);
-    }
-
-    this.model.onReceiveEnsureLoadDataRequest();
+  private onFilteredToggle() {
+    this.clearSelectedItems();
 
     this.refresh();
   }
@@ -288,6 +545,10 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
 
   private onGetIsItemDeleteStarted() {
     this.view.isItemDeleteStarted = true;
+  }
+
+  private onGetIsItemsDeleteStarted() {
+    this.view.isItemsDeleteStarted = true;
   }
 
   /** @param {AppModDummyMainPageListState} state */
@@ -302,18 +563,33 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
 
       switch (action) {
         case AppModDummyMainPageListEnumActions.ItemDelete:
+        case AppModDummyMainPageListEnumActions.FilteredDelete:
+        case AppModDummyMainPageListEnumActions.ListDelete:
         case AppModDummyMainPageListEnumActions.Load:
           this.onActionsDataChangingAsync.execute();
           break;
         case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
+        case AppModDummyMainPageListEnumActions.FilteredDeleteSuccess:
+        case AppModDummyMainPageListEnumActions.ListDeleteSuccess:
         case AppModDummyMainPageListEnumActions.LoadSuccess:
           this.onActionsDataChangedAsync.execute();
+          break;
+        case AppModDummyMainPageListEnumActions.ParametersSet:
+          this.onActionParametersSetAsync.execute();
           break;
       }
     }
   }
 
+  private onHeaderCheckboxToggle() {
+    this.refresh();
+  }
+
   private onRowSelect() {
+    this.refresh();
+  }
+
+  private onRowUnselect() {
     this.refresh();
   }
 
@@ -324,7 +600,17 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
   }
 
   private onSortOrPageChange() {
+    const {
+      jobListGetInput
+    } = this.model.getState();
+
+    if (jobListGetInput) {
+      this.loadFilterFromJobListGetInput(jobListGetInput);
+    }
+
     this.model.onReceiveEnsureLoadDataRequest();
+
+    this.clearSelectedItems();
 
     this.refresh();
   }
@@ -334,22 +620,52 @@ export class AppModDummyMainPageListPresenter extends AppCoreCommonPagePresenter
 
     const {
       paramIsDataRefreshed,
-      paramName,
       paramPageNumber,
       paramPageSize,
       paramSelectedItemId,
+      paramSelectedItemIdsString,
       paramSortDirection,
-      paramSortField
+      paramSortField,
+      paramName,
+      paramObjectDummyOneToManyId
     } = parameters;
 
     paramIsDataRefreshed.value = true;
-    paramName.value = this.view.fieldName.value;
+
     paramPageNumber.value = this.view.getPageNumber();
     paramPageSize.value = this.view.getPageSize();
-    paramSelectedItemId.value = this.view.getSelectedItemId();
-    paramSortField.value = this.view.getSortField();
-    paramSortDirection.value = this.view.getSortDirection();
+    paramSelectedItemId.value = this.view.getSelectedItem()?.id ?? 0;
+
+    paramSelectedItemIdsString.value = this.view.fieldFiltered.value === true
+      ? '*'
+      : this.view.getSelectedItems().map(x => x.id).join(',');
+
+    if (!this.isSortCanceled) {
+      paramSortField.value = this.view.getSortField();
+      paramSortDirection.value = this.view.getSortDirection();
+    }
+
+    this.isSortCanceled = false;
+
+    paramName.value = this.view.fieldName.value;
+    paramObjectDummyOneToManyId.value = +this.view.fieldObjectDummyOneToMany.value;
 
     this.model.executeActionRefresh(parameters);
+  }
+
+  private refreshFields() {
+    const {
+      fieldName,
+      fieldObjectDummyOneToMany,
+      isActionStarted
+    } = this.view;
+
+    if (isActionStarted) {
+      fieldName.disable();
+      fieldObjectDummyOneToMany.disable();
+    } else {
+      fieldName.enable();
+      fieldObjectDummyOneToMany.enable();
+    }
   }
 }

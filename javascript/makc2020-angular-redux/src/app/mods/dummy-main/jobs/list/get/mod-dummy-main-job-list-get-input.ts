@@ -39,8 +39,8 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
    * Конструктор.
    * @param {?number} pageNumber Номер страницы.
    * @param {?number} pageSize Размер страницы.
-   * @param {?string} sortField Поле сортировки.
    * @param {?string} sortDirection Направление сортировки.
+   * @param {?string} sortField Поле сортировки.
    * @param {?string} dataIdsString Данные: строка идентификаторов.
    * @param {?string} dataName Данные: имя.
    * @param {?number} dataObjectDummyOneToManyId
@@ -53,8 +53,8 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
   constructor(
     pageNumber?: number,
     pageSize?: number,
-    sortField?: string,
     sortDirection?: string,
+    sortField?: string,
     dataIdsString?: string,
     dataName?: string,
     dataObjectDummyOneToManyId?: number,
@@ -64,8 +64,8 @@ export class AppModDummyMainJobListGetInput extends AppCoreCommonModJobListGetIn
     super(
       pageNumber,
       pageSize,
-      sortField,
-      sortDirection
+      sortDirection,
+      sortField
     );
 
     if (dataIdsString) {

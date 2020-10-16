@@ -41,10 +41,10 @@ export class AppModDummyMainPageItemService {
 
   /**
    * Создать параметры.
-   * @param {number} index Индекс.
+   * @param {?string} index Индекс.
    * @returns {AppModDummyMainPageItemParameters} Параметры.
    */
-  createParameters(index: string): AppModDummyMainPageItemParameters {
+  createParameters(index?: string): AppModDummyMainPageItemParameters {
     if (index === undefined || index === null) {
       index = this.settings.index;
     }
