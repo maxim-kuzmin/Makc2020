@@ -24,6 +24,30 @@ export function appModDummyMainPageListStoreReducer(
         action: action.type,
         jobItemDeleteResult: action.jobItemDeleteResult
       };
+    case AppModDummyMainPageListEnumActions.FilteredDelete:
+      return {
+        ...state,
+        action: action.type,
+        jobListGetInput: action.jobListGetInput
+      };
+    case AppModDummyMainPageListEnumActions.FilteredDeleteSuccess:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteResult: action.jobListDeleteResult
+      };
+    case AppModDummyMainPageListEnumActions.ListDelete:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteInput: action.jobListDeleteInput
+      };
+    case AppModDummyMainPageListEnumActions.ListDeleteSuccess:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteResult: action.jobListDeleteResult
+      };
     case AppModDummyMainPageListEnumActions.Load:
       return {
         ...state,
@@ -34,7 +58,14 @@ export function appModDummyMainPageListStoreReducer(
       return {
         ...state,
         action: action.type,
-        jobListGetResult: action.jobListGetResult
+        jobListGetResult: action.jobListGetResult,
+        jobOptionsDummyOneToManyGetResult: action.jobOptionsDummyOneToManyGetResult
+      };
+    case AppModDummyMainPageListEnumActions.ParametersSet:
+      return {
+        ...state,
+        action: action.type,
+        parameters: action.parameters
       };
     default:
       return state;
