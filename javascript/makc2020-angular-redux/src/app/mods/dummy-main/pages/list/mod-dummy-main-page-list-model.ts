@@ -118,7 +118,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
    * @returns {AppModDummyMainPageListParameters} Параметры.
    */
   createParameters(): AppModDummyMainPageListParameters {
-    return this.appModDummyMainPageList.createParameters(this.parameters.index);
+    return this.appModDummyMainPageList.createParameters();
   }
 
   /**

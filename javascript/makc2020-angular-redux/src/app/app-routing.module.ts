@@ -36,7 +36,14 @@ const routes: Routes = [
       // enableTracing: true, // <-- debugging purposes only
       onSameUrlNavigation: 'reload',
       preloadingStrategy: PreloadAllModules,
-      initialNavigation: 'enabled'
+      // //makc//!!!//>//Если это раскомментировать, то при включенной аутентификации SSO
+      // (значение authTypeOidcIsEnabled равно true в файле environment.ts) приложение перестаёт
+      // работать. Однако это нужно для SSR (отрисовки на сервере), поэтому с этим надо срочно
+      // разобраться - SSR должен работать вместе с SSO! //
+
+      // initialNavigation: 'enabled'
+
+      // //makc//!!!//<//
     })
   ],
   exports: [RouterModule],

@@ -7,10 +7,11 @@
   ],
   "Clients": [
     {
+      "AccessTokenLifetime": 3600,
       "AllowedCorsOrigins": [
         "http://localhost:4201"
       ],
-      "AllowedGrantTypes": "Code",
+      "AllowedGrantTypes": "Implicit",
       "AllowOfflineAccess": true,
       "AllowedScopes": [
         "offline_access",
@@ -19,12 +20,15 @@
       ],
       "ClientId": "Makc2020WebClient",
       "ClientName": "Makc2020 web client",
-      "ClientUri": "http://localhost:4201",
+      "IdentityTokenLifetime": 300,
       "RequireClientSecret": false,
       "RequireConsent": false,
-      "RequirePkce": true,
+      "RequirePkce": false,
+      "AllowAccessTokensViaBrowser": true,
+      "ResponseMode": "fragment",
       "RedirectUris": [
-        "http://localhost:4201/mods/auth/redirect"
+        "http://localhost:4201/mods/auth/redirect",
+        "http://localhost:4201/silent-refresh.html"
       ],
       "PostLogoutRedirectUris": [
         "http://localhost:4201/mods/auth/redirect"
@@ -33,5 +37,6 @@
   ],
   "IdentityResources": [
     "OpenId"
-  ]
+  ],
+  "DbCommandTimeout": 0
 }

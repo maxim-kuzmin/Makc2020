@@ -42,10 +42,14 @@ export class AppModDummyMainPageListService {
 
   /**
    * Создать параметры.
-   * @param {number} index Индекс.
+   * @param {?number} index Индекс.
    * @returns {AppModDummyMainPageItemParameters} Параметры.
    */
-  createParameters(index: string): AppModDummyMainPageListParameters {
+  createParameters(index?: string): AppModDummyMainPageListParameters {
+    if (index === undefined || index === null) {
+      index = this.settings.index;
+    }
+
     return new AppModDummyMainPageListParameters(this.appSettings, index);
   }
 
@@ -64,6 +68,7 @@ export class AppModDummyMainPageListService {
     const {
       paramIsDataRefreshed,
       paramName,
+      paramObjectDummyOneToManyId,
       paramPageNumber,
       paramPageSize,
       paramSelectedItemId,
@@ -79,6 +84,10 @@ export class AppModDummyMainPageListService {
 
     if (paramName.isValueDiffer(byDefault.paramName.value)) {
       result[paramName.name] = paramName.value;
+    }
+
+    if (paramObjectDummyOneToManyId.isValueDiffer(byDefault.paramObjectDummyOneToManyId.value)) {
+      result[paramObjectDummyOneToManyId.name] = paramObjectDummyOneToManyId.value;
     }
 
     if (paramPageNumber.isValueDiffer(byDefault.paramPageNumber.value)) {
