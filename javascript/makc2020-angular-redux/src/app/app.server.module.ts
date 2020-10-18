@@ -28,7 +28,7 @@ import {AppSkinComponent} from '@app-skin/app.component';
     {provide: AppCoreNavigationDefault, useClass: AppBaseNavigationDefault, deps: [appBaseDiTokenWindow]},
     {provide: AppCoreStorageDefault, useClass: AppBaseStorageDefault, deps: [appBaseDiTokenLocalStorage, appBaseDiTokenSessionStorage]}
   ],
-  bootstrap: [AppSkinComponent],
+  bootstrap: [AppSkinComponent]
 })
 export class AppServerModule {
 }

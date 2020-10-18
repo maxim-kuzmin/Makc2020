@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -11,7 +12,7 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
     /// Мод "DummyMain". Основа. Расширение. Применить.
     /// </summary>
     public static class ModDummyMainBaseExtApply
-    {
+    {        
         #region Public methods
 
         /// <summary>
@@ -84,7 +85,6 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
                     var dataObjectDummyOneToManyId = input.DataObjectDummyOneToManyIds[0];
 
                     query = query.Where(x => x.ObjectDummyOneToManyId == dataObjectDummyOneToManyId);
-
                 }
             }
 
@@ -110,66 +110,70 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
             var sortField = input.SortField.ToLower();
             var sortDirection = input.SortDirection.ToLower();
 
-            switch (sortField)
+            var sortFieldForId = "Id".ToLower();
+            var sortFieldForName = "Name".ToLower();
+            var sortFieldForObjectDummyOneToMany = "ObjectDummyOneToMany".ToLower();
+            var sortFieldForPropDate = "PropDate".ToLower();
+            var sortFieldForPropBoolean = "PropBoolean".ToLower();
+
+            if (sortField == sortFieldForId)
             {
-                case "id":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.Id);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.Id);
-                            break;
-                    }
-                    break;
-                case "name":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.Name);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.Name);
-                            break;
-                    }
-                    break;
-                case "objectdummyonetomany":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.ObjectDummyOneToMany.Name);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.ObjectDummyOneToMany.Name);
-                            break;
-                    }
-                    break;
-                case "propdate":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.PropDate);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.PropDate);
-                            break;
-                    }
-                    break;
-                case "propboolean":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.PropBoolean);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.PropBoolean);
-                            break;
-                    }
-                    break;
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.Id);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.Id);
+                        break;
+                }
+            } else if (sortField == sortFieldForName)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.Name);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.Name);
+                        break;
+                }
+            } else if (sortField == sortFieldForObjectDummyOneToMany)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.ObjectDummyOneToMany.Name);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.ObjectDummyOneToMany.Name);
+                        break;
+                }
+            } else if (sortField == sortFieldForPropDate)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.PropDate);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.PropDate);
+                        break;
+                }
+            } else if (sortField == sortFieldForPropBoolean)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.PropBoolean);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.PropBoolean);
+                        break;
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(sortField) && sortField != "id")
+            if (!string.IsNullOrWhiteSpace(sortField) && sortField != sortFieldForId)
             {
                 query = ((IOrderedQueryable<DataEntityObjectDummyMain>)query).ThenBy(x => x.Id);
             }

@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "@@@@", "@@@@", "{F3B85D6B-A
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
 		.gitignore = .gitignore
+		deploy.bat = deploy.bat
+		deploy.config.bat = deploy.config.bat
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -339,7 +341,6 @@ Global
 		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Test|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4780F24-76AA-49F5-BD53-FA45572CADAD}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{B421966F-CC6C-489C-9171-AB5A064F5212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B421966F-CC6C-489C-9171-AB5A064F5212}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B421966F-CC6C-489C-9171-AB5A064F5212}.Release|Any CPU.ActiveCfg = Release|Any CPU

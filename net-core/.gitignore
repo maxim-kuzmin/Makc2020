@@ -3,3 +3,4 @@
 **/obj
 **/*Publish
 **/*.user
+/deploy.config.bat
