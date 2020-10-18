@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
-import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.module';
+import {FullCalendarModule} from '@fullcalendar/angular'; // for FullCalendar!
 import {
   ButtonModule,
   CalendarModule,
@@ -25,8 +25,9 @@ import {
   ProgressSpinnerModule,
   TableModule,
   TabViewModule,
-  ToastModule
+  ToastModule, ToolbarModule
 } from 'primeng';
+import {AngularSplitModule} from '@app-skin/base/modules/split/angular-split.module';
 
 /** Общее. Модуль. */
 @NgModule({
@@ -39,6 +40,8 @@ import {
 
     // External
 
+    // @fullcalendar/angular
+    FullCalendarModule,
     // primeng
     ButtonModule,
     CalendarModule,
@@ -55,9 +58,10 @@ import {
     OverlayPanelModule,
     PaginatorModule,
     ProgressSpinnerModule,
-    TabViewModule,
     TableModule,
+    TabViewModule,
     ToastModule,
+    ToolbarModule,
 
     // Internal
 
@@ -73,6 +77,8 @@ import {
 
     // External
 
+    // @fullcalendar/angular
+    FullCalendarModule,
     // primeng/dynamicdialog
     DynamicDialogModule,
     // primeng/primeng
@@ -96,6 +102,7 @@ import {
     TableModule,
     // primeng/toast
     ToastModule,
+    ToolbarModule,
 
     // Internal
 
