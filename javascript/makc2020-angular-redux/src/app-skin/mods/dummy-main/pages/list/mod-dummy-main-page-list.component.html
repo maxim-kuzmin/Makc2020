@@ -12,7 +12,6 @@
       <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start;">
         <button
           pButton type="button"
-          class="btn user-info__button"
           icon="mdi mdi-close"
           [title]="myPresenter.resources.actions.actionDelete.title"
           (click)="myPresenter.onItemsDelete()"
@@ -22,7 +21,6 @@
       <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end;">
         <button
           pButton type="button"
-          class="btn user-info__button"
           icon="mdi mdi-plus"
           [title]="myPresenter.resources.actions.actionAdd.title"
           (click)="myPresenter.onItemInsert()"
@@ -30,7 +28,6 @@
         ></button>
         <button
           pButton type="button"
-          class="btn user-info__button"
           icon="mdi mdi-refresh"
           [title]="myPresenter.resources.actions.actionRefresh.title"
           (click)="myPresenter.onRefresh()"
@@ -57,7 +54,6 @@
           <div style="display: flex; flex-direction: row; justify-content: flex-end;">
             <button
               pButton type="button"
-              class="btn user-info__button"
               icon="mdi mdi-sort-variant-remove"
               [title]="myPresenter.resources.actions.actionSortCancel.title"
               (click)="myPresenter.onSortCancel()"
@@ -85,7 +81,6 @@
           <div style="display: flex; flex-direction: row; justify-content: space-between;">
             <button
               pButton type="button"
-              class="btn user-info__button"
               icon="mdi mdi-filter"
               [title]="myPresenter.resources.actions.actionFilter.title"
               (click)="myPresenter.onFilterChange()"
@@ -93,7 +88,6 @@
             ></button>
             <button
               pButton type="button"
-              class="btn user-info__button"
               icon="mdi mdi-filter-remove"
               [title]="myPresenter.resources.actions.actionFilterCancel.title"
               (click)="myPresenter.onFilterCancel()"
@@ -102,34 +96,12 @@
           </div>
         </th>
         <th *ngFor="let col of columns" [ngSwitch]="col.field">
-          <p-dropdown *ngSwitchCase="'calcElementState'"
-                      [options]="myView.selectItemsCalcElementState"
+          <p-dropdown *ngSwitchCase="myView.settingColumns.columnObjectDummyOneToMany.name"
+                      [options]="myView.selectItemsDummyOneToMany"
                       [style]="{'width':'100%'}"
-                      [formControl]="myView.fieldObjectCalcElementState"
+                      [formControl]="myView.fieldObjectDummyOneToMany"
           ></p-dropdown>
-          <p-dropdown *ngSwitchCase="'calcElementStatus'"
-                      [options]="myView.selectItemsCalcElementStatus"
-                      [style]="{'width':'100%'}"
-                      [formControl]="myView.fieldObjectCalcElementStatus"
-          ></p-dropdown>
-          <p-dropdown *ngSwitchCase="'calcElementType'"
-                      [options]="myView.selectItemsCalcElementType"
-                      [style]="{'width':'100%'}"
-                      [formControl]="myView.fieldObjectCalcElementType"
-          ></p-dropdown>
-          <input *ngSwitchCase="'calcTemplate'"
-                 pInputText
-                 class="skin--css--host--control--grid--filter"
-                 type="text"
-                 [formControl]="myView.fieldObjectCalcTemplate"
-          >
-          <input *ngSwitchCase="'description'"
-                 pInputText
-                 class="skin--css--host--control--grid--filter"
-                 type="text"
-                 [formControl]="myView.fieldDescription"
-          >
-          <input *ngSwitchCase="'name'"
+          <input *ngSwitchCase="myView.settingColumns.columnName"
                  pInputText
                  class="skin--css--host--control--grid--filter"
                  type="text"
@@ -150,7 +122,6 @@
           <div style="display: flex; flex-direction: row; justify-content: space-between;">
             <button
               pButton type="button"
-              class="btn user-info__button"
               icon="mdi mdi-pencil"
               [title]="myPresenter.resources.actions.actionEdit.title"
               (click)="myPresenter.onItemEdit(row.id)"
@@ -158,7 +129,6 @@
             ></button>
             <button
               pButton type="button"
-              class="btn user-info__button"
               icon="mdi mdi-close"
               [title]="myPresenter.resources.actions.actionDelete.title"
               (click)="myPresenter.onItemDelete(row.id)"

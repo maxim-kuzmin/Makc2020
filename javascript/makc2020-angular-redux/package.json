@@ -38,7 +38,7 @@
     "@angular/router": "^10.1.6",
     "@fullcalendar/angular": "^5.3.1",
     "@fullcalendar/core": "^5.3.1",
-    "@mdi/font": "^3.8.95",
+    "@mdi/font": "^4.5.95",
     "@ngrx/effects": "^10.0.1",
     "@ngrx/router-store": "^10.0.1",
     "@ngrx/store": "^10.0.1",

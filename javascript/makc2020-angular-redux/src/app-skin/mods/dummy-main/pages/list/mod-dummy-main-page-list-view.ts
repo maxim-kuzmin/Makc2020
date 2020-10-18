@@ -70,7 +70,7 @@ export class AppSkinModDummyMainPageListView extends AppModDummyMainPageListView
    */
   constructor(
     resourceColumns: AppModDummyMainPageListResourceColumns,
-    settingColumns: AppModDummyMainPageListSettingColumns,
+    public settingColumns: AppModDummyMainPageListSettingColumns,
     settingFields: AppModDummyMainPageListSettingFields,
     public pageSizeOptions: number[]
   ) {
