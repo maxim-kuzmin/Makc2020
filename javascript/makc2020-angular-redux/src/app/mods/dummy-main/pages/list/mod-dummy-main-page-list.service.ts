@@ -72,6 +72,7 @@ export class AppModDummyMainPageListService {
       paramPageNumber,
       paramPageSize,
       paramSelectedItemId,
+      paramSelectedItemIdsString,
       paramSortDirection,
       paramSortField
     } = parameters;
@@ -100,6 +101,10 @@ export class AppModDummyMainPageListService {
 
     if (paramSelectedItemId.isValueDiffer(byDefault.paramSelectedItemId.value)) {
       result[paramSelectedItemId.name] = paramSelectedItemId.value;
+    }
+
+    if (paramSelectedItemIdsString.isValueDiffer(byDefault.paramSelectedItemIdsString.value)) {
+      result[paramSelectedItemIdsString.name] = paramSelectedItemIdsString.value;
     }
 
     if (paramSortDirection.isValueDiffer(byDefault.paramSortDirection.value)) {

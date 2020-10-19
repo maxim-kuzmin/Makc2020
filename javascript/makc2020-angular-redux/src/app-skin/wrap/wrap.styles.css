@@ -1,5 +1,6 @@
 @import "wrap-begin.styles.css";
 @import "~@angular/cdk/overlay-prebuilt.css";
+@import "~@mdi/font/css/materialdesignicons.min.css";
 @import "~primeflex/primeflex.css";
 @import "~primeng/resources/primeng.min.css";
 @import "~primeicons/primeicons.css";

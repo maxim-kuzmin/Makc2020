@@ -420,13 +420,14 @@ export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter
     const {
       fieldName,
       fieldObjectDummyOneToMany,
-      isActionStarted
+      isActionStarted,
+      isDataChangeAllowed
     } = this.view;
 
     if (isActionStarted) {
       fieldName.disable();
       fieldObjectDummyOneToMany.disable();
-    } else {
+    } else if (isDataChangeAllowed) {
       fieldName.enable();
       fieldObjectDummyOneToMany.enable();
     }
