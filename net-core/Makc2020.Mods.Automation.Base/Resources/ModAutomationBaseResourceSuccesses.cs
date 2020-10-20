@@ -31,12 +31,18 @@ namespace Makc2020.Mods.Automation.Base.Resources.Successes
         #region Public methods
 
         /// <summary>
-        /// Сущность с именем {0} сгенерирована из сущности с именем {1}.
+        /// Сущность с именем 'Имя исходной сущности' сгенерирована из сущности с именем 'Имя целевой сущности'.
         /// </summary>
+        /// <param name="sourceEntityName">Имя исходной сущности.</param>
+        /// <param name="targetEntityName">Имя целевой сущности.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatEntityIsGenerated()
+        public string GetStringEntityIsGenerated(string targetEntityName, string sourceEntityName)
         {
-            return Localizer["Сущность с именем {0} сгенерирована из сущности с именем {1}"];
+            return string.Format(
+                Localizer["Сущность с именем '{0}' сгенерирована из сущности с именем '{1}'"],
+                targetEntityName,
+                sourceEntityName
+                );
         }
 
         #endregion Public methods

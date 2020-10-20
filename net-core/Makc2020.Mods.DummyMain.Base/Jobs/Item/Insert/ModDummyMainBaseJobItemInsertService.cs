@@ -88,10 +88,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
 
                 return new[]
                 {
-                    string.Format(
-                        ResourceErrors.GetStringFormatFieldValueIsNotUnique(),
-                        nameof(obj.Name)
-                        )
+                    ResourceErrors.GetStringFieldValueIsNotUnique(nameof(obj.Name)),
                 };
             }
 
@@ -111,10 +108,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatIsInserted(),
-                    output.ObjectDummyMain.Name
-                    )
+                ResourceSuccesses.GetStringIsInserted(output.ObjectDummyMain.Name)                    
             };
         }
 

@@ -55,10 +55,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Update
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatIsUpdated(),
-                    output.ObjectDummyTree.Name
-                    )
+                ResourceSuccesses.GetStringIsUpdated(output.ObjectDummyTree.Name)
             };
         }
 

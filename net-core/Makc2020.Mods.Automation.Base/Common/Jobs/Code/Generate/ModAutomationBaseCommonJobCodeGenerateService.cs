@@ -59,11 +59,7 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatEntityIsGenerated(),
-                    input.TargetEntityName,
-                    input.SourceEntityName
-                    )
+                ResourceSuccesses.GetStringEntityIsGenerated(input.TargetEntityName, input.SourceEntityName)
             };
         }
 

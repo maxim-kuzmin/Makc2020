@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 
 namespace Makc2020.Mods.DummyMain.Base.Resources.Errors
 {
@@ -31,48 +32,67 @@ namespace Makc2020.Mods.DummyMain.Base.Resources.Errors
         #region Public methods
 
         /// <summary>
-        /// Получить строку форматирования "Значение поля '{0}' не уникально".
+        /// Получить строку "Значение поля 'Имя поля' не уникально".
         /// </summary>
+        /// <param name="fieldName">Имя поля.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatFieldValueIsNotUnique()
+        public string GetStringFieldValueIsNotUnique(string fieldName)
         {
-            return Localizer["Значение поля '{0}' не уникально"];
+            return string.Format(Localizer["Значение поля '{0}' не уникально"], fieldName);
         }
 
         /// <summary>
-        /// Получить строку форматирования "Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности".
+        /// Получить строку "Нельзя удалить объект с наименованием 'Имя объекта', так как есть связанные с ним сущности".
         /// </summary>
+        /// <param name="objectName">Имя объекта.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatHasRelatedData()
+        public string GetStringCannotBeDeletedBecauseHasRelatedData(string objectName)
         {
-            return Localizer["Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности"];
+            return string.Format(
+                Localizer["Нельзя удалить объект с наименованием '{0}', так как есть связанные с ним сущности"],
+                objectName
+                );
         }
 
         /// <summary>
-        /// Получить строку форматирования "Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'".
+        /// Получить строку "Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: 'Имена объектов[0]', ..., 'Имена объектов[N]'".
         /// </summary>
+        /// <param name="objectNames">Имена объектов.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatHaveRelatedData()
+        public string GetStringCannotBeDeletedBecauseHaveRelatedData(IEnumerable<string> objectNames)
         {
-            return Localizer["Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'"];
+            return string.Format(
+                Localizer["Нельзя удалить объекты, так как есть связанные с ними сущности. Наименования объектов: '{0}'"],
+                string.Join("', '", objectNames)
+                );
         }
 
         /// <summary>
-        /// Получить строку форматирования "Не удалось удалить объекты с наименованиями: '{0}'".
+        /// Получить строку форматирования "Не удалось удалить объекты с наименованиями:
+        /// 'Имена объектов[0]', ..., 'Имена объектов[N]'".
         /// </summary>
+        /// <param name="objectNames">Имена объектов.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatAreFailedToDelete()
+        public string GetStringAreFailedToDelete(IEnumerable<string> objectNames)
         {
-            return Localizer["Не удалось удалить объекты с наименованиями: '{0}'"];
+            return string.Format(
+                Localizer["Не удалось удалить объекты с наименованиями: '{0}'"],
+                string.Join("', '", objectNames)
+                );
+
         }
 
         /// <summary>
-        /// Получить строку форматирования "Не удалось удалить объект с наименованием '{0}'".
+        /// Получить строку форматирования "Не удалось удалить объект с наименованием 'Имя объекта'".
         /// </summary>
+        /// <param name="objectName">Имя объекта.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatIsFailedToDelete()
+        public string GetStringIsFailedToDelete(string objectName)
         {
-            return Localizer["Не удалось удалить объект с наименованием '{0}'"];
+            return string.Format(
+                Localizer["Не удалось удалить объект с наименованием '{0}'"],
+                objectName
+                );
         }
 
         #endregion Public methods

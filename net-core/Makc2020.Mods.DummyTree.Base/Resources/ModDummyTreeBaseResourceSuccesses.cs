@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 
 namespace Makc2020.Mods.DummyTree.Base.Resources.Successes
 {
@@ -40,39 +41,56 @@ namespace Makc2020.Mods.DummyTree.Base.Resources.Successes
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объект с наименованием '{0}' удалён".
+        /// Получить строку форматирования "Объект с наименованием 'Имя объекта' удалён".
+        /// <param name="objectName">Имя объекта.</param>
         /// </summary>
         /// <returns>Строка.</returns>
-        public string GetStringFormatIsDeleted()
+        public string GetStringIsDeleted(string objectName)
         {
-            return Localizer["Объект с наименованием '{0}' удалён"];
+            return string.Format(
+                Localizer["Объект с наименованием '{0}' удалён"],
+                objectName
+                );
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объекты удалены. Наименования удалённых объектов: '{0}'".
+        /// Получить строку форматирования "Объекты удалены.
+        /// Наименования удалённых объектов: 'Имена объектов[0]', ..., 'Имена объектов[N]'".
         /// </summary>
+        /// <param name="objectNames">Имена объектов.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatAreDeleted()
+        public string GetStringAreDeleted(IEnumerable<string> objectNames)
         {
-            return Localizer["Объекты удалены. Наименования удалённых объектов: '{0}'"];
+            return string.Format(
+                Localizer["Объекты удалены. Наименования удалённых объектов: '{0}'"],
+                string.Join("', '", objectNames)
+                );
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объект с наименованием '{0}' вставлен".
+        /// Получить строку форматирования "Объект с наименованием 'Имя объекта' вставлен".
         /// </summary>
+        /// <param name="objectName">Имя объекта.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatIsInserted()
+        public string GetStringIsInserted(string objectName)
         {
-            return Localizer["Объект с наименованием '{0}' вставлен"];
+            return string.Format(
+                Localizer["Объект с наименованием '{0}' вставлен"],
+                objectName
+                );
         }
 
         /// <summary>
-        /// Получить строку форматирования "Объект с наименованием '{0}' обновлён".
+        /// Получить строку форматирования "Объект с наименованием 'Имя объекта' обновлён".
         /// </summary>
+        /// <param name="objectName">Имя объекта.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatIsUpdated()
+        public string GetStringIsUpdated(string objectName)
         {
-            return Localizer["Объект с наименованием '{0}' обновлён"];
+            return string.Format(
+                Localizer["Объект с наименованием '{0}' обновлён"],
+                objectName
+                );
         }
 
         #endregion Public methods

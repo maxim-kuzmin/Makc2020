@@ -31,12 +31,13 @@ namespace Makc2020.Mods.Automation.Base.Resources.Errors
         #region Public methods
 
         /// <summary>
-        /// Получить строку форматирования "Значение поля '{0}' не уникально".
+        /// Получить строку "Значение поля 'Имя поля' не уникально".
         /// </summary>
+        /// <param name="fieldName">Имя поля.</param>
         /// <returns>Строка.</returns>
-        public string GetStringFormatFieldValueIsNotUnique()
+        public string GetStringFieldValueIsNotUnique(string fieldName)
         {
-            return Localizer["Значение поля '{0}' не уникально"];
+            return string.Format(Localizer["Значение поля '{0}' не уникально"], fieldName);
         }
 
         #endregion Public methods

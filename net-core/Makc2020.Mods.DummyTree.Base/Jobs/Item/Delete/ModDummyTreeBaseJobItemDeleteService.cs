@@ -64,21 +64,17 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Delete
 
                 if (exception.FailedItems != null && exception.FailedItems.Any())
                 {
-                    return new string[] {
-                        string.Format(
-                            ResourceErrors.GetStringFormatIsFailedToDelete(),
-                            exception.FailedItems.First()
-                            )
-                        };
+                    return new[]
+                    {
+                        ResourceErrors.GetStringIsFailedToDelete(exception.FailedItems.First())
+                    };
                 }
                 else if (exception.RelatedItems != null && exception.RelatedItems.Any())
                 {
-                    return new string[] {
-                        string.Format(
-                            ResourceErrors.GetStringFormatHasRelatedData(),
-                            exception.RelatedItems.First()
-                            )
-                        };
+                    return new[]
+                    {
+                        ResourceErrors.GetStringCannotBeDeletedBecauseHasRelatedData(exception.RelatedItems.First())
+                    };
                 }
             }
 
@@ -89,10 +85,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Delete
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatIsDeleted(),
-                    input.DataName
-                    )
+                ResourceSuccesses.GetStringIsDeleted(input.DataName)
             };
         }
 

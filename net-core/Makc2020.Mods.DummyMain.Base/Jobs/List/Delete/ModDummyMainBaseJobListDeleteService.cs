@@ -68,22 +68,12 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Delete
 
                 if (exception.FailedItems.Any())
                 {
-                    errors.Add(
-                        string.Format(
-                            ResourceErrors.GetStringFormatAreFailedToDelete(),
-                            string.Join("', '", exception.FailedItems)
-                            )
-                        );
+                    errors.Add(ResourceErrors.GetStringAreFailedToDelete(exception.FailedItems));
                 }
 
                 if (exception.RelatedItems.Any())
                 {
-                    errors.Add(
-                        string.Format(
-                            ResourceErrors.GetStringFormatHaveRelatedData(),
-                            string.Join("', '", exception.RelatedItems)
-                            )
-                        );
+                    errors.Add(ResourceErrors.GetStringCannotBeDeletedBecauseHaveRelatedData(exception.RelatedItems));
                 }
 
                 return errors;
@@ -96,10 +86,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Delete
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatAreDeleted(),
-                    string.Join("', '", input.DeletedItems)
-                    )
+                ResourceSuccesses.GetStringAreDeleted(input.DeletedItems)
             };
         }
 

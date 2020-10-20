@@ -86,12 +86,15 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
             {
                 DataBaseObjectDummyTree obj;
 
-                return new[]
-                {
-                    ResourceErrors.GetStringFieldValuesCombinationIsNotUnique(
+                var fieldNames = new[]
+                    {
                         nameof(obj.ParentId),
                         nameof(obj.Name)
-                        )
+                    };
+
+                return new[]
+                {                    
+                    ResourceErrors.GetStringFieldValuesCombinationIsNotUnique(fieldNames)
                 };
             }
 
@@ -111,10 +114,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
         {
             return new[]
             {
-                string.Format(
-                    ResourceSuccesses.GetStringFormatIsInserted(),
-                    output.ObjectDummyTree.Name
-                    )
+                ResourceSuccesses.GetStringIsInserted(output.ObjectDummyTree.Name)
             };
         }
 

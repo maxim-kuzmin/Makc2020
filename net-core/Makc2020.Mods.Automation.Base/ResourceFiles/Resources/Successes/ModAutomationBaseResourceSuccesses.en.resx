@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Сущность с именем {0} сгенерирована из сущности с именем {1}" xml:space="preserve">
-    <value>The entity with a name {0} has been generated from the entity with a name {1}</value>
+  <data name="Сущность с именем '{0}' сгенерирована из сущности с именем '{1}'" xml:space="preserve">
+    <value>The entity with a name '{0}' has been generated from the entity with a name '{1}'</value>
   </data>
 </root>
