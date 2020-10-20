@@ -20,7 +20,7 @@ namespace Makc2020.Core.Caching.Clients
         private ICoreCachingCache Cache { get; set; }
 
         /// <summary>
-        /// Ресурсы ошибок ядра кэширования.
+        /// Ядро. Кэширование. Ресурсы. Ошибки.
         /// </summary>
         private CoreCachingResourceErrors CoreCachingResourceErrors { get; set; }
 
@@ -32,7 +32,7 @@ namespace Makc2020.Core.Caching.Clients
         /// Конструктор.
         /// </summary>
         /// <param name="cache">Кэш.</param>
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         public CoreCachingClientWithChange(
             ICoreCachingCache cache,
             CoreCachingResourceErrors coreCachingResourceErrors

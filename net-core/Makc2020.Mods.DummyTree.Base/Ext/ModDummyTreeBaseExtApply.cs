@@ -1,5 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Base.Common;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using System.Linq;
@@ -60,44 +61,56 @@ namespace Makc2020.Mods.DummyTree.Base.Ext
             var sortField = input.SortField?.ToLower();
             var sortDirection = input.SortDirection?.ToLower();
 
-            switch (sortField)
+            DataEntityObjectDummyTree obj;
+
+            var sortFieldForId = nameof(obj.Id).ToLower();
+            var sortFieldForName = nameof(obj.Name).ToLower();
+            var sortFieldForTreeSort = nameof(obj.TreeSort).ToLower();
+
+            if (sortField == sortFieldForId)
             {
-                case "id":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.Id);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.Id);
-                            break;
-                    }
-                    break;
-                case "name":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.Name);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.Name);
-                            break;
-                    }
-                    break;
-                case "treesort":
-                    switch (sortDirection)
-                    {
-                        case "asc":
-                            query = query.OrderBy(x => x.TreeSort);
-                            break;
-                        case "desc":
-                            query = query.OrderByDescending(x => x.TreeSort);
-                            break;
-                    }
-                    break;
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.Id);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.Id);
+                        break;
+                }
+            }
+            else if (sortField == sortFieldForName)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.Name);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.Name);
+                        break;
+                }
+            }
+            else if (sortField == sortFieldForTreeSort)
+            {
+                switch (sortDirection)
+                {
+                    case CoreBaseCommonSettings.SORT_DIRECTION_ASC:
+                        query = query.OrderBy(x => x.TreeSort);
+                        break;
+                    case CoreBaseCommonSettings.SORT_DIRECTION_DESC:
+                        query = query.OrderByDescending(x => x.TreeSort);
+                        break;
+                }
             }
 
-            if (!string.IsNullOrWhiteSpace(sortField) && (sortField != "id" && sortField != "treesort"))
+            var isOk = !string.IsNullOrWhiteSpace(sortField)
+                && 
+                sortField != sortFieldForId
+                &&
+                sortField != sortFieldForTreeSort;
+
+            if (isOk)
             {
                 query = ((IOrderedQueryable<DataEntityObjectDummyTree>)query).ThenBy(x => x.Id);
             }

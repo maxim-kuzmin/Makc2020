@@ -35,7 +35,7 @@ namespace Makc2020.Mods.Automation.Base.Common.Code.Generate
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
         /// <param name="configSettings">Конфигурационные настройки.</param>
         public ModAutomationBaseCommonJobCodeGenerateService(
             Func<ModAutomationBaseCommonJobCodeGenerateInput, Task> executable,

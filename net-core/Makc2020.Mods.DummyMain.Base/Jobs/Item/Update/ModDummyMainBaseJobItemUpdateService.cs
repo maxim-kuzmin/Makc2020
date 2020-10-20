@@ -24,9 +24,9 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Update
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public ModDummyMainBaseJobItemUpdateService(
             Func<ModDummyMainBaseJobItemGetOutput, Task<ModDummyMainBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

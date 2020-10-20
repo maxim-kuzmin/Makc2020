@@ -110,11 +110,13 @@ namespace Makc2020.Mods.DummyMain.Base.Ext
             var sortField = input.SortField.ToLower();
             var sortDirection = input.SortDirection.ToLower();
 
-            var sortFieldForId = "Id".ToLower();
-            var sortFieldForName = "Name".ToLower();
-            var sortFieldForObjectDummyOneToMany = "ObjectDummyOneToMany".ToLower();
-            var sortFieldForPropDate = "PropDate".ToLower();
-            var sortFieldForPropBoolean = "PropBoolean".ToLower();
+            DataEntityObjectDummyMain obj;
+
+            var sortFieldForId = nameof(obj.Id).ToLower();
+            var sortFieldForName = nameof(obj.Name).ToLower();
+            var sortFieldForObjectDummyOneToMany = nameof(obj.ObjectDummyOneToMany).ToLower();
+            var sortFieldForPropDate = nameof(obj.PropDate).ToLower();
+            var sortFieldForPropBoolean = nameof(obj.PropBoolean).ToLower();
 
             if (sortField == sortFieldForId)
             {

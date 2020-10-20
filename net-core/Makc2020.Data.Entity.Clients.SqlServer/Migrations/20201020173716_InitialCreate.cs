@@ -362,6 +362,14 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                 column: "TreeSort");
 
             migrationBuilder.CreateIndex(
+                name: "UX_DummyTree_ParentId_Name",
+                schema: "dbo",
+                table: "DummyTree",
+                columns: new[] { "ParentId", "Name" },
+                unique: true,
+                filter: "[ParentId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "UX_Role_NormalizedName",
                 schema: "dbo",
                 table: "Role",

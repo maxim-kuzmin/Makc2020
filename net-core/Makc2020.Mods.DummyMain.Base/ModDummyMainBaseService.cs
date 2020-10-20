@@ -13,6 +13,7 @@ using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Config;
 using Makc2020.Mods.DummyMain.Base.Ext;
 using Makc2020.Mods.DummyMain.Base.Jobs.Filtered.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -67,7 +68,7 @@ namespace Makc2020.Mods.DummyMain.Base
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача.</returns>
-        public async Task DeleteItem(ModDummyMainBaseJobItemGetInput input)
+        public async Task DeleteItem(ModDummyMainBaseJobItemDeleteInput input)
         {
             using var dbContext = CreateDbContext();
 

@@ -3,10 +3,12 @@
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
+using Makc2020.Mods.DummyTree.Base.Jobs.Filtered.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Update;
+using Makc2020.Mods.DummyTree.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using Makc2020.Mods.DummyTree.Base.Resources.Errors;
 using Makc2020.Mods.DummyTree.Base.Resources.Successes;
@@ -24,6 +26,11 @@ namespace Makc2020.Mods.DummyTree.Base
         /// Задание на вычисление.
         /// </summary>
         public ModDummyTreeBaseJobCalculateService JobCalculate { get; private set; }
+
+        /// <summary>
+        /// Задание на получение отфильтрованного.
+        /// </summary>
+        public ModDummyTreeBaseJobFilteredGetService JobFilteredGet { get; private set; }
 
         /// <summary>
         /// Задание на удаление элемента.
@@ -44,6 +51,11 @@ namespace Makc2020.Mods.DummyTree.Base
         /// Задание на обновление элемента.
         /// </summary>
         public ModDummyTreeBaseJobItemUpdateService JobItemUpdate { get; private set; }
+
+        /// <summary>
+        /// Задание на удаление списка.
+        /// </summary>
+        public ModDummyTreeBaseJobListDeleteService JobListDelete { get; private set; }
 
         /// <summary>
         /// Задание на получение списка.
@@ -76,10 +88,16 @@ namespace Makc2020.Mods.DummyTree.Base
                 resourceSuccesses
                 );
 
+            JobFilteredGet = new ModDummyTreeBaseJobFilteredGetService(
+                service.GetFiltered,
+                coreBaseResourceErrors
+                );
+
             JobItemDelete = new ModDummyTreeBaseJobItemDeleteService(
                 service.DeleteItem,
                 coreBaseResourceErrors,
-                resourceSuccesses
+                resourceSuccesses,
+                resourceErrors
                 );
 
             JobItemGet = new ModDummyTreeBaseJobItemGetService(
@@ -101,6 +119,13 @@ namespace Makc2020.Mods.DummyTree.Base
                 resourceSuccesses,
                 resourceErrors,
                 dataBaseSettings
+                );
+
+            JobListDelete = new ModDummyTreeBaseJobListDeleteService(
+                service.DeleteList,
+                coreBaseResourceErrors,
+                resourceSuccesses,
+                resourceErrors
                 );
 
             JobListGet = new ModDummyTreeBaseJobListGetService(

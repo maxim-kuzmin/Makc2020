@@ -252,6 +252,10 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql.Migrations
                     b.HasIndex("TreeSort")
                         .HasName("ix_dummy_tree_tree_sort");
 
+                    b.HasIndex("ParentId", "Name")
+                        .IsUnique()
+                        .HasName("ux_dummy_tree_parent_id_name");
+
                     b.ToTable("dummy_tree","public");
                 });
 

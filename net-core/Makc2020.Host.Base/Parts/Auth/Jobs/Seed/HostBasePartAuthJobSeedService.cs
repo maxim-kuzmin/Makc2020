@@ -32,7 +32,7 @@ namespace Makc2020.Host.Base.Parts.Auth.Jobs.Seed
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>     
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
         public HostBasePartAuthJobSeedService(
             Func<HostBasePartAuthJobSeedInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

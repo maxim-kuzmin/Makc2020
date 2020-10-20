@@ -24,9 +24,9 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Update
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public ModDummyTreeBaseJobItemUpdateService(
             Func<ModDummyTreeBaseJobItemGetOutput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
@@ -56,8 +56,8 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Update
             return new[]
             {
                 string.Format(
-                    ResourceSuccesses.GetStringFormatObjectWithIdIsUpdated(),
-                    output.ObjectDummyTree.Id
+                    ResourceSuccesses.GetStringFormatIsUpdated(),
+                    output.ObjectDummyTree.Name
                     )
             };
         }

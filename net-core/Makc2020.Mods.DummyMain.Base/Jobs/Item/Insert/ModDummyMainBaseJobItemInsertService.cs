@@ -25,17 +25,17 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
         #region Properties
 
         /// <summary>
-        /// Ресурсы успехов.
+        /// Ресурсы. Ошибки.
         /// </summary>
         protected ModDummyMainBaseResourceSuccesses ResourceSuccesses { get; set; }
 
         /// <summary>
-        /// Ресурсы ошибок.
+        /// Ресурсы. Ошибки.
         /// </summary>
         protected ModDummyMainBaseResourceErrors ResourceErrors { get; set; }
 
         /// <summary>
-        /// Настройки основы данных.
+        /// Данные. Основа. Настройки.
         /// </summary>
         protected DataBaseSettings DataBaseSettings { get; set; }
 
@@ -48,9 +48,9 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Insert
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public ModDummyMainBaseJobItemInsertService(
             Func<ModDummyMainBaseJobItemGetOutput, Task<ModDummyMainBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

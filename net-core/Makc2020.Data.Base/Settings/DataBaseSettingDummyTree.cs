@@ -94,6 +94,11 @@ namespace Makc2020.Data.Base.Settings
         /// </summary>
         public string DbPrimaryKey { get; set; }
 
+        /// <summary>
+        /// Наименование индекса в базе данных для полей "ParentId" и "Name".
+        /// </summary>
+        public string DbUniqueIndexForParentIdAndName { get; set; }
+
         #endregion Properties
 
         #region Constructors
@@ -132,6 +137,12 @@ namespace Makc2020.Data.Base.Settings
             DbMaxLengthForTreeSort = 900;
 
             DbPrimaryKey = CreateNameOfPrimaryKey(DbTable);
+
+            DbUniqueIndexForParentIdAndName = CreateNameOfUniqueIndex(
+                DbTable,
+                DbColumnNameForParentId,
+                DbColumnNameForName
+                );
         }
 
         #endregion Constructors

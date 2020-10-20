@@ -7,6 +7,7 @@ using Makc2020.Host.Web;
 using Makc2020.Host.Web.Api;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Filtered.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -64,6 +65,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="appJobItemGet">Задание на получение элемента.</param>
         /// <param name="appJobItemInsert">Задание на вставку элемента.</param>
         /// <param name="appJobItemUpdate">Задание на обновление элемента.</param>
+        /// <param name="appJobListDelete">Задание на удаление списка.</param>
         /// <param name="appJobListGet">Задание на получение списка.</param>
         /// <param name="appJobOptionsDummyManyToManyGet">
         /// Задание на получение вариантов выбора сущности "DummyManyToMany".
@@ -140,7 +142,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
             Func<Task> execute,
             Action<CoreBaseExecutionResult> onSuccess,
             Action<Exception, CoreBaseExecutionResult> onError
-            ) BuildActionItemDelete(ModDummyMainBaseJobItemGetInput input)
+            ) BuildActionItemDelete(ModDummyMainBaseJobItemDeleteInput input)
         {
             var job = AppJobItemDelete;
 

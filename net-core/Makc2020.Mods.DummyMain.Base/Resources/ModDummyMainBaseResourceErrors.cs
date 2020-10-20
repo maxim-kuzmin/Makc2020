@@ -31,7 +31,7 @@ namespace Makc2020.Mods.DummyMain.Base.Resources.Errors
         #region Public methods
 
         /// <summary>
-        /// Получить строку форматирования "Значение поля \"{0}\" не уникально".
+        /// Получить строку форматирования "Значение поля '{0}' не уникально".
         /// </summary>
         /// <returns>Строка.</returns>
         public string GetStringFormatFieldValueIsNotUnique()

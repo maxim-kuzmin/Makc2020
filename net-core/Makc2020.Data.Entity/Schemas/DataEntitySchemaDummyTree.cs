@@ -84,6 +84,10 @@ namespace Makc2020.Data.Entity.Schemas
             builder.HasIndex(x => x.ParentId).HasName(setting.DbIndexForParentId);
             builder.HasIndex(x => x.TreeSort).HasName(setting.DbIndexForTreeSort);
 
+            builder.HasIndex(x => new { x.ParentId, x.Name })
+                .IsUnique()
+                .HasName(setting.DbUniqueIndexForParentIdAndName);
+
             builder.HasOne(x => x.ObjectDummyTreeParent)
                 .WithMany(x => x.ObjectsDummyTreeChild)
                 .HasForeignKey(x => x.ParentId)

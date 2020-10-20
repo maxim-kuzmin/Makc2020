@@ -37,8 +37,8 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Delete
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
         public ModDummyMainBaseJobListDeleteService(
             Func<ModDummyMainBaseJobListDeleteInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

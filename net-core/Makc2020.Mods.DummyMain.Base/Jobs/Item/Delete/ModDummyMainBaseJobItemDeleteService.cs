@@ -4,7 +4,6 @@ using Makc2020.Core.Base.Common.Exceptions;
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Execution.Exceptions;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Resources.Errors;
 using Makc2020.Mods.DummyMain.Base.Resources.Successes;
 using System;
@@ -19,7 +18,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
     /// </summary>
     public class ModDummyMainBaseJobItemDeleteService : CoreBaseExecutableServiceAsyncWithInput
         <
-            ModDummyMainBaseJobItemGetInput
+            ModDummyMainBaseJobItemDeleteInput
         >
     {
         #region Properties
@@ -37,9 +36,9 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
         public ModDummyMainBaseJobItemDeleteService(
-            Func<ModDummyMainBaseJobItemGetInput, Task> executable,
+            Func<ModDummyMainBaseJobItemDeleteInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModDummyMainBaseResourceSuccesses resourceSuccesses,
             ModDummyMainBaseResourceErrors resourceErrors
@@ -86,7 +85,7 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
             return GetErrorMessagesOnInvalidInput(ex);
         }
 
-        private IEnumerable<string> GetSuccessMessages(ModDummyMainBaseJobItemGetInput input)
+        private IEnumerable<string> GetSuccessMessages(ModDummyMainBaseJobItemDeleteInput input)
         {
             return new[]
             {
@@ -97,11 +96,11 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete
             };
         }
 
-        private ModDummyMainBaseJobItemGetInput TransformInput(ModDummyMainBaseJobItemGetInput input)
+        private ModDummyMainBaseJobItemDeleteInput TransformInput(ModDummyMainBaseJobItemDeleteInput input)
         {
             if (input == null)
             {
-                input = new ModDummyMainBaseJobItemGetInput();
+                input = new ModDummyMainBaseJobItemDeleteInput();
             }
 
             input.Normalize();

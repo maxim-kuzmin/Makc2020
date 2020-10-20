@@ -37,10 +37,12 @@ namespace Makc2020.Mods.DummyTree.Base
             services.AddTransient(x => GetContext(x).Config);
             services.AddTransient(x => GetContext(x).Config.Settings);
             services.AddTransient(x => GetContext(x).Jobs.JobCalculate);
+            services.AddTransient(x => GetContext(x).Jobs.JobFilteredGet);
             services.AddTransient(x => GetContext(x).Jobs.JobItemDelete);
             services.AddTransient(x => GetContext(x).Jobs.JobItemGet);
             services.AddTransient(x => GetContext(x).Jobs.JobItemInsert);
             services.AddTransient(x => GetContext(x).Jobs.JobItemUpdate);
+            services.AddTransient(x => GetContext(x).Jobs.JobListDelete);
             services.AddTransient(x => GetContext(x).Jobs.JobListGet);
             services.AddTransient(x => GetContext(x).Resources.Errors);
             services.AddTransient(x => GetContext(x).Resources.Successes);

@@ -238,6 +238,11 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Migrations
                     b.HasIndex("TreeSort")
                         .HasName("IX_DummyTree_TreeSort");
 
+                    b.HasIndex("ParentId", "Name")
+                        .IsUnique()
+                        .HasName("UX_DummyTree_ParentId_Name")
+                        .HasFilter("[ParentId] IS NOT NULL");
+
                     b.ToTable("DummyTree","dbo");
                 });
 

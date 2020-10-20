@@ -5,6 +5,7 @@ using Makc2020.Core.Base.Ext;
 using Makc2020.Host.Web;
 using Makc2020.Mods.DummyMain.Base.Common.Jobs.Option.List.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.Filtered.Get;
+using Makc2020.Mods.DummyMain.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyMain.Base.Jobs.List.Get;
@@ -82,7 +83,7 @@ namespace Makc2020.Mods.DummyMain.Web.Api
         /// <param name="intputData">Ввод.</param>
         /// <returns>Результат выполнения.</returns>
         [Route("item"), HttpDelete]
-        public async Task<IActionResult> DeleteItem([FromQuery] ModDummyMainBaseJobItemGetInput input)
+        public async Task<IActionResult> DeleteItem([FromQuery] ModDummyMainBaseJobItemDeleteInput input)
         {
             MyModel.Init(HostWebState.Create(HttpContext, MyModel.CreateObjectKey(input.DataId)));
 

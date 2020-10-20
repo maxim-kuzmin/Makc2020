@@ -3,6 +3,7 @@
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Resources.Errors;
 using Makc2020.Data.Base;
+using Makc2020.Data.Base.Objects;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
 using Makc2020.Mods.DummyTree.Base.Resources.Errors;
 using Makc2020.Mods.DummyTree.Base.Resources.Successes;
@@ -24,17 +25,17 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
         #region Properties
 
         /// <summary>
-        /// Ресурсы успехов.
+        /// Ресурсы. Ошибки.
         /// </summary>
         protected ModDummyTreeBaseResourceSuccesses ResourceSuccesses { get; set; }
 
         /// <summary>
-        /// Ресурсы ошибок.
+        /// Ресурсы. Ошибки.
         /// </summary>
         protected ModDummyTreeBaseResourceErrors ResourceErrors { get; set; }
 
         /// <summary>
-        /// Настройки основы данных.
+        /// Данные. Основа. Настройки.
         /// </summary>
         protected DataBaseSettings DataBaseSettings { get; set; }
 
@@ -47,27 +48,55 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public ModDummyTreeBaseJobItemInsertService(
             Func<ModDummyTreeBaseJobItemGetOutput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,
             ModDummyTreeBaseResourceSuccesses resourceSuccesses,
             ModDummyTreeBaseResourceErrors resourceErrors,
             DataBaseSettings dataBaseSettings
-            ) : base(executable,  coreBaseResourceErrors)
+            ) : base(executable, coreBaseResourceErrors)
         {
             ResourceSuccesses = resourceSuccesses;
             ResourceErrors = resourceErrors;
             DataBaseSettings = dataBaseSettings;
 
+            Execution.FuncGetErrorMessages = GetErrorMessages;
             Execution.FuncGetSuccessMessages = GetSuccessMessages;
         }
 
         #endregion Constructors
 
         #region Protected methods
+
+        /// <summary>
+        /// Получить сообщения об ошибках.
+        /// </summary>
+        /// <param name="ex">Исключение.</param>
+        /// <returns>Сообщения.</returns>
+        protected virtual IEnumerable<string> GetErrorMessages(Exception ex)
+        {
+            var msg = ex.ToString();
+
+            var setting = DataBaseSettings.DummyTree;
+
+            if (msg.Contains(setting.DbUniqueIndexForParentIdAndName))
+            {
+                DataBaseObjectDummyTree obj;
+
+                return new[]
+                {
+                    ResourceErrors.GetStringFieldValuesCombinationIsNotUnique(
+                        nameof(obj.ParentId),
+                        nameof(obj.Name)
+                        )
+                };
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Получить сообщения об успехах.
@@ -83,8 +112,8 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Item.Insert
             return new[]
             {
                 string.Format(
-                    ResourceSuccesses.GetStringFormatObjectWithIdIsInserted(),
-                    output.ObjectDummyTree.Id
+                    ResourceSuccesses.GetStringFormatIsInserted(),
+                    output.ObjectDummyTree.Name
                     )
             };
         }

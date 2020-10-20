@@ -363,6 +363,13 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql.Migrations
                 column: "tree_sort");
 
             migrationBuilder.CreateIndex(
+                name: "ux_dummy_tree_parent_id_name",
+                schema: "public",
+                table: "dummy_tree",
+                columns: new[] { "parent_id", "name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ux_role_normalized_name",
                 schema: "public",
                 table: "role",

@@ -30,7 +30,7 @@ namespace Makc2020.Mods.DummyTree.Base.Jobs.Calculate
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
         public ModDummyTreeBaseJobCalculateService(
             Func<ModDummyTreeBaseJobCalculateInput, Task> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

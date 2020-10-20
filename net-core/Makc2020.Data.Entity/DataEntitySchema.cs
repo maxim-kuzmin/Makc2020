@@ -26,7 +26,7 @@ namespace Makc2020.Data.Entity
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public DataEntitySchema(DataBaseSettings dataBaseSettings)
         {
             DataBaseSettings = dataBaseSettings;

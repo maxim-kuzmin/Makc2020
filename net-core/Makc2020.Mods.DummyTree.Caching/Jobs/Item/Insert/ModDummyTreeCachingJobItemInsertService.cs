@@ -27,12 +27,12 @@ namespace Makc2020.Mods.DummyTree.Caching.Jobs.Item.Insert
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="resourceSuccesses">Ресурсы успехов.</param>
-        /// <param name="resourceErrors">Ресурсы ошибок.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
-        /// <param name="cacheSettings">Настройки кэширования.</param>        
+        /// <param name="resourceSuccesses">Ресурсы. Успехи.</param>
+        /// <param name="resourceErrors">Ресурсы. Ошибки.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
+        /// <param name="cacheSettings">Кэширование. Настройки.</param>        
         /// <param name="cache">Кэш.</param>        
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         public ModDummyTreeCachingJobItemInsertService(
             Func<ModDummyTreeBaseJobItemGetOutput, Task<ModDummyTreeBaseJobItemGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

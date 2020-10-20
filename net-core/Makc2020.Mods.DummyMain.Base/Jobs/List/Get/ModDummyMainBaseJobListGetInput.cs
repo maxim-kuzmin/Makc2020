@@ -1,7 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Common.Jobs.List.Get;
+using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Entity.Objects;
 using System.Linq;
 
 namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
@@ -61,15 +63,25 @@ namespace Makc2020.Mods.DummyMain.Base.Jobs.List.Get
 
             if (string.IsNullOrWhiteSpace(SortField))
             {
-                SortField = "id";
+                DataEntityObjectDummyMain obj;
+
+                SortField = nameof(obj.Id);
             }
 
             if (string.IsNullOrWhiteSpace(SortDirection))
             {
-                SortDirection = "desc";
+                SortDirection = CoreBaseCommonSettings.SORT_DIRECTION_DESC;
             }
 
-            if (!string.IsNullOrWhiteSpace(DataObjectDummyOneToManyIdsString) && (DataObjectDummyOneToManyIds == null || !DataObjectDummyOneToManyIds.Any()))
+            var isOk = !string.IsNullOrWhiteSpace(DataObjectDummyOneToManyIdsString)
+                && 
+                (
+                    DataObjectDummyOneToManyIds == null
+                    ||
+                    !DataObjectDummyOneToManyIds.Any()
+                );
+
+            if (isOk)
             {
                 DataObjectDummyOneToManyIds = DataObjectDummyOneToManyIdsString.CoreBaseExtConvertToNumericInt64Array();
             }

@@ -4,8 +4,8 @@ using Makc2020.Core.Base.Common.Data.Queries.Tree;
 using Makc2020.Core.Base.Common.Enums;
 using Makc2020.Core.Base.Common.Enums.Tree.Item;
 using Makc2020.Core.Base.Common.Enums.Tree.List;
+using Makc2020.Core.Base.Common.Exceptions;
 using Makc2020.Core.Base.Common.Ext;
-using Makc2020.Core.Base.Common.Jobs.Item.Get.Item;
 using Makc2020.Core.Base.Common.Jobs.Tree.Item.Get;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
@@ -20,10 +20,14 @@ using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.DummyTree.Base.Config;
 using Makc2020.Mods.DummyTree.Base.Ext;
 using Makc2020.Mods.DummyTree.Base.Jobs.Calculate;
+using Makc2020.Mods.DummyTree.Base.Jobs.Filtered.Get;
+using Makc2020.Mods.DummyTree.Base.Jobs.Item.Delete;
 using Makc2020.Mods.DummyTree.Base.Jobs.Item.Get;
+using Makc2020.Mods.DummyTree.Base.Jobs.List.Delete;
 using Makc2020.Mods.DummyTree.Base.Jobs.List.Get;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -106,13 +110,188 @@ namespace Makc2020.Mods.DummyTree.Base
         }
 
         /// <summary>
+        /// Удалить элемент.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task DeleteItem(ModDummyTreeBaseJobItemDeleteInput input)
+        {
+            using var dbContext = CreateDbContext();
+
+            using var transaction = await dbContext.Database.BeginTransactionAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var obj = await dbContext.DummyTree.FirstOrDefaultAsync(
+                x => x.Id == input.DataId
+                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+            if (obj != null)
+            {
+                var items = new[] { obj.Name };
+
+                try
+                {
+                    dbContext.DummyTree.Remove(obj);
+
+                    await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+                    var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.Delete);
+
+                    var paramIds = queryTreeTriggerBuilder.Parameters.Ids;
+
+                    paramIds.Add(DataProvider.CreateDbParameter("Id", input.DataId));
+
+                    var sql = queryTreeTriggerBuilder.GetResultSql();
+
+                    await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
+                }
+                catch (DbUpdateException)
+                {
+                    throw new CoreBaseCommonExceptionNonDeleted(null, items, null);
+                }
+                catch (Exception ex)
+                {
+                    throw new CoreBaseCommonExceptionNonDeleted(items, null, ex);
+                }
+
+                input.DataName = obj.Name;
+            }
+
+            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
+        }
+
+        /// <summary>
+        /// Удалить список.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача.</returns>
+        public async Task DeleteList(ModDummyTreeBaseJobListDeleteInput input)
+        {
+            var deletedItems = new List<string>();
+            var failedItems = new List<string>();
+            var relatedItems = new List<string>();
+
+            Exception exception = null;
+
+            var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.Delete);
+
+            var paramIds = queryTreeTriggerBuilder.Parameters.Ids;
+
+            for (var i = 0; i < input.DataIds.Length; i++)
+            {
+                var dataId = input.DataIds[i];
+
+                if (dataId < 1)
+                {
+                    continue;
+                }
+
+                using var dbContext = CreateDbContext();
+
+                using var transaction = await dbContext.Database.BeginTransactionAsync()
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                var obj = await dbContext.DummyTree.FirstOrDefaultAsync(
+                    x => x.Id == dataId
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (obj != null)
+                {
+                    try
+                    {
+                        dbContext.DummyTree.Remove(obj);
+
+                        await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
+
+                        deletedItems.Add(obj.Name);
+
+                        paramIds.Add(DataProvider.CreateDbParameter("Id", dataId));
+                    }
+                    catch (DbUpdateException)
+                    {
+                        relatedItems.Add(obj.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        failedItems.Add(obj.Name);
+
+                        if (exception == null)
+                        {
+                            exception = ex;
+                        }
+                    }
+                }
+                else
+                {
+                    deletedItems.Add(input.DataNames[i]);
+                }
+
+                await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
+            }
+
+            input.DeletedItems = deletedItems;
+
+            if (failedItems.Any() || relatedItems.Any() || exception != null)
+            {
+                input.Exception = new CoreBaseCommonExceptionNonDeleted(failedItems, relatedItems, exception);
+            }
+
+            if (paramIds.Any())
+            {
+                var sql = queryTreeTriggerBuilder.GetResultSql();
+
+                using var dbContext = CreateDbContext();
+
+                await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
+            }
+        }
+
+        /// <summary>
+        /// Получить отфильтрованное.
+        /// </summary>
+        /// <param name="input">Ввод.</param>
+        /// <returns>Задача с полученными данными.</returns>
+        public async Task<ModDummyTreeBaseJobFilteredGetOutput> GetFiltered(
+            ModDummyTreeBaseJobListGetInput input
+            )
+        {
+            var result = new ModDummyTreeBaseJobFilteredGetOutput();
+
+            using var dbContext = CreateDbContext();
+
+            var items = await CreateListQuery(dbContext, input.Axis, input.RootId, input.OpenIds)
+                .ModDummyTreeBaseExtApplyFiltering(input)
+                .Select(x => new { x.Id, x.Name })
+                .ToArrayAsync()
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var length = items.Length;
+
+            if (length > 0)
+            {
+                result.DataIds = new long[length];
+                result.DataNames = new string[length];
+
+                for (var i = 0; i < length; i++)
+                {
+                    var item = items[i];
+
+                    result.DataIds[i] = item.Id;
+                    result.DataNames[i] = item.Name;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Получить элемент.
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с полученными данными.</returns>
         public async Task<ModDummyTreeBaseJobItemGetOutput> GetItem(
             CoreBaseCommonJobTreeItemGetInput input
-        )
+            )
         {
             ModDummyTreeBaseJobItemGetOutput result = null;
 
@@ -190,39 +369,6 @@ namespace Makc2020.Mods.DummyTree.Base
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Удалить элемент.
-        /// </summary>
-        /// <param name="input">Ввод.</param>
-        /// <returns>Задача.</returns>
-        public async Task DeleteItem(CoreBaseCommonJobItemGetInput input)
-        {
-            using var dbContext = CreateDbContext();
-
-            using var transaction = await dbContext.Database.BeginTransactionAsync()
-                .CoreBaseExtTaskWithCurrentCulture(false);
-
-            var obj = await dbContext.DummyTree.FirstAsync(
-                x => x.Id == input.DataId
-                ).CoreBaseExtTaskWithCurrentCulture(false);
-
-            dbContext.DummyTree.Remove(obj);
-
-            await dbContext.SaveChangesAsync().CoreBaseExtTaskWithCurrentCulture(false);
-
-            var queryTreeTriggerBuilder = CreateQueryTreeTriggerBuilder(CoreBaseCommonEnumSqlTriggerActions.Delete);
-
-            var paramIds = queryTreeTriggerBuilder.Parameters.Ids;
-
-            paramIds.Add(DataProvider.CreateDbParameter("Id", input.DataId));
-
-            var sql = queryTreeTriggerBuilder.GetResultSql();
-
-            await dbContext.Database.ExecuteSqlRawAsync(sql, paramIds).CoreBaseExtTaskWithCurrentCulture(false);
-
-            await transaction.CommitAsync().CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Public methods

@@ -25,10 +25,10 @@ namespace Makc2020.Mods.DummyMain.Caching.Jobs.Filtered.Get
         /// </summary>
         /// <param name="executable">Выполняемое.</param>
         /// <param name="coreBaseResourceErrors">Ядро. Основа. Ресурсы. Ошибки.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
-        /// <param name="cacheSettings">Настройки кэширования.</param>        
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
+        /// <param name="cacheSettings">Кэширование. Настройки.</param>        
         /// <param name="cache">Кэш.</param>      
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         public ModDummyMainCachingJobFilteredGetService(
             Func<ModDummyMainBaseJobListGetInput, Task<ModDummyMainBaseJobFilteredGetOutput>> executable,
             CoreBaseResourceErrors coreBaseResourceErrors,

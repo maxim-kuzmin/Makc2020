@@ -39,7 +39,7 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql.Db
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции.</param>
-        /// <param name="dataBaseSettings">Настройки основы данных.</param>
+        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
         public DataEntityClientPostgreSqlDbContext(
             DbContextOptions<DataEntityDbContext> options,
             DataBaseSettings dataBaseSettings

@@ -16,7 +16,7 @@ namespace Makc2020.Core.Caching.Exceptions
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         public CoreCachingExceptionCantInvalidate(CoreCachingResourceErrors coreCachingResourceErrors)
             : base(coreCachingResourceErrors.GetStringCantRemoveDataFromCache())
         {

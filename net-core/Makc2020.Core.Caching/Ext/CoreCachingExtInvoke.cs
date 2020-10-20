@@ -68,7 +68,7 @@ namespace Makc2020.Core.Caching.Ext
         /// <param name="tags">
         /// Тэги, по которым будет производиться поиск ключей удаляемых из кэша данных.
         /// </param>
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         /// <returns>
         /// Задача, возвращаемая функцией изменения и чтения.
         /// </returns>
@@ -102,7 +102,7 @@ namespace Makc2020.Core.Caching.Ext
         /// <param name="tags">
         /// Тэги, по которым будет производиться поиск ключей удаляемых из кэша данных.
         /// </param>
-        /// <param name="coreCachingResourceErrors">Ресурсы ошибок ядра кэширования.</param>
+        /// <param name="coreCachingResourceErrors">Ядро. Кэширование. Ресурсы. Ошибки.</param>
         /// <returns>Задача, возвращаемая функцией изменения.</returns>
         public static async Task CoreCachingExtInvokeChange(
             this Func<Task> func,
