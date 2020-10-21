@@ -7,7 +7,7 @@ export class AppModDummyMainPageListDataItem {
    * Конструктор.
    * @param {number} id Идентификатор.
    * @param {string} name Имя.
-   * @param {string} objectDummyOneToMany Объект сущности "DummyOneToMany".
+   * @param {string} objectDummyOneToMany Объект сущности DummyOneToMany.
    */
   constructor(
     public id: number,

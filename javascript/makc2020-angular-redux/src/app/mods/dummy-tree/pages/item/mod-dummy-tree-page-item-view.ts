@@ -21,6 +21,12 @@ export abstract class AppModDummyTreePageItemView {
   formGroup: FormGroup;
 
   /**
+   * Признак того, что действие началось.
+   * @type {boolean}
+   */
+  isActionStarted = false;
+
+  /**
    * Признак того, что данные загружены.
    * @type {boolean}
    */
@@ -49,7 +55,7 @@ export abstract class AppModDummyTreePageItemView {
    * @type {boolean}
    */
   get buttonSubmitDisabled(): boolean {
-    return !this.formGroup.valid;
+    return !this.formGroup.valid || this.isActionStarted;
   }
 
   /**

@@ -19,14 +19,14 @@ export class AppModDummyMainPageItemSettingFields {
   /** Поле объекта сущности "DummyManyToMany". */
   fieldObjectDummyManyToMany = {
     name: 'objectDummyManyToMany',
-    labelResourceKey: 'Объект сущности "DummyManyToMany"',
+    labelResourceKey: 'Объект сущности DummyManyToMany',
     placeholderResourceKey: 'Выберите объект'
   };
 
   /** Поле объекта сущности "DummyOneToMany". */
   fieldObjectDummyOneToMany = {
     name: 'objectDummyOneToMany',
-    labelResourceKey: 'Объект сущности "DummyOneToMany"',
+    labelResourceKey: 'Объект сущности DummyOneToMany',
     placeholderResourceKey: 'Выберите объект'
   };
 }

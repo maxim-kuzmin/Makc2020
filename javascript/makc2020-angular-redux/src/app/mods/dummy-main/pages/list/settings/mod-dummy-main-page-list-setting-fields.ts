@@ -19,7 +19,7 @@ export class AppModDummyMainPageListSettingFields {
   /** Поле объекта сущности "DummyOneToMany". */
   fieldObjectDummyOneToMany = {
     name: 'objectDummyOneToMany',
-    labelResourceKey: 'Объект сущности "DummyOneToMany"',
+    labelResourceKey: 'Объект сущности DummyOneToMany',
     placeholderResourceKey: 'Выберите объект'
   };
 }

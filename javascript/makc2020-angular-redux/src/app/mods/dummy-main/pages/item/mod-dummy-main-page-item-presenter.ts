@@ -2,6 +2,7 @@
 
 import {Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {appDataObjectDummyMainCreate} from '@app/data/objects/data-object-dummy-main';
@@ -14,7 +15,6 @@ import {AppModDummyMainPageItemModel} from './mod-dummy-main-page-item-model';
 import {AppModDummyMainPageItemResources} from './mod-dummy-main-page-item-resources';
 import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
 import {AppModDummyMainPageItemView} from './mod-dummy-main-page-item-view';
-import {map} from 'rxjs/operators';
 
 /** Мод "DummyMain". Страницы. Элемент. Представитель. */
 export class AppModDummyMainPageItemPresenter extends AppCoreCommonPagePresenter<AppModDummyMainPageItemModel> {

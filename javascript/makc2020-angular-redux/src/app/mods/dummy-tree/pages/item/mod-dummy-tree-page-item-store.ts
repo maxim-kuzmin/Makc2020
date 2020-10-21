@@ -8,10 +8,10 @@ import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tre
 import {AppModDummyTreeJobItemGetOutput} from '@app/mods/dummy-tree/jobs/item/get/mod-dummy-tree-job-item-get-output';
 import {AppModDummyTreeStoreState} from '../../store/mod-dummy-tree-store.state';
 import {AppModDummyTreePageItemState} from './mod-dummy-tree-page-item-state';
-import {appModDummyTreePageItemStoreSelector} from './store/mod-dummy-tree-page-item-store.selectors';
 import {AppModDummyTreePageItemStoreActionClear} from './store/actions/mod-dummy-tree-page-item-store-action-clear';
 import {AppModDummyTreePageItemStoreActionLoad} from './store/actions/mod-dummy-tree-page-item-store-action-load';
 import {AppModDummyTreePageItemStoreActionSave} from './store/actions/mod-dummy-tree-page-item-store-action-save';
+import {appModDummyTreePageItemStoreSelector} from './store/mod-dummy-tree-page-item-store.selectors';
 
 /** Мод "DummyTree". Страницы. Элемент. Хранилище состояния. */
 @Injectable()

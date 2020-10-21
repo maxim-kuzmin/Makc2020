@@ -15,13 +15,13 @@ export class AppRootPageAdministrationSettings {
    * Заголовок страницы "ModDummyMainPageIndex".
    * @type {string}
    */
-  titleOfModDummyMainPageIndexResourceKey = 'Сущность Главная';
+  titleOfModDummyMainPageIndexResourceKey = 'Сущность DummyMain';
 
   /**
    * Заголовок страницы "ModDummyTreePageIndex".
    * @type {string}
    */
-  titleOfModDummyTreePageIndexResourceKey = 'Сущность Дерево';
+  titleOfModDummyTreePageIndexResourceKey = 'Сущность DummyTree';
 
   /**
    * Ключ.

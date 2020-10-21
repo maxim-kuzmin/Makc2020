@@ -1,8 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
-import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppModDummyTreePageItemSettingFields} from '../settings/mod-dummy-tree-page-item-setting-fields';
 
 /** Мод "DummyTree". Страницы. Элемент. Ресурсы. Поля. */
@@ -15,18 +15,6 @@ export class AppModDummyTreePageItemResourceFields {
 
   /** Поле "Имя". */
   fieldName = {
-    label: '',
-    placeholder: ''
-  };
-
-  /** Поле объект сущности "DummyManyToMany". */
-  fieldObjectDummyManyToMany = {
-    label: '',
-    placeholder: ''
-  };
-
-  /** Поле объект сущности "DummyOneToMany". */
-  fieldObjectDummyOneToMany = {
     label: '',
     placeholder: ''
   };
@@ -44,9 +32,7 @@ export class AppModDummyTreePageItemResourceFields {
   ) {
     const {
       fieldId,
-      fieldName,
-      fieldObjectDummyManyToMany,
-      fieldObjectDummyOneToMany
+      fieldName
     } = settingFields;
 
     appLocalizer.createTranslator(
@@ -65,30 +51,6 @@ export class AppModDummyTreePageItemResourceFields {
       fieldName.placeholderResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.fieldName.placeholder = s;
-    });
-
-    appLocalizer.createTranslator(
-      fieldObjectDummyManyToMany.labelResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.fieldObjectDummyManyToMany.label = s;
-    });
-
-    appLocalizer.createTranslator(
-      fieldObjectDummyManyToMany.placeholderResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.fieldObjectDummyManyToMany.placeholder = s;
-    });
-
-    appLocalizer.createTranslator(
-      fieldObjectDummyOneToMany.labelResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.fieldObjectDummyOneToMany.label = s;
-    });
-
-    appLocalizer.createTranslator(
-      fieldObjectDummyOneToMany.placeholderResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.fieldObjectDummyOneToMany.placeholder = s;
     });
   }
 }

@@ -15,4 +15,4 @@ export const appModDummyTreePageIndexConfigFullPath = appModDummyTreeConfigFullP
 export const appModDummyTreePageIndexConfigKey = 'ModDummyTreePageIndex';
 
 /** Мод "DummyTree". Страницы. Начало. Конфигурация. Заголовок. Ресурс. Ключ. */
-export const appModDummyTreePageIndexConfigTitleResourceKey = 'Сущность Дерево';
+export const appModDummyTreePageIndexConfigTitleResourceKey = 'Сущность DummyTree';

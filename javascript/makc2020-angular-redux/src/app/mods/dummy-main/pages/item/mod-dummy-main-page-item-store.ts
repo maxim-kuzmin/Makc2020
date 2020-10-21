@@ -8,10 +8,10 @@ import {AppModDummyMainJobItemGetInput} from '@app/mods/dummy-main/jobs/item/get
 import {AppModDummyMainJobItemGetOutput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-output';
 import {AppModDummyMainStoreState} from '../../store/mod-dummy-main-store.state';
 import {AppModDummyMainPageItemState} from './mod-dummy-main-page-item-state';
-import {appModDummyMainPageItemStoreSelector} from './store/mod-dummy-main-page-item-store.selectors';
 import {AppModDummyMainPageItemStoreActionClear} from './store/actions/mod-dummy-main-page-item-store-action-clear';
 import {AppModDummyMainPageItemStoreActionLoad} from './store/actions/mod-dummy-main-page-item-store-action-load';
 import {AppModDummyMainPageItemStoreActionSave} from './store/actions/mod-dummy-main-page-item-store-action-save';
+import {appModDummyMainPageItemStoreSelector} from './store/mod-dummy-main-page-item-store.selectors';
 
 /** Мод "DummyMain". Страницы. Элемент. Хранилище состояния. */
 @Injectable()

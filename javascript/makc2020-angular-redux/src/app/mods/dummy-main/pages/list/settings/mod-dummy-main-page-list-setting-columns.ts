@@ -32,7 +32,7 @@ export class AppModDummyMainPageListSettingColumns {
   /** Столбец объекта сущности "DummyOneToMany". */
   columnObjectDummyOneToMany = {
     name: 'objectDummyOneToMany',
-    labelResourceKey: 'Объект сущности "DummyOneToMany"',
+    labelResourceKey: 'Объект сущности DummyOneToMany',
     placeholderResourceKey: 'Выберите объект'
   };
 }

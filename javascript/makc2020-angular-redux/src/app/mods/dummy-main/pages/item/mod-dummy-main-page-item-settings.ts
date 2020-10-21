@@ -8,8 +8,8 @@ import {AppModDummyMainPageItemSettingActions} from './settings/mod-dummy-main-p
 import {AppModDummyMainPageItemSettingButtons} from './settings/mod-dummy-main-page-item-setting-buttons';
 import {AppModDummyMainPageItemSettingErrors} from './settings/mod-dummy-main-page-item-setting-errors';
 import {AppModDummyMainPageItemSettingFields} from './settings/mod-dummy-main-page-item-setting-fields';
-import {AppModDummyMainPageItemSettingPaths} from '@app/mods/dummy-main/pages/item/settings/mod-dummy-main-page-item-setting-paths';
-import {AppModDummyMainPageItemSettingKeys} from '@app/mods/dummy-main/pages/item/settings/mod-dummy-main-page-item-setting-keys';
+import {AppModDummyMainPageItemSettingKeys} from './settings/mod-dummy-main-page-item-setting-keys';
+import {AppModDummyMainPageItemSettingPaths} from './settings/mod-dummy-main-page-item-setting-paths';
 
 /** Мод "DummyMain". Страницы. Элемент. Настройки. */
 export class AppModDummyMainPageItemSettings {
@@ -54,7 +54,7 @@ export class AppModDummyMainPageItemSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Объект сущности "DummyMain"'; // 'Элемент';
+  titleResourceKey = 'Объект сущности DummyMain'; // 'Элемент';
 
   /**
    * Заголовок страницы "ModDummyMainPageItemCreate".

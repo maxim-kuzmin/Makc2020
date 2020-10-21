@@ -2,7 +2,7 @@
 
 import {Validators} from '@angular/forms';
 import {Observable, of} from 'rxjs';
-import {AppCoreCommonEnumTreeItemAxis} from '@app/core/common/enums/tree/item/core-common-enum-tree-item-axis';
+import {map} from 'rxjs/operators';
 import {AppCoreCommonPagePresenter} from '@app/core/common/page/core-common-page-presenter';
 import {AppCoreExecutableAsync} from '@app/core/executable/core-executable-async';
 import {appDataObjectDummyTreeCreate} from '@app/data/objects/data-object-dummy-tree';
@@ -70,7 +70,25 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
       actionDeactivate
     } = this.resources.actions;
 
-    return this.view.formGroup.dirty ? appDialog.confirm$(actionDeactivate.confirm) : of(true);
+    const {
+      formGroup
+    } = this.view;
+
+    if (formGroup.dirty) {
+      return appDialog.confirm$(
+        actionDeactivate.confirm
+      ).pipe(
+        map(isOk => {
+          if (isOk) {
+            this.restore();
+          }
+
+          return isOk;
+        })
+      );
+    } else {
+      return of(true);
+    }
   }
 
   /** @inheritDoc */
@@ -92,6 +110,10 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     this.hideSpinners();
 
     super.onException(message, error);
+
+    this.view.isActionStarted = false;
+
+    this.refreshFields();
   }
 
   /** @inheritDoc */
@@ -99,6 +121,13 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     this.model.getIsDataChangeAllowed$().subscribe(this.onGetIsDataChangeAllowed);
 
     super.onInit();
+  }
+
+  /** Обработчик события освежения. */
+  onRefresh() {
+    this.model.onReceiveEnsureLoadDataRequest();
+
+    this.refresh();
   }
 
   /** Обработчик события отправки. */
@@ -121,9 +150,7 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
       data = appModDummyTreeJobItemGetOutputCreate();
     }
 
-    input.objectDummyTree = data.objectDummyTree
-      ? data.objectDummyTree
-      : appDataObjectDummyTreeCreate();
+    input.objectDummyTree = data.objectDummyTree ?? appDataObjectDummyTreeCreate();
 
     const {
       objectDummyTree
@@ -146,17 +173,36 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
 
     const {
       fieldId,
-      fieldName,
-      fieldObjectDummyOneToMany
+      fieldName
     } = this.model.getSettingFields();
 
     const formGroup = extFormBuilder.group({
       [fieldId.name]: [{value: '', disabled: true}, Validators.required],
-      [fieldName.name]: [{value: '', disabled: true}, Validators.required],
-      [fieldObjectDummyOneToMany.name]: [{value: '', disabled: true}, Validators.required]
+      [fieldName.name]: [{value: '', disabled: true}, Validators.required]
     });
 
     this.view.build(formGroup);
+  }
+
+  private clearFields() {
+    const {
+      fieldId,
+      fieldName
+    } = this.view;
+
+    fieldId.setValue('', {emitEvent: false});
+    fieldName.setValue('', {emitEvent: false});
+
+    this.clearFormGroupState();
+  }
+
+  private clearFormGroupState() {
+    const {
+      formGroup
+    } = this.view;
+
+    formGroup.markAsPristine();
+    formGroup.markAsUntouched();
   }
 
   private hideSpinners() {
@@ -232,6 +278,10 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
   }
 
   private onActionsDataChanging() {
+    this.view.isActionStarted = true;
+
+    this.refreshFields();
+
     const {
       isDataLoaded
     } = this.view;
@@ -259,6 +309,10 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
     }
 
     this.hideSpinners();
+
+    this.view.isActionStarted = false;
+
+    this.refreshFields();
   }
 
   private onDataChangedByLoadSuccess() {
@@ -270,10 +324,6 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
       const {
         jobItemGetInput: input
       } = this.model.getState();
-
-      const {
-        formGroup
-      } = this.view;
 
       if (!input.isForUpdate) {
         this.resetForm();
@@ -316,21 +366,37 @@ export class AppModDummyTreePageItemPresenter extends AppCoreCommonPagePresenter
   }
 
   private refresh() {
-    const parameters = this.model.createParameters();
+    this.model.executeActionRefresh();
+  }
 
+  private refreshFields() {
     const {
-      paramAxis,
-      paramRootId
-    } = parameters;
+      fieldName,
+      isActionStarted,
+      isDataChangeAllowed
+    } = this.view;
 
-    paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
-    paramRootId.value = this.view.fieldId.value;
-
-    this.model.executeActionRefresh(parameters);
+    if (isActionStarted) {
+      fieldName.disable();
+    } else if (isDataChangeAllowed) {
+      fieldName.enable();
+    }
   }
 
   private resetForm() {
     this.view.resetForm();
     this.view.formGroup.reset();
+  }
+
+  private restore() {
+    const {
+      jobItemGetResult
+    } = this.model.getState();
+
+    if (!!jobItemGetResult) {
+      this.loadData(jobItemGetResult.data);
+    } else {
+      this.clearFields();
+    }
   }
 }

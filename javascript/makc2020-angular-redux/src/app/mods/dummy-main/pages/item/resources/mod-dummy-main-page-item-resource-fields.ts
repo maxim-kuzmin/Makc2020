@@ -1,8 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
-import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppModDummyMainPageItemSettingFields} from '../settings/mod-dummy-main-page-item-setting-fields';
 
 /** Мод "DummyMain". Страницы. Элемент. Ресурсы. Поля. */

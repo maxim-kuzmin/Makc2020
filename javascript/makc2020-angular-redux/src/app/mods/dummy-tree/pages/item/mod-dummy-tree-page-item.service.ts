@@ -14,6 +14,9 @@ import {AppModDummyTreePageItemSettings} from './mod-dummy-tree-page-item-settin
 })
 export class AppModDummyTreePageItemService {
 
+  /** @type {Subject} */
+  private ensureLoadDataRequest$ = new Subject();
+
   /** @type {AppModDummyTreePageItemLocation} */
   private location = new AppModDummyTreePageItemLocation();
 
@@ -38,10 +41,14 @@ export class AppModDummyTreePageItemService {
 
   /**
    * Создать параметры.
-   * @param {number} index Индекс.
+   * @param {?string} index Индекс.
    * @returns {AppModDummyTreePageItemParameters} Параметры.
    */
-  createParameters(index: string): AppModDummyTreePageItemParameters {
+  createParameters(index?: string): AppModDummyTreePageItemParameters {
+    if (index === undefined || index === null) {
+      index = this.settings.index;
+    }
+
     return new AppModDummyTreePageItemParameters(index);
   }
 
@@ -107,6 +114,22 @@ export class AppModDummyTreePageItemService {
     return this.locationChanged$.pipe(
       takeUntil(unsubscribe$)
     );
+  }
+
+  /**
+   * Получить поток запросов на обеспечение загрузки данных.
+   * @param {Subject<boolean>} unsubscribe$ Отказ от подписки.
+   * @returns {Observable<any>} Поток запросов на обеспечение загрузки данных.
+   */
+  receiveEnsureLoadDataRequest$(unsubscribe$: Subject<boolean>): Observable<any> {
+    return this.ensureLoadDataRequest$.pipe(
+      takeUntil(unsubscribe$)
+    );
+  }
+
+  /** Отправить запрос на обеспечение загрузки данных. */
+  sendEnsureLoadDataRequest() {
+    this.ensureLoadDataRequest$.next();
   }
 
   /**

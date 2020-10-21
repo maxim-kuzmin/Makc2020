@@ -7,8 +7,9 @@ import {AppModDummyTreePageItemSettingActions} from './settings/mod-dummy-tree-p
 import {AppModDummyTreePageItemSettingButtons} from './settings/mod-dummy-tree-page-item-setting-buttons';
 import {AppModDummyTreePageItemSettingErrors} from './settings/mod-dummy-tree-page-item-setting-errors';
 import {AppModDummyTreePageItemSettingFields} from './settings/mod-dummy-tree-page-item-setting-fields';
-import {AppModDummyTreePageItemSettingPaths} from '@app/mods/dummy-tree/pages/item/settings/mod-dummy-tree-page-item-setting-paths';
-import {AppModDummyTreePageItemSettingKeys} from '@app/mods/dummy-tree/pages/item/settings/mod-dummy-tree-page-item-setting-keys';
+import {AppModDummyTreePageItemSettingKeys} from './settings/mod-dummy-tree-page-item-setting-keys';
+import {AppModDummyTreePageItemSettingPaths} from './settings/mod-dummy-tree-page-item-setting-paths';
+import {appModDummyMainPageItemConfigIndex} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-config';
 
 /** Мод "DummyTree". Страницы. Элемент. Настройки. */
 export class AppModDummyTreePageItemSettings {
@@ -38,14 +39,6 @@ export class AppModDummyTreePageItemSettings {
   fields = new AppModDummyTreePageItemSettingFields();
 
   /**
-   * Ключ.
-   * @type {string}
-   */
-  get key(): string {
-    return appModDummyTreePageItemConfigKey;
-  }
-
-  /**
    * Ключи.
    * @type {AppModDummyTreePageItemSettingKeys}
    */
@@ -61,7 +54,7 @@ export class AppModDummyTreePageItemSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Элемент';
+  titleResourceKey = 'Объект сущности DummyTree'; // 'Элемент';
 
   /**
    * Заголовок страницы "ModDummyTreePageItemCreate".
@@ -80,4 +73,20 @@ export class AppModDummyTreePageItemSettings {
    * @type {string}
    */
   titleOfModDummyTreePageItemViewResourceKey = 'Просмотреть';
+
+  /**
+   * Индекс.
+   * @type {string}
+   */
+  get index(): string {
+    return appModDummyMainPageItemConfigIndex;
+  }
+
+  /**
+   * Ключ.
+   * @type {string}
+   */
+  get key(): string {
+    return appModDummyTreePageItemConfigKey;
+  }
 }
