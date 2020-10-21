@@ -1,17 +1,36 @@
 // //Author Maxim Kuzmin//makc//
 
-import {FormControl} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
 import {AppModDummyTreePageListDataItem} from './data/mod-dummy-tree-page-list-data-item';
-import {AppModDummyTreeJobListGetInput} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-input';
-import {AppModDummyTreePageListParameters} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-parameters';
+import {AppModDummyTreePageListSettingFields} from './settings/mod-dummy-tree-page-list-setting-fields';
+import {AppModDummyTreePageListParameters} from './mod-dummy-tree-page-list-parameters';
 
 /** Мод "DummyTree". Страницы. Список. Вид. */
 export abstract class AppModDummyTreePageListView {
+
   /**
-   * Элемент управления для ввода имени.
+   * Идентификатор текущего элемента.
+   * @type {number}
+   */
+  currentItemId = 0;
+
+  /**
+   * Поле для выбора отфильтрованного.
    * @type {FormControl}
    */
-  fieldName = new FormControl();
+  fieldFiltered = new FormControl();
+
+  /**
+   * Группа полей формы.
+   * @type {FormGroup}
+   */
+  formGroup: FormGroup;
+
+  /**
+   * Признак того, что действие началось.
+   * @type {boolean}
+   */
+  isActionStarted = false;
 
   /**
    * Признак того, что данные загружены.
@@ -32,10 +51,34 @@ export abstract class AppModDummyTreePageListView {
   isItemDeleteStarted = false;
 
   /**
+   * Признак того, что удаление элементов началось.
+   * @param {boolean}
+   */
+  isItemsDeleteStarted = false;
+
+  /**
+   * Признак того, что сортировка применена.
+   * @type {boolean}
+   */
+  isSortApplied = false;
+
+  /**
    * Размер страницы.
    * @type {number}
    */
   pageSize = 0;
+
+  /**
+   * Значение параметра "Имя".
+   * @type {string}
+   */
+  paramNameValue: string;
+
+  /**
+   * Значение параметра "Идентификатор объекта сущности DummyOneToMany".
+   * @type {string}
+   */
+  paramObjectDummyOneToManyIdValue: number;
 
   /**
    * Сообщения об ошибках отклика.
@@ -56,6 +99,63 @@ export abstract class AppModDummyTreePageListView {
   totalCount = 0;
 
   /**
+   * Конструктор.
+   * @param {AppModDummyTreePageListSettingFields} settingFields Настройка полей.
+   */
+  protected constructor(
+    private settingFields: AppModDummyTreePageListSettingFields
+  ) {
+  }
+
+  /**
+   * Поле ввода имени.
+   * @type {AbstractControl}
+   */
+  get fieldName(): AbstractControl {
+    return this.formGroup.get(this.settingFields.fieldName.name);
+  }
+
+  /**
+   * Построить.
+   * @param {FormGroup} formGroup Группа полей формы.
+   */
+  build(
+    formGroup: FormGroup
+  ) {
+    this.formGroup = formGroup;
+  }
+
+  /**
+   * Получить признак отключения кнопки удаления списка.
+   * @returns {boolean} Признак отключения кнопки удаления списка.
+   */
+  getItemsDeleteButtonIsDisabled(): boolean {
+    return this.isActionStarted;
+  }
+
+  /**
+   * Получить признак отключения кнопки фильтрации.
+   * @returns {boolean} Признак отключения кнопки фильтрации.
+   */
+  getFilterButtonIsDisabled(): boolean {
+    return this.isActionStarted
+      || (
+        this.paramNameValue === this.fieldName.value
+      );
+  }
+
+  /**
+   * Получить признак отключения кнопки отмены фильтрации.
+   * @returns {boolean} Признак отключения кнопки отмены фильтрации.
+   */
+  getFilterCancelButtonIsDisabled(): boolean {
+    return this.isActionStarted
+      || (
+        !this.fieldName.value
+      );
+  }
+
+  /**
    * Получить номер страницы.
    * @return {number}
    */
@@ -68,10 +168,24 @@ export abstract class AppModDummyTreePageListView {
   abstract getPageSize(): number;
 
   /**
-   * Получить идентификатор выбранного элемента.
-   * @returns {number} Идентификатор выбранного элемента.
+   * Получить выбранный элемент.
+   * @returns {AppModDummyTreePageListDataItem} Выбранный элемент.
    */
-  abstract getSelectedItemId(): number;
+  abstract getSelectedItem(): AppModDummyTreePageListDataItem;
+
+  /**
+   * Получить выбранные элементы.
+   * @returns {AppModDummyTreePageListDataItem[]} Выбранные элементы.
+   */
+  abstract getSelectedItems(): AppModDummyTreePageListDataItem[];
+
+  /**
+   * Получить признак отключения кнопки отмены сортировки.
+   * @returns {boolean} Признак отключения кнопки отмены сортировки.
+   */
+  getSortCancelButtonIsDisabled(): boolean {
+    return this.isActionStarted || !this.isSortApplied;
+  }
 
   /**
    * Получить направление сортировки.
@@ -84,6 +198,12 @@ export abstract class AppModDummyTreePageListView {
    * @return {string}
    */
   abstract getSortField(): string;
+
+  /**
+   * Получить данные.
+   * @return {AppModDummyTreePageListDataItem[]}
+   */
+  abstract getData(): AppModDummyTreePageListDataItem[];
 
   /** Спрятать спиннер загрузки. */
   abstract hideLoadingSpinner();
@@ -122,6 +242,12 @@ export abstract class AppModDummyTreePageListView {
    */
   abstract setSelectedItemId(value: number);
 
+  /**
+   * Установить идентификаторы выбранных элементов.
+   * @param {number[]} value Значение.
+   */
+  abstract setSelectedItemIds(value: number[]);
+
   /** Показать спиннер загрузки. */
   abstract showLoadingSpinner();
 
@@ -129,10 +255,22 @@ export abstract class AppModDummyTreePageListView {
   abstract showRefreshSpinner();
 
   /**
+   * Подписаться на событие переключения флажка в заголовке.
+   * @param {() => void} callback Функция обратного вызова.
+   */
+  abstract subscribeOnHeaderCheckboxToggle(callback: () => void);
+
+  /**
    * Подписаться на событие выбора строки.
    * @param {() => void} callback Функция обратного вызова.
    */
   abstract subscribeOnRowSelect(callback: () => void);
+
+  /**
+   * Подписаться на событие отмены выбора строки.
+   * @param {() => void} callback Функция обратного вызова.
+   */
+  abstract subscribeOnRowUnselect(callback: () => void);
 
   /**
    * Подписаться на событие изменения сортировки.

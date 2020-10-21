@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';

@@ -52,7 +52,7 @@ export class AppModDummyTreePageItemStoreEffects {
             results => {
               let jobItemGetResult: AppModDummyTreeJobItemGetResult;
 
-              if (results.length > 1) {
+              if (results.length > 0) {
                 jobItemGetResult = results[results.length - 1] as AppModDummyTreeJobItemGetResult;
               }
 

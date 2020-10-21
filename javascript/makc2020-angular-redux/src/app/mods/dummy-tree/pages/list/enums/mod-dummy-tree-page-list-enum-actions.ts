@@ -10,16 +10,41 @@ export enum AppModDummyTreePageListEnumActions {
   Clear = '[AppModDummyTreePageList] Clear',
 
   /**
-   * Удаление.
+   * Удаление отфильтрованного.
    * @type {string}
    */
-  Delete = '[AppModDummyTreePageList] Delete',
+  FilteredDelete = '[AppModDummyTreePageList] FilteredDelete',
 
   /**
-   * Успех удаления.
+   * Удаление отфильтрованного.
    * @type {string}
    */
-  DeleteSuccess = '[AppModDummyTreePageList] Delete Success',
+  FilteredDeleteSuccess = '[AppModDummyTreePageList] FilteredDelete Success',
+
+  /**
+   * Элемент. Удаление.
+   * @type {string}
+   */
+  ItemDelete = '[AppModDummyTreePageList] ItemDelete',
+
+  /**
+   * Элемент. Успех удаления.
+   * @type {string}
+   */
+  ItemDeleteSuccess = '[AppModDummyTreePageList] ItemDelete Success',
+
+  /**
+   * Удаление списка.
+   * @type {string}
+   */
+  ListDelete = '[AppModDummyTreePageList] ListDelete',
+
+
+  /**
+   * Удаление списка.
+   * @type {string}
+   */
+  ListDeleteSuccess = '[AppModDummyTreePageList] ListDelete Success',
 
   /**
    * Загрузка.
@@ -31,5 +56,11 @@ export enum AppModDummyTreePageListEnumActions {
    * Успех загрузки.
    * @type {string}
    */
-  LoadSuccess = '[AppModDummyTreePageList] Load Success'
+  LoadSuccess = '[AppModDummyTreePageList] Load Success',
+
+  /**
+   * Параметры. Установка.
+   * @type {string}
+   */
+  ParametersSet = '[AppModDummyTreePageList] ParametersSet'
 }

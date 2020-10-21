@@ -4,11 +4,11 @@ import {Action} from '@ngrx/store';
 import {AppModDummyTreeJobListGetInput} from '../../../../jobs/list/get/mod-dummy-tree-job-list-get-input';
 import {AppModDummyTreePageListEnumActions} from '../../enums/mod-dummy-tree-page-list-enum-actions';
 
-/** Мод "DummyTree". Страницы. Список. Хранилище состояния. Действия. Загрузка. */
-export class AppModDummyTreePageListStoreActionLoad implements Action {
+/** Мод "DummyTree". Страницы. Список. Хранилище состояния. Действия. Отфильтрованное. Удаление. */
+export class AppModDummyTreePageListStoreActionFilteredDelete implements Action {
 
   /** @inheritDoc */
-  readonly type = AppModDummyTreePageListEnumActions.Load;
+  readonly type = AppModDummyTreePageListEnumActions.FilteredDelete;
 
   /**
    * Конструктор.

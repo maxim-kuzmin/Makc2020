@@ -3,16 +3,28 @@
 import {AppCoreCommonPageParameter} from '@app/core/common/page/core-common-page-parameter';
 import {AppCoreCommonPageParameters} from '@app/core/common/page/core-common-page-parameters';
 import {AppCoreSettings} from '@app/core/core-settings';
-import {AppModDummyTreeJobListGetInput} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-input';
+import {AppModDummyTreeJobListGetInput} from '../../jobs/list/get/mod-dummy-tree-job-list-get-input';
 
 /** Мод "DummyTree". Страницы. Список. Параметры. */
 export class AppModDummyTreePageListParameters extends AppCoreCommonPageParameters {
+
+  /**
+   * Параметр "Строка идентификаторов".
+   * @type {AppCoreCommonPageParameter<string>}
+   */
+  paramIdsString = new AppCoreCommonPageParameter<string>('ids', this.index);
 
   /**
    * Параметр "Признак того, что данные обновлены".
    * @type {boolean}
    */
   paramIsDataRefreshed = new AppCoreCommonPageParameter<boolean>('r', this.index);
+
+  /**
+   * Параметр "Имя".
+   * @type {AppCoreCommonPageParameter<string>}
+   */
+  paramName = new AppCoreCommonPageParameter<string>('name', this.index);
 
   /**
    * Параметр "Номер страницы".
@@ -33,10 +45,10 @@ export class AppModDummyTreePageListParameters extends AppCoreCommonPageParamete
   paramSelectedItemId = new AppCoreCommonPageParameter<number>('sid', this.index);
 
   /**
-   * Параметр "Поле сортировки".
+   * Параметр "Строка идентификаторов выбранных элементов".
    * @type {AppCoreCommonPageParameter<string>}
    */
-  paramSortField = new AppCoreCommonPageParameter<string>('sf', this.index);
+  paramSelectedItemIdsString = new AppCoreCommonPageParameter<string>('sids', this.index);
 
   /**
    * Параметр "Направление сортировки".
@@ -45,16 +57,10 @@ export class AppModDummyTreePageListParameters extends AppCoreCommonPageParamete
   paramSortDirection = new AppCoreCommonPageParameter<string>('sd', this.index);
 
   /**
-   * Параметр "Имя".
+   * Параметр "Поле сортировки".
    * @type {AppCoreCommonPageParameter<string>}
    */
-  paramName = new AppCoreCommonPageParameter<string>('name', this.index);
-
-  /**
-   * Параметр "Строка идентификаторов".
-   * @type {AppCoreCommonPageParameter<string>}
-   */
-  paramIdsString = new AppCoreCommonPageParameter<string>('ids', this.index);
+  paramSortField = new AppCoreCommonPageParameter<string>('sf', this.index);
 
   /**
    * Конструктор.
@@ -85,8 +91,8 @@ export class AppModDummyTreePageListParameters extends AppCoreCommonPageParamete
     return new AppModDummyTreeJobListGetInput(
       this.paramPageNumber.value,
       this.paramPageSize.value,
-      this.paramSortField.value,
       this.paramSortDirection.value,
+      this.paramSortField.value,
       this.paramIdsString.value,
       this.paramName.value
     );

@@ -13,6 +13,11 @@ export class AppModDummyTreePageListResourceColumns {
     label: ''
   };
 
+  /** Столбец "Чекбоксы". */
+  columnCheckBoxes = {
+    label: ''
+  };
+
   /** Столбец "Идентификатор". */
   columnId = {
     label: '',
@@ -38,6 +43,7 @@ export class AppModDummyTreePageListResourceColumns {
   ) {
     const {
       columnAction,
+      columnCheckBoxes,
       columnId,
       columnName
     } = settingColumns;
@@ -46,6 +52,12 @@ export class AppModDummyTreePageListResourceColumns {
       columnAction.labelResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.columnAction.label = s;
+    });
+
+    appLocalizer.createTranslator(
+      columnCheckBoxes.labelResourceKey
+    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
+      this.columnCheckBoxes.label = s;
     });
 
     appLocalizer.createTranslator(

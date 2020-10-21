@@ -4,10 +4,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreSettings} from '@app/core/core-settings';
+import {AppModDummyTreePageItemParameters} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-parameters';
 import {AppModDummyTreePageListLocation} from './mod-dummy-tree-page-list-location';
 import {AppModDummyTreePageListParameters} from './mod-dummy-tree-page-list-parameters';
 import {AppModDummyTreePageListSettings} from './mod-dummy-tree-page-list-settings';
-import {AppModDummyTreePageItemParameters} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-parameters';
 
 /** Мод "DummyTree". Страницы. Список. Сервис. */
 @Injectable({
@@ -42,10 +42,14 @@ export class AppModDummyTreePageListService {
 
   /**
    * Создать параметры.
-   * @param {number} index Индекс.
+   * @param {?number} index Индекс.
    * @returns {AppModDummyTreePageItemParameters} Параметры.
    */
-  createParameters(index: string): AppModDummyTreePageListParameters {
+  createParameters(index?: string): AppModDummyTreePageListParameters {
+    if (index === undefined || index === null) {
+      index = this.settings.index;
+    }
+
     return new AppModDummyTreePageListParameters(this.appSettings, index);
   }
 
@@ -67,6 +71,7 @@ export class AppModDummyTreePageListService {
       paramPageNumber,
       paramPageSize,
       paramSelectedItemId,
+      paramSelectedItemIdsString,
       paramSortDirection,
       paramSortField
     } = parameters;
@@ -91,6 +96,10 @@ export class AppModDummyTreePageListService {
 
     if (paramSelectedItemId.isValueDiffer(byDefault.paramSelectedItemId.value)) {
       result[paramSelectedItemId.name] = paramSelectedItemId.value;
+    }
+
+    if (paramSelectedItemIdsString.isValueDiffer(byDefault.paramSelectedItemIdsString.value)) {
+      result[paramSelectedItemIdsString.name] = paramSelectedItemIdsString.value;
     }
 
     if (paramSortDirection.isValueDiffer(byDefault.paramSortDirection.value)) {

@@ -34,7 +34,7 @@ export class AppModDummyMainPageListSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Объекты сущности "DummyMain"'; // 'Список';
+  titleResourceKey = 'Объекты сущности DummyMain'; // 'Список';
 
   /**
    * Индекс.

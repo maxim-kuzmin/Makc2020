@@ -58,6 +58,7 @@ export class AppSkinModDummyTreePageListComponent implements AfterViewInit, OnDe
     this.myView = new AppSkinModDummyTreePageListView(
       model.resources.columns,
       model.getSettingColumns(),
+      model.getSettingFields(),
       model.getSettingPageSizeOptions()
     );
 

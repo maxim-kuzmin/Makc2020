@@ -9,6 +9,12 @@ export class AppModDummyTreePageListSettingColumns {
     labelResourceKey: '',
   };
 
+  /** Столбец "Чекбоксы". */
+  columnCheckBoxes = {
+    name: 'checkBoxes',
+    labelResourceKey: '',
+  };
+
   /** Столбец "Идентификатор". */
   columnId = {
     name: 'id',

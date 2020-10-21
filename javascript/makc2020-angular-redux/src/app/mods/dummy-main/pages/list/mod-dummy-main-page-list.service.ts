@@ -4,10 +4,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AppCoreSettings} from '@app/core/core-settings';
+import {AppModDummyMainPageItemParameters} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-parameters';
 import {AppModDummyMainPageListLocation} from './mod-dummy-main-page-list-location';
 import {AppModDummyMainPageListParameters} from './mod-dummy-main-page-list-parameters';
 import {AppModDummyMainPageListSettings} from './mod-dummy-main-page-list-settings';
-import {AppModDummyMainPageItemParameters} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-parameters';
 
 /** Мод "DummyMain". Страницы. Список. Сервис. */
 @Injectable({

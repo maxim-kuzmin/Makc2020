@@ -12,17 +12,41 @@ export function appModDummyTreePageListStoreReducer(
   switch (action.type) {
     case AppModDummyTreePageListEnumActions.Clear:
       return undefined;
-    case AppModDummyTreePageListEnumActions.Delete:
+    case AppModDummyTreePageListEnumActions.ItemDelete:
       return {
         ...state,
         action: action.type,
-        jobItemGetInput: action.jobItemGetInput
+        jobItemDeleteInput: action.jobItemDeleteInput
       };
-    case AppModDummyTreePageListEnumActions.DeleteSuccess:
+    case AppModDummyTreePageListEnumActions.ItemDeleteSuccess:
       return {
         ...state,
         action: action.type,
         jobItemDeleteResult: action.jobItemDeleteResult
+      };
+    case AppModDummyTreePageListEnumActions.FilteredDelete:
+      return {
+        ...state,
+        action: action.type,
+        jobListGetInput: action.jobListGetInput
+      };
+    case AppModDummyTreePageListEnumActions.FilteredDeleteSuccess:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteResult: action.jobListDeleteResult
+      };
+    case AppModDummyTreePageListEnumActions.ListDelete:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteInput: action.jobListDeleteInput
+      };
+    case AppModDummyTreePageListEnumActions.ListDeleteSuccess:
+      return {
+        ...state,
+        action: action.type,
+        jobListDeleteResult: action.jobListDeleteResult
       };
     case AppModDummyTreePageListEnumActions.Load:
       return {
@@ -35,6 +59,12 @@ export function appModDummyTreePageListStoreReducer(
         ...state,
         action: action.type,
         jobListGetResult: action.jobListGetResult
+      };
+    case AppModDummyTreePageListEnumActions.ParametersSet:
+      return {
+        ...state,
+        action: action.type,
+        parameters: action.parameters
       };
     default:
       return state;

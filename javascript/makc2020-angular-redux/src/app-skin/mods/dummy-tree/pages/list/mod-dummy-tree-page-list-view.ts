@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import {Paginator, Table} from 'primeng';
+import {Paginator, SelectItem, Table} from 'primeng';
 import {merge} from 'rxjs';
 import {AppModDummyTreePageListSettings} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-settings';
 import {AppModDummyTreePageListView} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-view';
@@ -8,8 +8,9 @@ import {AppModDummyTreePageListSettingColumns} from '@app/mods/dummy-tree/pages/
 import {AppSkinCoreProgressSpinnerComponent} from '@app-skin/core/progress/spinner/core-progress-spinner.component';
 import {AppSkinCoreProgressSpinnerDirective} from '@app-skin/core/progress/spinner/core-progress-spinner.directive';
 import {AppModDummyTreePageListDataItem} from '@app/mods/dummy-tree/pages/list/data/mod-dummy-tree-page-list-data-item';
-import {AppModDummyTreePageListResourceColumns} from '@app/mods/dummy-tree/pages/list/resources/mod-dummy-tree-page-list-resource-columns';
 import {AppModDummyTreePageListParameters} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-parameters';
+import {AppModDummyTreePageListResourceColumns} from '@app/mods/dummy-tree/pages/list/resources/mod-dummy-tree-page-list-resource-columns';
+import {AppModDummyTreePageListSettingFields} from '@app/mods/dummy-tree/pages/list/settings/mod-dummy-tree-page-list-setting-fields';
 
 /** Мод "DummyTree". Страницы. Список. Вид. */
 export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView {
@@ -30,6 +31,12 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
   private isDataLoading = false;
 
   /**
+   * Вырианты выбора "DummyOneToMany".
+   * @type {SelectItem[]}
+   */
+  selectItemsDummyOneToMany: SelectItem[] = [];
+
+  /**
    * Ключ данных.
    * @type {string}
    */
@@ -48,17 +55,25 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
   selectedItem: AppModDummyTreePageListDataItem;
 
   /**
+   * Выбранные элементы.
+   * @type {AppModDummyTreePageListDataItem[]}
+   */
+  selectedItems: AppModDummyTreePageListDataItem[];
+
+  /**
    * Конструктор.
    * @param {AppModDummyTreePageListResourceColumns} resourceColumns Ресурс столбцов.
    * @param {AppModDummyTreePageListSettings} settingColumns Настройка столбцов.
+   * @param {AppModDummyTreePageListSettingFields} settingFields Настройка полей.
    * @param {number[]} pageSizeOptions Опции размера страницы.
    */
   constructor(
     resourceColumns: AppModDummyTreePageListResourceColumns,
-    settingColumns: AppModDummyTreePageListSettingColumns,
+    public settingColumns: AppModDummyTreePageListSettingColumns,
+    settingFields: AppModDummyTreePageListSettingFields,
     public pageSizeOptions: number[]
   ) {
-    super();
+    super(settingFields);
 
     const {
       columnId: columnIdResource,
@@ -88,6 +103,27 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
     ];
   }
 
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyTreePageListDataItem[]}
+   */
+  getData(): AppModDummyTreePageListDataItem[] {
+    return this.ctrlTable.value;
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {boolean}
+   */
+  getItemsDeleteButtonIsDisabled(): boolean {
+    return super.getItemsDeleteButtonIsDisabled()
+      || (
+        !this.selectedItems
+        || !this.selectedItems.length
+      )
+      && this.fieldFiltered.value === false;
+  }
+
   /** @inheritDoc */
   getPageNumber(): number {
     return this.ctrlPaginator.getPage() + 1;
@@ -98,8 +134,30 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
     return 10;
   }
 
-  getSelectedItemId(): number {
-    return this.selectedItem ? this.selectedItem.id : 0;
+  /**
+   * Получить CSS-класс строки.
+   * @param {AppModDummyTreePageListDataItem} row Строка.
+   */
+  getRowCssClass(row: AppModDummyTreePageListDataItem) {
+    return {
+      'ui-state-highlight': this.currentItemId === row.id
+    };
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyTreePageListDataItem}
+   */
+  getSelectedItem(): AppModDummyTreePageListDataItem {
+    return this.selectedItem;
+  }
+
+  /**
+   * @inheritDoc
+   * @returns {AppModDummyTreePageListDataItem[]}
+   */
+  getSelectedItems(): AppModDummyTreePageListDataItem[] {
+    return this.selectedItems ?? [];
   }
 
   /** @inheritDoc */
@@ -172,6 +230,7 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
     const {
       paramPageNumber,
       paramSelectedItemId,
+      paramSelectedItemIdsString,
       paramSortDirection,
       paramSortField
     } = parameters;
@@ -179,8 +238,18 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
     this.setPageNumber(paramPageNumber.value);
     this.setSelectedItemId(paramSelectedItemId.value);
 
+    let selectedItemIds: number[] = [];
+
+    if (paramSelectedItemIdsString.value && paramSelectedItemIdsString.value.length > 0) {
+      selectedItemIds = paramSelectedItemIdsString.value.split(',').map(x => +x);
+    }
+
+    this.setSelectedItemIds(selectedItemIds);
+
     this.ctrlTable.sortField = paramSortField.value;
     this.ctrlTable.sortOrder = paramSortDirection.value === 'asc' ? 1 : -1;
+
+    this.ctrlTable.sortSingle();
 
     this.isDataLoading = false;
   }
@@ -191,6 +260,7 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
    */
   setPageNumber(value: number) {
     this.ctrlPaginator.first = (value - 1) * this.pageSize;
+    this.ctrlPaginator.updatePageLinks();
   }
 
   /**
@@ -201,6 +271,26 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
     this.selectedItem = value > 0
       ? this.ctrlTable.value.find(item => item.id === value)
       : null;
+  }
+
+  /**
+   * @inheritDoc
+   * @param {number[]} value
+   */
+  setSelectedItemIds(value: number[]) {
+    const selectedItems = [];
+
+    if (value && value.length > 0) {
+      for (const item of this.ctrlTable.value) {
+        for (const id of value) {
+          if (item.id === id) {
+            selectedItems.push(item);
+          }
+        }
+      }
+    }
+
+    this.selectedItems = selectedItems;
   }
 
   /** @inheritDoc */
@@ -214,8 +304,26 @@ export class AppSkinModDummyTreePageListView extends AppModDummyTreePageListView
   }
 
   /** @inheritDoc */
+  subscribeOnHeaderCheckboxToggle(callback: () => void) {
+    this.ctrlTable.onHeaderCheckboxToggle.subscribe(event => {
+      if (!this.isDataLoading) {
+        callback();
+      }
+    });
+  }
+
+  /** @inheritDoc */
   subscribeOnRowSelect(callback: () => void) {
     this.ctrlTable.onRowSelect.subscribe(event => {
+      if (!this.isDataLoading) {
+        callback();
+      }
+    });
+  }
+
+  /** @inheritDoc */
+  subscribeOnRowUnselect(callback: () => void) {
+    this.ctrlTable.onRowUnselect.subscribe(event => {
       if (!this.isDataLoading) {
         callback();
       }

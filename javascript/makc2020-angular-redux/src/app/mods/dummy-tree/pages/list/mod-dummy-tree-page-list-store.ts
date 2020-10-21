@@ -1,17 +1,22 @@
 // //Author Maxim Kuzmin//makc//
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppCoreCommonModJobItemGetInput} from '@app/core/common/mod/jobs/item/get/core-common-mod-job-item-get-input';
-import {AppModDummyTreeJobListGetInput} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-input';
-import {AppModDummyTreeStoreState} from '@app/mods/dummy-tree/store/mod-dummy-tree-store.state';
-import {AppModDummyTreePageListState} from './mod-dummy-tree-page-list-state';
+import {AppModDummyTreeJobItemDeleteInput} from '../../jobs/item/delete/mod-dummy-tree-job-item-delete-input';
+import {AppModDummyTreeJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-tree-job-list-delete-input';
+import {AppModDummyTreeJobListGetInput} from '../../jobs/list/get/mod-dummy-tree-job-list-get-input';
+import {AppModDummyTreeStoreState} from '../../store/mod-dummy-tree-store.state';
+import {AppModDummyTreePageListStateParameters} from './state/mod-dummy-tree-page-list-state-parameters';
 import {AppModDummyTreePageListStoreActionClear} from './store/actions/mod-dummy-tree-page-list-store-action-clear';
-import {AppModDummyTreePageListStoreActionDelete} from './store/actions/mod-dummy-tree-page-list-store-action-delete';
+import {AppModDummyTreePageListStoreActionItemDelete} from './store/actions/mod-dummy-tree-page-list-store-action-item-delete';
+import {AppModDummyTreePageListStoreActionFilteredDelete} from './store/actions/mod-dummy-tree-page-list-store-action-filtered-delete';
+import {AppModDummyTreePageListStoreActionListDelete} from './store/actions/mod-dummy-tree-page-list-store-action-list-delete';
 import {AppModDummyTreePageListStoreActionLoad} from './store/actions/mod-dummy-tree-page-list-store-action-load';
+import {AppModDummyTreePageListStoreActionParametersSet} from './store/actions/mod-dummy-tree-page-list-store-action-parameters-set';
 import {appModDummyTreePageListStoreSelector} from './store/mod-dummy-tree-page-list-store.selectors';
+import {AppModDummyTreePageListState} from './mod-dummy-tree-page-list-state';
 
 /** Мод "DummyTree". Страницы. Список. Хранилище состояния. */
 @Injectable()
@@ -57,11 +62,27 @@ export class AppModDummyTreePageListStore {
   }
 
   /**
-   * Запустить действие "Удаление".
-   * @param {AppCoreCommonModJobItemGetInput} input Ввод.
+   * Запустить действие "Отфильтрованное. Удаление".
+   * @param {AppModDummyTreeJobListGetInput} input Ввод.
    */
-  runActionDelete(input: AppCoreCommonModJobItemGetInput) {
-    this.extStore.dispatch(new AppModDummyTreePageListStoreActionDelete(input));
+  runActionFilteredDelete(input: AppModDummyTreeJobListGetInput) {
+    this.extStore.dispatch(new AppModDummyTreePageListStoreActionFilteredDelete(input));
+  }
+
+  /**
+   * Запустить действие "Элемент. Удаление".
+   * @param {AppModDummyTreeJobItemDeleteInput} input Ввод.
+   */
+  runActionItemDelete(input: AppModDummyTreeJobItemDeleteInput) {
+    this.extStore.dispatch(new AppModDummyTreePageListStoreActionItemDelete(input));
+  }
+
+  /**
+   * Запустить действие "Список. Удаление".
+   * @param {AppModDummyTreeJobListDeleteInput} input Ввод.
+   */
+  runActionListDelete(input: AppModDummyTreeJobListDeleteInput) {
+    this.extStore.dispatch(new AppModDummyTreePageListStoreActionListDelete(input));
   }
 
   /**
@@ -70,6 +91,14 @@ export class AppModDummyTreePageListStore {
    */
   runActionLoad(input: AppModDummyTreeJobListGetInput) {
     this.extStore.dispatch(new AppModDummyTreePageListStoreActionLoad(input));
+  }
+
+  /**
+   * Запустить действие "Параметры. Установка".
+   * @param {AppModDummyTreePageListStateParameters} parameters Параметры.
+   */
+  runActionParametersSet(parameters: AppModDummyTreePageListStateParameters) {
+    this.extStore.dispatch(new AppModDummyTreePageListStoreActionParametersSet(parameters));
   }
 
   /**

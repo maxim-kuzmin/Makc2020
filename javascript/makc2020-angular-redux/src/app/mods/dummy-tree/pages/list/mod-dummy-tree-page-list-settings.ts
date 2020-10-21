@@ -7,6 +7,7 @@ import {
 } from './mod-dummy-tree-page-list-config';
 import {AppModDummyTreePageListSettingActions} from './settings/mod-dummy-tree-page-list-setting-actions';
 import {AppModDummyTreePageListSettingColumns} from './settings/mod-dummy-tree-page-list-setting-columns';
+import {AppModDummyTreePageListSettingFields} from './settings/mod-dummy-tree-page-list-setting-fields';
 
 /** Мод "DummyTree". Страницы. Список. Настройки. */
 export class AppModDummyTreePageListSettings {
@@ -24,10 +25,16 @@ export class AppModDummyTreePageListSettings {
   columns = new AppModDummyTreePageListSettingColumns();
 
   /**
+   * Поля.
+   * @type {AppModDummyTreePageListSettingFields}
+   */
+  fields = new AppModDummyTreePageListSettingFields();
+
+  /**
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Список';
+  titleResourceKey = 'Объекты сущности DummyTree'; // 'Список';
 
   /**
    * Индекс.

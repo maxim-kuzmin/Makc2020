@@ -1,12 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {merge, Observable, of, Subject, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, switchMap, takeUntil} from 'rxjs/operators';
 import {AppCoreCommonEnumTreeItemAxis} from '@app/core/common/enums/tree/item/core-common-enum-tree-item-axis';
-import {AppCoreCommonModJobItemGetInput} from '@app/core/common/mod/jobs/item/get/core-common-mod-job-item-get-input';
 import {AppCoreCommonPageModel} from '@app/core/common/page/core-common-page-model';
+import {AppCoreDeactivatingService} from '@app/core/deactivating/core-deactivating.service';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreExceptionStore} from '@app/core/exception/core-exception-store';
@@ -15,8 +16,10 @@ import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppModDummyTreeJobListGetInput} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-input';
-import {AppModDummyTreePageItemLocation} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-location';
+import {AppModDummyTreeJobItemDeleteInput} from '../../jobs/item/delete/mod-dummy-tree-job-item-delete-input';
+import {AppModDummyTreeJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-tree-job-list-delete-input';
+import {AppModDummyTreeJobListGetInput} from '../../jobs/list/get/mod-dummy-tree-job-list-get-input';
+import {AppModDummyTreePageItemLocation} from '../item/mod-dummy-tree-page-item-location';
 import {AppModDummyTreePageItemService} from '../item/mod-dummy-tree-page-item.service';
 import {AppModDummyTreePageListParameters} from './mod-dummy-tree-page-list-parameters';
 import {AppModDummyTreePageListResources} from './mod-dummy-tree-page-list-resources';
@@ -24,6 +27,8 @@ import {AppModDummyTreePageListService} from './mod-dummy-tree-page-list.service
 import {AppModDummyTreePageListSettingColumns} from './settings/mod-dummy-tree-page-list-setting-columns';
 import {AppModDummyTreePageListState} from './mod-dummy-tree-page-list-state';
 import {AppModDummyTreePageListStore} from './mod-dummy-tree-page-list-store';
+import {AppModDummyTreePageListSettingFields} from './settings/mod-dummy-tree-page-list-setting-fields';
+import {AppModDummyTreePageListStateParameters} from './state/mod-dummy-tree-page-list-state-parameters';
 
 /** Мод "DummyTree". Страницы. Список. Модель. */
 @Injectable()
@@ -34,6 +39,9 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
   /** @type {Subject<boolean>} */
   private isItemDeleteStarted$ = new Subject<boolean>();
+
+  /** @type {Subject<boolean>} */
+  private isItemsDeleteStarted$ = new Subject<boolean>();
 
   /** @type {AppModDummyTreeJobListGetInput} */
   private jobListGetInput: AppModDummyTreeJobListGetInput;
@@ -49,6 +57,7 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
   /**
    * Конструктор.
+   * @param {AppCoreDeactivatingService} appDeactivating Деактивация.
    * @param {AppCoreDialogService} appDialog Диалог.
    * @param {AppCoreExceptionStore} appExceptionStore Хранилище состояния исключения.
    * @param {AppCoreLocalizationService} appLocalizer Локализатор.
@@ -59,10 +68,12 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
    * @param {AppModDummyTreePageListStore} appStore Хранилище состояния.
    * @param {AppCoreSettings} appSettings Настройки.
    * @param {AppCoreTitleService} appTitle Заголовок.
+   * @param {FormBuilder} extFormBuilder Построитель форм.
    * @param {ActivatedRoute} extRoute Маршрут.
    * @param {Router} extRouter Маршрутизатор.
    */
   constructor(
+    private appDeactivating: AppCoreDeactivatingService,
     private appDialog: AppCoreDialogService,
     appExceptionStore: AppCoreExceptionStore,
     appLocalizer: AppCoreLocalizationService,
@@ -73,6 +84,7 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
     private appStore: AppModDummyTreePageListStore,
     private appSettings: AppCoreSettings,
     appTitle: AppCoreTitleService,
+    public extFormBuilder: FormBuilder,
     extRoute: ActivatedRoute,
     private extRouter: Router
   ) {
@@ -107,10 +119,10 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
    * @returns {AppModDummyTreePageListParameters} Параметры.
    */
   createParameters(): AppModDummyTreePageListParameters {
-    return this.appModDummyTreePageList.createParameters(this.parameters.index);
+    return this.appModDummyTreePageList.createParameters();
   }
 
-    /**
+  /**
    * Выполнить действие "Элемент. Удаление".
    * @param {number} id Идентификатор.
    */
@@ -121,7 +133,43 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
       if (isOk) {
         this.isItemDeleteStarted$.next();
 
-        this.appStore.runActionDelete(new AppCoreCommonModJobItemGetInput(id));
+        this.appStore.runActionItemDelete(new AppModDummyTreeJobItemDeleteInput(id));
+      }
+    });
+  }
+
+  /** Выполнить действие "Элементы. Удаление отфильтрованного". */
+  executeActionItemsDeleteFiltered() {
+    this.appDialog.confirm$(
+      this.resources.actions.actionDeleteFiltered.confirm
+    ).subscribe(isOk => {
+      if (isOk) {
+        this.isItemsDeleteStarted$.next();
+
+        const {
+          jobListGetInput
+        } = this.getState();
+
+        if (jobListGetInput) {
+          this.appStore.runActionFilteredDelete(jobListGetInput);
+        }
+      }
+    });
+  }
+
+  /**
+   * Выполнить действие "Элементы. Удаление списка".
+   * @param {number[]} ids Идентификаторы.
+   * @param {string[]} names Наименования.
+   */
+  executeActionItemsDeleteList(ids: number[], names: string[]) {
+    this.appDialog.confirm$(
+      this.resources.actions.actionDeleteList.confirm
+    ).subscribe(isOk => {
+      if (isOk) {
+        this.isItemsDeleteStarted$.next();
+
+        this.appStore.runActionListDelete(new AppModDummyTreeJobListDeleteInput(ids, names));
       }
     });
   }
@@ -131,18 +179,20 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
    * @param {number} id Идентификатор.
    */
   executeActionItemEdit(id: number) {
-    this.setSelectedItemId(id);
-
     const {
       pathEdit
     } = this.appModDummyTreePageItem.settings.paths;
 
-    const parameters = this.appModDummyTreePageItem.createParameters(this.parameters.index);
+    const parameters = this.appModDummyTreePageItem.createParameters();
 
     parameters.paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
     parameters.paramRootId.value = id;
 
     const commands = this.appModDummyTreePageItem.createRouterLink(pathEdit, parameters);
+
+    this.appModDummyTreePageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
 
     this.extRouter.navigate(commands).catch();
   }
@@ -155,6 +205,10 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
     const commands = this.appModDummyTreePageItem.createRouterLink(pathCreate);
 
+    this.appModDummyTreePageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
+
     this.extRouter.navigate(commands).catch();
   }
 
@@ -163,18 +217,20 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
    * @param {number} id Идентификатор.
    */
   executeActionItemView(id: number) {
-    this.setSelectedItemId(id);
-
     const {
       pathView
     } = this.appModDummyTreePageItem.settings.paths;
 
-    const parameters = this.appModDummyTreePageItem.createParameters(this.parameters.index);
+    const parameters = this.appModDummyTreePageItem.createParameters();
 
     parameters.paramAxis.value = AppCoreCommonEnumTreeItemAxis.Self;
     parameters.paramRootId.value = id;
 
     const commands = this.appModDummyTreePageItem.createRouterLink(pathView, parameters);
+
+    this.appModDummyTreePageItem.sendEnsureLoadDataRequest();
+
+    this.appDeactivating.isEnabled = true;
 
     this.extRouter.navigate(commands).catch();
   }
@@ -223,6 +279,12 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
   getIsItemDeleteStarted$(): Observable<boolean> {
     return this.isItemDeleteStarted$.pipe(
+      takeUntil(this.unsubscribe$)
+    );
+  }
+
+  getIsItemsDeleteStarted$(): Observable<boolean> {
+    return this.isItemsDeleteStarted$.pipe(
       takeUntil(this.unsubscribe$)
     );
   }
@@ -285,6 +347,14 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
   }
 
   /**
+   * Получить настройку полей.
+   * @returns {AppModDummyTreePageListSettingFields} Настройка полей.
+   */
+  getSettingFields(): AppModDummyTreePageListSettingFields {
+    return this.appModDummyTreePageList.settings.fields;
+  }
+
+  /**
    * Получить настройку вариантов размеров страницы.
    * @returns {number[]} Настройка вариантов размеров страницы.
    */
@@ -326,8 +396,22 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
    */
   onAfterActionItemDeleteSuccess(): boolean {
     if (this.pageKey === this.appModDummyTreePageItem.settings.key) {
-      this.setSelectedItemId(0);
+      this.onReceiveEnsureLoadDataRequest();
 
+      this.executeActionItemInsert();
+
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Обработчик события после действия "Элемент. Удаление. Успех".
+   * @returns {boolean} Результат обработки.
+   */
+  onAfterActionItemsDeleteSuccess(): boolean {
+    if (this.pageKey === this.appModDummyTreePageItem.settings.key) {
       this.onReceiveEnsureLoadDataRequest();
 
       this.executeActionItemInsert();
@@ -389,11 +473,7 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
   protected onGetPageKeyOverInit(pageKey: string) {
     super.onGetPageKeyOverInit(pageKey);
 
-    const {
-      index
-    } = this.appModDummyTreePageList.settings;
-
-    this.parameters = this.appModDummyTreePageList.createParameters(index);
+    this.parameters = this.createParameters();
   }
 
   /** @param {string} pageKey */
@@ -419,14 +499,64 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
 
   private executeTitleActionItemAdd() {
     if (this.titleItemsCount === 0) {
-      this.appTitle.executeActionItemAdd(
-        this.appModDummyTreePageList.settings.titleResourceKey,
-        this.resources.titleTranslated$,
-        this.unsubscribe$
-      );
+      const {
+        titleResourceKey
+      } = this.appModDummyTreePageList.settings;
 
-      this.titleItemsCount = 1;
+      if (titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
     }
+  }
+
+  private getItemParametersFromRouteParamMap(paramMap: ParamMap) {
+    const parameters = this.appModDummyTreePageItem.createParameters();
+
+    const {
+      paramAxis,
+      paramRootId
+    } = parameters;
+
+    paramAxis.value = +paramMap.get(paramAxis.name) as AppCoreCommonEnumTreeItemAxis;
+    paramRootId.value = +paramMap.get(paramRootId.name);
+
+    return parameters;
+  }
+
+  private getParametersFromRouteParamMap(paramMap: ParamMap) {
+    const parameters = this.createParameters();
+
+    const {
+      paramIsDataRefreshed,
+      paramPageNumber,
+      paramPageSize,
+      paramSelectedItemId,
+      paramSelectedItemIdsString,
+      paramSortDirection,
+      paramSortField,
+      paramIdsString,
+      paramName
+    } = parameters;
+
+    this.isDataRefreshed$.next(paramMap.get(paramIsDataRefreshed.name) === 'true');
+
+    paramPageNumber.value = this.getRealPageNumber(+paramMap.get(paramPageNumber.name));
+    paramPageSize.value = this.getRealPageSize(+paramMap.get(paramPageSize.name));
+    paramSelectedItemId.value = this.getRealSelectedItemId(+paramMap.get(paramSelectedItemId.name));
+    paramSelectedItemIdsString.value = paramMap.get(paramSelectedItemIdsString.name);
+    paramSortField.value = this.getRealSortField(paramMap.get(paramSortField.name));
+    paramSortDirection.value = this.getRealSortDirection(paramMap.get(paramSortDirection.name));
+
+    paramIdsString.value = paramMap.get(paramIdsString.name);
+    paramName.value = paramMap.get(paramName.name);
+
+    return parameters;
   }
 
   /** @param {AppModDummyTreeJobListGetInput} input */
@@ -475,39 +605,23 @@ export class AppModDummyTreePageListModel extends AppCoreCommonPageModel {
   }
 
   private onRouteParamMapSwitchMapToJobListGetInput(paramMap: ParamMap): Observable<AppModDummyTreeJobListGetInput> {
-    const parameters = this.createParameters();
+    const paramsPageItem = this.getItemParametersFromRouteParamMap(paramMap);
+    const paramsPageList = this.getParametersFromRouteParamMap(paramMap);
 
-    const {
-      paramPageNumber,
-      paramPageSize,
-      paramSelectedItemId,
-      paramSortDirection,
-      paramSortField,
-      paramName,
-      paramIdsString,
-      paramIsDataRefreshed
-    } = parameters;
+    const parameters = new AppModDummyTreePageListStateParameters(paramsPageItem, paramsPageList);
 
-    paramIdsString.value = paramMap.get(paramIdsString.name);
-    paramName.value = paramMap.get(paramName.name);
-    paramPageNumber.value = this.getRealPageNumber(+paramMap.get(paramPageNumber.name));
-    paramPageSize.value = this.getRealPageSize(+paramMap.get(paramPageSize.name));
-    paramSelectedItemId.value = this.getRealSelectedItemId(+paramMap.get(paramSelectedItemId.name));
-    paramSortField.value = this.getRealSortField(paramMap.get(paramSortField.name));
-    paramSortDirection.value = this.getRealSortDirection(paramMap.get(paramSortDirection.name));
-
-    this.isDataRefreshed$.next(paramMap.get(paramIsDataRefreshed.name) === 'true');
+    this.appStore.runActionParametersSet(parameters);
 
     const location = this.appModDummyTreePageList.getLocation();
 
     location.path = this.appModDummyTreePageList.settings.path;
-    location.parameters = parameters;
+    location.parameters = paramsPageList;
     location.paramMap = paramMap;
     location.pageKey = this.pageKey;
 
     this.appModDummyTreePageList.setLocation(location);
 
-    let input = parameters.createJobListGetInput();
+    let input = paramsPageList.createJobListGetInput();
 
     if (input.equals(this.jobListGetInput)) {
       input = null;

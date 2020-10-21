@@ -127,7 +127,7 @@ export class AppModDummyMainPageListStoreEffects {
             results => {
               let jobListGetResult: AppModDummyMainJobListGetResult;
 
-              if (results.length > 1) {
+              if (results.length > 0) {
                 jobListGetResult = results[results.length - 1] as AppModDummyMainJobListGetResult;
               }
 

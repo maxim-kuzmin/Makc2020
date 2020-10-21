@@ -11,5 +11,6 @@ export class AppModDummyTreePageListDataItem {
   constructor(
     public id: number,
     public name: string
-  ) { }
+  ) {
+  }
 }

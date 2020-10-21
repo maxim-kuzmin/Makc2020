@@ -1,8 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Action} from '@ngrx/store';
-import {AppCoreExecutionResultWithData} from '@app/core/execution/core-execution-result-with-data';
-import {AppModDummyTreeJobListGetOutput} from '../../../../jobs/list/get/mod-dummy-tree-job-list-get-output';
 import {AppModDummyTreePageListEnumActions} from '../../enums/mod-dummy-tree-page-list-enum-actions';
 import {AppModDummyTreeJobListGetResult} from '@app/mods/dummy-tree/jobs/list/get/mod-dummy-tree-job-list-get-result';
 
@@ -19,5 +17,6 @@ export class AppModDummyTreePageListStoreActionLoadSuccess implements Action {
    */
   constructor(
     public jobListGetResult: AppModDummyTreeJobListGetResult
-  ) { }
+  ) {
+  }
 }

@@ -29,8 +29,8 @@ export class AppModDummyTreeJobListGetInput extends AppCoreCommonModJobListGetIn
   constructor(
     pageNumber?: number,
     pageSize?: number,
-    sortField?: string,
     sortDirection?: string,
+    sortField?: string,
     dataIdsString?: string,
     dataName?: string
   ) {
