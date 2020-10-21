@@ -4,11 +4,7 @@ import {
   appModDummyTreePageIndexConfigFullPath,
   appModDummyTreePageIndexConfigKey
 } from '@app/mods/dummy-tree/pages/index/mod-dummy-tree-page-index-config';
-import {
-  appModDummyTreePageItemCreateConfigTitleResourceKey,
-  appModDummyTreePageItemEditConfigTitleResourceKey,
-  appModDummyTreePageItemViewConfigTitleResourceKey
-} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-config';
+import {appModDummyTreePageItemCreateConfigTitleResourceKey} from '@app/mods/dummy-tree/pages/item/mod-dummy-tree-page-item-config';
 import {appModDummyTreePageListConfigTitleResourceKey} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-config';
 
 /** Мод "DummyTree". Страницы. Начало. Настройки. */
@@ -42,22 +38,6 @@ export class AppModDummyTreePageIndexSettings {
    */
   get titleOfModDummyTreePageItemCreateResourceKey(): string {
     return appModDummyTreePageItemCreateConfigTitleResourceKey;
-  }
-
-  /**
-   * Заголовок страницы "ModDummyTreePageItemEdit".
-   * @type {string}
-   */
-  get titleOfModDummyTreePageItemEditResourceKey(): string {
-    return appModDummyTreePageItemEditConfigTitleResourceKey;
-  }
-
-  /**
-   * Заголовок страницы "ModDummyTreePageItemView".
-   * @type {string}
-   */
-  get titleOfModDummyTreePageItemViewResourceKey(): string {
-    return appModDummyTreePageItemViewConfigTitleResourceKey;
   }
 
   /**

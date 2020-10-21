@@ -76,22 +76,6 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
   }
 
   /**
-   * Создать ссылку маршрутизатора на страницу редактирования элемента.
-   * @returns {any[]} Ссылка маршрутизатора.
-   */
-  createRouterLinkToPageItemEdit(): any[] {
-    return [this.appModDummyTreePageItem.settings.paths.pathEdit, 1];
-  }
-
-  /**
-   * Создать ссылку маршрутизатора на страницу просмотра элемента.
-   * @returns {any[]} Ссылка маршрутизатора.
-   */
-  createRouterLinkToPageItemView(): any[] {
-    return [this.appModDummyTreePageItem.settings.paths.pathView, 1];
-  }
-
-  /**
    * Создать ссылку маршрутизатора на страницу списка.
    * @returns {any[]} Ссылка маршрутизатора.
    */
@@ -146,12 +130,20 @@ export class AppModDummyTreePageIndexModel extends AppCoreCommonPageModel {
   }
 
   private executeTitleActionItemAdd() {
-    this.appTitle.executeActionItemAdd(
-      this.appModDummyTreePageIndex.settings.titleResourceKey,
-      this.resources.titleTranslated$,
-      this.unsubscribe$
-    );
+    if (this.titleItemsCount === 0) {
+      const {
+        titleResourceKey
+      } = this.appModDummyTreePageIndex.settings;
 
-    this.titleItemsCount = 1;
+      if (titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
+    }
   }
 }

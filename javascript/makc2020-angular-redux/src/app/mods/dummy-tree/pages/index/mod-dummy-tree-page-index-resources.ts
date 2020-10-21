@@ -21,18 +21,6 @@ export class AppModDummyTreePageIndexResources {
   titleOfModDummyTreePageItemCreate = '';
 
   /**
-   * Заголовок страницы "ModDummyTreePageItemEdit".
-   * @type {string}
-   */
-  titleOfModDummyTreePageItemEdit = '';
-
-  /**
-   * Заголовок страницы "ModDummyTreePageItemView".
-   * @type {string}
-   */
-  titleOfModDummyTreePageItemView = '';
-
-  /**
    * Заголовок страницы "ModDummyTreePageList".
    * @type {string}
    */
@@ -58,8 +46,6 @@ export class AppModDummyTreePageIndexResources {
     const {
       titleResourceKey,
       titleOfModDummyTreePageItemCreateResourceKey,
-      titleOfModDummyTreePageItemEditResourceKey,
-      titleOfModDummyTreePageItemViewResourceKey,
       titleOfModDummyTreePageListResourceKey
     } = settings;
 
@@ -74,18 +60,6 @@ export class AppModDummyTreePageIndexResources {
       titleOfModDummyTreePageItemCreateResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.titleOfModDummyTreePageItemCreate = s;
-    });
-
-    appLocalizer.createTranslator(
-      titleOfModDummyTreePageItemEditResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.titleOfModDummyTreePageItemEdit = s;
-    });
-
-    appLocalizer.createTranslator(
-      titleOfModDummyTreePageItemViewResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.titleOfModDummyTreePageItemView = s;
     });
 
     appLocalizer.createTranslator(

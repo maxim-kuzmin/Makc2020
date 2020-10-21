@@ -41,8 +41,6 @@ export class AppModDummyTreePageIndexPresenter extends AppCoreCommonPagePresente
   /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModDummyTreePageItemCreate = this.model.createRouterLinkToPageItemCreate();
-    this.view.routerLinkToModDummyTreePageItemEdit = this.model.createRouterLinkToPageItemEdit();
-    this.view.routerLinkToModDummyTreePageItemView = this.model.createRouterLinkToPageItemView();
     this.view.routerLinkToModDummyTreePageList = this.model.createRouterLinkToPageList();
 
     super.onInit();

@@ -4,11 +4,7 @@ import {
   appModDummyMainPageIndexConfigFullPath,
   appModDummyMainPageIndexConfigKey
 } from '@app/mods/dummy-main/pages/index/mod-dummy-main-page-index-config';
-import {
-  appModDummyMainPageItemCreateConfigTitleResourceKey,
-  appModDummyMainPageItemEditConfigTitleResourceKey,
-  appModDummyMainPageItemViewConfigTitleResourceKey
-} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-config';
+import {appModDummyMainPageItemCreateConfigTitleResourceKey} from '@app/mods/dummy-main/pages/item/mod-dummy-main-page-item-config';
 import {appModDummyMainPageListConfigTitleResourceKey} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-config';
 
 /** Мод "DummyMain". Страницы. Начало. Настройки. */
