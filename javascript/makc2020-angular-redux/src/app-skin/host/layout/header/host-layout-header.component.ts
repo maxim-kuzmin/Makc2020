@@ -9,7 +9,7 @@ import {AppSkinHostLayoutHeaderView} from '@app-skin/host/layout/header/host-lay
 
 /** Хост. Разметка. Шапка. Компонент. */
 @Component({
-  selector: '[app-skin-host-layout-header]',
+  selector: 'app-skin-host-layout-header',
   templateUrl: './host-layout-header.component.html',
   styleUrls: ['./host-layout-header.component.css'],
   providers: [

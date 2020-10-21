@@ -10,7 +10,7 @@ import {AppHostLayoutFooterView} from '@app/host/layout/footer/host-layout-foote
 
 /** Хост. Разметка. Меню. Компонент. */
 @Component({
-  selector: '[app-skin-host-layout-footer]',
+  selector: 'app-skin-host-layout-footer',
   templateUrl: './host-layout-footer.component.html',
   styleUrls: ['./host-layout-footer.component.css'],
   providers: [

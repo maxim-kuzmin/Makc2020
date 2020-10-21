@@ -10,7 +10,7 @@ import {AppHostLayoutMenuView} from '@app/host/layout/menu/host-layout-menu-view
 
 /** Хост. Разметка. Меню. Компонент. */
 @Component({
-  selector: '[app-skin-host-layout-menu]',
+  selector: 'app-skin-host-layout-menu',
   templateUrl: './host-layout-menu.component.html',
   styleUrls: ['./host-layout-menu.component.css'],
   providers: [
@@ -21,6 +21,18 @@ import {AppHostLayoutMenuView} from '@app/host/layout/menu/host-layout-menu-view
   ]
 })
 export class AppSkinHostLayoutMenuComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  /**
+   * CSS-класс.
+   * @type {string}
+   */
+  @Input() cssClass: string;
+
+  /**
+   * CSS-стиль.
+   * @type {string}
+   */
+  @Input() cssStyle: string;
 
   /**
    * Уровень меню.

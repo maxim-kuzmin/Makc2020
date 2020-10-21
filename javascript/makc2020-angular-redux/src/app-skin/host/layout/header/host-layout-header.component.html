@@ -1,11 +1,14 @@
 <!--host--layout--header/-->
-<a class="skin--css--host--layout--header--logo"
-   [routerLink]="myView.routerLinkToRootPageIndex"
-   [title]="myPresenter.resources.title"></a>
-<h1><a [routerLink]="myView.routerLinkToRootPageIndex">{{myPresenter.resources.title}}</a></h1>
-<div id="app--id--host--layout--header--language-selector">
-  <!--host--control--language-selector/-->
-  <p-dropdown [formControl]="myView.fieldLanguage" [options]="myView.languageOptions"></p-dropdown>
-  <!--/host--control--language-selector-->
+<div app-skin-host-layout-header
+     class="skin--css--host--layout--part skin--css--host--layout--header">
+  <a class="skin--css--host--layout--header--logo"
+     [routerLink]="myView.routerLinkToRootPageIndex"
+     [title]="myPresenter.resources.title"></a>
+  <h1><a [routerLink]="myView.routerLinkToRootPageIndex">{{myPresenter.resources.title}}</a></h1>
+  <div id="app--id--host--layout--header--language-selector">
+    <!--host--control--language-selector/-->
+    <p-dropdown [formControl]="myView.fieldLanguage" [options]="myView.languageOptions"></p-dropdown>
+    <!--/host--control--language-selector-->
+  </div>
 </div>
 <!--/host--layout--header-->

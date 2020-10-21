@@ -9,7 +9,7 @@ import {AppSkinHostControlValidationMessageView} from './host-control-validation
 
 /** Хост. Элементы управления. Валидация. Сообщение. Компонент. */
 @Component({
-  selector: 'app-validation-message', // 'app-skin-host-validation-control-message'
+  selector: 'app-skin-host-control-validation-message',
   templateUrl: './host-control-validation-message.component.html',
   styleUrls: ['./host-control-validation-message.component.css']
 })

@@ -54,7 +54,7 @@ export class AppModDummyTreePageItemSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Объект сущности DummyTree'; // 'Элемент';
+  titleResourceKey = 'Элемент';
 
   /**
    * Заголовок страницы "ModDummyTreePageItemCreate".
