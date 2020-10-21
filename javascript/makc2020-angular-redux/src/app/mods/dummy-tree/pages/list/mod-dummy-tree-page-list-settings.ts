@@ -34,7 +34,7 @@ export class AppModDummyTreePageListSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Объекты сущности DummyTree'; // 'Список';
+  titleResourceKey = 'Список';
 
   /**
    * Индекс.
