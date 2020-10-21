@@ -21,18 +21,6 @@ export class AppModDummyMainPageIndexResources {
   titleOfModDummyMainPageItemCreate = '';
 
   /**
-   * Заголовок страницы "ModDummyMainPageItemEdit".
-   * @type {string}
-   */
-  titleOfModDummyMainPageItemEdit = '';
-
-  /**
-   * Заголовок страницы "ModDummyMainPageItemView".
-   * @type {string}
-   */
-  titleOfModDummyMainPageItemView = '';
-
-  /**
    * Заголовок страницы "ModDummyMainPageList".
    * @type {string}
    */
@@ -58,8 +46,6 @@ export class AppModDummyMainPageIndexResources {
     const {
       titleResourceKey,
       titleOfModDummyMainPageItemCreateResourceKey,
-      titleOfModDummyMainPageItemEditResourceKey,
-      titleOfModDummyMainPageItemViewResourceKey,
       titleOfModDummyMainPageListResourceKey
     } = settings;
 
@@ -74,18 +60,6 @@ export class AppModDummyMainPageIndexResources {
       titleOfModDummyMainPageItemCreateResourceKey
     ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
       this.titleOfModDummyMainPageItemCreate = s;
-    });
-
-    appLocalizer.createTranslator(
-      titleOfModDummyMainPageItemEditResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.titleOfModDummyMainPageItemEdit = s;
-    });
-
-    appLocalizer.createTranslator(
-      titleOfModDummyMainPageItemViewResourceKey
-    ).translate$().pipe(takeUntil(unsubscribe$)).subscribe(s => {
-      this.titleOfModDummyMainPageItemView = s;
     });
 
     appLocalizer.createTranslator(

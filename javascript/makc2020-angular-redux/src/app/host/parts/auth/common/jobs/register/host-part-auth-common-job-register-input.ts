@@ -22,7 +22,7 @@ export class AppHostPartAuthCommonJobRegisterInput {
   dataPassword?: string;
 
   /**
-   * Полное имя данных.
+   * Полное Данные: имя.
    * @type {?string}
    */
   dataFullName?: string;
@@ -32,7 +32,7 @@ export class AppHostPartAuthCommonJobRegisterInput {
    * @param {?string} dataUserName Имя пользователя данных.
    * @param {?string} dataEmail Адрес электронной почты данных.
    * @param {?string} dataPassword Пароль данных.
-   * @param {?string} dataFullName Полное имя данных.
+   * @param {?string} dataFullName Полное Данные: имя.
    */
   constructor(
     dataUserName?: string,

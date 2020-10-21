@@ -6,33 +6,33 @@ import {AppCoreCommonModJobListGetInput} from '@app/core/common/mod/jobs/list/ge
 export class AppModDummyTreeJobListGetInput extends AppCoreCommonModJobListGetInput {
 
   /**
-   * Имя.
-   * @type {?string}
-   */
-  dataName?: string;
-
-  /**
    * Строка идентификаторов.
    * @type {?string}
    */
   dataIdsString?: string;
 
   /**
+   * Имя.
+   * @type {?string}
+   */
+  dataName?: string;
+
+  /**
    * Конструктор.
-   * @param {?number} pageNumber Номер страницы данных.
-   * @param {?number} pageSize Размер страницы данных.
-   * @param {?string} sortField Поле сортировки данных.
-   * @param {?string} sortDirection Направление сортировки данных.
-   * @param {?string} dataName Имя данных.
-   * @param {?string} dataIdsString Строка идентификаторов данных.
+   * @param {?number} pageNumber Номер страницы.
+   * @param {?number} pageSize Размер страницы.
+   * @param {?string} sortDirection Направление сортировки.
+   * @param {?string} sortField Поле сортировки.
+   * @param {?string} dataIdsString Данные: строка идентификаторов.
+   * @param {?string} dataName Данные: имя.
    */
   constructor(
     pageNumber?: number,
     pageSize?: number,
     sortField?: string,
     sortDirection?: string,
-    dataName?: string,
-    dataIdsString?: string
+    dataIdsString?: string,
+    dataName?: string
   ) {
     super(
       pageNumber,
@@ -41,12 +41,12 @@ export class AppModDummyTreeJobListGetInput extends AppCoreCommonModJobListGetIn
       sortField,
     );
 
-    if (dataName) {
-      this.dataName = dataName;
-    }
-
     if (dataIdsString) {
       this.dataIdsString = dataIdsString;
+    }
+
+    if (dataName) {
+      this.dataName = dataName;
     }
   }
 

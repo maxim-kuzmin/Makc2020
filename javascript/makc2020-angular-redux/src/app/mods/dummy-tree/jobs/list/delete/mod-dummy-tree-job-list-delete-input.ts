@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
-/** Мод "DummyMain". Задания. Список. Получение. Ввод. */
-export class AppModDummyMainJobListDeleteInput {
+/** Мод "DummyTree". Задания. Список. Получение. Ввод. */
+export class AppModDummyTreeJobListDeleteInput {
 
   /**
    * Конструктор.

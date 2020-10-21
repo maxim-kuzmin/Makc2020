@@ -41,8 +41,6 @@ export class AppModDummyMainPageIndexPresenter extends AppCoreCommonPagePresente
   /** @inheritDoc */
   onInit() {
     this.view.routerLinkToModDummyMainPageItemCreate = this.model.createRouterLinkToPageItemCreate();
-    this.view.routerLinkToModDummyMainPageItemEdit = this.model.createRouterLinkToPageItemEdit();
-    this.view.routerLinkToModDummyMainPageItemView = this.model.createRouterLinkToPageItemView();
     this.view.routerLinkToModDummyMainPageList = this.model.createRouterLinkToPageList();
 
     super.onInit();

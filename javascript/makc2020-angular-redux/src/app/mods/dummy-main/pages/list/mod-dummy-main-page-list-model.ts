@@ -15,7 +15,7 @@ import {AppCoreSettings} from '@app/core/core-settings';
 import {AppHostPartMenuService} from '@app/host/parts/menu/host-part-menu.service';
 import {AppHostPartMenuOption} from '@app/host/parts/menu/host-part-menu-option';
 import {AppHostPartRouteService} from '@app/host/parts/route/host-part-route.service';
-import {AppModDummyMainJobItemGetInput} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
+import {AppModDummyMainJobItemDeleteInput} from '../../jobs/item/delete/mod-dummy-main-job-item-delete-input';
 import {AppModDummyMainJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-main-job-list-delete-input';
 import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
 import {AppModDummyMainPageItemLocation} from '../item/mod-dummy-main-page-item-location';
@@ -132,7 +132,7 @@ export class AppModDummyMainPageListModel extends AppCoreCommonPageModel {
       if (isOk) {
         this.isItemDeleteStarted$.next();
 
-        this.appStore.runActionItemDelete(new AppModDummyMainJobItemGetInput(id));
+        this.appStore.runActionItemDelete(new AppModDummyMainJobItemDeleteInput(id));
       }
     });
   }

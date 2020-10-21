@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
-import {AppModDummyMainJobItemGetInput} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
+import {AppModDummyMainJobItemDeleteInput} from '../../jobs/item/delete/mod-dummy-main-job-item-delete-input';
 import {AppModDummyMainJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-main-job-list-delete-input';
 import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
 import {AppModDummyMainStoreState} from '../../store/mod-dummy-main-store.state';
@@ -71,9 +71,9 @@ export class AppModDummyMainPageListStore {
 
   /**
    * Запустить действие "Элемент. Удаление".
-   * @param {AppModDummyMainJobItemGetInput} input Ввод.
+   * @param {AppModDummyMainJobItemDeleteInput} input Ввод.
    */
-  runActionItemDelete(input: AppModDummyMainJobItemGetInput) {
+  runActionItemDelete(input: AppModDummyMainJobItemDeleteInput) {
     this.extStore.dispatch(new AppModDummyMainPageListStoreActionItemDelete(input));
   }
 

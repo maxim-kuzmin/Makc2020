@@ -10,18 +10,6 @@ export class AppModDummyMainPageIndexView {
   routerLinkToModDummyMainPageItemCreate: any[];
 
   /**
-   * Ссылка маршрутизатора на страницу "ModDummyMainPageItemEdit".
-   * @type {string}
-   */
-  routerLinkToModDummyMainPageItemEdit: any[];
-
-  /**
-   * Ссылка маршрутизатора на страницу "ModDummyMainPageItemView".
-   * @type {string}
-   */
-  routerLinkToModDummyMainPageItemView: any[];
-
-  /**
    * Ссылка маршрутизатора на страницу "ModDummyMainPageList".
    * @type {string}
    */

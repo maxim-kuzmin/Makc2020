@@ -87,8 +87,8 @@ export class AppModDummyTreePageListParameters extends AppCoreCommonPageParamete
       this.paramPageSize.value,
       this.paramSortField.value,
       this.paramSortDirection.value,
-      this.paramName.value,
-      this.paramIdsString.value
+      this.paramIdsString.value,
+      this.paramName.value
     );
   }
 }

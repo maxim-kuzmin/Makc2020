@@ -48,7 +48,7 @@ export class AppModDummyMainPageListStoreEffects {
     switchMap(
       action =>
         this.appJobItemDelete.execute$(
-          action.jobItemGetInput,
+          action.jobItemDeleteInput,
           this.executionHandlerOnDelete
         ).pipe(
           map(

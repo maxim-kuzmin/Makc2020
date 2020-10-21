@@ -32,7 +32,7 @@ export class AppModDummyMainJobFilteredDeleteService {
 
   /**
    * Выполнить.
-   * @param {AppModDummyMainJobItemGetInput} input Ввод.
+   * @param {AppModDummyMainJobListGetInput} input Ввод.
    * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>} Результирующий поток.
    */

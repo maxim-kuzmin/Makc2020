@@ -9,13 +9,13 @@ import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result'
 import {AppCoreExecutionService} from '@app/core/execution/core-execution.service';
 import {AppCoreHttpService} from '@app/core/http/core-http.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
-import {AppModDummyMainJobItemDeleteInput} from './mod-dummy-main-job-item-delete-input';
+import {AppModDummyTreeJobListGetInput} from '../../list/get/mod-dummy-tree-job-list-get-input';
 
-/** Мод "DummyMain". Задания. Элемент. Удаление. Сервис. */
+/** Мод "DummyTree". Задания. Список. Получить. Сервис. */
 @Injectable({
   providedIn: 'root'
 })
-export class AppModDummyMainJobItemDeleteService {
+export class AppModDummyTreeJobFilteredDeleteService {
 
   /**
    * Конструктор.
@@ -32,19 +32,19 @@ export class AppModDummyMainJobItemDeleteService {
 
   /**
    * Выполнить.
-   * @param {AppModDummyMainJobItemDeleteInput} input Ввод.
+   * @param {AppModDummyTreeJobListGetInput} input Ввод.
    * @param {AppCoreExecutionHandler} handler Обработчик.
    * @returns {Observable<AppCoreExecutionResult>} Результирующий поток.
    */
   execute$(
-    input: AppModDummyMainJobItemDeleteInput,
+    input: AppModDummyTreeJobListGetInput,
     handler: AppCoreExecutionHandler
   ): Observable<AppCoreExecutionResult> {
-    const url = this.appNavigation.createAbsoluteUrlOfApi('dummy-main/item');
+    const url = this.appNavigation.createAbsoluteUrlOfApi('dummy-tree/filtered/delete');
 
-    const jobName = this.appExecution.createJobName(appCoreExecutionMethod.delete, url, input);
+    const jobName = this.appExecution.createJobName(appCoreExecutionMethod.post, url, input);
 
-    return this.appHttp.delete<AppCoreExecutionResult>(url, input)
+    return this.appHttp.post<AppCoreExecutionResult>(url, input)
       .pipe(
         map(
           result => this.appExecution.onSuccess<AppCoreExecutionResult>(

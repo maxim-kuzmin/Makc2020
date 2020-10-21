@@ -2,6 +2,7 @@
 
 import {AppCoreCommonState} from '@app/core/common/core-common-state';
 import {AppCoreExecutionResult} from '@app/core/execution/core-execution-result';
+import {AppModDummyMainJobItemDeleteInput} from '../../jobs/item/delete/mod-dummy-main-job-item-delete-input';
 import {AppModDummyMainJobItemGetInput} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
 import {AppModDummyMainJobListDeleteInput} from '../../jobs/list/delete/mod-dummy-main-job-list-delete-input';
 import {AppModDummyMainJobListGetInput} from '../../jobs/list/get/mod-dummy-main-job-list-get-input';
@@ -12,6 +13,12 @@ import {AppModDummyMainPageListStateParameters} from './state/mod-dummy-main-pag
 
 /** Мод "DummyMain". Страницы. Список. Состояние. */
 export class AppModDummyMainPageListState extends AppCoreCommonState<AppModDummyMainPageListEnumActions> {
+
+  /**
+   * Ввод задания на удаление элемента.
+   * @type {AppModDummyMainJobItemDeleteInput}
+   */
+  jobItemDeleteInput: AppModDummyMainJobItemDeleteInput;
 
   /**
    * Результат выполнения задания на удаление списка.

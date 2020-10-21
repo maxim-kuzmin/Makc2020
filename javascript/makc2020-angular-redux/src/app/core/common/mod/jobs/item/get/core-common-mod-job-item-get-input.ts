@@ -11,7 +11,7 @@ export class AppCoreCommonModJobItemGetInput {
 
   /**
    * Конструктор.
-   * @param {?number} dataId Идентификатор данных.
+   * @param {?number} dataId Данные: идентификатор.
    */
   constructor(dataId?: number) {
     if (dataId) {

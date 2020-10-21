@@ -45,22 +45,6 @@ export class AppModDummyMainPageIndexSettings {
   }
 
   /**
-   * Заголовок страницы "ModDummyMainPageItemEdit".
-   * @type {string}
-   */
-  get titleOfModDummyMainPageItemEditResourceKey(): string {
-    return appModDummyMainPageItemEditConfigTitleResourceKey;
-  }
-
-  /**
-   * Заголовок страницы "ModDummyMainPageItemView".
-   * @type {string}
-   */
-  get titleOfModDummyMainPageItemViewResourceKey(): string {
-    return appModDummyMainPageItemViewConfigTitleResourceKey;
-  }
-
-  /**
    * Заголовок страницы "ModDummyMainPageList".
    * @type {string}
    */

@@ -1,11 +1,11 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {AppCoreCommonTitlable} from '@app/core/common/core-common-titlable';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreTitleService} from '@app/core/title/core-title.service';
 import {AppModDummyTreeResources} from './mod-dummy-tree-resources';
 import {AppModDummyTreeService} from './mod-dummy-tree.service';
-import { Injectable } from '@angular/core';
 
 /** Мод "DummyTree". Модель. */
 @Injectable()
@@ -45,12 +45,20 @@ export class AppModDummyTreeModel extends AppCoreCommonTitlable {
   }
 
   private executeTitleActionItemAdd() {
-    this.appTitle.executeActionItemAdd(
-      this.appModDummyTree.settings.titleResourceKey,
-      this.resources.titleTranslated$,
-      this.unsubscribe$
-    );
+    if (this.titleItemsCount === 0) {
+      const {
+        titleResourceKey
+      } = this.appModDummyTree.settings;
 
-    this.titleItemsCount = 1;
+      if (titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
+    }
   }
 }

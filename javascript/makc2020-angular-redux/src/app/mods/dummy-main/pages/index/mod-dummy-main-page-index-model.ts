@@ -76,22 +76,6 @@ export class AppModDummyMainPageIndexModel extends AppCoreCommonPageModel {
   }
 
   /**
-   * Создать ссылку маршрутизатора на страницу редактирования элемента.
-   * @returns {any[]} Ссылка маршрутизатора.
-   */
-  createRouterLinkToPageItemEdit(): any[] {
-    return [this.appModDummyMainPageItem.settings.paths.pathEdit, 1];
-  }
-
-  /**
-   * Создать ссылку маршрутизатора на страницу просмотра элемента.
-   * @returns {any[]} Ссылка маршрутизатора.
-   */
-  createRouterLinkToPageItemView(): any[] {
-    return [this.appModDummyMainPageItem.settings.paths.pathView, 1];
-  }
-
-  /**
    * Создать ссылку маршрутизатора на страницу списка.
    * @returns {any[]} Ссылка маршрутизатора.
    */

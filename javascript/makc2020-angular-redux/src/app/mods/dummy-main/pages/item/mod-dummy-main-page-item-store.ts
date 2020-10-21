@@ -1,5 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
+import { Injectable } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
@@ -11,7 +12,6 @@ import {appModDummyMainPageItemStoreSelector} from './store/mod-dummy-main-page-
 import {AppModDummyMainPageItemStoreActionClear} from './store/actions/mod-dummy-main-page-item-store-action-clear';
 import {AppModDummyMainPageItemStoreActionLoad} from './store/actions/mod-dummy-main-page-item-store-action-load';
 import {AppModDummyMainPageItemStoreActionSave} from './store/actions/mod-dummy-main-page-item-store-action-save';
-import { Injectable } from '@angular/core';
 
 /** Мод "DummyMain". Страницы. Элемент. Хранилище состояния. */
 @Injectable()
@@ -58,7 +58,7 @@ export class AppModDummyMainPageItemStore {
 
   /**
    * Запустить действие "Загрузка".
-   * @param {AppModDummyMainJobListGetInput} input Ввод.
+   * @param {AppModDummyMainJobItemGetInput} input Ввод.
    */
   runActionLoad(input: AppModDummyMainJobItemGetInput) {
     this.extStore.dispatch(new AppModDummyMainPageItemStoreActionLoad(input));

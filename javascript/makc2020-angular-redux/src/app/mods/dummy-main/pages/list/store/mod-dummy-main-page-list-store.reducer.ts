@@ -16,7 +16,7 @@ export function appModDummyMainPageListStoreReducer(
       return {
         ...state,
         action: action.type,
-        jobItemGetInput: action.jobItemGetInput
+        jobItemDeleteInput: action.jobItemDeleteInput
       };
     case AppModDummyMainPageListEnumActions.ItemDeleteSuccess:
       return {

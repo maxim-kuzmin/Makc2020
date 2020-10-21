@@ -16,13 +16,13 @@ export class AppModDummyMainJobItemGetInput extends AppCoreCommonModJobItemGetIn
    * @type {boolean}
    */
   get isForUpdate(): boolean {
-    return !!(this.dataId > 0 || this.dataName);
+    return this.dataId > 0 || !!this.dataName;
   }
 
   /**
    * Конструктор.
-   * @param {?number} dataId Идентификатор данных.
-   * @param {?string} dataName Имя данных.
+   * @param {?number} dataId Данные: идентификатор.
+   * @param {?string} dataName Данные: имя.
    */
   constructor(dataId?: number, dataName?: string) {
     super(dataId);

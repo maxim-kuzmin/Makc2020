@@ -2,7 +2,9 @@
 
 import {AppCoreCommonPageParameter} from '@app/core/common/page/core-common-page-parameter';
 import {AppCoreCommonPageParameters} from '@app/core/common/page/core-common-page-parameters';
-import {AppModDummyMainJobItemGetInput} from '@app/mods/dummy-main/jobs/item/get/mod-dummy-main-job-item-get-input';
+import {
+  AppModDummyMainJobItemGetInput
+} from '../../jobs/item/get/mod-dummy-main-job-item-get-input';
 
 /** Мод "DummyMain". Страницы. Список. Параметры. */
 export class AppModDummyMainPageItemParameters extends AppCoreCommonPageParameters {
