@@ -1,5 +1,5 @@
-<!--host--layout--menu/-->
 <div [ngClass]="cssClass" [ngStyle]="cssStyle">
+  <!--host--layout--menu/-->
   <ul class="skin--css--core--list--horizontal--center">
     <li *ngFor="let item of myView.data">
       <div *ngIf="item.isSelected; then thenBlock else elseBlock"></div>
@@ -17,6 +17,6 @@
       </ng-template>
     </li>
   </ul>
+  <!--/host--layout--menu-->
 </div>
-<!--/host--layout--menu-->
 
