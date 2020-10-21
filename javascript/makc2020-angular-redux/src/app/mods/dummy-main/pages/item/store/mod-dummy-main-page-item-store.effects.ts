@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
@@ -57,23 +57,27 @@ export class AppModDummyMainPageItemStoreEffects {
           results$.push(this.appJobItemGet.execute$(input, this.executionHandlerOnLoad));
         }
 
-        return forkJoin(results$).pipe(
-          map(
-            results => {
-              let jobItemGetResult: AppModDummyMainJobItemGetResult;
+        if (results$.length > 0) {
+          return forkJoin(results$).pipe(
+            map(
+              results => {
+                let jobItemGetResult: AppModDummyMainJobItemGetResult;
 
-              if (results.length > 0) {
-                jobItemGetResult = results[results.length - 1] as AppModDummyMainJobItemGetResult;
+                if (results.length > 0) {
+                  jobItemGetResult = results[results.length - 1] as AppModDummyMainJobItemGetResult;
+                }
+
+                return new AppModDummyMainPageItemStoreActionLoadSuccess(
+                  jobItemGetResult,
+                  results[0] as AppModDummyMainJobOptionsDummyManyToManyGetResult,
+                  results[1] as AppModDummyMainJobOptionsDummyOneToManyGetResult
+                );
               }
-
-              return new AppModDummyMainPageItemStoreActionLoadSuccess(
-                jobItemGetResult,
-                results[0] as AppModDummyMainJobOptionsDummyManyToManyGetResult,
-                results[1] as AppModDummyMainJobOptionsDummyOneToManyGetResult
-              );
-            }
-          )
-        );
+            )
+          );
+        } else {
+          return of(new AppModDummyMainPageItemStoreActionLoadSuccess(null, null, null));
+        }
       }
     )
   );

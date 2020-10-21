@@ -371,8 +371,7 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemCreateConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemCreateConfigFullPath),
-      '',
-      true
+      ''
     );
 
     // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemEdit
@@ -382,8 +381,7 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemEditConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemEditConfigFullPath),
-      '',
-      true
+      ''
     );
 
     // Menu: 3: RootPageIndex / RootPageAdministration / ModDummyTreePageIndex / ModDummyTreePageItemView
@@ -393,8 +391,7 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
       this.nodeModDummyTreePageIndex,
       appModDummyTreePageItemViewConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModDummyTreePageItemViewConfigFullPath),
-      '',
-      true
+      ''
     );
   }
 

@@ -3,7 +3,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {AppCoreExecutionHandler} from '@app/core/execution/core-execution-handler';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
@@ -118,21 +118,25 @@ export class AppModDummyTreePageListStoreEffects {
           results$.push(this.appJobListGet.execute$(input, this.executionHandlerOnLoad));
         }
 
-        return forkJoin(results$).pipe(
-          map(
-            results => {
-              let jobListGetResult: AppModDummyTreeJobListGetResult;
+        if (results$.length > 0) {
+          return forkJoin(results$).pipe(
+            map(
+              results => {
+                let jobListGetResult: AppModDummyTreeJobListGetResult;
 
-              if (results.length > 0) {
-                jobListGetResult = results[results.length - 1] as AppModDummyTreeJobListGetResult;
+                if (results.length > 0) {
+                  jobListGetResult = results[results.length - 1] as AppModDummyTreeJobListGetResult;
+                }
+
+                return new AppModDummyTreePageListStoreActionLoadSuccess(
+                  jobListGetResult
+                );
               }
-
-              return new AppModDummyTreePageListStoreActionLoadSuccess(
-                jobListGetResult
-              );
-            }
-          )
-        );
+            )
+          );
+        } else {
+          return of(new AppModDummyTreePageListStoreActionLoadSuccess(null));
+        }
       }
     )
   );

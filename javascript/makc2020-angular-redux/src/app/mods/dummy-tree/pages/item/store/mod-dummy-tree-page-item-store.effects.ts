@@ -47,21 +47,25 @@ export class AppModDummyTreePageItemStoreEffects {
           results$.push(this.appJobItemGet.execute$(input, this.executionHandlerOnLoad));
         }
 
-        return forkJoin(results$).pipe(
-          map(
-            results => {
-              let jobItemGetResult: AppModDummyTreeJobItemGetResult;
+        if (results$.length > 0) {
+          return forkJoin(results$).pipe(
+            map(
+              results => {
+                let jobItemGetResult: AppModDummyTreeJobItemGetResult;
 
-              if (results.length > 0) {
-                jobItemGetResult = results[results.length - 1] as AppModDummyTreeJobItemGetResult;
+                if (results.length > 0) {
+                  jobItemGetResult = results[results.length - 1] as AppModDummyTreeJobItemGetResult;
+                }
+
+                return new AppModDummyTreePageItemStoreActionLoadSuccess(
+                  jobItemGetResult
+                );
               }
-
-              return new AppModDummyTreePageItemStoreActionLoadSuccess(
-                jobItemGetResult
-              );
-            }
-          )
-        );
+            )
+          );
+        } else {
+          return of(new AppModDummyTreePageItemStoreActionLoadSuccess(null));
+        }
       }
     )
   );

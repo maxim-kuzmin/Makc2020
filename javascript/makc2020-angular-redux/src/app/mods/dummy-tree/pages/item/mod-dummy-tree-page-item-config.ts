@@ -43,7 +43,7 @@ const appModDummyTreePageItemEditConfigPath = 'edit';
 
 /** Мод "DummyTree". Страницы. Элемент. Редактирование. Конфигурация. Маршрут. Путь. */
 export const appModDummyTreePageItemEditConfigRoutePath =
-  `${appModDummyTreePageItemEditConfigPath}/:id${appModDummyTreePageItemConfigIndex}`;
+  `${appModDummyTreePageItemEditConfigPath}/:root-id${appModDummyTreePageItemConfigIndex}`;
 
 /** Мод "DummyTree". Страницы. Элемент. Редактирование. Конфигурация. Полный путь. */
 export const appModDummyTreePageItemEditConfigFullPath =
@@ -62,7 +62,7 @@ const appModDummyTreePageItemViewConfigPath = 'view';
 
 /** Мод "DummyTree". Страницы. Элемент. Просмотр. Конфигурация. Маршрут. Путь. */
 export const appModDummyTreePageItemViewConfigRoutePath =
-  `${appModDummyTreePageItemViewConfigPath}/:id${appModDummyTreePageItemConfigIndex}`;
+  `${appModDummyTreePageItemViewConfigPath}/:root-id${appModDummyTreePageItemConfigIndex}`;
 
 /** Мод "DummyTree". Страницы. Элемент. Просмотр. Конфигурация. Полный путь. */
 export const appModDummyTreePageItemViewConfigFullPath =

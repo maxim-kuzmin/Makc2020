@@ -1,16 +1,17 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AppCoreCommonModJobItemGetInput} from '@app/core/common/mod/jobs/item/get/core-common-mod-job-item-get-input';
+import {AppCoreCommonModJobTreeItemGetInput} from '@app/core/common/mod/jobs/tree/item/get/core-common-mod-job-tree-item-get-input';
 
 /** Мод "DummyMain". Задания. Элемент. Получение. Ввод. */
-export class AppModDummyTreeJobItemGetInput extends AppCoreCommonModJobItemGetInput {
+export class AppModDummyTreeJobItemGetInput extends AppCoreCommonModJobTreeItemGetInput {
 
   /**
    * Признак предназначенности для обновления.
    * @type {boolean}
    */
   get isForUpdate(): boolean {
-    return this.dataId > 0;
+    return this.rootId > 0;
   }
 
   /**
@@ -20,6 +21,7 @@ export class AppModDummyTreeJobItemGetInput extends AppCoreCommonModJobItemGetIn
    */
   equals(other: AppModDummyTreeJobItemGetInput): boolean {
     return other
-      && this.dataId === other.dataId;
+      && this.axis === other.axis
+      && this.rootId === other.rootId;
   }
 }
