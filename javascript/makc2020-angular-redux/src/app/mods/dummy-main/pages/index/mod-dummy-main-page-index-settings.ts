@@ -14,7 +14,7 @@ export class AppModDummyMainPageIndexSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Начало';
+  titleResourceKey = ''; // 'Начало';
 
   /**
    * Ключ.

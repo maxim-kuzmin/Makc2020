@@ -118,12 +118,20 @@ export class AppRootPageIndexModel extends AppCoreCommonPageModel {
   }
 
   private executeTitleActionItemAdd() {
-    this.appTitle.executeActionItemAdd(
-      this.appRootPageIndex.settings.titleResourceKey,
-      this.resources.titleTranslated$,
-      this.unsubscribe$
-    );
+    if (this.titleItemsCount === 0) {
+      const {
+        titleResourceKey
+      } = this.appRootPageIndex.settings;
 
-    this.titleItemsCount = 1;
+      if (!!titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount = 1;
+      }
+    }
   }
 }

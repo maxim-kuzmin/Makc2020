@@ -11,7 +11,7 @@ export class AppModAuthPageIndexSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Начало';
+  titleResourceKey = ''; // 'Начало';
 
   /**
    * Ключ.

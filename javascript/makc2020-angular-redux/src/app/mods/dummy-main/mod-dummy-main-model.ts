@@ -50,14 +50,14 @@ export class AppModDummyMainModel extends AppCoreCommonTitlable {
         titleResourceKey
       } = this.appModDummyMain.settings;
 
-      if (titleResourceKey) {
+      if (!!titleResourceKey) {
         this.appTitle.executeActionItemAdd(
           titleResourceKey,
           this.resources.titleTranslated$,
           this.unsubscribe$
         );
 
-        this.titleItemsCount = 1;
+        this.titleItemsCount++;
       }
     }
   }

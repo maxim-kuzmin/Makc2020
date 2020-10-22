@@ -222,8 +222,8 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
   private executeTitleActionItemAdd() {
     if (this.titleItemsCount === 0) {
       let isOk = true;
-      let titleResourceKey: string;
-      let titleTranslated$: Observable<string>;
+      let titleResourceKeyLast: string;
+      let titleTranslatedLast$: Observable<string>;
 
       const {
         settings
@@ -237,16 +237,16 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
 
       switch (this.pageKey) {
         case keyCreate:
-          titleResourceKey = settings.titleOfModDummyTreePageItemCreateResourceKey;
-          titleTranslated$ = this.resources.titleOfModDummyTreePageItemCreateTranslated$;
+          titleResourceKeyLast = settings.titleOfModDummyTreePageItemCreateResourceKey;
+          titleTranslatedLast$ = this.resources.titleOfModDummyTreePageItemCreateTranslated$;
           break;
         case keyEdit:
-          titleResourceKey = settings.titleOfModDummyTreePageItemEditResourceKey;
-          titleTranslated$ = this.resources.titleOfModDummyTreePageItemEditTranslated$;
+          titleResourceKeyLast = settings.titleOfModDummyTreePageItemEditResourceKey;
+          titleTranslatedLast$ = this.resources.titleOfModDummyTreePageItemEditTranslated$;
           break;
         case keyView:
-          titleResourceKey = settings.titleOfModDummyTreePageItemViewResourceKey;
-          titleTranslated$ = this.resources.titleOfModDummyTreePageItemViewTranslated$;
+          titleResourceKeyLast = settings.titleOfModDummyTreePageItemViewResourceKey;
+          titleTranslatedLast$ = this.resources.titleOfModDummyTreePageItemViewTranslated$;
           break;
         default:
           isOk = false;
@@ -254,19 +254,29 @@ export class AppModDummyTreePageItemModel extends AppCoreCommonPageModel {
       }
 
       if (isOk) {
-        this.appTitle.executeActionItemAdd(
-          this.appModDummyTreePageItem.settings.titleResourceKey,
-          this.resources.titleTranslated$,
-          this.unsubscribe$
-        );
+        const {
+          titleResourceKey
+        } = this.appModDummyTreePageItem.settings;
 
-        this.appTitle.executeActionItemAdd(
-          titleResourceKey,
-          titleTranslated$,
-          this.unsubscribe$
-        );
+        if (!!titleResourceKey) {
+          this.appTitle.executeActionItemAdd(
+            titleResourceKey,
+            this.resources.titleTranslated$,
+            this.unsubscribe$
+          );
 
-        this.titleItemsCount = 2;
+          this.titleItemsCount++;
+        }
+
+        if (!!titleResourceKeyLast) {
+          this.appTitle.executeActionItemAdd(
+            titleResourceKeyLast,
+            titleTranslatedLast$,
+            this.unsubscribe$
+          );
+
+          this.titleItemsCount++;
+        }
       }
     }
   }

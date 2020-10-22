@@ -9,7 +9,7 @@ export class AppRootPageIndexSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Начало';
+  titleResourceKey = ''; // 'Начало';
 
   /**
    * Заголовок страницы "RootPageAdministration".

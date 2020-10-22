@@ -54,7 +54,7 @@ export class AppModDummyMainPageItemSettings {
    * Заголовок.
    * @type {string}
    */
-  titleResourceKey = 'Элемент';
+  titleResourceKey = ''; // 'Элемент';
 
   /**
    * Заголовок страницы "ModDummyMainPageItemCreate".

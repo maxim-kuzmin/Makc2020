@@ -4,8 +4,8 @@ import {Subject} from 'rxjs';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreNavigationService} from '@app/core/navigation/core-navigation.service';
 import {AppCoreTreeNodes} from '@app/core/tree/core-tree-nodes';
-import {AppHostPartMenuDataItem, appHostMenuDataItemCreate} from '@app/host/parts/menu/data/host-part-menu-data-item';
-import {AppHostPartMenuDataNode, appHostMenuDataNodeCreate} from '@app/host/parts/menu/data/host-part-menu-data-node';
+import {appHostMenuDataItemCreate, AppHostPartMenuDataItem} from '@app/host/parts/menu/data/host-part-menu-data-item';
+import {appHostMenuDataNodeCreate, AppHostPartMenuDataNode} from '@app/host/parts/menu/data/host-part-menu-data-node';
 import {
   appModAuthPageIndexConfigFullPath,
   appModAuthPageIndexConfigKey,
@@ -18,6 +18,7 @@ import {
 } from '@app/mods/auth/pages/logon/mod-auth-page-logon-config';
 import {
   appModAuthPageRedirectConfigFullPath,
+  appModAuthPageRedirectConfigKey,
   appModAuthPageRedirectConfigTitleResourceKey
 } from '@app/mods/auth/pages/redirect/mod-auth-page-redirect-config';
 import {
@@ -287,11 +288,12 @@ export class AppRootPartMenuDataNodes extends AppCoreTreeNodes<AppHostPartMenuDa
     // Menu: 3: RootPageIndex / RootPageSite / ModAuthPageIndex / ModAuthPageRedirect
 
     this.nodeModAuthPageRedirect = this.createNode(
-      appModAuthPageRegisterConfigKey,
+      appModAuthPageRedirectConfigKey,
       this.nodeModAuthPageIndex,
       appModAuthPageRedirectConfigTitleResourceKey,
       this.createRouterLinkByFullPath(appModAuthPageRedirectConfigFullPath),
-      ''
+      '',
+      true
     );
 
     // Menu: 3: RootPageIndex / RootPageSite / ModAuthPageIndex / ModAuthPageRegister

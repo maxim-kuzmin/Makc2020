@@ -45,12 +45,20 @@ export class AppModAuthModel extends AppCoreCommonTitlable {
   }
 
   private executeTitleActionItemAdd() {
-    this.appTitle.executeActionItemAdd(
-      this.appModAuth.settings.titleResourceKey,
-      this.resources.titleTranslated$,
-      this.unsubscribe$
-    );
+    if (this.titleItemsCount === 0) {
+      const {
+        titleResourceKey
+      } = this.appModAuth.settings;
 
-    this.titleItemsCount = 1;
+      if (!!titleResourceKey) {
+        this.appTitle.executeActionItemAdd(
+          titleResourceKey,
+          this.resources.titleTranslated$,
+          this.unsubscribe$
+        );
+
+        this.titleItemsCount++;
+      }
+    }
   }
 }
