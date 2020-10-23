@@ -1,6 +1,6 @@
 // //Author Maxim Kuzmin//makc//
 
-import {Component, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import {appCoreLoggingDiTokenLoggerName} from '@app/core/logging/core-logging-di';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {AppModAuthPresenter} from '@app/mods/auth/mod-auth-presenter';
@@ -16,7 +16,7 @@ import {AppModAuthModel} from '@app/mods/auth/mod-auth-model';
     AppModAuthModel
   ]
 })
-export class AppSkinModAuthComponent implements OnDestroy {
+export class AppSkinModAuthComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Мой представитель.
@@ -34,6 +34,11 @@ export class AppSkinModAuthComponent implements OnDestroy {
     this.myPresenter = new AppModAuthPresenter(
       model
     );
+  }
+
+  /** @inheritDoc */
+  ngAfterViewInit() {
+    this.myPresenter.onAfterViewInit();
   }
 
   /** @inheritDoc */
