@@ -175,6 +175,7 @@
   },
   "defaultProject": "makc2020-angular-redux",
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": false
   }
 }

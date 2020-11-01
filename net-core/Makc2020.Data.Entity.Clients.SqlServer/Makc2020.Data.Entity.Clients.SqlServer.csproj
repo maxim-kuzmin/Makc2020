@@ -22,7 +22,7 @@
     <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.MAKC2.json">
+    <None Update="ConfigFiles\Data.Entity.Clients.SqlServer.config.m.MKUZMIN.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
