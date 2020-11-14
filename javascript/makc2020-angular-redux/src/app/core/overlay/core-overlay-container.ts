@@ -15,7 +15,7 @@ export class AppCoreOverlayContainer extends OverlayContainer {
    * @returns {OverlayContainer} Контейнер наложения.
    */
   public cloneForElement(containerElement: HTMLElement): OverlayContainer {
-    const result = new AppCoreOverlayContainer(this._document);
+    const result = new AppCoreOverlayContainer(this._document, this._platform);
 
     result._containerElement = containerElement;
 
