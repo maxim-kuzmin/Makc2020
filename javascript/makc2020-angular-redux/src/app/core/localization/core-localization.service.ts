@@ -37,7 +37,7 @@ export class AppCoreLocalizationService {
    */
   createTranslator(
     resourceKey: string,
-    parameters?: Object
+    parameters?: {}
   ): AppCoreLocalizationTranslator {
     return new AppCoreLocalizationTranslator(
       this.extTranslator,

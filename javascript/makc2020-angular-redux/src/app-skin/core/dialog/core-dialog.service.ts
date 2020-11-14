@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
-import {DialogService} from 'primeng';
+import {DialogService} from 'primeng/dynamicdialog';
 import {Observable} from 'rxjs';
 import {AppCoreDialogDefault} from '@app/core/dialog/core-dialog-default';
 import {AppCoreDialogService} from '@app/core/dialog/core-dialog.service';

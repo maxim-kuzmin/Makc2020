@@ -1,9 +1,9 @@
 // //Author Maxim Kuzmin//makc//
 
 import {Injectable} from '@angular/core';
+import {Message, MessageService} from 'primeng/api';
 import {AppCoreCommonDisposable} from '@app/core/common/core-common-disposable';
 import {AppCoreNotificationService} from '@app/core/notification/core-notification.service';
-import {Message, MessageService} from 'primeng';
 import {AppCoreNotificationPresenter} from '@app/core/notification/core-notification-presenter';
 import {AppCoreLocalizationService} from '@app/core/localization/core-localization.service';
 import {AppCoreNotificationInfoSettings} from '@app/core/notification/info/core-notification-info-settings';
@@ -123,15 +123,17 @@ export class AppSkinCoreNotificationService extends AppCoreNotificationService {
         break;
     }
 
-    this.extMessage.addAll(
-      messages.map(
-        (message) => <Message>{
-          severity: severity,
-          detail: message,
-          summary: summary
-        }
-      )
-    );
+    const extMessages: Message[] = [];
+
+    messages.forEach(message => {
+      extMessages.push({
+        severity,
+        detail: message,
+        summary
+      } as Message);
+    });
+
+    this.extMessage.addAll(extMessages);
 
     return new AppSkinCoreNotificationRef(this.extMessage);
   }

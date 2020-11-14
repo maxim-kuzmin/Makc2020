@@ -1,7 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Paginator, Table} from 'primeng';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import {AppCoreLoggingService} from '@app/core/logging/core-logging.service';
 import {appCoreLoggingDiTokenLoggerName} from '@app/core/logging/core-logging-di';
 import {AppModDummyTreePageListPresenter} from '@app/mods/dummy-tree/pages/list/mod-dummy-tree-page-list-presenter';

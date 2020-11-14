@@ -1,7 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
+import {SelectItem} from 'primeng/api';
 import {AppHostLayoutHeaderView} from '@app/host/layout/header/host-layout-header-view';
-import {SelectItem} from 'primeng';
 
 /** Хост. Разметка. Шапка. Вид. */
 export class AppSkinHostLayoutHeaderView extends AppHostLayoutHeaderView {

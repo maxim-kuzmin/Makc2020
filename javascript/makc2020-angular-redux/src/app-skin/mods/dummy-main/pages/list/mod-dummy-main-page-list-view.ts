@@ -1,6 +1,8 @@
 // //Author Maxim Kuzmin//makc//
 
-import {Paginator, SelectItem, Table} from 'primeng';
+import {SelectItem} from 'primeng/api';
+import {Paginator} from 'primeng/paginator';
+import {Table} from 'primeng/table';
 import {merge} from 'rxjs';
 import {AppModDummyMainPageListSettings} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-settings';
 import {AppModDummyMainPageListView} from '@app/mods/dummy-main/pages/list/mod-dummy-main-page-list-view';

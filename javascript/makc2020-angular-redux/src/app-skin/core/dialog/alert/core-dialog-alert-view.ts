@@ -1,8 +1,7 @@
 // //Author Maxim Kuzmin//makc//
 
 import {AppCoreDialogView} from '@app/core/dialog/core-dialog-view';
-import {DynamicDialogRef} from 'primeng';
-
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
 
 /** Ядро. Диалог. Подтверждение. Вид. */
 export class AppSkinCoreDialogAlertView extends AppCoreDialogView {
