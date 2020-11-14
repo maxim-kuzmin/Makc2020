@@ -13,6 +13,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "core-js/features/url-search-params"
+            ],
             "aot": true,
             "outputPath": "dist/browser",
             "index": "src/index.html",

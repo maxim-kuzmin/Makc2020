@@ -17,7 +17,7 @@
     "build:prod": "ng build --prod --build-optimizer --aot",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
     "hm": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng",
-    "hm-start": "npm run hm -- serve --aot --port 4201 --disable-host-check",
+    "hm-start": "npm run hm -- serve --port 4201 --disable-host-check",
     "hm-start-proxy": "npm run hm-start -- --proxy-config conf/proxy.conf.js",
     "dev:ssr": "ng run makc2020-angular-redux:serve-ssr",
     "prerender": "ng run makc2020-angular-redux:prerender"
