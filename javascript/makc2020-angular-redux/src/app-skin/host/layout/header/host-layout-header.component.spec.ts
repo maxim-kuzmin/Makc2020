@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinHostLayoutHeaderComponent} from './host-layout-header.component';
 
 describe('AppSkinHostLayoutHeaderComponent', () => {
   let component: AppSkinHostLayoutHeaderComponent;
   let fixture: ComponentFixture<AppSkinHostLayoutHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AppSkinHostLayoutHeaderComponent ]
     })

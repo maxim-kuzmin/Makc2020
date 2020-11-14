@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinRootPageIndexComponent} from './root-page-index.component';
 
 describe('AppSkinRootPageIndexComponent', () => {
   let component: AppSkinRootPageIndexComponent;
   let fixture: ComponentFixture<AppSkinRootPageIndexComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AppSkinRootPageIndexComponent ]
     })

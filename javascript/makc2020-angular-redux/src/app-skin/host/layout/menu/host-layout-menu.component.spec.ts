@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinHostLayoutMenuComponent} from './host-layout-menu.component';
 
 describe('AppSkinHostLayoutMenuComponent', () => {
   let component: AppSkinHostLayoutMenuComponent;
   let fixture: ComponentFixture<AppSkinHostLayoutMenuComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AppSkinHostLayoutMenuComponent ]
     })

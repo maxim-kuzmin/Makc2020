@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinModAuthPageRedirectComponent} from './mod-auth-page-redirect.component';
 
 describe('AppModAuthPageRedirectComponent', () => {
   let component: AppSkinModAuthPageRedirectComponent;
   let fixture: ComponentFixture<AppSkinModAuthPageRedirectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AppSkinModAuthPageRedirectComponent ]
     })

@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinModAuthPageIndexComponent} from './mod-auth-page-index.component';
 
 describe('AppModAuthPageIndexComponent', () => {
   let component: AppSkinModAuthPageIndexComponent;
   let fixture: ComponentFixture<AppSkinModAuthPageIndexComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AppSkinModAuthPageIndexComponent ]
     })

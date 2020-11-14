@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinRootPageAdministrationComponent} from './root-page-administration.component';
 
 describe('AppSkinRootPageAdministrationComponent', () => {
   let component: AppSkinRootPageAdministrationComponent;
   let fixture: ComponentFixture<AppSkinRootPageAdministrationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AppSkinRootPageAdministrationComponent ]
     })

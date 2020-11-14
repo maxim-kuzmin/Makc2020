@@ -33,18 +33,11 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      // enableTracing: true, // <-- debugging purposes only
-      onSameUrlNavigation: 'reload',
-      preloadingStrategy: PreloadAllModules,
-      // //makc//!!!//>//Если это раскомментировать, то при включенной аутентификации SSO
-      // (значение authTypeOidcIsEnabled равно true в файле environment.ts) приложение перестаёт
-      // работать. Однако это нужно для SSR (отрисовки на сервере), поэтому с этим надо срочно
-      // разобраться - SSR должен работать вместе с SSO! //
-
-      // initialNavigation: 'enabled'
-
-      // //makc//!!!//<//
-    })
+    // enableTracing: true, // <-- debugging purposes only
+    onSameUrlNavigation: 'reload',
+    preloadingStrategy: PreloadAllModules,
+    relativeLinkResolution: 'legacy'
+})
   ],
   exports: [RouterModule],
   providers: []

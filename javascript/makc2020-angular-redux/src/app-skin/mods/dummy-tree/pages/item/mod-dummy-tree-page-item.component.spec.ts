@@ -1,13 +1,13 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinModDummyTreePageItemComponent} from './mod-dummy-tree-page-item.component';
 
 describe('AppSkinModDummyTreePageItemComponent', () => {
   let component: AppSkinModDummyTreePageItemComponent;
   let fixture: ComponentFixture<AppSkinModDummyTreePageItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AppSkinModDummyTreePageItemComponent ]
     })

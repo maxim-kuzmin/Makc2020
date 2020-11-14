@@ -1,17 +1,17 @@
 // //Author Maxim Kuzmin//makc//
 
-import {async, TestBed} from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import {AppSkinCoreDialogConfirmComponent} from './core-dialog-confirm.component';
 
 describe('AppSkinCoreDialogConfirmComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppSkinCoreDialogConfirmComponent
       ],
     }).compileComponents();
   }));
-  it('should create the component', async(() => {
+  it('should create the component', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppSkinCoreDialogConfirmComponent);
     const component = fixture.debugElement.componentInstance;
     expect(component).toBeTruthy();
