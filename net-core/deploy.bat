@@ -40,7 +40,7 @@ FOR /D %%p IN (%path__to__web_site__api%\*.*) DO rmdir "%%p" /s /q
 
 cd Makc2020.Apps.Api.Web
 dotnet publish Makc2020.Apps.Api.Web.csproj -c Test
-cd bin\Test\netcoreapp3.1\publish
+cd bin\Test\net5.0\publish
 xcopy /s *.* %path__to__web_site__api%
 cd ..\..\..\..\..
 
@@ -55,7 +55,7 @@ FOR /D %%p IN (%path__to__web_site__identity_server%\*.*) DO rmdir "%%p" /s /q
 
 cd Makc2020.Apps.IdentityServer.Web
 dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Test
-cd bin\Test\netcoreapp3.1\publish
+cd bin\Test\net5.0\publish
 xcopy /s *.* %path__to__web_site__identity_server%
 cd ..\..\..\..\..
 
