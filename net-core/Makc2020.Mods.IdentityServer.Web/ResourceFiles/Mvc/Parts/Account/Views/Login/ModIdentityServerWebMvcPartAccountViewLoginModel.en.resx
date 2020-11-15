@@ -123,7 +123,7 @@
   <data name="Пароль" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Поле &quot;{0}&quot; является обязательным" xml:space="preserve">
-    <value>The "{0}" field is required</value>
+  <data name="Поле '{0}' является обязательным" xml:space="preserve">
+    <value>The '{0}' field is required</value>
   </data>
 </root>

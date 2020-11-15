@@ -1,8 +1,10 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
-using Microsoft.AspNetCore.Identity;
+using Makc2020.Host.Base.Parts.Auth.Value.Objects;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -18,69 +20,94 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
     {
         #region Public methods
 
+
         /// <summary>
         /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
         /// </summary>
         /// <param name="user">Пользователь.</param>
-        /// <param name="userManager">Менеджер пользователя.</param>
+        /// <param name="dbContext">Контекст базы данных.</param>
+        /// <param name="userName">Имя пользователя для входа.</param>
+        /// <param name="sessionId">Идентификатор сессии.</param>
         /// <returns>Пользователь хоста.</returns>
         public static async Task<HostBasePartAuthUser> HostBasePartAuthExtCreateUser(
-            this DataEntityObjectUser user,
-            UserManager<DataEntityObjectUser> userManager
+            this IEnumerable<long> userIds,
+            DataEntityDbContext dbContext,
+            string userName,
+            string sessionId
             )
         {
-            var roleNames = await userManager.GetRolesAsync(user)
-                .CoreBaseExtTaskWithCurrentCulture(false);
+            long id = 0;
+            string fullName = null;
+            string email = null;
+            var roles = new List<HostBasePartAuthValueObjectRole>();
 
-            return user.HostBasePartAuthExtCreateUser(roleNames);
-        }
-
-        /// <summary>
-        /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
-        /// </summary>
-        /// <param name="user">Пользователь.</param>
-        /// <param name="roles">Роли.</param>
-        /// <returns>Пользователь хоста.</returns>
-        public static HostBasePartAuthUser HostBasePartAuthExtCreateUser(
-            this DataEntityObjectUser user,
-            IEnumerable<string> roles
-            )
-        {
-            var result = new HostBasePartAuthUser
+            foreach (var userId in userIds)
             {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                FullName = user.FullName,
-                Roles = roles
-            };
+                var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
-            return result;
-        }
-
-        /// <summary>
-        /// Хост. Основа. Часть "Auth". Расширение. Создать. Утверждения пользователя.
-        /// </summary>
-        /// <param name="user">Пользователь.</param>
-        /// <returns>Утверждения пользователя.</returns>
-        public static IEnumerable<Claim> HostBasePartAuthExtCreateUserClaims(this HostBasePartAuthUser user)
-        {
-            var result = new List<Claim>()
-            {
-                new Claim(HostBasePartAuthSettings.CLAIM_UserName, user.UserName)
-            };
-
-            var roleNames = user.Roles;
-
-            if (roleNames != null && roleNames.Any())
-            {
-                foreach (var roleName in roleNames)
+                if (user == null)
                 {
-                    result.Add(new Claim(HostBasePartAuthSettings.CLAIM_Role, roleName));
+                    continue;
+                }
+
+                if (id < 1)
+                {
+                    email = user.Email;
+                    fullName = userName == user.UserName ? user.FullName : userName;
+                    id = user.Id;
+                }
+
+                var userRoles = await user.HostBasePartAuthExtGetRolesAsync(dbContext)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (userRoles.Any())
+                {
+                    roles.AddRange(userRoles);
                 }
             }
 
-            return result;
+            var roleIds = roles.Select(x => x.Id).Distinct().ToArray();
+
+            return new HostBasePartAuthUser
+            {
+                Email = email,
+                FullName = fullName ?? userName,
+                Id = id,
+                Roles = roles.Distinct(),
+                SessionId = sessionId,
+                UserIds = userIds,
+                UserName = userName
+            };
+        }
+
+        /// <summary>
+        /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        /// <param name="dbContext">Контекст базы данных.</param>
+        /// <param name="sessionId">Идентификатор сессии.</param>
+        /// <returns>Пользователь хоста.</returns>
+        public static async Task<HostBasePartAuthUser> HostBasePartAuthExtCreateUser(
+            this DataEntityObjectUser user,
+            DataEntityDbContext dbContext,
+            string sessionId = null
+            )
+        {
+            var roles = await user.HostBasePartAuthExtGetRolesAsync(dbContext)
+                .CoreBaseExtTaskWithCurrentCulture(false);
+
+            var roleIds = roles.Select(x => x.Id).Distinct().ToArray();
+
+            return new HostBasePartAuthUser
+            {
+                Email = user.Email,
+                FullName = user.FullName ?? user.UserName,
+                Id = user.Id,
+                Roles = roles,
+                SessionId = sessionId,
+                UserIds = new[] { user.Id },
+                UserName = user.UserName
+            };
         }
 
         /// <summary>
@@ -94,11 +121,28 @@ namespace Makc2020.Host.Base.Parts.Auth.Ext
 
             var claims = (principal as ClaimsPrincipal)?.Claims;
 
-            var userClaim = claims?.FirstOrDefault(x => x.Type == HostBasePartAuthSettings.CLAIM_User);
-
-            if (userClaim != null)
+            if (claims != null)
             {
-                result = userClaim.Value.CoreBaseExtJsonDeserialize<HostBasePartAuthUser>(
+                result = claims.HostBasePartAuthExtCreateUser();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Хост. Основа. Часть "Auth". Расширение. Создать. Пользователя.
+        /// </summary>
+        /// <param name="claims">Утверждения.</param>
+        /// <returns>Пользователь хоста.</returns>
+        public static HostBasePartAuthUser HostBasePartAuthExtCreateUser(this IEnumerable<Claim> claims)
+        {
+            HostBasePartAuthUser result = null;
+
+            var claim = claims.FirstOrDefault(x => x.Type == HostBasePartAuthSettings.CLAIM_User);
+
+            if (claim != null)
+            {
+                result = claim.Value.CoreBaseExtJsonDeserialize<HostBasePartAuthUser>(
                     CoreBaseExtJson.OptionsForJavaScript
                     );
             }

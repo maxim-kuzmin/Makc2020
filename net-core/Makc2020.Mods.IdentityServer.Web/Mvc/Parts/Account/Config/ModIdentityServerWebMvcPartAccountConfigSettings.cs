@@ -10,43 +10,37 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config
         #region Properties
 
         /// <inheritdoc/>
-        public bool AllowLocalLogin { get; set; }
-
-        /// <inheritdoc/>
         public bool AllowLoginWithoutPassword { get; set; }
-
-        /// <inheritdoc/>
-        public bool AllowRememberLogin { get; set; }
 
         /// <inheritdoc/>
         public bool AutomaticRedirectAfterSignOut { get; set; }
 
         /// <inheritdoc/>
-        public string ClientIsFirstLoginParamName { get; }
+        public string ClientIsFirstLoginParamName { get; set; }
 
         /// <inheritdoc/>
-        public string ClientIsFirstLoginParamValue { get; }
+        public string ClientIsFirstLoginParamValue { get; set; }
 
         /// <inheritdoc/>
-        public string ClientLangParamName { get; }
+        public string ClientLangParamName { get; set; }
 
         /// <inheritdoc/>
-        public bool IncludeWindowsGroups { get; set; }
+        public int DbCommandTimeout { get; set; }
 
         /// <inheritdoc/>
-        public string LogOutRoute { get; set; }
+        public bool IsWindowsAuthenticationMandatory { get; set; }
+
+        /// <inheritdoc/>
+        public string LoginMethodCookieName { get; set; }
+
+        /// <inheritdoc/>
+        public string LoginUserNameCookieName { get; set; }
 
         /// <inheritdoc/>
         public int RememberLoginDurationInDays { get; set; }
 
         /// <inheritdoc/>
         public bool ShowLogoutPrompt { get; set; }
-
-        /// <inheritdoc/>
-        public string UserSessionCountRoute { get; set; }
-
-        /// <inheritdoc/>
-        public string WebApiUrlAddress { get; set; }
 
         #endregion Properties
     }

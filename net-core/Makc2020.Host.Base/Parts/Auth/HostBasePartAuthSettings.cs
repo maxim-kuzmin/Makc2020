@@ -1,7 +1,5 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using System.Security.Claims;
-
 namespace Makc2020.Host.Base.Parts.Auth
 {
     /// <summary>
@@ -12,9 +10,9 @@ namespace Makc2020.Host.Base.Parts.Auth
         #region Constants
 
         /// <summary>
-        /// Утверждение "Role".
+        /// Иденетификатор сессии.
         /// </summary>
-        public const string CLAIM_Role = ClaimsIdentity.DefaultRoleClaimType;
+        public const string CLAIM_SessionId = "SessionId";
 
         /// <summary>
         /// Утверждение "User".
@@ -24,9 +22,14 @@ namespace Makc2020.Host.Base.Parts.Auth
         public const string CLAIM_User = "User";
 
         /// <summary>
+        /// Иденетификаторы пользователей.
+        /// </summary>
+        public const string CLAIM_UserIds = "UserIds";
+
+        /// <summary>
         /// Утверждение "UserName".
         /// </summary>
-        public const string CLAIM_UserName = ClaimsIdentity.DefaultNameClaimType;
+        public const string CLAIM_UserName = "UserName";
 
         /// <summary>
         /// Роль "Administrator".
@@ -47,11 +50,6 @@ namespace Makc2020.Host.Base.Parts.Auth
         /// Отображаемое имя поставщика "Local".
         /// </summary>
         public const string PROVIDER_DISPLAY_NAME_Local = "Local";
-
-        /// <summary>
-        /// Группа Windows "SiteAdministrator".
-        /// </summary>
-        public const string WINDOWS_GROUP_SiteAdministrator = "SiteAdministrator";
 
         #endregion Constants
     }

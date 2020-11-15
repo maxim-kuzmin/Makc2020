@@ -8,7 +8,6 @@ namespace Makc2020.Mods.IdentityServer.Base.Exceptions
     /// Мод "IdentityServer". Основа. Исключения. Ошибка аутентификации.
     /// </summary>
     public class ModIdentityServerBaseExceptionLdapLoginFailed : Exception
-    {
-        
+    {        
     }
 }

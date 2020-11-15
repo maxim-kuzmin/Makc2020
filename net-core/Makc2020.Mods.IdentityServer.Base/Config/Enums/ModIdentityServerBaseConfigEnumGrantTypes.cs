@@ -7,6 +7,7 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Enums
     /// </summary>
     public enum ModIdentityServerBaseConfigEnumGrantTypes
     {
-        Code
+        Code,
+        Implicit
     }
 }

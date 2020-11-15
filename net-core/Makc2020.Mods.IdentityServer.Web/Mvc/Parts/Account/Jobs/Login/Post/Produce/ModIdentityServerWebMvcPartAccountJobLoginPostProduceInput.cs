@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Produce

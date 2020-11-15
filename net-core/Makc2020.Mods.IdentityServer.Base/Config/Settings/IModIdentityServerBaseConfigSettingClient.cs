@@ -13,6 +13,13 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
         #region Properties
 
         /// <summary>
+        /// Время жизни токена доступа в секундах.
+        /// Если значение не указано или оно меньше 1,
+        /// используется значение по-умолчанию: 3600 (1 час).
+        /// </summary>
+        int AccessTokenLifetime { get; }
+
+        /// <summary>
         /// Разрешённые источники CORS.
         /// </summary>
         ICollection<string> AllowedCorsOrigins { get; }
@@ -48,6 +55,13 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
         string ClientUri { get; }
 
         /// <summary>
+        /// Время жизни токена идентификации в секундах.
+        /// Если значение не указано или оно меньше 1,
+        /// используется значение по-умолчанию: 300 (5 минут).
+        /// </summary>
+        int IdentityTokenLifetime { get; }
+
+        /// <summary>
         /// Требуется секрет клиента.
         /// </summary>
         bool RequireClientSecret { get; }
@@ -71,6 +85,11 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
         /// Список URI перенаправления после выхода из системы.
         /// </summary>
         ICollection<string> PostLogoutRedirectUris { get; }
+
+        /// <summary>
+        /// Разрешен запрос токен по средствам браузера.
+        /// </summary>
+        bool AllowAccessTokensViaBrowser { get; }
 
         #endregion Properties
     }

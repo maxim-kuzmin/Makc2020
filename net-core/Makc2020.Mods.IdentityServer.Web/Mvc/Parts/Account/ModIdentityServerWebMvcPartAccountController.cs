@@ -1,7 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Ext;
+using Makc2020.Core.Web.Ext;
 using Makc2020.Host.Web;
+using Makc2020.Mods.IdentityServer.Base.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Process;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Produce;
@@ -18,6 +20,7 @@ using Makc2020.Mods.IdentityServer.Web.Mvc.Security.Headers;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Views.Redirect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -61,9 +64,28 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var processOutput = await GetLoginGetProcessOutput(returnUrl, isFirstLogin)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            var redirectUrl = processOutput.RedirectUrl;
+            if (processOutput.IsWindowsAuthenticationNeeded)
+            {
+                var model = new ModIdentityServerWebMvcPartAccountViewLoginModel()
+                {
+                    LoginMethod = ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
+                    ReturnUrl = returnUrl
+                };
 
-            if (string.IsNullOrWhiteSpace(redirectUrl))
+                var loginOutput = await GetLoginPostProcessOutput(model, ModIdentityServerWebMvcSettings.ACTION_Login)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                var produceOutput = await GetLoginPostProduceOutput(model)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (!ModelState.IsValid)
+                {
+                    ModelState.Clear();
+                }
+
+                return GetLoginResult(loginOutput, produceOutput);
+            }
+            else if (string.IsNullOrWhiteSpace(processOutput.RedirectUrl))
             {
                 var produceOutput = await GetLoginGetProduceOutput(returnUrl)
                     .CoreBaseExtTaskWithCurrentCulture(false);
@@ -72,13 +94,15 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
             else
             {
-                return Redirect(redirectUrl);
+                return Redirect(processOutput.RedirectUrl);
             }
         }
 
         /// <summary>
         /// Вход в систему. Отправка.
         /// </summary>
+        /// <param name="model">Модель.</param>
+        /// <param name="action">Действие.</param>
         [HttpPost("Login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginPost(
@@ -94,24 +118,39 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var produceOutput = await GetLoginPostProduceOutput(model)
                 .CoreBaseExtTaskWithCurrentCulture(false);
 
-            return processOutput.Status switch
+            var isLoginMemorizationNeeded =
+                processOutput.Status != ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default
+                &&
+                processOutput.Status != ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows;
+
+            if (isLoginMemorizationNeeded)
             {
-                ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index =>
-                    Redirect("~/"),
-                ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect =>
-                    View(
-                        "Redirect",
-                        new ModIdentityServerWebMvcViewRedirectModel
-                        {
-                            RedirectUrl = produceOutput.ReturnUrl
-                        }),
-                ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return =>
-                    Redirect(produceOutput.ReturnUrl),
-                ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows =>
-                    Challenge(ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows),
-                _ =>
-                    View("~/Views/Account/Login.cshtml", produceOutput),
-            };
+                var cookieOptions = CreateCookieOptions(
+                    false,
+                    DateTimeOffset.Now.AddDays(processOutput.RememberLoginDurationInDays)
+                    );
+
+                Response.Cookies.Append(
+                    processOutput.LoginMethodCookieName,
+                    ((int)model.LoginMethod).ToString(),
+                    cookieOptions
+                    );
+
+                if (model.LoginMethod != ModIdentityServerBaseEnumLoginMethods.WindowsDomain)
+                {
+                    Response.Cookies.Append(
+                        processOutput.LoginUserNameCookieName,
+                        model.Username ?? string.Empty,
+                        cookieOptions
+                        );
+                }
+                else
+                {
+                    Response.Cookies.Delete(processOutput.LoginUserNameCookieName);
+                }
+            }
+
+            return GetLoginResult(processOutput, produceOutput);
         }
 
         /// <summary>
@@ -154,7 +193,13 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             return processOutput.Status switch
             {
                 ModIdentityServerWebMvcPartAccountJobLogoutPostProcessEnumStatuses.LoggedOut =>
-                   View("~/Views/Account/LoggedOut.cshtml", produceOutput),
+                   produceOutput.AutomaticRedirectAfterSignOut
+                   ? (
+                       string.IsNullOrWhiteSpace(produceOutput.PostLogoutRedirectUri)
+                           ? Redirect("/Account/Login")
+                           : Redirect(produceOutput.PostLogoutRedirectUri)
+                    )
+                   : (IActionResult)View("~/Views/Account/LoggedOut.cshtml", produceOutput),
                 _ =>
                     ((Func<SignOutResult>)(() =>
                     {
@@ -189,6 +234,27 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #endregion Public methods
 
         #region Private methods
+
+        private void CorrectCookieOptions(string cookieKey, CookieOptions cookieOptions)
+        {
+            var cookieValue = Response.CoreWebExtGetCookieValue(cookieKey);
+
+            Response.Cookies.Delete(cookieKey);
+
+            Response.Cookies.Append(cookieKey, cookieValue, cookieOptions);
+        }
+
+        private CookieOptions CreateCookieOptions(bool httpOnly, DateTimeOffset? expires = null)
+        {
+            return new CookieOptions
+            {
+                Path = "/",
+                HttpOnly = httpOnly,
+                IsEssential = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = expires
+            };
+        }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLoginGetProcessOutput> GetLoginGetProcessOutput(
             string returnUrl,
@@ -232,7 +298,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             var input = new ModIdentityServerWebMvcPartAccountJobLoginGetProduceInput
             {
-                ReturnUrl = returnUrl
+                ReturnUrl = returnUrl,
+                HttpContext = HttpContext
             };
 
             var (execute, onSuccess, onError) = MyModel.BuildActionLoginGetProduce(input);
@@ -292,6 +359,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             var input = new ModIdentityServerWebMvcPartAccountJobLoginPostProduceInput
             {
                 Model = model,
+                HttpContext = HttpContext,
                 ModelState = ModelState
             };
 
@@ -309,6 +377,41 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             return result.Data;
+        }
+
+        private IActionResult GetLoginResult(
+            ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput processOutput,
+            ModIdentityServerWebMvcPartAccountCommonJobLoginOutput produceOutput
+            )
+        {
+            IActionResult result;
+
+            switch (processOutput.Status)
+            {
+                case ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index:
+                    result = Redirect("~/");
+                    break;
+                case ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect:
+                    result = View(
+                        "Redirect",
+                        new ModIdentityServerWebMvcViewRedirectModel
+                        {
+                            RedirectUrl = produceOutput.ReturnUrl
+                        });
+                    break;
+                case ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return:
+                    result = Redirect(produceOutput.ReturnUrl);
+                    break;
+                case ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows:
+                    result = Challenge(ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows);
+                    break;
+                case ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default:
+                default:
+                    result = View("~/Views/Account/Login.cshtml", produceOutput);
+                    break;
+            }
+
+            return result;
         }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLogoutGetOutput> GetLogoutGetOutput(string logoutId)

@@ -1,8 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.Auth.Base.Settings.Errors;
-using Makc2020.Mods.Auth.Base.Settings.Successes;
+using Makc2020.Data.Entity.Db;
+using Makc2020.Mods.Auth.Base.Resources.Errors;
+using Makc2020.Mods.Auth.Base.Resources.Successes;
 using Microsoft.Extensions.Localization;
 
 namespace Makc2020.Mods.Auth.Base
@@ -28,6 +29,11 @@ namespace Makc2020.Mods.Auth.Base
         /// Локализатор ресурса успехов.
         /// </summary>
         public IStringLocalizer<ModAuthBaseResourceSuccesses> ResourceSuccessesLocalizer { get; set; }
+
+        /// <summary>
+        /// Данные. Entity Framework. База данных. Фабрика.
+        /// </summary>
+        public DataEntityDbFactory DataEntityDbFactory { get; set; }
 
         #endregion Properties
     }

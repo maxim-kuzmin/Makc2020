@@ -13,6 +13,9 @@ namespace Makc2020.Mods.Auth.Base.Config
     {
         #region Properties
 
+        /// <inheritdoc/>
+        public int DbCommandTimeout { get; set; }
+
         /// <summary>
         /// Тип.
         /// </summary>

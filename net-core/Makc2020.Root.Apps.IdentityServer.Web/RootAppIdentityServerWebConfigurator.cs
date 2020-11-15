@@ -1,11 +1,13 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.IdentityServer.Base.Config;
 using Makc2020.Mods.IdentityServer.Web.Ext;
 using Makc2020.Mods.IdentityServer.Web.Mvc;
 using Makc2020.Root.Apps.IdentityServer.Base;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
 namespace Makc2020.Root.Apps.IdentityServer.Web
@@ -41,6 +43,20 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
             base.ConfigureServices(services);
 
             services.AddTransient(x => GetContext(x).ModIdentityServerWebMvc);
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.OnAppendCookie = context =>
+                {
+                    if (context.CookieOptions.SameSite == SameSiteMode.None)
+                    {
+                        context.CookieOptions.SameSite = SameSiteMode.Strict;
+                    }
+                };
+            });
 
             if (ModIdentityServerWebAuthenticationIsEnabled)
             {

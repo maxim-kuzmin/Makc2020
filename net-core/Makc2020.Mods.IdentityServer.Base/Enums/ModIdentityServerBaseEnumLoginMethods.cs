@@ -18,10 +18,6 @@ namespace Makc2020.Mods.IdentityServer.Base.Enums
         /// <summary>
         /// Доменная-Windows-аутентификация.
         /// </summary>
-        WindowsDomain = 3,
-        /// <summary>
-        /// Локальная-Windows-аутентификация.
-        /// </summary>
-        WindowsMachine = 4
+        WindowsDomain = 3
     }
 }

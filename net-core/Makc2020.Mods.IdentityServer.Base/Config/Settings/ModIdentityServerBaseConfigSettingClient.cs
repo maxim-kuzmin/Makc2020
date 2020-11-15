@@ -13,6 +13,9 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
         #region Properties
 
         /// <inheritdoc/>
+        public int AccessTokenLifetime { get; set; }
+
+        /// <inheritdoc/>
         public ICollection<string> AllowedCorsOrigins { get; set; }
 
         /// <inheritdoc/>
@@ -34,6 +37,9 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
         public string ClientUri { get; set; }
 
         /// <inheritdoc/>
+        public int IdentityTokenLifetime { get; set; }
+
+        /// <inheritdoc/>
         public bool RequireClientSecret { get; set; }
 
         /// <inheritdoc/>
@@ -47,6 +53,9 @@ namespace Makc2020.Mods.IdentityServer.Base.Config.Settings
 
         /// <inheritdoc/>
         public ICollection<string> PostLogoutRedirectUris { get; set; }
+
+        /// <inheritdoc/>
+        public bool AllowAccessTokensViaBrowser { get; set; }
 
         #endregion Properties
     }

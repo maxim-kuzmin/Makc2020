@@ -8,7 +8,6 @@ using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Process.Enums;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.Login;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -32,11 +31,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Pro
         /// События.
         /// </summary>
         public IEventService Events { get; set; }
-
-        /// <summary>
-        /// HTTP-контекст.
-        /// </summary>
-        public HttpContext HttpContext { get; set; }
 
         /// <summary>
         /// Задание на вход в систему через LDAP.

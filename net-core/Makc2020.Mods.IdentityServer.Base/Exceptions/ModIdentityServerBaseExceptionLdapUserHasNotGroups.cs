@@ -9,6 +9,5 @@ namespace Makc2020.Mods.IdentityServer.Base.Exceptions
     /// </summary>
     public class ModIdentityServerBaseExceptionLdapUserHasNotGroups : Exception
     {
-
     }
 }

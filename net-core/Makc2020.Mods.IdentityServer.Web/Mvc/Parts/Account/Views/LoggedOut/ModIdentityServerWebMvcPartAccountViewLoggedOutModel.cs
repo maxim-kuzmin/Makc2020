@@ -33,12 +33,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Views.LoggedOut
         /// URL перенаправления после выхода из системы.
         /// </summary>
         public string PostLogoutRedirectUri { get; set; }
-        
+
         /// <summary>
         /// URL в тэге IFRAME, предназначенном для выхода из системы.
         /// </summary>
         public string SignOutIframeUrl { get; set; }
-        
+
         /// <summary>
         /// Признак необходимости запустить внешний выход из системы.
         /// </summary>

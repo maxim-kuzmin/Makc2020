@@ -3,6 +3,7 @@
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
@@ -28,6 +29,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Common.Jobs.Login
         /// Поставщик схем.
         /// </summary>
         public IAuthenticationSchemeProvider SchemeProvider { get; set; }
+
+        /// <summary>
+        /// HTTP-контекст.
+        /// </summary>
+        public HttpContext HttpContext { get; set; }
 
         #endregion Properties
 

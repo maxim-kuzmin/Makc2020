@@ -26,7 +26,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Pro
         /// <summary>
         /// Windows.
         /// </summary>
-        Windows,
-
+        Windows
     }
 }

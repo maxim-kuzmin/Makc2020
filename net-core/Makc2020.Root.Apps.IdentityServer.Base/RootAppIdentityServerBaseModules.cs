@@ -1,12 +1,12 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.IdentityServer.Base;
 using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 using Makc2020.Root.Base;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 

@@ -1,8 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Root.Apps.IdentityServer.Web;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Makc2020.Apps.IdentityServer.Web.Root
 {
@@ -11,6 +12,12 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
     /// </summary>
     public class AppConfigurator : RootAppIdentityServerWebConfigurator<AppContext, RootAppIdentityServerWebModules>
     {
+        #region Constants
+
+        public const string CORS_POLICY_NAME = "MyPolicy";
+
+        #endregion Constants
+
         #region Public methods
 
         /// <summary>
@@ -43,6 +50,17 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
                 iis.AuthenticationDisplayName = "Windows";
                 iis.AutomaticAuthentication = false;
             });
+
+            services.Configure<CorsOptions>(options =>
+                options.AddPolicy(
+                    CORS_POLICY_NAME,
+                    corsBuilder => corsBuilder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                    //.AllowCredentials()
+                    )
+                );
         }
 
         #endregion Public methods

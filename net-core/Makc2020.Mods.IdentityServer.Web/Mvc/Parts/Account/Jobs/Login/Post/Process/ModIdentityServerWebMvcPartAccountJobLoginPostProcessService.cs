@@ -3,8 +3,8 @@
 using Makc2020.Core.Base.Executable.Services.Async;
 using Makc2020.Core.Base.Execution.Exceptions;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Exceptions;
+using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 using System;
 using System.Collections.Generic;
@@ -70,9 +70,34 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Pro
             if (ex is ModIdentityServerBaseExceptionLogin)
             {
                 result.Add(ResourceErrors.GetStringUserLoginIsFailed());
-            } else if (ex is ModIdentityServerBaseExceptionInvalidReturnUrl)
+            }
+            else if (ex is ModIdentityServerBaseExceptionDomainUserNotFound exDomainUserNotFound)
+            {
+                result.Add(ResourceErrors.GetStringDomainUserNotFound(exDomainUserNotFound.UserName));
+            }
+            else if (ex is ModIdentityServerBaseExceptionDomainUserGroupsNotFound exDomainUserGroupsNotFound)
+            {
+                result.Add(ResourceErrors.GetStringDomainUserGroupsNotFound(exDomainUserGroupsNotFound.UserName));
+            }
+            else if (ex is ModIdentityServerBaseExceptionInvalidReturnUrl)
             {
                 result.Add(ResourceErrors.GetStringReturnUrlIsInvalid());
+            }
+            else if (ex is ModIdentityServerBaseExceptionLdapGroupsSearchFailed)
+            {
+                result.Add(ResourceErrors.GetStringLdapGroupsSearchFailed(ex.Message));
+            }
+            else if (ex is ModIdentityServerBaseExceptionLdapLoginFailed)
+            {
+                result.Add(ResourceErrors.GetStringLdapLoginFailed());
+            }
+            else if (ex is ModIdentityServerBaseExceptionLdapUserHasNotGroups)
+            {
+                result.Add(ResourceErrors.GetStringLdapUserHasNoGroups());
+            }
+            else if (ex is ModIdentityServerBaseExceptionUserHasNotRoles)
+            {
+                result.Add(ResourceErrors.GetStringUserHasNoRoles());
             }
 
             return result.Any() ? result : null;

@@ -67,7 +67,7 @@ namespace Makc2020.Host.Base.Parts.Auth
         }
 
         /// <inheritdoc/>
-        public async Task<HostBasePartAuthUser> GetCurrentUser(HostBasePartAuthJobCurrentUserGetInput input)
+        public Task<HostBasePartAuthUser> GetCurrentUser(HostBasePartAuthJobCurrentUserGetInput input)
         {
             HostBasePartAuthUser result;
 
@@ -84,12 +84,6 @@ namespace Makc2020.Host.Base.Parts.Auth
             else
             {
                 result = principal.HostBasePartAuthExtCreateUser();
-
-                if (result == null)
-                {
-                    result = await GetUserByName(principal.Identity.Name, input.UserManager)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-                }
             }
 
             if (result == null)
@@ -97,7 +91,7 @@ namespace Makc2020.Host.Base.Parts.Auth
                 throw new HostBasePartAuthJobCurrentUserGetException();
             }
 
-            return result;
+            return Task.FromResult(result);
         }
 
         /// <summary>
@@ -244,28 +238,6 @@ namespace Makc2020.Host.Base.Parts.Auth
             }
 
             return user;
-        }
-
-        private async Task<HostBasePartAuthUser> GetUserByName(
-            string name,
-            UserManager<DataEntityObjectUser> userManager
-            )
-        {
-            HostBasePartAuthUser result = null;
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                var user = await userManager.FindByNameAsync(name)
-                    .CoreBaseExtTaskWithCurrentCulture(false);
-
-                if (user != null)
-                {
-                    result = await user.HostBasePartAuthExtCreateUser(userManager)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-                }
-            }
-
-            return result;
         }
 
         #endregion Private methods

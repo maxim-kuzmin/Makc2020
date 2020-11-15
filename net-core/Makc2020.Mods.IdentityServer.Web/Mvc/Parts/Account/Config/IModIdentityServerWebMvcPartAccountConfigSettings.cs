@@ -10,69 +10,59 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Config
         #region Properties
 
         /// <summary>
-        /// Признак разрешения локального входа в систему.
-        /// </summary>
-        bool AllowLocalLogin { get; }
-
-        /// <summary>
         /// Признак разрешения логина пользователя без пароля.
         /// </summary>
-        bool AllowLoginWithoutPassword { get; }
-
-        /// <summary>
-        /// Признак разрешения запоминания входа в систему.
-        /// </summary>
-        bool AllowRememberLogin { get; }
+        bool AllowLoginWithoutPassword { get; set; }
 
         /// <summary>
         /// Признак необходимости автоматического перенаправления после выхода из системы.
         /// </summary>
-        bool AutomaticRedirectAfterSignOut { get; }
+        bool AutomaticRedirectAfterSignOut { get; set; }
 
         /// <summary>
         /// Имя параметра признака первого входа в систему на стороне клиента.
         /// </summary>
-        string ClientIsFirstLoginParamName { get; }
+        string ClientIsFirstLoginParamName { get; set; }
 
         /// <summary>
         /// Значение параметра признака первого входа в систему на стороне клиента.
         /// </summary>
-        string ClientIsFirstLoginParamValue { get; }
+        string ClientIsFirstLoginParamValue { get; set; }
 
         /// <summary>
         /// Имя параметра языка на стороне клиента.
         /// </summary>
-        string ClientLangParamName { get; }
+        string ClientLangParamName { get; set; }
 
         /// <summary>
-        /// Признак необходимости включения групп Windows.
+        /// Таймаут команд базы данных.
         /// </summary>
-        bool IncludeWindowsGroups { get; }
+        int DbCommandTimeout { get; }
 
         /// <summary>
-        /// URL-адрес WebApi.
+        /// Признак необходимости использования автоматической аутентификации Windows.
         /// </summary>
-        string LogOutRoute { get; }
+        bool IsWindowsAuthenticationMandatory { get; set; }
+
+        /// <summary>
+        /// Имя куки для хранения метода входа в систему.
+        /// </summary>
+        string LoginMethodCookieName { get; set; }
+
+        /// <summary>
+        /// Имя куки для хранения имени вошедшего в систему пользователя.
+        /// </summary>
+        string LoginUserNameCookieName { get; set; }
 
         /// <summary>
         /// Длительность запоминания входа в систему в днях.
         /// </summary>
-        int RememberLoginDurationInDays { get; }
+        int RememberLoginDurationInDays { get; set; }
 
         /// <summary>
         /// Признак необходимости показать напоминание о выходе из системы.
         /// </summary>
-        bool ShowLogoutPrompt { get; }
-
-        /// <summary>
-        /// URL-адрес WebApi.
-        /// </summary>
-        string UserSessionCountRoute { get; }
-
-        /// <summary>
-        /// URL-адрес WebApi.
-        /// </summary>
-        string WebApiUrlAddress { get; set; }
+        bool ShowLogoutPrompt { get; set; }
 
         #endregion Properties
     }

@@ -120,13 +120,28 @@
   <data name="URL возврата неверен" xml:space="preserve">
     <value>Return url is invalid</value>
   </data>
+  <data name="Возникла ошибка при поиске групп Active Directory: {0}" xml:space="preserve">
+    <value>An error occurred while searching for Active Directory groups: {0}</value>
+  </data>
   <data name="Введены неверные учётные данные" xml:space="preserve">
     <value>Login is failed</value>
   </data>
-  <data name="Внешняя аутентификация не пройдена" xml:space="preserve">
-    <value>External authentication is failed</value>
+  <data name="Не найдены группы доменного пользователя '{0}'" xml:space="preserve">
+    <value>Domain user '{0}' groups not found</value>
   </data>
-  <data name="Неизвестный идентификатор пользователя" xml:space="preserve">
-    <value>Unknown user identifier</value>
+  <data name="Неверные имя или пароль" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="Доменный пользователь '{0}' не найден" xml:space="preserve">
+    <value>Domain user '{0}' not found</value>
+  </data>
+  <data name="Пользователю не назначены роли" xml:space="preserve">
+    <value>User has no roles</value>
+  </data>
+  <data name="Роли пользователю назначены, но всё под запретом" xml:space="preserve">
+    <value>User has roles but everything is forbidden</value>
+  </data>
+  <data name="У пользователя Active Directory нет групп" xml:space="preserve">
+    <value>Active Directory user has no groups</value>
   </data>
 </root>

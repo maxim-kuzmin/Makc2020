@@ -1,12 +1,12 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Base.Logging;
 using Makc2020.Root.Apps.IdentityServer.Web;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,6 +72,8 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
                 if (isOk)
                 {
                     OnBeginRequest(httpContext);
+
+                    httpContext.Response.OnStarting(() => OnResponseStarting(httpContext));
                 }
 
                 await next.Invoke().CoreBaseExtTaskWithCurrentCulture(false);
@@ -89,6 +91,8 @@ namespace Makc2020.Apps.IdentityServer.Web.Root
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(AppConfigurator.CORS_POLICY_NAME);
 
             app.UseStaticFiles();
 

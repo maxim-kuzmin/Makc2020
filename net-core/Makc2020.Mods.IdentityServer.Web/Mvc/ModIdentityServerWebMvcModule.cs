@@ -1,10 +1,9 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc
@@ -48,11 +47,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
             services.AddTransient(x => GetContext(x).PartAccount.Jobs.JobLogoutPostProduce);
             services.AddTransient(x => GetContext(x).PartAccount.Service);
             services.AddTransient<ModIdentityServerWebMvcPartAccountModel>();
-            services.AddTransient(x => GetContext(x).PartExternal);
-            services.AddTransient(x => GetContext(x).PartExternal.Jobs.JobCallbackGet);
-            services.AddTransient(x => GetContext(x).PartExternal.Jobs.JobChallengeGet);
-            services.AddTransient(x => GetContext(x).PartExternal.Service);
-            services.AddTransient<ModIdentityServerWebMvcPartExternalModel>();
         }
 
         /// <summary>

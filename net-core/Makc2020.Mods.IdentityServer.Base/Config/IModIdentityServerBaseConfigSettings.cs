@@ -27,6 +27,16 @@ namespace Makc2020.Mods.IdentityServer.Base.Config
         /// </summary>
         ModIdentityServerBaseConfigEnumIdentityResources[] IdentityResources { get; }
 
+        /// <summary>
+        /// Таймаут команд базы данных.
+        /// </summary>
+        int DbCommandTimeout { get; }
+
+        /// <summary>
+        /// Сертификат.
+        /// </summary>
+        string Certificate { get; }
+
         #endregion Properties
     }
 }

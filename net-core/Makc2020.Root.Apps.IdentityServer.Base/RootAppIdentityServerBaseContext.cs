@@ -11,7 +11,7 @@ namespace Makc2020.Root.Apps.IdentityServer.Base
     /// </summary>
     /// <typeparam name="TModules">Тип модулей.</typeparam>
     public abstract class RootAppIdentityServerBaseContext<TModules> : RootBaseContext<TModules>
-        where TModules: RootAppIdentityServerBaseModules
+        where TModules : RootAppIdentityServerBaseModules
     {
         #region Properties
 

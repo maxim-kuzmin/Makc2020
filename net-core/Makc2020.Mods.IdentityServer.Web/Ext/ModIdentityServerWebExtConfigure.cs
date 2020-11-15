@@ -1,13 +1,14 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Mods.IdentityServer.Base.Config;
 using Makc2020.Mods.IdentityServer.Base.Config.Enums;
 using Makc2020.Mods.IdentityServer.Base.Config.Settings;
 using Makc2020.Mods.IdentityServer.Base.Parts.Profile;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
 namespace Makc2020.Mods.IdentityServer.Web.Ext
@@ -46,8 +47,21 @@ namespace Makc2020.Mods.IdentityServer.Web.Ext
             .AddAspNetIdentity<DataEntityObjectUser>()
             .AddProfileService<ModIdentityServerBasePartProfileService>();
 
-            // not recommended for production - you need to store your key material somewhere secure
+#if TEST || DEBUG
+            IdentityModelEventSource.ShowPII = true;
+#endif
+            //makc//!!!//Раскомментировать после тестирования//>//
+            //// to create a certificate:
+            //// makecert -r -pe -n "CN=Makc2020.IdentityServer" -b 01/01/2000 -e 01/01/2036 -eku 1.3.6.1.5.5.7.3.1 -ss my -sr localMachine -sky exchange -sp "Microsoft RSA SChannel Cryptographic Provider" -sy 12 -len 2048
+            //// https://www.hanselman.com/blog/WorkingWithSSLAtDevelopmentTimeIsEasierWithIISExpress.aspx
+            //// https://docs.microsoft.com/en-us/aspnet/web-api/overview/security/working-with-ssl-in-web-api
+            //builder.AddSigningCredential(configSettings.Certificate);
+            //makc//<//
+
+            //makc//!!!//Закомментировать после тестирования//>//
+            // not recommended for production - you need to store your key material somewhere secure            
             builder.AddDeveloperSigningCredential();
+            //makc//<//
 
             return services.AddAuthentication();
         }
@@ -64,9 +78,9 @@ namespace Makc2020.Mods.IdentityServer.Web.Ext
 
             foreach (var configSetting in configSettings)
             {
-                var item = new ApiResource(configSetting.Name, configSetting.DisplayName);
+                var resource = new ApiResource(configSetting.Name, configSetting.DisplayName);
 
-                result.Add(item);
+                result.Add(resource);
             }
 
             return result;
@@ -87,9 +101,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Ext
                     case ModIdentityServerBaseConfigEnumGrantTypes.Code:
                         allowedGrantTypes = GrantTypes.Code;
                         break;
+                    case ModIdentityServerBaseConfigEnumGrantTypes.Implicit:
+                        allowedGrantTypes = GrantTypes.Implicit;
+                        break;
                 }
 
-                var item = new Client
+                var client = new Client
                 {
                     AllowedCorsOrigins = configSetting.AllowedCorsOrigins,
                     AllowedGrantTypes = allowedGrantTypes,
@@ -102,10 +119,21 @@ namespace Makc2020.Mods.IdentityServer.Web.Ext
                     RequireConsent = configSetting.RequireConsent,
                     RequirePkce = configSetting.RequirePkce,
                     RedirectUris = configSetting.RedirectUris,
-                    PostLogoutRedirectUris = configSetting.PostLogoutRedirectUris
+                    PostLogoutRedirectUris = configSetting.PostLogoutRedirectUris,
+                    AllowAccessTokensViaBrowser = configSetting.AllowAccessTokensViaBrowser
                 };
 
-                result.Add(item);
+                if (configSetting.AccessTokenLifetime > 0)
+                {
+                    client.AccessTokenLifetime = configSetting.AccessTokenLifetime;
+                }
+
+                if (configSetting.IdentityTokenLifetime > 0)
+                {
+                    client.IdentityTokenLifetime = configSetting.IdentityTokenLifetime;
+                }
+
+                result.Add(client);
             }
 
             return result;

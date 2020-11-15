@@ -5,6 +5,7 @@ using Makc2020.Core.Base.Auth.Types.Jwt;
 using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Web.Mvc.Parts.Auth;
 using Makc2020.Mods.Auth.Base.Config;
+using Makc2020.Root.Apps.Api.Web.Policies.Admin;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -79,6 +80,7 @@ namespace Makc2020.Mods.Auth.Web.Ext
                 ConfigureAuthenticationCookie(services);
             }
 
+            services.AddSingleton<IAuthorizationHandler, ModAuthWebPolicyAdminHandler>();
             ConfigureAuthorization(services, new[] { authDefaultScheme });
 
             return result;
@@ -142,10 +144,9 @@ namespace Makc2020.Mods.Auth.Web.Ext
                             }
                         }
 
-                        policy.RequireClaim(
-                            HostBasePartAuthSettings.CLAIM_Role,
-                            HostBasePartAuthSettings.ROLE_Administrator
-                            );
+                        policy.RequireClaim(HostBasePartAuthSettings.CLAIM_User);
+
+                        policy.Requirements.Add(new ModAuthWebPolicyAdminRequirement());
                     });
             });
         }

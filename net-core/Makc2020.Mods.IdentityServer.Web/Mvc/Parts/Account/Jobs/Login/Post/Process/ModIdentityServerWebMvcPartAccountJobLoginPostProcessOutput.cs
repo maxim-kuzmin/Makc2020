@@ -12,6 +12,21 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Post.Pro
         #region Properties
 
         /// <summary>
+        /// Имя куки для хранения метода входа в систему.
+        /// </summary>
+        public string LoginMethodCookieName { get; set; }
+
+        /// <summary>
+        /// Имя куки для хранения имени вошедшего в систему пользователя.
+        /// </summary>
+        public string LoginUserNameCookieName { get; set; }
+
+        /// <summary>
+        /// Длительность хранения информации о входе в систему в днях.
+        /// </summary>
+        public int RememberLoginDurationInDays { get; set; }
+
+        /// <summary>
         /// Статус.
         /// </summary>
         public ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses Status { get; set; } =

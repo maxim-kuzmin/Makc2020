@@ -10,6 +10,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account.Jobs.Login.Get.Proc
         #region Properties
 
         /// <summary>
+        /// Признак того, что необходимо пройти Windows-аутентификацию.
+        /// </summary>
+        public bool IsWindowsAuthenticationNeeded { get; set; }
+
+        /// <summary>
         /// URL перенаправления.
         /// </summary>
         public string RedirectUrl { get; set; }

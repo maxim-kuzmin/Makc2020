@@ -1,8 +1,8 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace Makc2020.Mods.Auth.Base

@@ -12,7 +12,7 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
     /// <typeparam name="TModules">Тип модулей.</typeparam>
     public abstract class RootAppIdentityServerWebContext<TModules> :
         RootAppIdentityServerBaseContext<TModules>
-        where TModules: RootAppIdentityServerWebModules
+        where TModules : RootAppIdentityServerWebModules
     {
         #region Properties
 

@@ -1,6 +1,7 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Core.Base.Resources.Errors;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Mods.IdentityServer.Base.Resources.Errors;
 using Makc2020.Mods.IdentityServer.Base.Resources.Successes;
 
@@ -27,6 +28,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Ресурс успехов.
         /// </summary>
         public ModIdentityServerBaseResourceSuccesses ResourceSuccesses { get; set; }
+
+        /// <summary>
+        /// Фабрика данных.
+        /// </summary>
+        public DataEntityDbFactory DataEntityDbFactory { get; set; }
 
         #endregion Properties
     }

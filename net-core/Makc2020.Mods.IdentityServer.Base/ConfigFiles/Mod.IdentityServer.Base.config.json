@@ -38,5 +38,6 @@
   "IdentityResources": [
     "OpenId"
   ],
-  "DbCommandTimeout": 0
+  "DbCommandTimeout": 0,
+  "Certificate": "CN=Makc2020.IdentityServer"
 }

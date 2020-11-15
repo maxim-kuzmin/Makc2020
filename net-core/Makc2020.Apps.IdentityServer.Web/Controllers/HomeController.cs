@@ -3,13 +3,13 @@
 
 
 using IdentityServer4.Services;
-using Makc2020.Apps.IdentityServer.Web.Models;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Security.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Makc2020.Apps.IdentityServer.Web.Models;
+using Makc2020.Core.Base.Logging;
+using Makc2020.Mods.IdentityServer.Web.Mvc.Security.Headers;
 using System.Threading.Tasks;
 
 namespace Makc2020.Apps.IdentityServer.Web.Controllers
@@ -20,9 +20,13 @@ namespace Makc2020.Apps.IdentityServer.Web.Controllers
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IWebHostEnvironment _environment;
-        private readonly ILogger _logger;
+        private readonly CoreBaseLoggingService _logger;
 
-        public HomeController(IIdentityServerInteractionService interaction, IWebHostEnvironment environment, ILogger<HomeController> logger)
+        public HomeController(
+            IIdentityServerInteractionService interaction,
+            IWebHostEnvironment environment,
+            CoreBaseLoggingServiceWithCategoryName<HomeController> logger
+            )
         {
             _interaction = interaction;
             _environment = environment;

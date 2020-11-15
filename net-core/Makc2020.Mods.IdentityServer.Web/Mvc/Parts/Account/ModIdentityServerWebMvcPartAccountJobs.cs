@@ -114,4 +114,3 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         #endregion Constructor
     }
 }
-

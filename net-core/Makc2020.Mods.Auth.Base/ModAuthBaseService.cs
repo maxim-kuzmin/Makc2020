@@ -2,14 +2,17 @@
 
 using Makc2020.Core.Base.Auth.Types.Jwt;
 using Makc2020.Core.Base.Ext;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
 using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Base.Parts.Auth.Ext;
 using Makc2020.Mod.Auth.Base.Common.Jobs.Login;
 using Makc2020.Mod.Auth.Base.Common.Jobs.Login.Jwt;
+using Makc2020.Mods.Auth.Base.Config;
 using Makc2020.Mods.Auth.Base.Ext;
 using Makc2020.Mods.Auth.Base.Jobs.Refresh.Jwt;
 using Makc2020.Mods.Auth.Base.Jobs.Register;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace Makc2020.Mods.Auth.Base
@@ -21,6 +24,10 @@ namespace Makc2020.Mods.Auth.Base
     {
         #region Properties
 
+        private IModAuthBaseConfigSettings ConfigSettings { get; set; }
+
+        private DataEntityDbFactory DbFactory { get; set; }
+
         private ICoreBaseAuthTypeJwtService JwtService { get; set; }
 
         #endregion Properties
@@ -30,9 +37,17 @@ namespace Makc2020.Mods.Auth.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
+        /// <param name="configSettings">Конфигурационные настройки.</param>
+        /// <param name="dbFactory">Фабрика базы данных.</param>
         /// <param name="jwtService">JWT. Сервис.</param>
-        public ModAuthBaseService(ICoreBaseAuthTypeJwtService jwtService)
+        public ModAuthBaseService(
+            IModAuthBaseConfigSettings configSettings,
+            DataEntityDbFactory dbFactory,
+            ICoreBaseAuthTypeJwtService jwtService
+            )
         {
+            ConfigSettings = configSettings;
+            DbFactory = dbFactory;
             JwtService = jwtService;
         }
 
@@ -73,8 +88,10 @@ namespace Makc2020.Mods.Auth.Base
 
                     if (isOk)
                     {
+                        using var dbContext = CreateDbContext();
+
                         result = await user.ModAuthBaseExtCreateHostBasePartAuthJobLoginJwtOutput(
-                            userManager,
+                            dbContext,
                             JwtService
                             );
                     }
@@ -109,8 +126,10 @@ namespace Makc2020.Mods.Auth.Base
 
                 if (data != null)
                 {
+                    using var dbContext = CreateDbContext();
+
                     result = await data.ModAuthBaseExtCreateHostBasePartAuthJobLoginJwtOutput(
-                        userManager,
+                        dbContext,
                         JwtService
                         );
                 }
@@ -137,9 +156,10 @@ namespace Makc2020.Mods.Auth.Base
 
             var data = new DataEntityObjectUser
             {
-                UserName = input.DataUserName,
+#if !INITIAL_CREATE
                 Email = input.DataEmail,
-                FullName = input.DataFullName
+#endif
+                UserName = input.DataUserName
             };
 
             var userManager = input.UserManager;
@@ -149,7 +169,9 @@ namespace Makc2020.Mods.Auth.Base
 
             if (identityResult.Succeeded)
             {
-                result = await data.HostBasePartAuthExtCreateUser(userManager)
+                using var dbContext = CreateDbContext();
+
+                result = await data.HostBasePartAuthExtCreateUser(dbContext)
                     .CoreBaseExtTaskWithCurrentCulture(false);
             }
             else
@@ -161,5 +183,25 @@ namespace Makc2020.Mods.Auth.Base
         }
 
         #endregion Public methods
+
+        #region Private methods
+
+        private DataEntityDbContext CreateDbContext()
+        {
+            var result = DbFactory.CreateDbContext();
+
+            var dbCommandTimeout = ConfigSettings.DbCommandTimeout;
+
+            if (dbCommandTimeout < 1)
+            {
+                dbCommandTimeout = 3600;
+            }
+
+            result.Database.SetCommandTimeout(dbCommandTimeout);
+
+            return result;
+        }
+
+        #endregion Private methods
     }
 }

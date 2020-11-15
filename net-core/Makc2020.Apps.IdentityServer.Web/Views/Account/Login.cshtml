@@ -7,71 +7,53 @@
 
 @{
     var loginMethodSelectListItems = Model.CreateLoginMethodSelectListItems(
-        Localizer["Учётная запись Windows"].Value,
+        Localizer["Текущая учётная запись ОС"].Value,
         Localizer["Учётная запись приложения"].Value,
-        Localizer["Учётная запись Active Directory"].Value
+        Localizer["Доменная учётная запись"].Value
         );
 }
 <div class="login-page">
-    <div class="page-header">
-        <h1>@Localizer["Вход в систему"]</h1>
-    </div>
-
     <partial name="_ValidationSummary" />
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="panel panel-default app--css--hide" id="id--view--account--login--panel">
-                <div class="panel-body">
-                    <form asp-route="Login">
-                        <input type="hidden" asp-for="ReturnUrl" />
-                        <fieldset>
-                            <div class="form-group">
-                                <label asp-for="LoginMethod">@Localizer["Способ входа в систему"]</label>
-                                <select class="form-control"
-                                        asp-for="LoginMethod"
-                                        asp-items="loginMethodSelectListItems"
-                                        id="id--view--account--login--form--login-method--select"></select>
-                            </div>
-                            <div class="form-group" id="id--view--account--login--form--user-name--group">
-                                <label asp-for="Username">@Localizer["Имя пользователя"]</label>
-                                <input class="form-control" placeholder="@Localizer["Имя пользователя"]" asp-for="Username" autofocus>
-                            </div>
-                            <div class="form-group" id="id--view--account--login--form--password--group">
-                                <label asp-for="Password">@Localizer["Пароль"]</label>
-                                <input type="password" class="form-control" placeholder="@Localizer["Пароль"]" asp-for="Password" autocomplete="off">
-                            </div>
-                            @if (Model.AllowRememberLogin)
-                            {
-                                <div class="form-group login-remember" id="id--view--account--login--form--remember-login--group">
-                                    <label asp-for="RememberLogin">
-                                        <input asp-for="RememberLogin">
-                                        <strong>@Localizer["Запомнить мой вход в систему"]</strong>
-                                    </label>
-                                </div>
-                            }
-                            <div class="form-group">
-                                <a class="btn btn-primary"
-                                   asp-controller="External"
-                                   asp-action="Challenge"
-                                   asp-route-provider="Windows"
-                                   asp-route-returnUrl="@Model.ReturnUrl"
-                                   id="id--view--account--login--form--button--windows">
-                                    @Localizer["Войти"]
-                                </a>
-                                <button class="btn btn-primary" name="button" value="login"
-                                        id="id--view--account--login--form--button--submit">
-                                    @Localizer["Войти"]
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
+    <div class="row auth-page__logo"></div>
+
+    <div class="row justify-content-center">
+        <div class="panel panel-default app--css--hide" id="id--view--account--login--panel">
+            <div class="panel-body">
+                <form id="id--view--account--login--form" asp-route="Login">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <fieldset>
+                        <div class="form-group">
+                            <label asp-for="LoginMethod">@Localizer["Способ входа в систему"]</label>
+                            <select class="form-control"
+                                    asp-for="LoginMethod"
+                                    asp-items="loginMethodSelectListItems"
+                                    id="id--view--account--login--form--login-method--select"></select>
+                        </div>
+                        <div class="form-group" id="id--view--account--login--form--user-name--group">
+                            <label asp-for="Username">@Localizer["Имя пользователя"]</label>
+                            <input class="form-control" placeholder="@Localizer["Имя пользователя"]" asp-for="Username" autofocus>
+                        </div>
+                        <div class="form-group" id="id--view--account--login--form--password--group">
+                            <label asp-for="Password">@Localizer["Пароль"]</label>
+                            <input type="password" class="form-control" placeholder="@Localizer["Пароль"]" asp-for="Password" autocomplete="off">
+                        </div>
+                        <div class="form-group d-flex flex-row-reverse">
+                            <button class="btn btn_green btn_big
+                                    btn_uppercase ui-button ui-widget
+                                    ui-state-default ui-corner-all
+                                    ui-button-text-only" name="button" value="login"
+                                    id="id--view--account--login--form--button--submit">
+                                <span class="ui-button-text ui-clickable">@Localizer["Войти"]</span>
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
             </div>
         </div>
     </div>
 </div>
 @section scripts
 {
-    <script src="~/js/app/views/account/view-account-login.js"></script>
+    <script src="~/js/app/views/account/view-account-login.js?v=2020-07-15-16-01"></script>
 }

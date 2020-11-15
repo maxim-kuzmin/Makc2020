@@ -1,12 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Microsoft.Extensions.DependencyInjection;
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
 using Makc2020.Mods.IdentityServer.Web.Mvc;
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External;
 using Makc2020.Root.Apps.IdentityServer.Base;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -68,12 +67,8 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
                 {
                     CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
                     ResourceErrors = ModIdentityServerBase.Context.Resources.Errors,
-                    ResourceSuccesses = ModIdentityServerBase.Context.Resources.Successes
-                },
-                PartExternal = new ModIdentityServerWebMvcPartExternalExternals
-                {
-                    CoreBaseResourceErrors = CoreBase.Context.Resources.Errors,
-                    ResourceErrors = ModIdentityServerBase.Context.Resources.Errors
+                    ResourceSuccesses = ModIdentityServerBase.Context.Resources.Successes,
+                    DataEntityDbFactory = GetDbFactoryForDataClient()
                 }
             });
         }
@@ -86,7 +81,7 @@ namespace Makc2020.Root.Apps.IdentityServer.Web
         protected sealed override bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
             if (base.TrySetModule(commonModule)) return true;
-            
+
             if (TrySet<ModIdentityServerWebMvcModule>(x => ModIdentityServerWebMvc = x, commonModule)) return true;
 
             return false;

@@ -11,8 +11,9 @@ using Makc2020.Core.Base.Execution;
 using Makc2020.Core.Base.Ext;
 using Makc2020.Core.Base.Logging;
 using Makc2020.Core.Web.Ext;
+using Makc2020.Data.Entity.Db;
 using Makc2020.Data.Entity.Objects;
-using Makc2020.Host.Base.Parts.Auth.Jobs.UserEntity.Create;
+using Makc2020.Host.Base.Parts.Auth;
 using Makc2020.Host.Base.Parts.Ldap;
 using Makc2020.Host.Base.Parts.Ldap.Jobs.Login;
 using Makc2020.Host.Web;
@@ -43,6 +44,7 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
@@ -58,7 +60,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
     {
         #region Properties
 
+        private static HttpClient HttpClient { get; } = new HttpClient();
+
         private IModIdentityServerWebMvcPartAccountConfigSettings ConfigSettings { get; set; }
+
+        private DataEntityDbFactory DbFactory { get; set; }
 
         #endregion Properties
 
@@ -68,11 +74,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// Конструктор.
         /// </summary>        
         /// <param name="configSettings">Конфигурационные настройки.</param> 
+        /// <param name="dbFactory">Фабрика базы данных.</param>
         public ModIdentityServerWebMvcPartAccountService(
-            IModIdentityServerWebMvcPartAccountConfigSettings configSettings
+            IModIdentityServerWebMvcPartAccountConfigSettings configSettings,
+            DataEntityDbFactory dbFactory
             )
         {
             ConfigSettings = configSettings;
+            DbFactory = dbFactory;
         }
 
         #endregion Constructors
@@ -104,8 +113,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 input.ReturnUrl,
                 ModIdentityServerBaseEnumLoginMethods.WindowsDomain,
                 input.Interaction,
-                input.SchemeProvider,
-                input.СlientStore
+                input.HttpContext
                 );
         }
 
@@ -120,6 +128,9 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         {
             return new ModIdentityServerWebMvcPartAccountJobLoginPostProcessOutput
             {
+                LoginMethodCookieName = ConfigSettings.LoginMethodCookieName,
+                LoginUserNameCookieName = ConfigSettings.LoginUserNameCookieName,
+                RememberLoginDurationInDays = ConfigSettings.RememberLoginDurationInDays,
                 Status = input.Model.LoginMethod switch
                 {
                     ModIdentityServerBaseEnumLoginMethods.Ldap =>
@@ -133,10 +144,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                             input.Interaction,
                             input.СlientStore,
                             input.HttpContext,
-                            input.RoleManager,
                             input.Logger,
-                            input.JobLdapLogin,
-                            input.JobUserEntityCreate
+                            input.JobLdapLogin
                             ).CoreBaseExtTaskWithCurrentCulture(false),
                     ModIdentityServerBaseEnumLoginMethods.WindowsDomain =>
                         await ProcessLoginLPostWindowsDomain(
@@ -149,9 +158,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                             input.Interaction,
                             input.СlientStore,
                             input.HttpContext,
-                            input.RoleManager,
-                            input.Logger,
-                            input.JobUserEntityCreate
+                            input.Logger
                             ).CoreBaseExtTaskWithCurrentCulture(false),
                     _ => await ProcessLoginPostLocal(
                             input.Model,
@@ -159,6 +166,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                             input.Events,
                             input.ModelState,
                             input.SignInManager,
+                            input.HttpContext,
                             input.UrlHelper,
                             input.UserManager,
                             input.Interaction,
@@ -173,17 +181,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с выводом.</returns>
-        public async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> PostLoginProduce(
+        public Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> PostLoginProduce(
             ModIdentityServerWebMvcPartAccountJobLoginPostProduceInput input
         )
         {
-            return await ProduceLoginGet(
+            return ProduceLoginGet(
                 input.Model.ReturnUrl,
                 input.Model.LoginMethod,
                 input.Interaction,
-                input.SchemeProvider,
-                input.СlientStore
-                ).CoreBaseExtTaskWithCurrentCulture(false);
+                input.HttpContext
+                );
         }
 
         /// <summary>
@@ -229,21 +236,141 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
         /// </summary>
         /// <param name="input">Ввод.</param>
         /// <returns>Задача с выводом.</returns>
-        public async Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput> PostLogoutProduce(
+        public Task<ModIdentityServerWebMvcPartAccountJobLogoutPostProduceOutput> PostLogoutProduce(
             ModIdentityServerWebMvcPartAccountJobLogoutPostProduceInput input
             )
         {
-            return await ProduceLogoutPost(
+            return ProduceLogoutPost(
                 input.Model.LogoutId,
                 input.HttpContext,
                 input.Interaction,
                 input.User
-                ).CoreBaseExtTaskWithCurrentCulture(false);
+                );
         }
 
         #endregion Public methods
 
         #region Private methods
+
+        private string CreateSessionId()
+        {
+            return Guid.NewGuid().ToString("N").ToUpper();
+        }
+
+        private List<string> GetDomainUserGroupNames(string userName)
+        {
+            List<string> result = null;
+
+            UserPrincipal user = null;
+
+            try
+            {
+                //makc!!!//var context = new PrincipalContext(ContextType.Machine);
+                var context = new PrincipalContext(ContextType.Domain);
+
+                user = UserPrincipal.FindByIdentity(context, userName);
+            }
+            catch
+            {
+                throw new ModIdentityServerBaseExceptionDomainUserNotFound
+                {
+                    UserName = userName
+                };
+            }
+
+            if (user != null)
+            {
+                try
+                {
+                    var groups = user.GetAuthorizationGroups();
+
+                    result = groups.Select(x => x.Name).ToList();
+                }
+                catch
+                {
+                    throw new ModIdentityServerBaseExceptionDomainUserGroupsNotFound
+                    {
+                        UserName = userName
+                    };
+                }
+            }
+
+            return result;
+        }
+
+        private ModIdentityServerBaseEnumLoginMethods GetLoginMethod(IRequestCookieCollection cookies)
+        {
+            var result = ModIdentityServerBaseEnumLoginMethods.WindowsDomain;
+
+            if (cookies.TryGetValue(ConfigSettings.LoginMethodCookieName, out var loginMethodCookieValue))
+            {
+                if (int.TryParse(loginMethodCookieValue, out int value))
+                {
+                    result = (ModIdentityServerBaseEnumLoginMethods)value;
+                }
+            }
+
+            return result;
+        }
+
+        private string GetLoginUserName(IRequestCookieCollection cookies)
+        {
+            cookies.TryGetValue(ConfigSettings.LoginUserNameCookieName, out var result);
+
+            return result;
+        }
+
+        private bool IsUserFromDomain(DataEntityObjectUser user)
+        {
+            return user.UserName.Contains("\\");
+        }
+
+        private void LogActiveDirectoryUserInfoOnTestOrDebug(
+            CoreBaseLoggingService logger,
+            string userName,
+            List<string> groupNames
+            )
+        {
+            if (logger != null)
+            {
+                var msg = new
+                {
+                    userName,
+                    groupNames = string.Join("', '", groupNames)
+                }.CoreBaseExtJsonSerialize(CoreBaseExtJson.OptionsForLogger);
+
+                logger.LogDebug(msg);
+            }
+        }
+
+        private HostBasePartLdapUser LoginViaLdap(
+            CoreBaseLoggingService logger,
+            HostBasePartLdapJobLoginService job,
+            string userName,
+            string password
+            )
+        {
+            var result = new CoreBaseExecutionResultWithData<HostBasePartLdapUser>();
+
+            var input = new HostBasePartLdapJobLoginInput
+            {
+                Password = password,
+                UserName = userName
+            };
+
+            try
+            {
+                result.Data = job.Execute(input);
+
+                job.OnSuccess(logger, result, input);
+            }
+            catch (Exception ex)
+            {
+                job.OnError(ex, logger, result);
+            }
+
+            return result.Data;
+        }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginPostLocal(
             ModIdentityServerWebMvcPartAccountViewLoginModel model,
@@ -251,6 +378,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             IEventService events,
             ModelStateDictionary modelState,
             SignInManager<DataEntityObjectUser> signInManager,
+            HttpContext httpContext,
             IUrlHelper urlHelper,
             UserManager<DataEntityObjectUser> userManager,
             IIdentityServerInteractionService interaction,
@@ -269,56 +397,70 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
             else if (modelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(
-                    model.Username,
-                    model.Password,
-                    model.RememberLogin,
-                    lockoutOnFailure: true
-                    ).CoreBaseExtTaskWithCurrentCulture(false);
-
-                if (result.Succeeded)
+                if (ConfigSettings.AllowLoginWithoutPassword)
                 {
-                    var user = await userManager.FindByNameAsync(model.Username)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    await events.RaiseAsync(
-                        new UserLoginSuccessEvent(
-                            user.UserName,
-                            user.Id.ToString(),
-                            user.UserName,
-                            clientId: context?.ClientId
-                            )
-                        ).CoreBaseExtTaskWithCurrentCulture(false);
-
-                    if (context != null)
+                    if (model.Password == null)
                     {
-                        var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
+                        model.Password = "";
+                    }
+                }
+
+                var user = await userManager.FindByNameAsync(model.Username)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (user != null)
+                {
+                    if (!IsUserFromDomain(user))
+                    {
+                        var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, false)
                             .CoreBaseExtTaskWithCurrentCulture(false);
 
-                        if (isPckeRequired)
+                        if (result.Succeeded)
                         {
-                            // if the client is PKCE then we assume it's native, so this change in how to
-                            // return the response is for better UX for the end user.
-                            return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
+                            var sessionId = CreateSessionId();
+
+                            await SignIn(
+                                httpContext,
+                                context,
+                                events,
+                                user,
+                                user.UserName,
+                                sessionId,
+                                new[] { user.Id },
+                                model.RememberLogin
+                                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+                            if (context != null)
+                            {
+                                var isPckeRequired = await clientStore.ModIdentityServerWebExtClientIsPkceRequired(context.ClientId)
+                                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                                if (isPckeRequired)
+                                {
+                                    // if the client is PKCE then we assume it's native, so this change in how to
+                                    // return the response is for better UX for the end user.
+                                    return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Redirect;
+                                }
+
+                                // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
+                            }
+
+                            // request for a local page
+                            if (urlHelper.IsLocalUrl(model.ReturnUrl))
+                            {
+                                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
+                            }
+                            else if (string.IsNullOrEmpty(model.ReturnUrl))
+                            {
+                                return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
+                            }
+                            else
+                            {
+                                // user might have clicked on a malicious link - should be logged
+                                throw new ModIdentityServerBaseExceptionInvalidReturnUrl();
+                            }
                         }
-
-                        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                    }
-
-                    // request for a local page
-                    if (urlHelper.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Return;
-                    }
-                    else if (string.IsNullOrEmpty(model.ReturnUrl))
-                    {
-                        return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Index;
-                    }
-                    else
-                    {
-                        // user might have clicked on a malicious link - should be logged
-                        throw new ModIdentityServerBaseExceptionInvalidReturnUrl();
                     }
                 }
 
@@ -346,10 +488,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             HttpContext httpContext,
-            RoleManager<DataEntityObjectRole> roleManager,
             CoreBaseLoggingService logger,
-            HostBasePartLdapJobLoginService jobLdapLogin,
-            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate
+            HostBasePartLdapJobLoginService jobLdapLogin
             )
         {
             // check if we are in the context of an authorization request
@@ -371,12 +511,20 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
                 var connection = ldapUser.LdapConnection;
 
-                var groups = new List<string>();
+                var groupNames = new List<string>();
 
                 var port = ldapUser.LdapConnection.Port;
                 var host = ldapUser.LdapConnection.Host;
 
                 var dcArray = host.Split('.').TakeLast(2).ToArray();
+
+                //Этот код был написан, чтобы не вызывать ошибки LDAPReferralException
+                //при вызове ниже в try/catch метода Next() на переменной searchResults.
+                //Однако если его раскомментировать, возникнет ошибка "Operations error".
+                //Видимо, не хватает прав, поэтому расскоментировать пока не будем.
+                //LdapSearchConstraints cons = connection.SearchConstraints;
+                //cons.ReferralFollowing = true;
+                //connection.Constraints = cons;
 
                 connection.Connect(host, port);
 
@@ -384,44 +532,71 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
                 if (connection.Bound)
                 {
-                    ILdapSearchResults searchResults = ldapUser.LdapConnection.Search(
+                    const string attrName = "memberOf";
+
+                    var searchResults = ldapUser.LdapConnection.Search(
                         $"DC={dcArray[0]},DC={dcArray[1]}", //You can use String.Empty for all domain search.
                         LdapConnection.ScopeSub,//Use SUB
                         $"(sAMAccountName={model.Username})",
-                        null, // no specified attributes
+                        new[] { attrName }, // no specified attributes
                         false // return attr and value
-                    );
+                        );
 
                     while (searchResults.HasMore())
                     {
                         try
                         {
                             var nextEntry = searchResults.Next();
-                            nextEntry.GetAttributeSet();
-                            var groupString = nextEntry.GetAttribute("memberOf").StringValue;
-                            var pattern = @"CN=([A-Za-zА-Яа-я_\s]*),";
-                            var matchesGroup = Regex.Matches(groupString, pattern);
-                            groups.Add(matchesGroup.FirstOrDefault()?.Groups[1].Value);
+
+                            var attrs = nextEntry.GetAttributeSet();
+
+                            if (attrs.TryGetValue(attrName, out var attr))
+                            {
+                                var attrValue = attr.StringValue;
+
+                                if (!string.IsNullOrWhiteSpace(attrValue))
+                                {
+                                    var matches = Regex.Matches(attrValue, @"CN=([A-Za-zА-Яа-я_\s]*),");
+
+                                    foreach (Match match in matches)
+                                    {
+                                        if (match.Groups.Count > 1)
+                                        {
+                                            var groupName = match.Groups[1].Value;
+
+                                            if (!string.IsNullOrWhiteSpace(groupName))
+                                            {
+                                                groupNames.Add(groupName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            continue;
+                            if (ex is LdapReferralException)
+                            {
+                                continue;
+                            }
+
+                            throw new ModIdentityServerBaseExceptionLdapGroupsSearchFailed(ex.Message);
                         }
                     }
                 }
 
-                return await ProcessLoginPostActiveDirectoryKind(ldapUser.UserName,
-                    groups,
+                return await ProcessLoginPostActiveDirectory(
+                    model.Username,
+                    groupNames,
                     model,
                     events,
                     urlHelper,
                     userManager,
                     clientStore,
                     httpContext,
-                    roleManager,
-                    logger,
-                    jobUserEntityCreate,
-                    context);
+                    context,
+                    logger
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Default;
@@ -437,6 +612,14 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             if (isFirstLogin.HasValue)
             {
+                var loginMethod = GetLoginMethod(httpRequest.Cookies);
+
+                result.IsWindowsAuthenticationNeeded = isFirstLogin.Value
+                    &&
+                    ConfigSettings.IsWindowsAuthenticationMandatory
+                    &&
+                    loginMethod == ModIdentityServerBaseEnumLoginMethods.WindowsDomain;
+
                 return result;
             }
 
@@ -452,25 +635,44 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             var oldReturnQsNonce = oldReturnQs["nonce"];
+            Uri oldStateUri;
+            bool newPortal = oldReturnQsNonce != null && oldReturnQsState.Contains(oldReturnQsNonce);
 
-            var oldState = HttpUtility.UrlDecode(oldReturnQsState.Substring(oldReturnQsNonce.Length + 1));
+            if (newPortal)
+            {
+                var oldState = HttpUtility.UrlDecode(oldReturnQsState.Substring(oldReturnQsNonce.Length + 1));
 
-            var oldStateUri = new Uri(new Uri("http://fake"), oldState);
+                oldStateUri = new Uri(new Uri("http://fake"), oldState);
+            }
+            else
+            {
+                oldStateUri = new Uri(new Uri("http://fake"), HttpUtility.UrlDecode(oldReturnUri.Query));
+            }
 
             var oldStateQs = HttpUtility.ParseQueryString(oldStateUri.Query);
 
-            var oldStateQsIsFirstLogin = oldStateQs[ConfigSettings.ClientIsFirstLoginParamName];
-            var oldStateQsLang = oldStateQs[ConfigSettings.ClientLangParamName];
+            string oldStateQsIsFirstLogin;
+            string oldStateQsLang;
 
-            oldStateQs.Remove(ConfigSettings.ClientIsFirstLoginParamName);
+            if (newPortal)
+            {
+                oldStateQsIsFirstLogin = oldStateQs[ConfigSettings.ClientIsFirstLoginParamName];
+                oldStateQsLang = oldStateQs[ConfigSettings.ClientLangParamName];
+                oldStateQs.Remove(ConfigSettings.ClientIsFirstLoginParamName);
 
-            var newState = HttpUtility.UrlEncode($"{oldStateUri.LocalPath}{oldStateQs.CoreWebExtConvertToQueryString()}");
+                var newState = HttpUtility.UrlEncode($"{oldStateUri.LocalPath}{oldStateQs.CoreWebExtConvertToQueryString()}");
+                var newReturnQsState = $"{oldReturnQsNonce};{newState}";
 
-            var newReturnQsState = $"{oldReturnQsNonce};{newState}";
+                oldReturnQs["state"] = newReturnQsState;
+            }
+            else
+            {
+                oldStateQsIsFirstLogin = oldReturnQs[ConfigSettings.ClientIsFirstLoginParamName];
+                oldStateQsLang = oldReturnQs[ConfigSettings.ClientLangParamName];
+                oldReturnQs.Remove(ConfigSettings.ClientIsFirstLoginParamName);
+            }
 
-            oldReturnQs["state"] = newReturnQsState;
-
-            var newReturnQs = oldReturnQs.CoreWebExtConvertToQueryString(new[] { "response_type", "state", "scope" });
+            var newReturnQs = oldReturnQs.CoreWebExtConvertToQueryString(newPortal ? new[] { "response_type", "state", "scope" } : oldReturnQs.AllKeys);
 
             var newReturnUrl = $"{oldReturnUri.LocalPath}{newReturnQs}";
 
@@ -491,7 +693,12 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             oldRedirectQs[HostWebSettings.PARAM_ReturnUrl] = newReturnUrl;
 
-            var newRedirectQs = oldRedirectQs.CoreWebExtConvertToQueryString().Replace("%3b", ";", StringComparison.InvariantCultureIgnoreCase);
+            var newRedirectQs = oldRedirectQs.CoreWebExtConvertToQueryString();
+
+            if (newPortal)
+            {
+                newRedirectQs = newRedirectQs.Replace("%3b", ";", StringComparison.InvariantCultureIgnoreCase);
+            }
 
             result.RedirectUrl = $"{redirectUrlPrefix}{newRedirectQs}{oldRedirectUri.Fragment}";
 
@@ -508,9 +715,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             HttpContext httpContext,
-            RoleManager<DataEntityObjectRole> roleManager,
-            CoreBaseLoggingService logger,
-            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate
+            CoreBaseLoggingService logger
             )
         {
             // check if we are in the context of an authorization request
@@ -532,21 +737,22 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
                 if (result?.Principal is WindowsPrincipal)
                 {
-                    var groups = GetAdGroups(result.Principal.Identity.Name);
+                    var userName = result.Principal.Identity.Name;
 
-                    return await ProcessLoginPostActiveDirectoryKind(result.Principal.Identity.Name,
-                        groups,
+                    var groupNames = GetDomainUserGroupNames(userName);
+
+                    return await ProcessLoginPostActiveDirectory(
+                        userName,
+                        groupNames,
                         model,
                         events,
                         urlHelper,
                         userManager,
                         clientStore,
                         httpContext,
-                        roleManager,
-                        logger,
-                        jobUserEntityCreate,
-                        context
-                        );
+                        context,
+                        logger
+                        ).CoreBaseExtTaskWithCurrentCulture(false);
                 }
 
                 return ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses.Windows;
@@ -589,114 +795,80 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
         }
 
-        private async Task<DataEntityObjectUser> AutoProvisionUserAsync(
+        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginPostActiveDirectory(
             string userName,
-            string fullName,
-            string password,
-            IEnumerable<string> roleNames,
-            CoreBaseLoggingService logger,
-            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
-            RoleManager<DataEntityObjectRole> roleManager,
-            UserManager<DataEntityObjectUser> userManager
-        )
-        {
-            var input = new HostBasePartAuthJobUserEntityCreateInput
-            {
-                RoleManager = roleManager,
-                UserManager = userManager,
-                UserName = userName,
-                FullName = fullName,
-                RoleNames = roleNames,
-                Password = password
-            };
-
-            var execResult = await CreateUserEntity(logger, jobUserEntityCreate, input)
-                .CoreBaseExtTaskWithCurrentCulture(false);
-
-            if (!execResult.IsOk)
-            {
-                throw new Exception(string.Join(". ", execResult.ErrorMessages));
-            }
-
-            return execResult.Data;
-        }
-
-        private async Task<CoreBaseExecutionResultWithData<DataEntityObjectUser>> CreateUserEntity(
-            CoreBaseLoggingService logger,
-            HostBasePartAuthJobUserEntityCreateService job,
-            HostBasePartAuthJobUserEntityCreateInput input
-            )
-        {
-            var result = new CoreBaseExecutionResultWithData<DataEntityObjectUser>();
-
-            try
-            {
-                result.Data = await job.Execute(input).CoreBaseExtTaskWithCurrentCulture(false);
-
-                job.OnSuccess(logger, result, input);
-            }
-            catch (Exception ex)
-            {
-                job.OnError(ex, logger, result);
-            }
-
-            return result;
-        }
-
-        private async Task<ModIdentityServerWebMvcPartAccountJobLoginPostProcessEnumStatuses> ProcessLoginPostActiveDirectoryKind(
-            string ldapUserName,
-            List<string> groups,
+            List<string> groupNames,
             ModIdentityServerWebMvcPartAccountViewLoginModel model,
             IEventService events,
             IUrlHelper urlHelper,
             UserManager<DataEntityObjectUser> userManager,
             IClientStore clientStore,
             HttpContext httpContext,
-            RoleManager<DataEntityObjectRole> roleManager,
-            CoreBaseLoggingService logger,
-            HostBasePartAuthJobUserEntityCreateService jobUserEntityCreate,
-            AuthorizationRequest context
+            AuthorizationRequest context,
+            CoreBaseLoggingService logger
             )
         {
-            if (ldapUserName != null)
+            if (!string.IsNullOrWhiteSpace(userName))
             {
-                var user = await userManager.FindByNameAsync(ldapUserName)
-                    .CoreBaseExtTaskWithCurrentCulture(false);
-
-                if (groups == null)
+                if (groupNames == null)
                 {
                     throw new ModIdentityServerBaseExceptionLdapUserHasNotGroups();
                 }
 
-                AuthenticationProperties props = null;
+#if TEST || DEBUG
+                LogActiveDirectoryUserInfoOnTestOrDebug(logger, userName, groupNames);
+#endif
+                var users = new List<DataEntityObjectUser>();
 
-                if (model.RememberLogin)
+                var user = await userManager.FindByNameAsync(userName)
+                    .CoreBaseExtTaskWithCurrentCulture(false);
+
+                if (user != null)
                 {
-                    props = new AuthenticationProperties
+                    if (IsUserFromDomain(user))
                     {
-                        IsPersistent = true
-                    };
+                        users.Add(user);
+                    }
                 }
 
-                var userRoles = await userManager.GetRolesAsync(user).CoreBaseExtTaskWithCurrentCulture(false);
+                foreach (var groupName in groupNames)
+                {
+                    var groupUser = await userManager.FindByNameAsync(groupName)
+                        .CoreBaseExtTaskWithCurrentCulture(false);
 
-                if (!userRoles.Any())
+                    if (groupUser != null)
+                    {
+                        if (IsUserFromDomain(user))
+                        {
+                            if (user == null)
+                            {
+                                user = groupUser;
+                            }
+
+                            users.Add(groupUser);
+                        }
+                    }
+                }
+
+                if (user == null)
                 {
                     throw new ModIdentityServerBaseExceptionLdapLoginFailed();
                 }
 
-                // issue authentication cookie with subject ID and username
-                await httpContext.SignInAsync(user.Id.ToString(), user.UserName, props)
-                    .CoreBaseExtTaskWithCurrentCulture(false);
+                var userIds = users.Select(x => x.Id).ToArray();
 
-                await events.RaiseAsync(
-                    new UserLoginSuccessEvent(
-                        user.UserName,
-                        user.Id.ToString(),
-                        user.UserName,
-                        clientId: context?.ClientId
-                    )
-                ).CoreBaseExtTaskWithCurrentCulture(false);
+                var sessionId = CreateSessionId();
+
+                await SignIn(
+                    httpContext,
+                    context,
+                    events,
+                    user,
+                    userName,
+                    sessionId,
+                    userIds,
+                    model.RememberLogin
+                    ).CoreBaseExtTaskWithCurrentCulture(false);
 
                 if (context != null)
                 {
@@ -732,7 +904,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
 
             await events.RaiseAsync(
                 new UserLoginFailureEvent(
-                    model.Username,
+                    userName,
                     "invalid credentials",
                     clientId: context?.ClientId
                     )
@@ -741,41 +913,11 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             throw new ModIdentityServerBaseExceptionLogin();
         }
 
-        private HostBasePartLdapUser LoginViaLdap(
-            CoreBaseLoggingService logger,
-            HostBasePartLdapJobLoginService job,
-            string userName,
-            string password
-            )
-        {
-            var result = new CoreBaseExecutionResultWithData<HostBasePartLdapUser>();
-
-            var input = new HostBasePartLdapJobLoginInput
-            {
-                Password = password,
-                UserName = userName
-            };
-
-            try
-            {
-                result.Data = job.Execute(input);
-
-                job.OnSuccess(logger, result, input);
-            }
-            catch (Exception ex)
-            {
-                job.OnError(ex, logger, result);
-            }
-
-            return result.Data;
-        }
-
         private async Task<ModIdentityServerWebMvcPartAccountCommonJobLoginOutput> ProduceLoginGet(
             string returnUrl,
             ModIdentityServerBaseEnumLoginMethods loginMethod,
             IIdentityServerInteractionService interaction,
-            IAuthenticationSchemeProvider schemeProvider,
-            IClientStore clientStore
+            HttpContext httpContext
             )
         {
             var context = await interaction.GetAuthorizationContextAsync(returnUrl)
@@ -785,103 +927,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             {
                 LoginMethod = loginMethod,
                 ReturnUrl = returnUrl,
-                Username = context?.LoginHint
+                Username = context?.LoginHint,
             };
 
-            if (context?.IdP != null)
+            if (httpContext.Request.Method == "GET")
             {
-                var scheme = await schemeProvider.GetSchemeAsync(context.IdP)
-                    .CoreBaseExtTaskWithCurrentCulture(false);
-
-                if (scheme != null)
-                {
-                    var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
-
-                    // this is meant to short circuit the UI and only trigger the one external IdP
-                    result.EnableLocalLogin = local;
-
-                    if (!local)
-                    {
-                        result.ExternalProviders = new[]
-                        {
-                            new ModIdentityServerWebMvcPartAccountExternalProvider
-                            {
-                                AuthenticationScheme = context.IdP
-                            }
-                        };
-                    }
-                }
-            }
-            else
-            {
-                var schemes = await schemeProvider.GetAllSchemesAsync()
-                    .CoreBaseExtTaskWithCurrentCulture(false);
-
-                var providers = schemes.Where(x =>
-                    x.DisplayName != null
-                    ||
-                    x.Name.Equals(
-                        ModIdentityServerWebMvcSettings.AUTHENTICATION_SCHEME_Windows,
-                        StringComparison.OrdinalIgnoreCase
-                        )
-                    ).Select(x =>
-                        new ModIdentityServerWebMvcPartAccountExternalProvider
-                        {
-                            DisplayName = x.DisplayName,
-                            AuthenticationScheme = x.Name
-                        }
-                    ).ToList();
-
-                var allowLocal = true;
-
-                if (context?.ClientId != null)
-                {
-                    var client = await clientStore.FindEnabledClientByIdAsync(context.ClientId)
-                        .CoreBaseExtTaskWithCurrentCulture(false);
-
-                    if (client != null)
-                    {
-                        allowLocal = client.EnableLocalLogin;
-
-                        if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
-                        {
-                            providers = providers.Where(
-                                x => client.IdentityProviderRestrictions.Contains(x.AuthenticationScheme)
-                                ).ToList();
-                        }
-                    }
-                }
-
-                result.AllowRememberLogin = ConfigSettings.AllowRememberLogin;
-                result.EnableLocalLogin = allowLocal && ConfigSettings.AllowLocalLogin;
-                result.ExternalProviders = providers.ToArray();
+                result.LoginMethod = GetLoginMethod(httpContext.Request.Cookies);
+                result.Username = GetLoginUserName(httpContext.Request.Cookies);
             }
 
             return result;
-        }
-
-        private List<string> GetAdGroups(string name)
-        {
-            List<string> groups = null;
-
-            try
-            {
-                PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-
-                UserPrincipal userP = UserPrincipal.FindByIdentity(ctx, name);
-
-                if (userP != null)
-                {
-                    var principals = userP.GetAuthorizationGroups();
-
-                    groups = principals.Select(g => g.Name).ToList();
-                }
-            }
-            catch
-            {
-            }
-
-            return groups;
         }
 
         private async Task<ModIdentityServerWebMvcPartAccountJobLogoutGetOutput> ProduceLogoutGet(
@@ -926,7 +981,7 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             SignInManager<DataEntityObjectUser> signInManager,
             HttpContext httpContext,
             IIdentityServerInteractionService interaction,
-            ClaimsPrincipal user
+            ClaimsPrincipal principal
             )
         {
             // build a model so the logged out page knows what to display
@@ -934,10 +989,10 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 model.LogoutId,
                 httpContext,
                 interaction,
-                user
+                principal
                 ).CoreBaseExtTaskWithCurrentCulture(false);
 
-            if (user?.Identity.IsAuthenticated == true)
+            if (principal?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
                 await signInManager.SignOutAsync().CoreBaseExtTaskWithCurrentCulture(false);
@@ -945,8 +1000,8 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
                 // raise the logout event
                 await events.RaiseAsync(
                     new UserLogoutSuccessEvent(
-                        user.GetSubjectId(),
-                        user.GetDisplayName()
+                        principal.GetSubjectId(),
+                        principal.GetDisplayName()
                         )
                     ).CoreBaseExtTaskWithCurrentCulture(false);
             }
@@ -1009,6 +1064,47 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             }
 
             return result;
+        }
+
+        private async Task SignIn(
+            HttpContext httpContext,
+            AuthorizationRequest context,
+            IEventService events,
+            DataEntityObjectUser user,
+            string userName,
+            string sessionId,
+            IEnumerable<long> userIds,
+            bool rememberLogin
+            )
+        {
+            AuthenticationProperties props = null;
+
+            if (rememberLogin)
+            {
+                props = new AuthenticationProperties
+                {
+                    IsPersistent = true
+                };
+            }
+
+            // issue authentication cookie with subject ID and username
+            await httpContext.SignInAsync(
+                user.Id.ToString(),
+                user.UserName,
+                props,
+                new Claim(HostBasePartAuthSettings.CLAIM_SessionId, sessionId),
+                new Claim(HostBasePartAuthSettings.CLAIM_UserIds, string.Join(",", userIds)),
+                new Claim(HostBasePartAuthSettings.CLAIM_UserName, userName)
+                ).CoreBaseExtTaskWithCurrentCulture(false);
+
+            await events.RaiseAsync(
+                new UserLoginSuccessEvent(
+                    user.UserName,
+                    user.Id.ToString(),
+                    userName,
+                    clientId: context?.ClientId
+                    )
+                ).CoreBaseExtTaskWithCurrentCulture(false);
         }
 
         #endregion Private methods

@@ -1,7 +1,6 @@
 ﻿//Author Maxim Kuzmin//makc//
 
 using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account;
-using Makc2020.Mods.IdentityServer.Web.Mvc.Parts.External;
 
 namespace Makc2020.Mods.IdentityServer.Web.Mvc
 {
@@ -22,11 +21,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
         /// </summary>
         public ModIdentityServerWebMvcPartAccountContext PartAccount { get; set; }
 
-        /// <summary>
-        /// Часть "External".
-        /// </summary>
-        public ModIdentityServerWebMvcPartExternalContext PartExternal { get; set; }
-
         #endregion Properties
 
         #region Constructor
@@ -43,11 +37,6 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc
             PartAccount = new ModIdentityServerWebMvcPartAccountContext(
                 Config.Settings.PartAccount,
                 externals.PartAccount
-                );
-
-            PartExternal = new ModIdentityServerWebMvcPartExternalContext(
-                Config.Settings.PartAccount,
-                externals.PartExternal
                 );
         }
 

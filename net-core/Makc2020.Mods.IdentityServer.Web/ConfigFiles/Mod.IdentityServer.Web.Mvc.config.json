@@ -1,11 +1,15 @@
 ﻿{
   "PartAccount": {
-    "AllowLocalLogin": true,
-    "AllowRememberLogin": true,
-    "RememberLoginDurationInDays": 30,
-    "ShowLogoutPrompt": true,
+    "AllowLoginWithoutPassword": true,
     "AutomaticRedirectAfterSignOut": true,
-    "WindowsAuthenticationSchemeName": "Windows",
-    "IncludeWindowsGroups": true
+    "ClientIsFirstLoginParamName": "core--is-first-login",
+    "ClientIsFirstLoginParamValue": "true",
+    "ClientLangParamName": "core--lang",
+    "DbCommandTimeout": 0,
+    "IsWindowsAuthenticationMandatory": true,
+    "LoginMethodCookieName": "LoginMethod",
+    "LoginUserNameCookieName": "LoginUserName",
+    "RememberLoginDurationInDays": 30,
+    "ShowLogoutPrompt": false
   }
 }

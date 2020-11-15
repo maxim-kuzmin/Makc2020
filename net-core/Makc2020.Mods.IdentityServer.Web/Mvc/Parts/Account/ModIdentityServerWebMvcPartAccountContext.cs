@@ -36,15 +36,16 @@ namespace Makc2020.Mods.IdentityServer.Web.Mvc.Parts.Account
             )
         {
             Service = new ModIdentityServerWebMvcPartAccountService(
-                configSettings
-                );
+                configSettings,
+                externals.DataEntityDbFactory
+            );
 
             Jobs = new ModIdentityServerWebMvcPartAccountJobs(
                 externals.CoreBaseResourceErrors,
                 externals.ResourceSuccesses,
                 externals.ResourceErrors,
                 Service
-                );
+            );
         }
 
         #endregion Constructor

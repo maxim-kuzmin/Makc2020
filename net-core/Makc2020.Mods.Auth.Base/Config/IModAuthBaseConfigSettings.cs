@@ -13,6 +13,11 @@ namespace Makc2020.Mods.Auth.Base.Config
         #region Properties
 
         /// <summary>
+        /// Таймаут команд базы данных.
+        /// </summary>
+        int DbCommandTimeout { get; }
+
+        /// <summary>
         /// Тип.
         /// </summary>
         CoreBaseAuthEnumTypes Type { get; }

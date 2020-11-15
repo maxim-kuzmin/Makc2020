@@ -6,9 +6,18 @@
 [IdentityServer4](http://docs.identityserver.io/en/latest/index.html)
 по технологии [Single Sign-On](https://ru.wikipedia.org/wiki/Технология_единого_входа).
 
-## Настройка
+## База данных
 
-1. Открыть файл **Makc2020.Apps.IdentityServer.Web/ConfigFiles/App.config.json**.
+Описание настроек доступа к базе данных, а также инструкции
+по её созданию и обновлению можно увидеть [здесь](../Makc2020.Data.Entity.Clients.SqlServer/README.md).
+
+## Настройка приложения
+
+1. В папке **/Makc2020.Apps.IdentityServer.Web/ConfigFiles/** открыть один из файлов:
+
+- **App.config.json**, если необходимо указать настройки для любого компьютера;
+
+- **App.config.m.<Имя компьютера в верхнем регистре>.json**, если необходимо указать настройки только для компьтера с определённым именем.
 
 2. В разделе **Logging:LogLevel:Default** указать уровень логирования по-умолчанию.
 
@@ -26,42 +35,63 @@
 
 ## Настройка хоста
 
-Описание настроек основной функциональности хоста можно увидеть
-[здесь](../Makc2020.Host.Base/README.md).
+Описание настроек хоста можно увидеть [здесь](../Makc2020.Host/README.md).
 
 ## Настройка мода "IdentityServer"
 
-Описание настроек основной функциональности мода "IdentityServer" можно увидеть
-[здесь](../Makc2020.Mods.IdentityServer.Base/README.md).
-
-Описание настроек связанной с веб-интерфейсом функциональности мода "IdentityServer" можно увидеть
-[здесь](../Makc2020.Mods.IdentityServer.Web/README.md).
+Описание настроек мода "IdentityServer" можно увидеть [здесь](../Makc2020.Mods.IdentityServer/README.md).
 
 ## Развёртывание
 
-1. Подготовить компьютер, на котором будет развёрнуто приложение, установив на нём последнюю версию
-[.NET Core Runtime](https://dotnet.microsoft.com/download/dotnet-core/3.1).
+1. Если это не было сделано ранее, подготовить компьютер, на котором будет развёрнуто приложение:
 
-2. Открыть консоль и перейти в папку Makc2020.Apps.Api.Web.
+- установить последнюю версию [Hosting Bundle](https://dotnet.microsoft.com/download/dotnet-core/3.1) для .NET Core;
 
-3. Выполнить сборку и публикацию приложения:
+- установить в локальное хранилище сертификат **develop sert(pwd-asdf).pfx**, файл
+которого размещён в папке **/_info/deploy/**.
+Для этого нужно сделать двойной клик по файлу сертификата и следовать указаниям мастера установки.
+Когда мастер установки попросит указать хранилище, выбрать локальное.
+Когда мастер установки попросит указать пароль, ввести: asdf.
+
+2. Если это не было сделано ранее, подготовить компьютер, на котором будет собрано и опубликовано приложение, установив на нём
+последнюю версию [SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1) для .NET Core.
+
+3. Открыть консоль и перейти в папку приложения:
+
+       cd Makc2020.Apps.IdentityServer.Web
+
+4. Собрать и опубликовать приложение, выполнив одну из команд:
  
-- для продуктовой среды выполнить команду **dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Release**;
+- для продуктовой среды:
 
-- для тестовой среды выполнить команду **dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Test**. 
+      dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Release
 
-4. Перейти в папку с файлами, предназначенными для публикации:
+- для тестовой среды:
+
+      dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Test
+
+- для среды разработки:
+
+      dotnet publish Makc2020.Apps.IdentityServer.Web.csproj -c Debug
+
+5. Перейти в папку с файлами, предназначенными для публикации:
  
-- для продуктовой среды: **Makc2020.Apps.IdentityServer.Web/bin/Release/netcoreapp3.1/publish**;
+- для продуктовой среды:
 
-- для тестовой среды: **Makc2020.Apps.IdentityServer.Web/bin/Test/netcoreapp3.1/publish**.
+      cd Makc2020.Apps.IdentityServer.Web/bin/Release/netcoreapp3.1/publish
 
-5. Скопировать всё содержимое папки с файлами, предназначенными для публикации,
+- для тестовой среды:
+
+      cd Makc2020.Apps.IdentityServer.Web/bin/Test/netcoreapp3.1/publish
+
+- для среды разработки:
+
+      cd Makc2020.Apps.IdentityServer.Web/bin/Debug/netcoreapp3.1/publish
+
+6. Скопировать всё содержимое папки с файлами, предназначенными для публикации,
 в папку компьютера, на котором должно быть развёрнуто приложение.
 
-6. Настроить веб-сервер на обслуживание папки, в которой развёрнуто приложение.
-
-## Пример настройки веб-сервера IIS, втроенного в операционную систему Windows
+7. Настроить веб-сервер на обслуживание папки, в которой развёрнуто приложение.
 
 ## Пример настройки веб-сервера IIS, втроенного в операционную систему Windows
 

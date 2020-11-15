@@ -1,5 +1,6 @@
 ﻿{
-  "Type": "Jwt",
+  "DbCommandTimeout": 0,
+  "Type": "Oidc",
   "Types": {
     "Jwt": {
       "Issuer": "Makc2020",

@@ -51,7 +51,11 @@ namespace Makc2020.Mods.Auth.Base
 
             var jwtService = new CoreBaseAuthTypeJwtService(Config.Settings.Types.Jwt);
 
-            Service = new ModAuthBaseService(jwtService);
+            Service = new ModAuthBaseService(
+                Config.Settings,
+                externals.DataEntityDbFactory,
+                jwtService
+                );
 
             Jobs = new ModAuthBaseJobs(
                 externals.CoreBaseResourceErrors,
