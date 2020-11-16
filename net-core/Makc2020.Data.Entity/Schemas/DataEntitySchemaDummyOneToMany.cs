@@ -43,7 +43,7 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasMaxLength(setting.DbMaxLengthForName)
                 .HasColumnName(setting.DbColumnNameForName);
 
-            builder.HasIndex(x => x.Name).IsUnique().HasName(setting.DbUniqueIndexForName);
+            builder.HasIndex(x => x.Name).IsUnique().HasDatabaseName(setting.DbUniqueIndexForName);
         }
 
         #endregion Public methods

@@ -45,7 +45,7 @@ namespace Makc2020.Data.Entity.Schemas
             builder.Property(x => x.UserId)
                 .HasColumnName(setting.DbColumnNameForUserId);
 
-            builder.HasIndex(x => x.UserId).HasName(setting.DbIndexForUserId);
+            builder.HasIndex(x => x.UserId).HasDatabaseName(setting.DbIndexForUserId);
 
             builder.HasOne(x => x.ObjectUser)
                 .WithMany(x => x.ObjectsUserClaim)

@@ -41,7 +41,7 @@ namespace Makc2020.Data.Entity.Schemas
                 .IsRequired()
                 .HasColumnName(setting.DbColumnNameForObjectDummyManyToManyId);
 
-            builder.HasIndex(x => x.ObjectDummyManyToManyId).HasName(setting.DbIndexForObjectDummyManyToManyId);
+            builder.HasIndex(x => x.ObjectDummyManyToManyId).HasDatabaseName(setting.DbIndexForObjectDummyManyToManyId);
 
             builder.HasOne(x => x.ObjectDummyMain)
                 .WithMany(x => x.ObjectsDummyMainDummyManyToMany)

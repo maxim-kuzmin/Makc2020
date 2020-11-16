@@ -41,7 +41,7 @@ namespace Makc2020.Data.Entity.Schemas
                 .IsRequired()
                 .HasColumnName(setting.DbColumnNameForRoleId);
 
-            builder.HasIndex(x => x.RoleId).HasName(setting.DbIndexForRoleId);
+            builder.HasIndex(x => x.RoleId).HasDatabaseName(setting.DbIndexForRoleId);
 
             builder.HasOne(x => x.ObjectUser)
                 .WithMany(x => x.ObjectsUserRole)

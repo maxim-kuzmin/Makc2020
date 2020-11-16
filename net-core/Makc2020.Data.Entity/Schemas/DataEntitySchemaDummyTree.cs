@@ -80,13 +80,13 @@ namespace Makc2020.Data.Entity.Schemas
                 .HasDefaultValue(string.Empty)
                 .HasColumnName(setting.DbColumnNameForTreeSort);
 
-            builder.HasIndex(x => x.Name).HasName(setting.DbIndexForName);
-            builder.HasIndex(x => x.ParentId).HasName(setting.DbIndexForParentId);
-            builder.HasIndex(x => x.TreeSort).HasName(setting.DbIndexForTreeSort);
+            builder.HasIndex(x => x.Name).HasDatabaseName(setting.DbIndexForName);
+            builder.HasIndex(x => x.ParentId).HasDatabaseName(setting.DbIndexForParentId);
+            builder.HasIndex(x => x.TreeSort).HasDatabaseName(setting.DbIndexForTreeSort);
 
             builder.HasIndex(x => new { x.ParentId, x.Name })
                 .IsUnique()
-                .HasName(setting.DbUniqueIndexForParentIdAndName);
+                .HasDatabaseName(setting.DbUniqueIndexForParentIdAndName);
 
             builder.HasOne(x => x.ObjectDummyTreeParent)
                 .WithMany(x => x.ObjectsDummyTreeChild)
