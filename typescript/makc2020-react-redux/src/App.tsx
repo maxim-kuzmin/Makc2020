@@ -1,27 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { HostLayoutHeader } from './host/layout/header/HostLayoutHeader';
+import { AppSkinHostLayoutHeaderComponent } from './app-skin/host/layout/header/host-layout-header.component';
+import { AppSkinRootPageIndexComponent } from './app-skin/root/pages/index/root-page-index.component';
+import { AppSkinRootPageSiteComponent } from './app-skin/root/pages/site/root-page-site.component';
+import { AppSkinModDummyMainPageListComponent } from './app-skin/mods/dummy-main/pages/list/mod-dummy-main-page-list.component';
+import { AppSkinRootPageErrorComponent } from './app-skin/root/pages/error/root-page-error.component';
 
 function App() {
   return (
-    <div className="App">
-      <HostLayoutHeader />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AppSkinHostLayoutHeaderComponent />
+      <Switch>
+        <Redirect from="/index" to="/" />
+        <Route path="/" exact component={AppSkinRootPageIndexComponent} />
+        <Route path="/site" component={AppSkinRootPageSiteComponent} />
+        <Route
+          path="/mods/dummy-main/list"
+          component={AppSkinModDummyMainPageListComponent}
+        />
+        <Route render={() => <AppSkinRootPageErrorComponent code={'404'} />} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
