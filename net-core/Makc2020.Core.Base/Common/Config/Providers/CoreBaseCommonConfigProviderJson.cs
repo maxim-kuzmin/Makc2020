@@ -77,8 +77,6 @@ namespace Makc2020.Core.Base.Common.Config.Providers
 
             var configuration = configurationBuilder.AddEnvironmentVariables().Build();
 
-            var cn = configuration["ConnectionString"];
-
             configuration.Bind(Settings);
         }
 
