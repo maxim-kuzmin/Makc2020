@@ -49,7 +49,7 @@ namespace Makc2020.Core.Base.Ext
         /// </summary>
         /// <param name="xml">XML.</param>
         /// <param name="value">Строка в формате XML.</param>
-        /// <param name="defaultValue">Значение по-умолчанию.</param>
+        /// <param name="defaultValue">Значение по умолчанию.</param>
         /// <returns>Признак успешности сериализации.</returns>
         public static bool CoreBaseExtXmlTryDeserialize<T>(
 			this string xml,

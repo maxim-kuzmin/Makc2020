@@ -4,23 +4,20 @@ using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Data.Queries.Identity.Reseed;
 using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
-using Makc2020.Core.Data.Clients.SqlServer.Enums;
-using Makc2020.Core.Data.Clients.SqlServer.Queries.Identity.Reseed;
-using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate;
-using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger;
-using Microsoft.Win32.SafeHandles;
+using Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Identity.Reseed;
+using Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Tree.Calculate;
+using Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Tree.Trigger;
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 
-namespace Makc2020.Core.Data.Clients.SqlServer
+namespace Makc2020.Core.Data.Base.Clients.PostgreSql
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Поставщик.
+    /// Ядро. Данные. Основа. Клиенты. PostgreSQL. Поставщик.
     /// </summary>
-    public class CoreDataClientSqlServerProvider : ICoreBaseDataProvider
+    public class CoreDataBaseClientPostgreSqlProvider : ICoreBaseDataProvider
     {
         #region Public methods
 
@@ -92,69 +89,21 @@ namespace Makc2020.Core.Data.Clients.SqlServer
         /// <inheritdoc/>
         public CoreBaseDataQueryIdentityReseedBuilder CreateQueryIdentityReseedBuilder()
         {
-            return new CoreDataClientSqlServerQueryIdentityReseedBuilder();
+            return new CoreDataBaseClientPostgreSqlQueryIdentityReseedBuilder();
         }
 
         /// <inheritdoc/>
         public CoreBaseDataQueryTreeCalculateBuilder CreateQueryTreeCalculateBuilder()
         {
-            return new CoreDataClientSqlServerQueryTreeCalculateBuilder();
+            return new CoreDataBaseClientPostgreSqlQueryTreeCalculateBuilder();
         }
 
         /// <inheritdoc/>
         public CoreBaseDataQueryTreeTriggerBuilder CreateQueryTreeTriggerBuilder()
         {
-            return new CoreDataClientSqlServerQueryTreeTriggerBuilder();
-        }
-
-        /// <summary>
-        /// Получить указатель на файловый поток базы данных SQL Server.
-        /// </summary>
-        /// <param name="filePath">Путь к файлу.</param>
-        /// <param name="access">Уровень доступа.</param>
-        /// <param name="txnToken">Токен контекста транзакции.</param>
-        /// <returns>Указатель на файловый поток базы данных SQL Server.</returns>
-        public static SafeFileHandle GetSqlFilestreamHandle(
-            string filePath,
-            CoreDataClientSqlServerEnumFilestreamAccess access,
-            byte[] txnToken
-            )
-        {
-            return OpenSqlFilestream(
-                filePath,
-                (uint)access,
-                0,
-                txnToken,
-                (uint)txnToken.Length,
-                new Sql64(0)
-                );
+            return new CoreDataBaseClientPostgreSqlQueryTreeTriggerBuilder();
         }
 
         #endregion Public methods
-
-        #region Private methods
-
-        [DllImport("sqlncli10.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern SafeFileHandle OpenSqlFilestream(
-            string path,
-            uint access,
-            uint options,
-            byte[] txnToken,
-            uint txnTokenLength,
-            Sql64 allocationSize
-            );
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct Sql64
-        {
-            public long QuadPart;
-
-            public Sql64(long quadPart)
-            {
-                QuadPart = quadPart;
-            }
-        }
-
-        #endregion Private methods
     }
 }

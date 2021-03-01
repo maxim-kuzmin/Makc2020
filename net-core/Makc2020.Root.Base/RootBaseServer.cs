@@ -70,7 +70,7 @@ namespace Makc2020.Root.Base
         protected bool IsMigrateDatabaseEnabled { get; set; }
 
         /// <summary>
-        /// Признак необходимости добавления пользователей и ролей по-умолчанию.
+        /// Признак необходимости добавления пользователей и ролей по умолчанию.
         /// </summary>
         protected bool IsSeedAuthEnabled { get; set; }
 

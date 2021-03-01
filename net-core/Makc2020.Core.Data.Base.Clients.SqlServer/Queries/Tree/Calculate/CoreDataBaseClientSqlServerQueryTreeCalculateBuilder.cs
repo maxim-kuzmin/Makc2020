@@ -4,12 +4,12 @@ using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate
+namespace Makc2020.Core.Data.Base.Clients.SqlServer.Queries.Tree.Calculate
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Запросы. Дерево. Вычисление. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. SQL Server. Запросы. Дерево. Вычисление. Построитель.
     /// </summary>
-    public class CoreDataClientSqlServerQueryTreeCalculateBuilder : CoreBaseDataQueryTreeCalculateBuilder
+    public class CoreDataBaseClientSqlServerQueryTreeCalculateBuilder : CoreBaseDataQueryTreeCalculateBuilder
     {
 		#region Public methods
 

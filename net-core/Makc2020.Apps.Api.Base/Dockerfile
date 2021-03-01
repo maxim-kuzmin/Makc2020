@@ -14,7 +14,7 @@ COPY ["Makc2020.Core.Base/Makc2020.Core.Base.csproj", "Makc2020.Core.Base/"]
 COPY ["Makc2020.Mods.Auth.Base/Makc2020.Mods.Auth.Base.csproj", "Makc2020.Mods.Auth.Base/"]
 COPY ["Makc2020.Host.Base/Makc2020.Host.Base.csproj", "Makc2020.Host.Base/"]
 COPY ["Makc2020.Root.Base/Makc2020.Root.Base.csproj", "Makc2020.Root.Base/"]
-COPY ["Makc2020.Core.Data.Clients.SqlServer/Makc2020.Core.Data.Clients.SqlServer.csproj", "Makc2020.Core.Data.Clients.SqlServer/"]
+COPY ["Makc2020.Core.Data.Base.Clients.SqlServer/Makc2020.Core.Data.Base.Clients.SqlServer.csproj", "Makc2020.Core.Data.Base.Clients.SqlServer/"]
 COPY ["Makc2020.Data.Entity.Clients.SqlServer/Makc2020.Data.Entity.Clients.SqlServer.csproj", "Makc2020.Data.Entity.Clients.SqlServer/"]
 RUN dotnet restore "Makc2020.Apps.Api.Base/Makc2020.Apps.Api.Base.csproj"
 COPY . .

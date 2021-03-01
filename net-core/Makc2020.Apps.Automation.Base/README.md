@@ -9,7 +9,7 @@
 
 1. Открыть файл **Makc2020.Apps.Automation.Base/ConfigFiles/App.config.json**.
 
-2. В разделе **Logging:LogLevel:Default** указать уровень логирования по-умолчанию.
+2. В разделе **Logging:LogLevel:Default** указать уровень логирования по умолчанию.
 
 **Пример:**
 

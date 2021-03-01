@@ -52,7 +52,7 @@ namespace Makc2020.Data.Base.Settings
         /// Конструктор.
         /// </summary>
         /// <param name="settingRole">Настройка сущности "Role".</param>
-        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="defaults">Значения по умолчанию.</param>
         /// <param name="dbTable">Таблица в базе данных.</param>
         /// <param name="dbSchema">Схема в базе данных.</param>
         public DataBaseSettingRoleClaim(

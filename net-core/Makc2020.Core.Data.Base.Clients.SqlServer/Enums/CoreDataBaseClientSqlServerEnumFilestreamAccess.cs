@@ -1,11 +1,11 @@
 ﻿//Author Maxim Kuzmin//makc//
 
-namespace Makc2020.Core.Data.Clients.SqlServer.Enums
+namespace Makc2020.Core.Data.Base.Clients.SqlServer.Enums
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Перечисления. Уровни доступа к файловому потоку.
+    /// Ядро. Данные. Основа. Клиенты. SQL Server. Перечисления. Уровни доступа к файловому потоку.
     /// </summary>
-    public enum CoreDataClientSqlServerEnumFilestreamAccess : uint
+    public enum CoreDataBaseClientSqlServerEnumFilestreamAccess : uint
     {
         /// <summary>
         /// Прочитать.

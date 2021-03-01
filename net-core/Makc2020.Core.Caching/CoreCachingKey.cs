@@ -62,7 +62,7 @@ namespace Makc2020.Core.Caching
         /// <summary>
         /// Получить промежуток времени, по окончании которого прекратится срок действия кэша.
         /// </summary>
-        /// <param name="defaultCacheExpiryInSeconds">Окончание срока действия в кэша секундах по-умолчанию.</param>
+        /// <param name="defaultCacheExpiryInSeconds">Окончание срока действия в кэша секундах по умолчанию.</param>
         /// <returns>Промежуток времени, по окончании которого прекратится срок действия кэша.</returns>
         public TimeSpan? GetCacheExpiryTimeSpan(int defaultCacheExpiryInSeconds)
         {

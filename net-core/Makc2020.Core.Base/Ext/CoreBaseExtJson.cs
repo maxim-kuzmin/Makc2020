@@ -74,7 +74,7 @@ namespace Makc2020.Core.Base.Ext
         /// <param name="json">Строка в формате JSON.</param>
         /// <param name="value">Значение указанного типа.</param>
         /// <param name="options">Опции.</param>
-        /// <param name="defaultValue">Значение по-умолчанию.</param>
+        /// <param name="defaultValue">Значение по умолчанию.</param>
         /// <returns>Признак успешности десериализации.</returns>
         public static bool CoreBaseExtJsonTryDeserialize<T>(
             this string json,

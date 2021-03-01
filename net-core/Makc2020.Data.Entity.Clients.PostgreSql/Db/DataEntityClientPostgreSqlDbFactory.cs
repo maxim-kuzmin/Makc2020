@@ -18,7 +18,7 @@ namespace Makc2020.Data.Entity.Clients.PostgreSql.Db
         #region Properties
 
         /// <summary>
-        /// Экземпляр по-умолчанию.
+        /// Экземпляр по умолчанию.
         /// </summary>
         public static DataEntityClientPostgreSqlDbFactory Default { get; } = new DataEntityClientPostgreSqlDbFactory();
 

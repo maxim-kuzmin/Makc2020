@@ -2,16 +2,16 @@
 
 using Makc2020.Core.Base.Common.Enums;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
-using Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Calculate;
+using Makc2020.Core.Data.Base.Clients.SqlServer.Queries.Tree.Calculate;
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Tree.Trigger
+namespace Makc2020.Core.Data.Base.Clients.SqlServer.Queries.Tree.Trigger
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Запросы. Дерево. Триггер. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. SQL Server. Запросы. Дерево. Триггер. Построитель.
     /// </summary>
-    public class CoreDataClientSqlServerQueryTreeTriggerBuilder : CoreBaseDataQueryTreeTriggerBuilder
+    public class CoreDataBaseClientSqlServerQueryTreeTriggerBuilder : CoreBaseDataQueryTreeTriggerBuilder
     {
 		#region Public methods
 
@@ -323,7 +323,7 @@ from
 
 		private string CreateSqlForCalculate(string sqlForIdsSelectQuery)
 		{
-			return new CoreDataClientSqlServerQueryTreeCalculateBuilder
+			return new CoreDataBaseClientSqlServerQueryTreeCalculateBuilder
 			{
 				LinkTableFieldNameForId = LinkTableFieldNameForId,
 				LinkTableFieldNameForParentId = LinkTableFieldNameForParentId,

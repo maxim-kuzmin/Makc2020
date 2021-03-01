@@ -18,7 +18,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         #region Properties
 
         /// <summary>
-        /// Экземпляр по-умолчанию.
+        /// Экземпляр по умолчанию.
         /// </summary>
         public static DataEntityClientSqlServerDbFactory Default { get; } = new DataEntityClientSqlServerDbFactory();
 

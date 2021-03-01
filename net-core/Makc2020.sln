@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{1EE58849-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Base", "Makc2020.Root.Base\Makc2020.Root.Base.csproj", "{DB6A3283-E35B-4C14-827D-869B79D046C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.Clients.SqlServer", "Makc2020.Core.Data.Clients.SqlServer\Makc2020.Core.Data.Clients.SqlServer.csproj", "{F60ADF28-D18C-4421-89FF-CE46C27FDA0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.Base.Clients.SqlServer", "Makc2020.Core.Data.Base.Clients.SqlServer\Makc2020.Core.Data.Base.Clients.SqlServer.csproj", "{F60ADF28-D18C-4421-89FF-CE46C27FDA0A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Root.Web", "Makc2020.Root.Web\Makc2020.Root.Web.csproj", "{89016674-D54D-4B5D-BA73-3C24954E6CFA}"
 EndProject
@@ -116,7 +116,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tree", "Tree", "{94E363EF-C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Data.Entity.Clients.PostgreSql", "Makc2020.Data.Entity.Clients.PostgreSql\Makc2020.Data.Entity.Clients.PostgreSql.csproj", "{9A1D863B-F2DE-4115-ADCA-CCE33381DB43}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.Clients.PostgreSql", "Makc2020.Core.Data.Clients.PostgreSql\Makc2020.Core.Data.Clients.PostgreSql.csproj", "{A04E14A9-4AA5-4293-B4B4-63459BCE24F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makc2020.Core.Data.Base.Clients.PostgreSql", "Makc2020.Core.Data.Base.Clients.PostgreSql\Makc2020.Core.Data.Base.Clients.PostgreSql.csproj", "{A04E14A9-4AA5-4293-B4B4-63459BCE24F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostgreSQL", "PostgreSQL", "{B0131A08-1D35-422A-93B9-00266B522914}"
 	ProjectSection(SolutionItems) = preProject
@@ -167,6 +167,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL Server", "SQL Server", 
 		sql\Tree\SQL Server\Tree.Select.Opened.Descendant.sql = sql\Tree\SQL Server\Tree.Select.Opened.Descendant.sql
 		sql\Tree\SQL Server\Tree.Trigger.sql = sql\Tree\SQL Server\Tree.Trigger.sql
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makc2020.Core.Data.Base", "Makc2020.Core.Data.Base\Makc2020.Core.Data.Base.csproj", "{634DD79B-2D32-429D-A738-82F4D8F8FF6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makc2020.Core.Data.Entity", "Makc2020.Core.Data.Entity\Makc2020.Core.Data.Entity.csproj", "{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -389,6 +393,18 @@ Global
 		{A04E14A9-4AA5-4293-B4B4-63459BCE24F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A04E14A9-4AA5-4293-B4B4-63459BCE24F3}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{A04E14A9-4AA5-4293-B4B4-63459BCE24F3}.Test|Any CPU.Build.0 = Release|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7}.Test|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -440,6 +456,8 @@ Global
 		{B0131A08-1D35-422A-93B9-00266B522914} = {79BBEED9-6441-4DB5-B1B7-28105447065B}
 		{345D3414-7B3F-42B3-BED0-0FCA60EC904E} = {94E363EF-C298-4A7C-B36E-B4B0A8AF28A5}
 		{AB304994-4804-4C3E-9559-97E252B622EE} = {94E363EF-C298-4A7C-B36E-B4B0A8AF28A5}
+		{634DD79B-2D32-429D-A738-82F4D8F8FF6F} = {D44681C5-CC98-44F7-8134-6178F8ECB9F8}
+		{AA3E38E9-EE95-46F8-8620-6EBEF3A550E7} = {D44681C5-CC98-44F7-8134-6178F8ECB9F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70A0C8D4-5F1D-4A8C-9379-48C8BF6F5493}

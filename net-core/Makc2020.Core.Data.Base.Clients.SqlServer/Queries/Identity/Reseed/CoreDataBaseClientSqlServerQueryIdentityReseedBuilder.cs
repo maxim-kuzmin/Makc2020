@@ -3,12 +3,12 @@
 using Makc2020.Core.Base.Data.Queries.Identity.Reseed;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.SqlServer.Queries.Identity.Reseed
+namespace Makc2020.Core.Data.Base.Clients.SqlServer.Queries.Identity.Reseed
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Запросы. Идентичность. Перезаполнение. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. SQL Server. Запросы. Идентичность. Перезаполнение. Построитель.
     /// </summary>
-    public class CoreDataClientSqlServerQueryIdentityReseedBuilder : CoreBaseDataQueryIdentityReseedBuilder
+    public class CoreDataBaseClientSqlServerQueryIdentityReseedBuilder : CoreBaseDataQueryIdentityReseedBuilder
 	{
         #region Public methods
 

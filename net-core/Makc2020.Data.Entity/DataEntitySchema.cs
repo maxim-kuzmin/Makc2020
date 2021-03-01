@@ -1,44 +1,24 @@
 ﻿//Author Maxim Kuzmin//makc//
 
+using Makc2020.Core.Data.Entity;
 using Makc2020.Data.Base;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Makc2020.Data.Entity
 {
     /// <summary>
     /// Данные. Entity Framework. Схема.
     /// </summary>
-    public abstract class DataEntitySchema<TEntity> : IEntityTypeConfiguration<TEntity>
+    public abstract class DataEntitySchema<TEntity> : CoreDataEntitySchema<TEntity, DataBaseSettings>
         where TEntity : class
     {
-        #region Properties
-
-        /// <summary>
-        /// Данные. Основа. Настройки.
-        /// </summary>
-        protected DataBaseSettings DataBaseSettings { get; private set; }
-
-        #endregion Properties
-
         #region Constructors
 
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
-        public DataEntitySchema(DataBaseSettings dataBaseSettings)
+        /// <inheritdoc/>
+        public DataEntitySchema(DataBaseSettings settings)
+            : base(settings)
         {
-            DataBaseSettings = dataBaseSettings;
         }
 
         #endregion Constructors
-
-        #region Public methods
-
-        /// <inheritdoc/>
-        public abstract void Configure(EntityTypeBuilder<TEntity> builder);
-
-        #endregion Public methods
     }
 }

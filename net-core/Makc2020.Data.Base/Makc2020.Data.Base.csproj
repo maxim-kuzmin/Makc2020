@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Makc2020.Core.Base\Makc2020.Core.Base.csproj" />
+    <ProjectReference Include="..\Makc2020.Core.Data.Base\Makc2020.Core.Data.Base.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ COPY ["Makc2020.Data.Entity/Makc2020.Data.Entity.csproj", "Makc2020.Data.Entity/
 COPY ["Makc2020.Data.Base/Makc2020.Data.Base.csproj", "Makc2020.Data.Base/"]
 COPY ["Makc2020.Core.Base/Makc2020.Core.Base.csproj", "Makc2020.Core.Base/"]
 COPY ["Makc2020.Root.Base/Makc2020.Root.Base.csproj", "Makc2020.Root.Base/"]
-COPY ["Makc2020.Core.Data.Clients.SqlServer/Makc2020.Core.Data.Clients.SqlServer.csproj", "Makc2020.Core.Data.Clients.SqlServer/"]
+COPY ["Makc2020.Core.Data.Base.Clients.SqlServer/Makc2020.Core.Data.Base.Clients.SqlServer.csproj", "Makc2020.Core.Data.Base.Clients.SqlServer/"]
 COPY ["Makc2020.Data.Entity.Clients.SqlServer/Makc2020.Data.Entity.Clients.SqlServer.csproj", "Makc2020.Data.Entity.Clients.SqlServer/"]
 COPY ["Makc2020.Root.Web/Makc2020.Root.Web.csproj", "Makc2020.Root.Web/"]
 COPY ["Makc2020.Mods.IdentityServer.Web/Makc2020.Mods.IdentityServer.Web.csproj", "Makc2020.Mods.IdentityServer.Web/"]

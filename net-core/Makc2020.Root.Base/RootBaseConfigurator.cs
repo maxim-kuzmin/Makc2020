@@ -2,8 +2,8 @@
 
 using Makc2020.Core.Base;
 using Makc2020.Core.Base.Common;
-using Makc2020.Core.Data.Clients.PostgreSql;
-using Makc2020.Core.Data.Clients.SqlServer;
+using Makc2020.Core.Data.Base.Clients.PostgreSql;
+using Makc2020.Core.Data.Base.Clients.SqlServer;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.PostgreSql;
 using Makc2020.Data.Entity.Clients.PostgreSql.Db;
@@ -167,21 +167,21 @@ namespace Makc2020.Root.Base
             switch (DataClient)
             {
                 case RootBaseEnumDataClients.PostgreSql:
-                    AddModulesForDataClient<CoreDataClientPostgreSqlModule, DataEntityClientPostgreSqlModule>(modules);
+                    AddModulesForDataClient<CoreDataBaseClientPostgreSqlModule, DataEntityClientPostgreSqlModule>(modules);
                     break;
                 case RootBaseEnumDataClients.SqlServer:
-                    AddModulesForDataClient<CoreDataClientSqlServerModule, DataEntityClientSqlServerModule>(modules);
+                    AddModulesForDataClient<CoreDataBaseClientSqlServerModule, DataEntityClientSqlServerModule>(modules);
                     break;
             }
         }
 
-        private void AddModulesForDataClient<TCoreDataClientModule, TEntityDataClientModule>(
+        private void AddModulesForDataClient<TCoreDataBaseClientModule, TEntityDataClientModule>(
             List<ICoreBaseCommonModule> modules
             )
-            where TCoreDataClientModule : ICoreBaseCommonModule, new()
+            where TCoreDataBaseClientModule : ICoreBaseCommonModule, new()
             where TEntityDataClientModule : ICoreBaseCommonModule, new()
         {
-            modules.Add(new TCoreDataClientModule());
+            modules.Add(new TCoreDataBaseClientModule());
             modules.Add(new TEntityDataClientModule());
         }
 

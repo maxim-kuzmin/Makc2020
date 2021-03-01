@@ -7,7 +7,7 @@ using Makc2020.Data.Entity.Db;
 namespace Makc2020.Data.Entity.Clients.PostgreSql
 {
     /// <summary>
-    /// Данные. Entity Framework. Клиенты. SQL Server. Контекст.
+    /// Данные. Entity Framework. Клиенты. PostgreSQL. Контекст.
     /// </summary>
     public class DataEntityClientPostgreSqlContext
     {

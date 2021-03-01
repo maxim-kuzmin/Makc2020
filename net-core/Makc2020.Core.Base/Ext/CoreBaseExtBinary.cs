@@ -47,7 +47,7 @@ namespace Makc2020.Core.Base.Ext
         /// </summary>
         /// <param name="bytes">Десериализуемый массив байтов бинарной сериализации.</param>
         /// <param name="value">Десериализованное значение указанного типа.</param>
-        /// <param name="defaultValue">Значение по-умолчанию.</param>
+        /// <param name="defaultValue">Значение по умолчанию.</param>
         /// <returns>Признак успешности десериализации.</returns>
         public static bool CoreBaseExtBinaryTryDeserialize<T>(
             this byte[] bytes,

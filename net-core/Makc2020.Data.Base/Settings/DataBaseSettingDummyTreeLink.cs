@@ -37,7 +37,7 @@ namespace Makc2020.Data.Base.Settings
         /// Конструктор.
         /// </summary>
         /// <param name="settingDummyTree">Настройка сущности "DummyTree".</param>
-        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="defaults">Значения по умолчанию.</param>
         /// <param name="dbTable">Таблица в базе данных.</param>
         /// <param name="dbSchema">Схема в базе данных.</param>
         public DataBaseSettingDummyTreeLink(

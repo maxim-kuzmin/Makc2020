@@ -27,7 +27,7 @@ namespace Makc2020.Data.Entity.Schemas
         /// <inheritdoc/>
         public sealed override void Configure(EntityTypeBuilder<DataEntityObjectDummyOneToMany> builder)
         {
-            var setting = DataBaseSettings.DummyOneToMany;
+            var setting = Settings.DummyOneToMany;
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 

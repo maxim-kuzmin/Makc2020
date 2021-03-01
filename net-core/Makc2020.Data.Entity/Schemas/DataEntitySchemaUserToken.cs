@@ -27,7 +27,7 @@ namespace Makc2020.Data.Entity.Schemas
         /// <inheritdoc/>
         public sealed override void Configure(EntityTypeBuilder<DataEntityObjectUserToken> builder)
         {
-            var setting = DataBaseSettings.UserToken;
+            var setting = Settings.UserToken;
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 

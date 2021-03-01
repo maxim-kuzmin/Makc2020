@@ -27,7 +27,7 @@ namespace Makc2020.Data.Entity.Schemas
         /// <inheritdoc/>
         public sealed override void Configure(EntityTypeBuilder<DataEntityObjectRole> builder)
         {
-            var setting = DataBaseSettings.Role;
+            var setting = Settings.Role;
 
             builder.ToTable(setting.DbTable, setting.DbSchema);
 

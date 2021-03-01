@@ -48,7 +48,7 @@ namespace Makc2020.Data.Base.Settings
         /// </summary>
         /// <param name="settingDummyMain">Настройка сущности "DummyMain".</param>
         /// <param name="settingDummyManyToMany">Настройка сущности "DummyManyToMany".</param>
-        /// <param name="defaults">Значения по-умолчанию.</param>
+        /// <param name="defaults">Значения по умолчанию.</param>
         /// <param name="dbTable">Таблица в базе данных.</param>
         /// <param name="dbSchema">Схема в базе данных.</param>
         public DataBaseSettingDummyMainDummyManyToMany(

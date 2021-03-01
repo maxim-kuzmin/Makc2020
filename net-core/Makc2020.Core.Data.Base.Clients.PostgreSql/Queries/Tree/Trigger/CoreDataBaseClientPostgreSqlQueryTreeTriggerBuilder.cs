@@ -2,16 +2,16 @@
 
 using Makc2020.Core.Base.Common.Enums;
 using Makc2020.Core.Base.Data.Queries.Tree.Trigger;
-using Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Calculate;
+using Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Tree.Calculate;
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Trigger
+namespace Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Tree.Trigger
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. PostgreSQL. Запросы. Дерево. Триггер. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. PostgreSQL. Запросы. Дерево. Триггер. Построитель.
     /// </summary>
-    public class CoreDataClientPostgreSqlQueryTreeTriggerBuilder : CoreBaseDataQueryTreeTriggerBuilder
+    public class CoreDataBaseClientPostgreSqlQueryTreeTriggerBuilder : CoreBaseDataQueryTreeTriggerBuilder
 	{
 		#region Public methods
 
@@ -322,7 +322,7 @@ end $$;
 
 		private string CreateSqlForCalculate(string sqlForIdsSelectQuery)
 		{
-			return new CoreDataClientPostgreSqlQueryTreeCalculateBuilder
+			return new CoreDataBaseClientPostgreSqlQueryTreeCalculateBuilder
 			{
 				LinkTableFieldNameForId = LinkTableFieldNameForId,
 				LinkTableFieldNameForParentId = LinkTableFieldNameForParentId,

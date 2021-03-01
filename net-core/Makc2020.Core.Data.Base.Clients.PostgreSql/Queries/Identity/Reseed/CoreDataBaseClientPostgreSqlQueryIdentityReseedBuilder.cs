@@ -3,12 +3,12 @@
 using Makc2020.Core.Base.Data.Queries.Identity.Reseed;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Identity.Reseed
+namespace Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Identity.Reseed
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. PostgreSQL. Запросы. Идентичность. Перезаполнение. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. PostgreSQL. Запросы. Идентичность. Перезаполнение. Построитель.
     /// </summary>
-    public class CoreDataClientPostgreSqlQueryIdentityReseedBuilder : CoreBaseDataQueryIdentityReseedBuilder
+    public class CoreDataBaseClientPostgreSqlQueryIdentityReseedBuilder : CoreBaseDataQueryIdentityReseedBuilder
 	{
         #region Public methods
 

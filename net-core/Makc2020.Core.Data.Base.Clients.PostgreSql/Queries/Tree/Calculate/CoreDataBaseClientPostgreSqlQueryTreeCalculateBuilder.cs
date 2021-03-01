@@ -4,12 +4,12 @@ using Makc2020.Core.Base.Data.Queries.Tree.Calculate;
 using System.Linq;
 using System.Text;
 
-namespace Makc2020.Core.Data.Clients.PostgreSql.Queries.Tree.Calculate
+namespace Makc2020.Core.Data.Base.Clients.PostgreSql.Queries.Tree.Calculate
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. PostgreSQL. Запросы. Дерево. Вычисление. Построитель.
+    /// Ядро. Данные. Основа. Клиенты. PostgreSQL. Запросы. Дерево. Вычисление. Построитель.
     /// </summary>
-    public class CoreDataClientPostgreSqlQueryTreeCalculateBuilder : CoreBaseDataQueryTreeCalculateBuilder
+    public class CoreDataBaseClientPostgreSqlQueryTreeCalculateBuilder : CoreBaseDataQueryTreeCalculateBuilder
 	{
 		#region Public methods
 

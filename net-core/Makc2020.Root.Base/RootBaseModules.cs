@@ -5,8 +5,8 @@ using Makc2020.Core.Base.Common;
 using Makc2020.Core.Base.Data;
 using Makc2020.Core.Base.Resources.Converting;
 using Makc2020.Core.Base.Resources.Errors;
-using Makc2020.Core.Data.Clients.PostgreSql;
-using Makc2020.Core.Data.Clients.SqlServer;
+using Makc2020.Core.Data.Base.Clients.PostgreSql;
+using Makc2020.Core.Data.Base.Clients.SqlServer;
 using Makc2020.Data.Base;
 using Makc2020.Data.Entity;
 using Makc2020.Data.Entity.Clients.PostgreSql;
@@ -44,12 +44,12 @@ namespace Makc2020.Root.Base
         /// <summary>
         /// Ядро. Данные. Клиенты. PostgreSQL.
         /// </summary>
-        public CoreDataClientPostgreSqlModule CoreDataClientPostgreSql { get; set; }
+        public CoreDataBaseClientPostgreSqlModule CoreDataBaseClientPostgreSql { get; set; }
 
         /// <summary>
         /// Ядро. Данные. Клиенты. SQL Server.
         /// </summary>
-        public CoreDataClientSqlServerModule CoreDataClientSqlServer { get; set; }
+        public CoreDataBaseClientSqlServerModule CoreDataBaseClientSqlServer { get; set; }
 
         /// <summary>
         /// Данные. Entity Framework.
@@ -114,8 +114,8 @@ namespace Makc2020.Root.Base
         public virtual void ConfigureServices(IServiceCollection services)
         {
             CoreBase?.ConfigureServices(services);
-            CoreDataClientPostgreSql?.ConfigureServices(services);
-            CoreDataClientSqlServer?.ConfigureServices(services);
+            CoreDataBaseClientPostgreSql?.ConfigureServices(services);
+            CoreDataBaseClientSqlServer?.ConfigureServices(services);
             DataEntity?.ConfigureServices(services);
             DataEntityClientPostgreSql?.ConfigureServices(services);
             DataEntityClientSqlServer?.ConfigureServices(services);
@@ -215,8 +215,8 @@ namespace Makc2020.Root.Base
         {
             return DataClient switch
             {
-                RootBaseEnumDataClients.PostgreSql => CoreDataClientPostgreSql.Context.Provider,
-                RootBaseEnumDataClients.SqlServer => CoreDataClientSqlServer.Context.Provider,
+                RootBaseEnumDataClients.PostgreSql => CoreDataBaseClientPostgreSql.Context.Provider,
+                RootBaseEnumDataClients.SqlServer => CoreDataBaseClientSqlServer.Context.Provider,
                 _ => null,
             };
         }
@@ -254,8 +254,8 @@ namespace Makc2020.Root.Base
         protected virtual bool TrySetModule(ICoreBaseCommonModule commonModule)
         {
             if (TrySet<CoreBaseModule>(x => CoreBase = x, commonModule)) return true;
-            if (TrySet<CoreDataClientPostgreSqlModule>(x => CoreDataClientPostgreSql = x, commonModule)) return true;
-            if (TrySet<CoreDataClientSqlServerModule>(x => CoreDataClientSqlServer = x, commonModule)) return true;
+            if (TrySet<CoreDataBaseClientPostgreSqlModule>(x => CoreDataBaseClientPostgreSql = x, commonModule)) return true;
+            if (TrySet<CoreDataBaseClientSqlServerModule>(x => CoreDataBaseClientSqlServer = x, commonModule)) return true;
             if (TrySet<DataEntityModule>(x => DataEntity = x, commonModule)) return true;
             if (TrySet<DataEntityClientPostgreSqlModule>(x => DataEntityClientPostgreSql = x, commonModule)) return true;
             if (TrySet<DataEntityClientSqlServerModule>(x => DataEntityClientSqlServer = x, commonModule)) return true;

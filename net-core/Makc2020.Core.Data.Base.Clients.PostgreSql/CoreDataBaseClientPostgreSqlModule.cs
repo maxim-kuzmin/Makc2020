@@ -4,19 +4,19 @@ using Makc2020.Core.Base.Common;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Makc2020.Core.Data.Clients.PostgreSql
+namespace Makc2020.Core.Data.Base.Clients.PostgreSql
 {
     /// <summary>
-    /// Ядро. Данные. Клиенты. SQL Server. Модуль.
+    /// Ядро. Данные. Основа. Клиенты. PostgreSQL. Модуль.
     /// </summary>
-    public class CoreDataClientPostgreSqlModule : ICoreBaseCommonModule
+    public class CoreDataBaseClientPostgreSqlModule : ICoreBaseCommonModule
     {
         #region Properties
 
         /// <summary>
         /// Контекст.
         /// </summary>
-        public CoreDataClientPostgreSqlContext Context { get; private set; } = new CoreDataClientPostgreSqlContext();
+        public CoreDataBaseClientPostgreSqlContext Context { get; private set; } = new CoreDataBaseClientPostgreSqlContext();
 
         #endregion Properties
 
@@ -35,9 +35,9 @@ namespace Makc2020.Core.Data.Clients.PostgreSql
 
         #region Private methods
 
-        private CoreDataClientPostgreSqlContext GetContext(IServiceProvider serviceProvider)
+        private CoreDataBaseClientPostgreSqlContext GetContext(IServiceProvider serviceProvider)
         {
-            return serviceProvider.GetService<CoreDataClientPostgreSqlContext>();
+            return serviceProvider.GetService<CoreDataBaseClientPostgreSqlContext>();
         }
 
         #endregion Private methods
