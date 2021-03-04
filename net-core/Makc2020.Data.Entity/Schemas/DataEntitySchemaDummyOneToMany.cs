@@ -15,8 +15,8 @@ namespace Makc2020.Data.Entity.Schemas
         #region Constructors
 
         /// <inheritdoc/>
-        public DataEntitySchemaDummyOneToMany(DataBaseSettings dataBaseSettings)
-            : base(dataBaseSettings)
+        public DataEntitySchemaDummyOneToMany(DataBaseSettings settings)
+            : base(settings)
         {
         }
 

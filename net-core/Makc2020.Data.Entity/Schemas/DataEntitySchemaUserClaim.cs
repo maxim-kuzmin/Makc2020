@@ -15,8 +15,8 @@ namespace Makc2020.Data.Entity.Schemas
         #region Constructors
 
         /// <inheritdoc/>
-        public DataEntitySchemaUserClaim(DataBaseSettings dataBaseSettings)
-            : base(dataBaseSettings)
+        public DataEntitySchemaUserClaim(DataBaseSettings settings)
+            : base(settings)
         {
         }
 

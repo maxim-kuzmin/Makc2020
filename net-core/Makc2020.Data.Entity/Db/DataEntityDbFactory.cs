@@ -96,6 +96,15 @@ namespace Makc2020.Data.Entity.Db
 
         #region Private methods
 
+        private DbContextOptions<DataEntityDbContext> CreateDbContextOptions()
+        {
+            var builder = new DbContextOptionsBuilder<DataEntityDbContext>();
+
+            BuildDbContextOptions(builder);
+
+            return builder.Options;
+        }
+
         private void Initialize(
             string connectionString,
             DataBaseSettings settings,
@@ -110,15 +119,6 @@ namespace Makc2020.Data.Entity.Db
             Settings = settings ?? CreateSettings();
             ConnectionString = connectionString ?? CreateConnectionString();
             Options = CreateDbContextOptions();
-        }
-
-        private DbContextOptions<DataEntityDbContext> CreateDbContextOptions()
-        {
-            var builder = new DbContextOptionsBuilder<DataEntityDbContext>();
-
-            BuildDbContextOptions(builder);
-
-            return builder.Options;
         }
 
         #endregion Private methods
