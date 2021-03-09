@@ -26,7 +26,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
         /// <summary>
         /// Настройки.
         /// </summary>
-        public DataBaseSettings Settings => DataEntityClientSqlServerSettings.Instance;
+        public DataBaseSettings Settings { get; } = DataEntityClientSqlServerSettings.Instance;
 
         #endregion Properties
 

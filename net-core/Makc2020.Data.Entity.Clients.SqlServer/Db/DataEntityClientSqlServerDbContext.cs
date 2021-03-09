@@ -14,7 +14,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
     {
         #region Properties
 
-        private DataBaseSettings DataBaseSettings { get; set; }
+        private DataBaseSettings Settings { get; set; }
 
         #endregion Properties
 
@@ -39,14 +39,14 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         /// Конструктор.
         /// </summary>
         /// <param name="options">Опции.</param>
-        /// <param name="dataBaseSettings">Данные. Основа. Настройки.</param>
+        /// <param name="settings">Настройки.</param>
         public DataEntityClientSqlServerDbContext(
             DbContextOptions<DataEntityDbContext> options,
-            DataBaseSettings dataBaseSettings
+            DataBaseSettings settings
             )
             : base(options)
         {
-            DataBaseSettings = dataBaseSettings;
+            Settings = settings;
         }
 
         #endregion Constructors
@@ -61,21 +61,21 @@ namespace Makc2020.Data.Entity.Clients.SqlServer.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMain(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyManyToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMainDummyManyToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyOneToMany(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTree(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTreeLink(DataBaseSettings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMain(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyManyToMany(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyMainDummyManyToMany(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyOneToMany(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTree(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaDummyTreeLink(Settings));
 
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaRole(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaRoleClaim(DataBaseSettings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaRole(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaRoleClaim(Settings));
 
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUser(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserClaim(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserLogin(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserRole(DataBaseSettings));
-            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserToken(DataBaseSettings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaUser(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserClaim(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserLogin(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserRole(Settings));
+            modelBuilder.ApplyConfiguration(new DataEntitySchemaUserToken(Settings));
         }
 
         #endregion Protected methods

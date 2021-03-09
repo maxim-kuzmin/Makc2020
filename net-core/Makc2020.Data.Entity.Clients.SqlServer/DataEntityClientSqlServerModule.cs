@@ -62,7 +62,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
 
         #region Private methods
 
-        private DataEntityClientSqlServerContext GetContext(IServiceProvider serviceProvider)
+        private static DataEntityClientSqlServerContext GetContext(IServiceProvider serviceProvider)
         {
             return serviceProvider.GetService<DataEntityClientSqlServerContext>();
         }

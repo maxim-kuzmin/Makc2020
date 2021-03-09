@@ -14,7 +14,7 @@ namespace Makc2020.Data.Entity.Objects
         #region Properties
 
         /// <summary>
-        /// Объекты, где хранятся данные сущности "UserRole".
+        /// Объекты, где хранятся данные сущности "RoleClaim".
         /// </summary>
         public virtual List<DataEntityObjectRoleClaim> ObjectsRoleClaim { get; set; }
 

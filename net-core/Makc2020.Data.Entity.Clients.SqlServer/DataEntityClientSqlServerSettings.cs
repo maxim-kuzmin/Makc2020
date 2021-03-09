@@ -13,7 +13,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
     {
         #region Fields
 
-        private static readonly Lazy<DataEntityClientSqlServerSettings> lazy =
+        private static readonly Lazy<DataEntityClientSqlServerSettings> _lazy =
             new Lazy<DataEntityClientSqlServerSettings>(() => new DataEntityClientSqlServerSettings());
 
         #endregion Fields
@@ -27,7 +27,7 @@ namespace Makc2020.Data.Entity.Clients.SqlServer
         {
             get
             {
-                return lazy.Value;
+                return _lazy.Value;
             }
         }
 

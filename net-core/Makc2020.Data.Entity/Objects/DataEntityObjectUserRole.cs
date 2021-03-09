@@ -13,14 +13,14 @@ namespace Makc2020.Data.Entity.Objects
         #region Properties
 
         /// <summary>
-        /// Объект, где хранятся данные сущности "User".
-        /// </summary>
-        public DataEntityObjectUser ObjectUser { get; set; }
-
-        /// <summary>
         /// Объект, где хранятся данные сущности "Role".
         /// </summary>
         public DataEntityObjectRole ObjectRole { get; set; }
+
+        /// <summary>
+        /// Объект, где хранятся данные сущности "User".
+        /// </summary>
+        public DataEntityObjectUser ObjectUser { get; set; }
 
         #endregion Properties
 
