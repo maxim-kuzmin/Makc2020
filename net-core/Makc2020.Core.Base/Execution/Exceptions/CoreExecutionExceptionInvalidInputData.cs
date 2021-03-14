@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Makc2020.Core.Base.Execution.Exceptions
 {
     /// <summary>
-    /// Ядро. Основа. Выполнение. Исключения. Выход недействительны.
+    /// Ядро. Основа. Выполнение. Исключения. Недействительный ввод.
     /// </summary>
     public class CoreExecutionExceptionInvalidInput : Exception
     {

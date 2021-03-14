@@ -14,7 +14,7 @@ namespace Makc2020.Core.Base
         /// <summary>
         /// Конструктор.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Сообщение.</param>
         public CoreBaseException(string message)
             : base(message)
         {
