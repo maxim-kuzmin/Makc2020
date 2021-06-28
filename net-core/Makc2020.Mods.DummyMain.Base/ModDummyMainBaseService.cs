@@ -392,7 +392,8 @@ namespace Makc2020.Mods.DummyMain.Base
 
             if (result.ObjectDummyMain.Id > 0)
             {
-                result = await GetItem(new ModDummyMainBaseJobItemGetInput { DataId = result.ObjectDummyMain.Id });
+                result = await GetItem(new ModDummyMainBaseJobItemGetInput { DataId = result.ObjectDummyMain.Id })
+                    .CoreBaseExtTaskWithCurrentCulture(false);
             }
 
             return result;
